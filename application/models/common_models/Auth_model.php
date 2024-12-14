@@ -12,7 +12,7 @@ class Auth_model extends CI_Model {
 	}
 
 	// Authenticating User Login
-	public function check_credentials($email, $pass)
+	public function checkCredentials($email, $pass)
 	{
 	// Fetch the user record based on the email or username
 		$this->db->where('email', $email);
@@ -42,5 +42,11 @@ class Auth_model extends CI_Model {
 			return false;
 		}
 		*/
+	}
+
+	public function getAccount($email)
+	{
+		$userinfo = $this->db->get_where("users_vw", array('email' => $email))->row();
+        return $userinfo;
 	}
 }

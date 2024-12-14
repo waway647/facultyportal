@@ -120,7 +120,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 
 			<!-- Navigation Profile -->
-			<a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Profile/index">
+			<a href="">
 				<div class="nav-profile-container">
 					<!-- navigation profile img -->
 					<img src="" alt="">
@@ -139,7 +139,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		
 		<!-- content section (rightside) -->
 		<div class="content-container">
-
+			<div class="profile-container">
+				<form action="http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/procLogin" method="post">
+					<div class="input-container">
+						<label for="email">Email address:</label>
+						<input type="email" id="email" name="email">
+					</div>
+					<div class="input-container">
+						<label for="pass">Password:</label>
+						<input type="password" id="pass" name="pass">
+					</div>
+					<div class="input-container">
+						<label for="mobile_number">Mobile number:</label>
+						<input type="text" id="mobile_number" name="mobile_number">
+					</div>
+					<div class="input-container">
+						<label for="first_name">First name:</label>
+						<input type="text" id="first_name" name="first_name">
+					</div>
+					<div class="input-container">
+						<label for="middle_name">Middle name:</label>
+						<input type="text" id="middle_name" name="middle_name">
+					</div>
+					<div class="input-container">
+						<label for="last_name">Last name:</label>
+						<input type="text" id="last_name" name="last_name">
+					</div>
+					<div class="input-container">
+						<label for="birthday">Birthday:</label>
+						<input type="text" id="birthday" name="birthday">
+					</div>
+					<input type="submit" value="Submit">
+				</form>
+			</div>
 		</div>
 	</div>
 </div>

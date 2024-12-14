@@ -26,15 +26,31 @@ class Auth extends CI_Controller {
         $pass_frompost = $this->input->post('pass');
 
         // Call the model function to check credentials
-        $result = $this->Auth_model->check_credentials($email_frompost, $pass_frompost);
+        $result = $this->Auth_model->checkCredentials($email_frompost, $pass_frompost);
 
         // If credentials are valid, login is successful
         if ($result == true) {
-            //echo 'Login successful';
-			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Dashboard/index');
+			//get user fullname
+			$userinfo = $this->Auth_model->getAccount($email_frompost);
+			if($userinfo == true)
+			{
+				$this->session->set_userdata(array(
+					
+					'logged_first_name' => $userinfo->first_name,
+					'logged_last_name' => $userinfo->last_name,
+					'logged_role' => $userinfo->role_name,
+					'logged_email' => $email_frompost
+				));
+				redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Dashboard/index');
+			}
         } else {
             echo 'Invalid login! Try again.';
         }
     }
+
+	public function logout()
+	{
+		$this->session->sess_destroy();
+	}
 
 }

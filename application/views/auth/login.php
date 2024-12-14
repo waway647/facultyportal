@@ -16,7 +16,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<form action="http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/procLogin" method="post">
 				<div class="input-container">
 					<label for="email">Email address:</label>
-					<input type="text" id="email" name="email">
+					<input type="email" id="email" name="email">
 				</div>
 				<div class="input-container">
 					<label for="pass">Password:</label>

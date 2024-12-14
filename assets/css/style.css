@@ -1,0 +1,164 @@
+/* General styles */
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
+  }
+  
+  .page-container {
+    display: flex;
+    height: 100vh;
+  }
+  
+  .main-container {
+    display: flex;
+    width: 100%;
+  }
+  
+  /* Sidebar Navigation */
+  .nav-container {
+    width: 250px;
+    background-color: #1a212e;
+    color: #fff;
+    display: flex;
+    flex-direction: column;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .role-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .role-content {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+  }
+  
+  .role-content img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+  }
+  
+  .role-headings h4 {
+    margin: 0;
+    font-size: 14px;
+    color: #aaa;
+  }
+  
+  .role-headings h3 {
+    margin: 0;
+    font-size: 18px;
+    color: #fff;
+  }
+  
+  .nav-post {
+    background-color: #2f80ed;
+    color: #fff;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 15px;
+    cursor: pointer;
+    font-size: 16px;
+    margin-bottom: 20px;
+    transition: background-color 0.3s;
+  }
+  
+  .nav-post:hover {
+    background-color: #1f6cd8;
+  }
+  
+  .nav-search-container {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  
+  .nav-search-container img {
+    width: 20px;
+    margin-right: 10px;
+  }
+  
+  .nav-search-container input[type="text"] {
+    width: 100%;
+    padding: 8px 10px;
+    border: none;
+    border-radius: 8px;
+    font-size: 14px;
+  }
+  
+  .nav-links-container {
+    flex-grow: 1;
+  }
+  
+  .nav-link {
+    display: flex;
+    align-items: center;
+    padding: 10px 0;
+    cursor: pointer;
+    transition: background-color 0.3s;
+  }
+  
+  .nav-link img {
+    width: 20px;
+    height: 20px;
+    margin-right: 10px;
+  }
+  
+  .nav-link:hover {
+    background-color: #2a3042;
+    border-radius: 8px;
+  }
+  
+  .nav-link h4 {
+    margin: 0;
+    font-size: 14px;
+    color: #fff;
+  }
+  
+  .nav-link-separator {
+    border-top: 1px solid #2a3042;
+    margin: 20px 0;
+  }
+  
+  .nav-profile-container {
+    display: flex;
+    align-items: center;
+    margin-top: 20px;
+  }
+  
+  .nav-profile-container img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-right: 10px;
+  }
+  
+  .nav-profile-headings h3,
+  .nav-profile-headings h4 {
+    margin: 0;
+    font-size: 14px;
+    color: #fff;
+  }
+  
+  .version-container {
+    margin-top: auto;
+    font-size: 12px;
+    text-align: center;
+    color: #aaa;
+  }
+  
+  /* Content Section */
+  .content-container {
+    flex-grow: 1;
+    padding: 20px;
+    background-color: #fff;
+    overflow-y: auto;
+    box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.1);
+  }
+  
