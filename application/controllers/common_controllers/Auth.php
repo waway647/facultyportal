@@ -30,7 +30,8 @@ class Auth extends CI_Controller {
 
         // If credentials are valid, login is successful
         if ($result == true) {
-            echo 'Login successful';
+            //echo 'Login successful';
+			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Dashboard/index');
         } else {
             echo 'Invalid login! Try again.';
         }
