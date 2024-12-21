@@ -1,164 +1,938 @@
-/* General styles */
 body {
-    margin: 0;
-    font-family: 'Arial', sans-serif;
-    background-color: #f4f4f9;
-    color: #333;
-  }
-  
-  .page-container {
-    display: flex;
-    height: 100vh;
-  }
-  
-  .main-container {
-    display: flex;
-    width: 100%;
-  }
-  
-  /* Sidebar Navigation */
-  .nav-container {
-    width: 250px;
-    background-color: #1a212e;
-    color: #fff;
-    display: flex;
-    flex-direction: column;
-    padding: 20px;
-    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
-  }
-  
-  .role-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .role-content {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-  }
-  
-  .role-content img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-  }
-  
-  .role-headings h4 {
-    margin: 0;
-    font-size: 14px;
-    color: #aaa;
-  }
-  
-  .role-headings h3 {
-    margin: 0;
-    font-size: 18px;
-    color: #fff;
-  }
-  
-  .nav-post {
-    background-color: #2f80ed;
-    color: #fff;
-    border: none;
-    border-radius: 8px;
-    padding: 10px 15px;
-    cursor: pointer;
-    font-size: 16px;
-    margin-bottom: 20px;
-    transition: background-color 0.3s;
-  }
-  
-  .nav-post:hover {
-    background-color: #1f6cd8;
-  }
-  
-  .nav-search-container {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
-  }
-  
-  .nav-search-container img {
-    width: 20px;
-    margin-right: 10px;
-  }
-  
-  .nav-search-container input[type="text"] {
-    width: 100%;
-    padding: 8px 10px;
-    border: none;
-    border-radius: 8px;
-    font-size: 14px;
-  }
-  
-  .nav-links-container {
-    flex-grow: 1;
-  }
-  
-  .nav-link {
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
-    cursor: pointer;
-    transition: background-color 0.3s;
-  }
-  
-  .nav-link img {
-    width: 20px;
-    height: 20px;
-    margin-right: 10px;
-  }
-  
-  .nav-link:hover {
-    background-color: #2a3042;
-    border-radius: 8px;
-  }
-  
-  .nav-link h4 {
-    margin: 0;
-    font-size: 14px;
-    color: #fff;
-  }
-  
-  .nav-link-separator {
-    border-top: 1px solid #2a3042;
-    margin: 20px 0;
-  }
-  
-  .nav-profile-container {
-    display: flex;
-    align-items: center;
-    margin-top: 20px;
-  }
-  
-  .nav-profile-container img {
-    width: 40px;
-    height: 40px;
-    border-radius: 50%;
-    margin-right: 10px;
-  }
-  
-  .nav-profile-headings h3,
-  .nav-profile-headings h4 {
-    margin: 0;
-    font-size: 14px;
-    color: #fff;
-  }
-  
-  .version-container {
-    margin-top: auto;
-    font-size: 12px;
-    text-align: center;
-    color: #aaa;
-  }
-  
-  /* Content Section */
-  .content-container {
-    flex-grow: 1;
-    padding: 20px;
-    background-color: #fff;
-    overflow-y: auto;
-    box-shadow: inset 0 1px 0 rgba(0, 0, 0, 0.1);
-  }
-  
+  background-color: #C21F27;
+}
+
+@font-face {
+  font-family: 'TT Hoves Regular';
+  src: url('../fonts/tt_hoves_pro/TT_Hoves_Regular.ttf');
+}
+
+@font-face {
+  font-family: 'TT Hoves Medium';
+  src: url('../fonts/tt_hoves_pro/TT\ Hoves\ Pro\ Trial\ Medium.ttf');
+}
+
+@font-face {
+  font-family: 'TT Hoves Bold';
+  src: url('../fonts/tt_hoves_pro/TT\ Hoves\ Pro\ Trial\ Bold.ttf');
+}
+
+@font-face {
+  font-family: 'TT Hoves Medium Italic';
+  src: url('../fonts/tt_hoves_pro/TT\ Hoves\ Pro\ Trial\ Medium\ Italic.ttf');
+}
+
+
+/* FONT */
+h1 {
+  margin: 0;
+  font-family: 'TT Hoves Medium';
+}
+
+h2 {
+  margin: 0;
+  font-family: 'TT Hoves Medium';
+  font-size: 30px;
+}
+
+h3 {
+  margin: 0;
+  font-family: 'TT Hoves Medium';
+  font-size: 24px;
+}
+
+h4 {
+  margin: 0;
+  font-family: 'TT Hoves Medium';
+  font-size: 18px;
+}
+
+h5 {
+  margin: 0;
+  font-family: 'TT Hoves Medium';
+  font-size: 16px;
+}
+
+h6 {
+  margin: 0;
+  font-family: 'TT Hoves Medium';
+  font-size: 14px;
+}
+
+
+/* LOGIN */
+
+.login-page {
+  text-align: center;
+  padding: 100px;
+}
+
+.login-page .logo-container {
+  margin-bottom: 30px;
+}
+
+.login-card-container {
+  display: flex;
+  justify-content: center;
+}
+
+.login-card {
+  width: 350px;
+  text-align: left;
+  padding: 80px;
+  background-color: #ffffff;
+  border-radius: 10px;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.login-heading-container, .form-container, .button-container {
+  padding: 10px;
+}
+
+.form-container {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+input {
+  font-family: 'TT Hoves Medium';
+  padding: 10px;
+  border: 1px solid #DCDBDB;
+  border-radius: 10px;
+  height: 45px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.input-container input::placeholder {
+  color: #DCDBDB;
+  opacity: 1;
+}
+
+.input-container input:focus {
+  outline: 1px solid #A4A4A4;
+}
+
+.button-container {
+  display: flex;
+  flex-direction: column;
+  text-align: center;
+  gap: 20px;
+}
+
+.button-container input {
+  background-color: #C21F27;
+  color: #ffffff;
+}
+
+.button-container input:hover {
+  background-color: #aa1d24;
+  cursor: pointer;
+}
+
+.forgot-password-container {
+  color: #A4A4A4;
+  text-decoration: underline;
+}
+
+
+/* DASHBOARD */
+.dashboard-faculty {
+  display: flex;
+  width: 100vw;
+  height: 100vh;
+  align-items: flex-start;
+  padding: 10px;
+  position: relative;
+  background-color: #c21f27;
+}
+
+.dashboard-faculty .nav-container {
+  flex-direction: column;
+  width: 300px;
+  align-items: flex-start;
+  padding: 20px 10px;
+  display: flex;
+  position: relative;
+  align-self: stretch;
+}
+
+.dashboard-faculty .portal-logo {
+  display: flex;
+  height: 100px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.dashboard-faculty .role-item {
+  padding: 10px;
+  background-color: #e53b43;
+  border-radius: 20px;
+  overflow: hidden;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  flex: 1;
+  align-self: stretch;
+  flex-grow: 1;
+}
+
+.dashboard-faculty .img-container {
+  display: flex;
+  flex-direction: column;
+  width: 60px;
+  align-items: flex-start;
+  gap: 10px;
+  padding: 5px;
+  position: relative;
+  align-self: stretch;
+}
+
+.dashboard-faculty .img {
+  position: relative;
+  flex: 1;
+  align-self: stretch;
+  width: 100%;
+  flex-grow: 1;
+  object-fit: cover;
+}
+
+.dashboard-faculty .role-heading {
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  padding: 5px;
+  display: flex;
+  align-items: flex-start;
+  position: relative;
+  flex: 1;
+  align-self: stretch;
+  flex-grow: 1;
+}
+
+.dashboard-faculty .text-wrapper {
+  position: relative;
+  align-self: stretch;
+  font-family: "TT Hoves Medium";
+  opacity: 50%;
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: Truepx;
+}
+
+.dashboard-faculty .div {
+  position: relative;
+  align-self: stretch;
+  font-family: "TT Hoves Medium";
+  font-weight: 700;
+  color: #ffffff;
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: Truepx;
+}
+
+.dashboard-faculty .post-container {
+  display: flex;
+  height: 70px;
+  align-items: center; /* Center content vertically */
+  gap: 10px;
+  padding: 10px 0px;
+  position: relative;
+  width: 100%;
+  align-self: stretch;
+}
+
+.dashboard-faculty .post-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px;
+  position: relative;
+  flex: 1; /* Ensure it takes up available space in the flex container */
+  width: 100%; /* Make sure the width fills the parent container */
+  height: 100%;
+  background-color: #ffe49b;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.dashboard-faculty .post-button:hover {
+  background-color: #e6cb84;
+}
+
+.dashboard-faculty .post-container a {
+  display: block; /* Make <a> tag a block-level element */
+  width: 100%; /* Ensure <a> takes the full width of its parent */
+  height: 100%;
+}
+
+.dashboard-faculty .text-wrapper-2 {
+  position: relative;
+  width: fit-content;
+  font-family: "TT Hoves Medium";
+  font-weight: 700;
+  color: #000000;
+  font-size: 16px;
+  letter-spacing: 0;
+  line-height: Truepx;
+  white-space: nowrap;
+}
+
+.dashboard-faculty .post-button-wrapper {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  height: 70px;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 0px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.post-button-wrapper .button {
+  padding: 0 0 0 10px !important;
+}
+
+.post-button-wrapper .div-wrapper {
+  padding: 0 !important;
+}
+
+.button input {
+  height: 100% !important; 
+  border: 0;
+  outline: 0;
+  font-size: 18px;
+}
+
+.button input::placeholder {
+  font-family: "TT Hoves Regular";
+  font-weight: 400;
+  color: #DCDBDB;
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: Truepx;
+}
+
+.dashboard-faculty .button {
+  all: unset;
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  position: relative;
+  flex: 1;
+  align-self: stretch;
+  flex-grow: 1;
+  background-color: #ffffff;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.dashboard-faculty .frame {
+  width: 30px;
+  justify-content: center;
+  padding: 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  position: relative;
+}
+
+.dashboard-faculty .div-wrapper {
+  justify-content: center;
+  padding: 5px;
+  flex: 1;
+  align-self: stretch;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  position: relative;
+}
+
+.dashboard-faculty .text-wrapper-3 {
+  position: relative;
+  width: fit-content;
+  margin-top: -2.00px;
+  opacity: 0.3;
+  font-family: "TT Hoves Medium";
+  font-weight: 400;
+  color: #000000;
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: Truepx;
+}
+
+.dashboard-faculty .nav-links-container {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 5px;
+  padding: 10px 0px 25px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  flex: 0 0 auto;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-color: #dcdbdb33;
+}
+
+.dashboard-faculty .nav-link {
+  align-items: center;
+  display: flex;
+  height: 50px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.dashboard-faculty .nav-link:hover {
+  background-color: #e53b43;
+} 
+
+.dashboard-faculty .image-wrapper {
+  width: 50px;
+  height: 50px;
+  justify-content: center;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  position: relative;
+}
+
+.dashboard-faculty .frame-2 {
+  width: 230px;
+  height: 50px;
+  justify-content: center;
+  padding: 10px 5px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  position: relative;
+}
+
+.dashboard-faculty .text-wrapper-4 {
+  position: relative;
+  width: fit-content;
+  font-family: "TT Hoves Regular";
+  font-weight: 400;
+  opacity: 50%;
+  color: #ffffff;
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: Truepx;
+}
+
+.dashboard-faculty .nav-link:hover .frame-2 .text-wrapper-4 {
+  opacity: 100%;
+}
+
+.dashboard-faculty .nav-links-container-2 {
+  justify-content: space-between;
+  padding: 25px 0px;
+  flex: 1;
+  flex-grow: 1;
+  border-bottom-width: 1px;
+  border-bottom-style: solid;
+  border-color: #dcdbdb33;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.dashboard-faculty .nav-link-3 {
+  align-items: center;
+  gap: 5px;
+  display: flex;
+  height: 50px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.dashboard-faculty .nav-link-3:hover {
+  background-color: #e53b43;
+}
+
+.dashboard-faculty .img-wrapper {
+  display: flex;
+  flex-direction: column;
+  width: 50px;
+  height: 50px;
+  align-items: flex-start;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+}
+
+.dashboard-faculty .frame-3 {
+  justify-content: center;
+  gap: 5px;
+  margin-right: -5.00px;
+  display: flex;
+  flex-direction: column;
+  width: 230px;
+  height: 50px;
+  align-items: flex-start;
+  padding: 10px 5px;
+  position: relative;
+}
+
+.dashboard-faculty .text-wrapper-5 {
+  position: relative;
+  width: fit-content;
+  margin-top: -8.00px;
+  font-family: "TT Hoves Medium";
+  font-weight: 400;
+  color: #ffffff;
+  font-size: 18px;
+  letter-spacing: 0;
+  line-height: Truepx;
+}
+
+.dashboard-faculty .text-wrapper-6 {
+  position: relative;
+  width: fit-content;
+  margin-bottom: -6.00px;
+  font-family: "TT Hoves Regular";
+  opacity: 50%;
+  font-weight: 400;
+  color: #DCDBDB;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: Truepx;
+}
+
+.dashboard-faculty .nav-link-wrapper {
+  height: 50px;
+  padding: 10px 0px;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+}
+
+.dashboard-faculty .frame-wrapper {
+  align-items: flex-start;
+  margin-bottom: -10.00px;
+  display: flex;
+  height: 50px;
+  position: relative;
+  align-self: stretch;
+  width: 100%;
+  border-radius: 10px;
+}
+
+.dashboard-faculty .frame-4 {
+  gap: 10px;
+  display: flex;
+  flex-direction: column;
+  width: 230px;
+  height: 50px;
+  align-items: flex-start;
+  padding: 10px 5px;
+  position: relative;
+}
+
+.dashboard-faculty .text-wrapper-7 {
+  position: relative;
+  width: fit-content;
+  margin-top: -1.00px;
+  font-family: "TT Hoves Regular";
+  opacity: 50%;
+  font-weight: 400;
+  color: #DCDBDB;
+  font-size: 14px;
+  letter-spacing: 0;
+  line-height: Truepx;
+}
+
+.dashboard-faculty .main-content {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 10px;
+  position: relative;
+  flex: 1;
+  align-self: stretch;
+  flex-grow: 1;
+}
+
+.dashboard-faculty .main-content-2 {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 40px;
+  position: relative;
+  flex: 1;
+  align-self: stretch;
+  width: 100%;
+  flex-grow: 1;
+  background-color: #ffffff;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.dashboard-faculty .heading-container {
+  display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+  position: relative;
+  flex: 0 0 auto;
+}
+
+.dashboard-faculty .text-wrapper-8 {
+  position: relative;
+  width: fit-content;
+  margin-top: -1.00px;
+  font-family: "TT Hoves Medium";
+  font-weight: 600;
+  color: #000000;
+  font-size: 30px;
+  letter-spacing: 0;
+  line-height: Truepx;
+  white-space: nowrap;
+}
+
+.dashboard-faculty .faculties-container-wrapper {
+  flex: 1;
+  align-self: stretch;
+  width: 100%;
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 10px;
+  position: relative;
+}
+
+.dashboard-faculty .faculties-container {
+  position: relative;
+  flex: 1;
+  align-self: stretch;
+  width: 100%;
+  flex-grow: 1;
+}
+
+
+/* POST ANNOUNCEMENT MODAL*/
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+  padding-top: 20px;
+}
+
+.modal-content {
+  background-color: #ffffff;
+  margin: 5% auto;
+  padding: 30px;
+  border-radius: 10px;
+  width: 40%;
+  box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
+}
+
+.postAnnouncement-container {
+  text-align: left;
+}
+
+.postmodal-heading {
+  padding: 10px;
+}
+
+.postmodal-heading .div {
+  text-align: left;
+  font-size: 24px;
+  font-family: 'TT Hoves Medium';
+  color: #000000;
+}
+
+.postmodal-form-container {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 20px;
+}
+
+.postmodal-form-input {
+  display: flex;
+  flex-direction: column;
+}
+
+.postmodal-form-input input {
+  font-family: 'TT Hoves Bold';
+}
+
+.postmodal-form-input input::placeholder {
+  font-size: 14px;
+  color: #DCDBDB;
+}
+
+.postmodal-form-input input:focus {
+  outline: 1px solid #A4A4A4;
+}
+
+.custom-textarea {
+  font-family: 'TT Hoves Medium';
+  font-size: 14px;
+  border: 1px solid #DCDBDB;
+  border-radius: 8px;
+  padding: 10px;
+  min-height: 120px;
+  width: 100%;
+  height: 300px;
+  overflow: auto;
+}
+
+.custom-textarea:empty::before {
+  font-family: 'TT Hoves Medium';
+  font-size: 14px;
+  content: attr(placeholder);
+  color: #DCDBDB;
+  pointer-events: none;
+}
+
+.custom-textarea:focus {
+  outline: 1px solid #A4A4A4;
+}
+
+.attachment-container {
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.attachment-button {
+  width: 150px;
+  font-family: 'TT Hoves Medium';
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  padding: 8px 16px;
+  background-color: #DCDBDB;
+  color: #000000;
+  border-radius: 5px;
+  cursor: pointer;
+  gap: 10px;
+}
+
+.attachment-button:hover {
+  background-color: #A4A4A4;
+}
+
+.attachment-button img {
+  width: 18px;
+  height: auto;
+}
+
+.attachment-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.attachment-preview-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  border: 1px solid #ccc;
+  padding: 5px;
+  border-radius: 5px;
+}
+
+.attachment-preview-item img {
+  max-width: 50px;
+  max-height: 50px;
+  border-radius: 5px;
+}
+
+.remove-file-btn {
+  background-color: #c21f27;
+  color: white;
+  border: none;
+  padding: 5px 10px;
+  border-radius: 3px;
+  cursor: pointer;
+}
+
+.remove-file-btn:hover {
+  background-color: #aa1d24;
+}
+
+
+.postAnnouncement-container .button-container {
+  display: flex;
+  justify-content: space-between;
+  gap: 20px;
+}
+
+.postAnnouncement-container .continue-button {
+  background-color: #C21F27;
+  color: #ffffff;
+  padding: 10px 20px;
+  border-radius: 10px;
+  font-family: 'TT Hoves Medium';
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.postAnnouncement-container .continue-button:hover {
+  background-color: #aa1d24;
+}
+
+.postAnnouncement-container .back-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #C21F27;
+  text-decoration: underline;
+  cursor: pointer;
+}
+
+.cancel-button {
+  font-family: 'TT Hoves Medium';
+  color: #A4A4A4;
+  text-decoration: underline;
+}
+
+/* Notification Button */
+.notification-btn {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1000;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  padding: 10px 15px;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.notification-btn:hover {
+  background-color: #0056b3;
+}
+
+/* Notification Panel */
+.notification-panel {
+  position: fixed;
+  top: 0;
+  right: -500px; /* Hidden by default */
+  width: 500px;
+  height: 100%;
+  background-color: #fff;
+  box-shadow: -2px 0 5px rgba(0, 0, 0, 0.1);
+  transition: right 0.3s ease-in-out;
+  z-index: 999;
+  overflow-y: auto;
+}
+
+.notification-panel.open {
+  right: 0; /* Slide-in effect */
+}
+
+/* Header */
+.notification-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px;
+  border-bottom: 1px solid #ddd;
+}
+
+.notification-header h3 {
+  padding: 10px 30px;
+  font-family: 'TT Hoves Medium';
+  font-weight: 600;
+  font-size: 24px;
+}
+
+.close-btn {
+  background: none;
+  border: none;
+  font-size: 24px;
+  cursor: pointer;
+}
+
+/* Notification Content */
+.notification-item {
+  display: flex;
+  justify-content: space-between;
+  gap: 10px;
+  padding: 30px 20px 30px 50px;
+  border-bottom: 1px solid #ddd;
+}
+
+.notification-item-details {
+  font-family: 'TT Hoves Medium';
+  display: flex;
+  flex-direction: column;
+  gap: 13px;
+}
+
+.notification-item-details small {
+  color: #A4A4A4;
+  font-size: 14px;
+}
+
+.notification-item .status-dot {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  margin-right: 10px;
+}
+
+
+.notification-item .new {
+  background-color: #C21F27;
+}
+
+.notification-item .action-btn {
+  font-family: 'TT Hoves Bold';
+  background-color: #ffffff;
+  border: none;
+  width: 100px;
+  padding: 7px 10px;
+  border: 1px solid #DCDBDB;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.notification-item .action-btn:hover {
+  background-color: #DCDBDB;
+}

@@ -14,7 +14,7 @@ class Auth extends CI_Controller {
 		$this->load->library('form_validation');
 	}
 
-	public function index()
+	public function index() // http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index
 	{
 		$this->load->view('auth/login');
 	}
