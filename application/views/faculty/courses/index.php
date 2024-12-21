@@ -173,7 +173,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
       <div class="main-content">
         <div class="main-content-2">
-          <div class="heading-container"><div class="text-wrapper-8">Welcome, Faculty member</div></div>
+          <div class="heading-container"><div class="text-wrapper-8">Courses, Faculty member</div></div>
           <div class="faculties-container-wrapper"><div class="faculties-container"></div></div>
         </div>
       </div>

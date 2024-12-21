@@ -606,7 +606,104 @@ input {
   gap: 10px;
   position: relative;
   flex: 0 0 auto;
+  padding: 10px;
 }
+
+/*MAIN CONTENT */
+.main-content .container {
+  padding: 35px 10px 10px;
+  height: 100%;
+  width: 100%;
+  display: flex;
+}
+
+.main-content .left-account-container {
+  width: 220px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  padding: 40px 40px 0 0;
+}
+
+    .left-account-container .profile-setting-container {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .left-account-container .profile-pic-preview {
+      width: 120px;
+      height: 120px;
+    }
+
+    .left-account-container img {
+      width: 100%;
+      height: auto;
+    }
+
+.main-content .profile-details-container {
+  display: flex;
+  justify-content: center;
+  padding: 20px 0;
+}
+
+.main-content .profile-details-container a {
+  text-decoration: underline;
+  color: #A4A4A4;
+}
+
+    .profile-details-container h6 {
+      color: #A4A4A4;
+    }
+
+    .profile-details-container a:focus, .profile-details-container a:focus h6 {
+      color: #000000;
+    }
+
+.main-content .right-account-container {
+  width: 100%;
+  border-left: 1px solid #DCDBDB;
+  display: flex;
+  justify-content: left;
+  padding: 20px 40px;
+}
+
+    .right-account-container .form-container {
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      padding: 0;
+      width: 300px;
+    }
+
+    .right-account-container h6 {
+      padding: 5px 0;
+      color: #A4A4A4;
+      font-size: 14px;
+      font-family: 'TT Hoves Medium';
+    }
+
+    .right-account-container input {
+      height: 35px;
+      width: 100%;
+    }
+
+    .right-account-container .edit {
+      text-align: right;
+      padding-top: 20px;
+      text-decoration: underline;
+      color: #A4A4A4;
+    }
+
+    .right-account-container .edit a {
+      text-decoration: underline;
+      color: #A4A4A4;
+    }
+
+    .right-account-container .edit a:focus, .right-account-container .edit a:focus h6 {
+      color: #000000;
+    }
+
 
 .dashboard-faculty .text-wrapper-8 {
   position: relative;
@@ -920,6 +1017,11 @@ input {
 
 .notification-item .new {
   background-color: #C21F27;
+}
+
+.notification-item a {
+  display: block;
+  width: fit-content;
 }
 
 .notification-item .action-btn {
