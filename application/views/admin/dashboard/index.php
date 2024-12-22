@@ -87,7 +87,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			<a href="http://localhost/GitHub/facultyportal/index.php/admin_controllers/UserManagement/index">
 				<div class="nav-link">
-					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/profile.svg'); ?>" /></div>
+					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/usermanage.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">User Management</div></div>
 				</div>
 			</a>
@@ -108,14 +108,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     
 		  	<a href="http://localhost/GitHub/facultyportal/index.php/admin_controllers/Reports/index">
 				<div class="nav-link">
-					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/consult.svg'); ?>" /></div>
+					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/reports.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Reports</div></div>
 				</div>
 			</a>
 
 			<a href="http://localhost/GitHub/facultyportal/index.php/admin_controllers/SystemSettings/index">
 				<div class="nav-link">
-					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/consult.svg'); ?>" /></div>
+					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/settings.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">System Settings</div></div>
 				</div>
 			</a>

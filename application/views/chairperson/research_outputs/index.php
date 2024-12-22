@@ -101,7 +101,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/index">
 				<div class="nav-link">
-					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/profile.svg'); ?>" /></div>
+					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/facultymanage.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Faculty Management</div></div>
 				</div>
 			</a>
@@ -129,7 +129,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Reports/index">
 				<div class="nav-link">
-					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/consult.svg'); ?>" /></div>
+					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/reports.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Reports</div></div>
 				</div>
 			</a>
