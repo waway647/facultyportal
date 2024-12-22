@@ -13,8 +13,8 @@ class Reports extends CI_Controller {
 		$this->load->helper('url');
 	}
 
-	public function index() // http://localhost/GitHub/facultyportal/index.php/admin_controllers/Reports/index
+	public function index() // http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Reports/index
 	{
-		$this->load->view('admin/reports/index');
+		$this->load->view('chairperson/reports/index');
 	}
 }

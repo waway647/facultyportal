@@ -2,7 +2,7 @@
 defined('BASEPATH') OR exit('No direct script access allowed');
 error_reporting(E_ALL ^ E_DEPRECATED);
 
-class Reports extends CI_Controller {
+class CourseManagement extends CI_Controller {
 
 	public function __construct()
 	{
@@ -13,8 +13,8 @@ class Reports extends CI_Controller {
 		$this->load->helper('url');
 	}
 
-	public function index() // http://localhost/GitHub/facultyportal/index.php/admin_controllers/Reports/index
+	public function index() // http://localhost/GitHub/facultyportal/index.php/admin_controllers/CourseManagement/index
 	{
-		$this->load->view('admin/reports/index');
+		$this->load->view('admin/course_management/index');
 	}
 }
