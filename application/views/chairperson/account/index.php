@@ -78,42 +78,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           </button>
         </div>
         <div class="nav-links-container">
-			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Dashboard/index">
+			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Dashboard/index">
 				<div class="nav-link">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/dash.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Dashboard</div></div>
 				</div>
 			</a>
           
-		  	<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Announcements/index">
+		  	<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index">
 				<div class="nav-link">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/announce.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Announcements</div></div>
 				</div>
 			</a>
           
-		  	<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/index">
+		  	<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index">
 				<div class="nav-link">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/profile.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Profile</div></div>
 				</div>
 			</a>
           
-		  	<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Courses/index">
+		  	<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/index">
 				<div class="nav-link">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/course.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Courses</div></div>
 				</div>
 			</a>
           
-		  	<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/index">
+		  	<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/ResearchOutputs/index">
 				<div class="nav-link">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/research.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Research Outputs</div></div>
 				</div>
 			</a>
     
-		  	<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/index">
+		  	<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Consultations/index">
 				<div class="nav-link">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/consult.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Consultations</div></div>
@@ -154,7 +154,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
           
 			<!-- Your profile link and other content here -->
-			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index">
+			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/index">
 				<div class="nav-link-3">
 					<div class="img-wrapper"><img class="img" src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" /></div>
 					<div class="frame-3">
@@ -173,8 +173,69 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
       <div class="main-content">
         <div class="main-content-2">
-          <div class="heading-container"><div class="text-wrapper-8">Announcements, Faculty member</div></div>
-          <div class="faculties-container-wrapper"><div class="faculties-container"></div></div>
+          <div class="heading-container"><div class="text-wrapper-8">Account Settings</div></div>
+			<div class="container">
+				<div class="left-account-container">
+					<div class="profile-setting-container">
+						<div class="profile-pic-preview">
+							<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+						</div>
+
+						<div class="profile-details-container">
+						<div class="profile-details">
+							<a href="">
+								<h6>Edit</h6>
+							</a>
+						</div>
+					</div>
+					</div>
+				</div>
+
+				<div class="right-account-container">
+					<div class="form-container">
+						<div class="input-container">
+							<h6>Email</h6>
+							<input type="text" id="email" name="email" placeholder="Email">
+						</div>
+
+						<div class="input-container">
+							<h6>Password</h6>
+							<input type="text" id="pass" name="pass" placeholder="Pass">
+						</div>
+
+						<div class="input-container">
+							<h6>Mobile number</h6>
+							<input type="text" id="mobile_number" name="mobile_number" placeholder="Mobile number">
+						</div>
+
+						<div class="input-container">
+							<h6>First name</h6>
+							<input type="text" id="first_name" name="first_name" placeholder="First name">
+						</div>
+
+						<div class="input-container">
+							<h6>Last name</h6>
+							<input type="text" id="last_name" name="last_name" placeholder="Last name">
+						</div>
+
+						<div class="input-container">
+							<h6>Middle name</h6>
+							<input type="text" id="middle_name" name="middle_name" placeholder="Middle name">
+						</div>
+
+						<div class="input-container">
+							<h6>Birthday</h6>
+							<input type="text" id="birthday" name="birthday" placeholder="Birthday">
+						</div>
+
+						<div class="input-container edit">
+							<a href="">
+								<h6>Edit</h6>
+							</a>
+						</div>
+					</div>
+				</div>
+			</div>
         </div>
       </div>
     </div>
