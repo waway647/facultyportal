@@ -187,34 +187,264 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
       <div class="main-content">
         <div class="main-content-2">
-          <div class="heading-container"><div class="text-wrapper-8">Faculy Management, Department Chair</div></div>
-          <div class="faculties-container-wrapper"><div class="faculties-container"></div></div>
+          <div class="heading-container"><div class="text-wrapper-8">Faculty Management, Department Chair</div></div>
+          	<div class="container-management">
+				<div class="item-summary-container">
+					<div class="boxes-container">
+						<div class="item-box">
+							<div class="left-summary-container">
+								<div class="summary-img-container">
+									<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+								</div>
+
+								<h4>Total</h4>
+							</div>
+							
+							<h2>3</h2>
+						</div>
+
+						<div class="item-box">
+							<div class="summary-img-container">
+								<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+							</div>
+
+							<h4>Total</h4>
+
+							<h2>3</h2>
+						</div>
+
+						<div class="item-box">
+							<div class="summary-img-container">
+								<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+							</div>
+
+							<h4>Total</h4>
+
+							<h2>3</h2>
+						</div>
+					</div>
+				</div>
+
+				<div class="sub-content-container">
+					<div class="left-sub">
+						<h4>Faculty List&nbsp</h4>
+						<h4 class="left-sub-numbers">(3)</h4>
+					</div>
+
+					<div class="right-sub">
+						<div class="search-container">
+						<button class="button">
+							<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
+								<div class="div-wrapper">
+									<input type="search" name="" id="" placeholder="Search">
+								</div>
+						</button>
+						</div>
+
+						<div class="add-button">
+							<button id="addFacultyBtn" type="button" class="btn">+ &nbsp&nbsp Add Faculty</button>
+						</div>
+								
+								<!-- Add Faculty Modal 
+								<div id="addFacultyModal" class="modal">
+								<div class="modal-content">
+									
+									<div class="modal-for-step">
+										<h6>Step 1 of 2</h6>
+									</div>
+									<div class="modal-header">
+									<h3>Add Faculty Profile</h3>
+									</div>
+									<form id="addFacultyForm">
+										<div class="form-group">
+											<select id="role_name" name="role_name" required>
+												<option value="Faculty" disabled selected>Faculty</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<input type="email" id="email" name="email" placeholder="Email" required>
+										</div>
+										<div class="form-group">
+											<input type="password" id="pass" name="pass" placeholder="Password" required>
+										</div>
+
+										<button type="submit" class="btn">Continue</button>
+
+										<a href="">
+											<h6 class="back-step">Cancel</h6>
+										</a>
+									</form>
+								</div>
+								</div> 
+								-->
+
+								<!-- STEP 2 - Add Faculty Modal -->
+								<div id="addFacultyModal" class="modal">
+								<div class="modal-content">
+									
+									<div class="modal-for-step">
+										<h6>Step 2 of 2</h6>
+									</div>
+									<div class="modal-header">
+									<h3>Add Faculty Profile</h3>
+									</div>
+									<form id="addFacultyForm">
+										<div class="form-group">
+											<input type="text" id="first_name" name="first_name" placeholder="First Name" required>
+										</div>
+										<div class="form-group">
+											<input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
+										</div>
+										<div class="form-group">
+											<input type="text" id="middle_name" name="middle_name" placeholder="Middle Name" required>
+										</div>
+										<div class="form-group">
+											<select id="department" name="department" required>
+												<option value="" disabled selected>Choose a Department</option>
+												<option value="Information Technology">Information Technology</option>
+												<option value="Computer Science">Computer Science</option>
+												<option value="Information Systems">Information Systems</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<select id="employment_type" name="employment_type" required>
+												<option value="" disabled selected>Choose Employment Type</option>
+												<option value="Information Technology">Full-Time</option>
+												<option value="Computer Science">Part-Time</option>
+											</select>
+										</div>
+
+										<button type="submit" class="btn">Save & Confirm</button>
+
+										<a href="">
+											<h6 class="back-step">Go Back</h6>
+										</a>
+									</form>
+								</div>
+								</div>
+					</div>
+				</div>
+
+				<div class="the-content-container">
+					<div class="profile-card-container">
+						<div class="card-left">
+							<div class="the-pic-container">
+								<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">	
+							</div>
+
+							<div class="the-details-container">
+								<h4>Mapula, Paul Joshua G.</h4>
+								
+								<div class="the-sub-details">
+									<h6 class="role-class">Faculty</h6>
+									<h6>Information Technology Department</h6>
+									<h6>CC101 | IT101</h6>
+								</div>
+							</div>
+						</div>
+
+						<div class="card-right">
+							<div class="contact-row">
+								<div class="icon-contact">
+									<img src="<?php echo base_url('assets/images/icon/email.svg'); ?>" alt="">
+								</div>
+								
+								<h6>2022-02519@sanbeda.edu.ph</h6>
+							</div>
+
+							<div class="contact-row">
+								<div class="icon-contact">
+									<img src="<?php echo base_url('assets/images/icon/phone.svg'); ?>" alt="">
+								</div>
+								
+								<h6>09958541242</h6>
+							</div>
+						</div>
+
+						<div class="card-action-container">
+							<div class="card-action">
+								<button type="button" class="btn">View Profile</button>
+							</div>
+						</div>
+					</div>
+
+					<div class="profile-card-container">
+						<div class="card-left">
+							<div class="the-pic-container">
+								<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">	
+							</div>
+
+							<div class="the-details-container">
+								<h4>Mapula, Paul Joshua G.</h4>
+								
+								<div class="the-sub-details">
+									<h6 class="role-class">Faculty</h6>
+									<h6>Information Technology Department</h6>
+									<h6>CC101 | IT101</h6>
+								</div>
+							</div>
+						</div>
+
+						<div class="card-right">
+							<div class="contact-row">
+								<div class="icon-contact">
+									<img src="<?php echo base_url('assets/images/icon/email.svg'); ?>" alt="">
+								</div>
+								
+								<h6>2022-02519@sanbeda.edu.ph</h6>
+							</div>
+
+							<div class="contact-row">
+								<div class="icon-contact">
+									<img src="<?php echo base_url('assets/images/icon/phone.svg'); ?>" alt="">
+								</div>
+								
+								<h6>09958541242</h6>
+							</div>
+						</div>
+
+						<div class="card-action-container">
+							<div class="card-action">
+								<button type="button" class="btn">View Profile</button>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
         </div>
       </div>
     </div>
 
 	<script>
-	// Get elements
-	const modal = document.getElementById("postAnnouncementModal");
-	const btn = document.getElementById("postAnnouncementBtn");
-	const closeModal = document.getElementById("closeModalBtn");
+	// Function to initialize a modal
+	function setupModal(modalId, openButtonId, closeButtonId) {
+	const modal = document.getElementById(modalId);
+	const openButton = document.getElementById(openButtonId);
+	const closeButton = document.getElementById(closeButtonId);
 
 	// Open modal
-	btn.onclick = function () {
-	  modal.style.display = "block";
+	openButton.onclick = function () {
+		modal.style.display = "block";
 	};
 
 	// Close modal
-	closeModal.onclick = function () {
-	  modal.style.display = "none";
+	closeButton.onclick = function () {
+		modal.style.display = "none";
 	};
 
 	// Close modal when clicking outside of it
 	window.onclick = function (event) {
-	  if (event.target == modal) {
-	    modal.style.display = "none";
-	  }
+		if (event.target === modal) {
+		modal.style.display = "none";
+		}
 	};
+	}
+
+	// Initialize "Post Announcement" modal
+	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
+
+	// Initialize "Add Faculty" modal
+	setupModal("addFacultyModal", "addFacultyBtn", "closeAddFacultyBtn");
 
 	// File attachment handling
 	const attachmentInput = document.getElementById("announcement_attachment");
