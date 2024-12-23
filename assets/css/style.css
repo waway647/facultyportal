@@ -141,10 +141,8 @@ input {
 .dashboard-faculty {
   display: flex;
   width: 100vw;
-  height: 100vh;
-  align-items: flex-start;
+  height: 100vh; /* Fills the viewport */
   padding: 10px;
-  position: relative;
   background-color: #c21f27;
 }
 
@@ -576,31 +574,23 @@ input {
 .dashboard-faculty .main-content {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  flex: 1; /* Ensures it takes the full height of its parent */
+
   padding: 10px;
-  position: relative;
-  flex: 1;
-  align-self: stretch;
-  flex-grow: 1;
 }
 
 .dashboard-faculty .main-content-2 {
   display: flex;
   flex-direction: column;
-  align-items: flex-start;
+  flex: 1; /* Ensures it takes the full height of its parent */
+
   padding: 40px 70px;
-  position: relative;
-  flex: 1;
-  align-self: stretch;
-  width: 100%;
-  flex-grow: 1;
   background-color: #ffffff;
   border-radius: 20px;
   overflow: hidden;
 }
 
 .dashboard-faculty .heading-container {
-  display: inline-flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
@@ -1041,7 +1031,9 @@ input {
 
 /* FACULTY MANAGEMENT */
 .container-management {
-  width: 100%;
+  display: flex;
+    flex-direction: column; /* Align children vertically */
+    height: 100%; /* Full viewport height */
 }
 
 .container-management .item-summary-container {
@@ -1128,6 +1120,14 @@ input {
   background-color: #DCDBDB;
 }
 
+.the-content-container {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  width: 100%; /* Ensures it stretches to the full width */
+  overflow: auto; /* Enables vertical scrolling when content exceeds height */
+}
+
 .the-content-container .profile-card-container {
   display: flex;
   justify-content: space-between;
@@ -1138,7 +1138,6 @@ input {
 
 .the-content-container .card-left {
   display: flex;
-  align-items: center;
   gap: 30px;
 }
 
@@ -1235,6 +1234,28 @@ input {
   font-weight: 900;
 }
 
+#addFacultyModalStep2 .modal-content{
+  width: 28%;
+  padding: 80px;
+}
+
+#addFacultyModalStep2 form {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  padding: 10px;
+}
+
+#addFacultyModalStep2 .modal-for-step {
+  padding: 0px 10px;
+}
+
+#addFacultyModalStep2 .modal-header {
+  padding: 10px;
+  font-family: 'TT Hoves Medium';
+  font-weight: 900;
+}
+
 .form-group select {
   font-family: 'TT Hoves Medium';
   border: 1px solid #DCDBDB;
@@ -1281,3 +1302,4 @@ form .back-step {
   font-family: 'TT Hoves Medium';
   font-weight: 900;
 }
+

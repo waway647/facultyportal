@@ -8,6 +8,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="icon" href="<?php echo base_url('assets/images/logo/sbu_logo.svg'); ?>" type="image/x-icon">
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/globals.css?<?php echo time(); ?>"> 
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/style.css?<?php echo time(); ?>"> 
+	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/table.css?<?php echo time(); ?>"> 
+
   </head>
   <body>
   <div class="dashboard-faculty">
@@ -188,7 +190,166 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div class="main-content">
         <div class="main-content-2">
           <div class="heading-container"><div class="text-wrapper-8">Courses, Department Chair</div></div>
-          <div class="faculties-container-wrapper"><div class="faculties-container"></div></div>
+			<div class="container-management">
+				<div class="item-summary-container">
+					<div class="boxes-container">
+						<div class="item-box">
+							<div class="left-summary-container">
+								<div class="summary-img-container">
+									<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+								</div>
+
+								<h4>Total</h4>
+							</div>
+							
+							<h2>3</h2>
+						</div>
+
+						<div class="item-box">
+							<div class="summary-img-container">
+								<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+							</div>
+
+							<h4>Total</h4>
+
+							<h2>3</h2>
+						</div>
+
+						<div class="item-box">
+							<div class="summary-img-container">
+								<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+							</div>
+
+							<h4>Total</h4>
+
+							<h2>3</h2>
+						</div>
+					</div>
+				</div>
+
+				<div class="sub-content-container">
+					<div class="left-sub">
+						<h4>Faculty List&nbsp</h4>
+						<h4 class="left-sub-numbers">(3)</h4>
+					</div>
+
+					<div class="right-sub">
+						<div class="search-container">
+						<button class="button">
+							<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
+								<div class="div-wrapper">
+									<input type="search" name="" id="" placeholder="Search">
+								</div>
+						</button>
+						</div>
+
+						<div class="add-button">
+							<button id="addFacultyBtn" type="button" class="btn">+ &nbsp&nbsp Add Faculty</button>
+						</div>
+								
+								<!-- Add Faculty Modal -->
+								<div id="addFacultyModal" class="modal">
+								<div class="modal-content">
+									
+									<div class="modal-for-step">
+										<h6>Step 1 of 2</h6>
+									</div>
+									<div class="modal-header">
+									<h3>Add Faculty Profile</h3>
+									</div>
+									<form id="addFacultyForm">
+										<div class="form-group">
+											<select id="role_name" name="role_name" required>
+												<option value="Faculty" disabled selected>Faculty</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<input type="email" id="email" name="email" placeholder="Email" required>
+										</div>
+										<div class="form-group">
+											<input type="password" id="pass" name="pass" placeholder="Password" required>
+										</div>
+
+										<button type="submit" class="btn">Continue</button>
+
+										<a href="">
+											<h6 class="back-step">Cancel</h6>
+										</a>
+									</form>
+								</div>
+								</div> 
+								
+
+								<!-- STEP 2 - Add Faculty Modal -->
+								<div id="addFacultyModal" class="modal">
+								<div class="modal-content">
+									
+									<div class="modal-for-step">
+										<h6>Step 2 of 2</h6>
+									</div>
+									<div class="modal-header">
+									<h3>Add Faculty Profile</h3>
+									</div>
+									<form id="addFacultyForm">
+										<div class="form-group">
+											<input type="text" id="first_name" name="first_name" placeholder="First Name" required>
+										</div>
+										<div class="form-group">
+											<input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
+										</div>
+										<div class="form-group">
+											<input type="text" id="middle_name" name="middle_name" placeholder="Middle Name" required>
+										</div>
+										<div class="form-group">
+											<select id="department" name="department" required>
+												<option value="" disabled selected>Choose a Department</option>
+												<option value="Information Technology">Information Technology</option>
+												<option value="Computer Science">Computer Science</option>
+												<option value="Information Systems">Information Systems</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<select id="employment_type" name="employment_type" required>
+												<option value="" disabled selected>Choose Employment Type</option>
+												<option value="Information Technology">Full-Time</option>
+												<option value="Computer Science">Part-Time</option>
+											</select>
+										</div>
+
+										<button type="submit" class="btn">Save & Confirm</button>
+
+										<a href="">
+											<h6 class="back-step">Go Back</h6>
+										</a>
+									</form>
+								</div>
+								</div>
+					</div>
+				</div>
+
+				<div class="the-content-container">
+					<div id="container">    
+						<table class="table" id="assetList" name="assetList">
+							<thead>
+							<tr>
+								<th>#</th>
+								<th>Course Code</th>
+								<th>Course Name</th>
+								<th>No. of Units</th>
+								<th>Course Professor</th>
+								<th>Section</th>
+								<th>Action</th>
+							</tr>
+							</thead>
+
+							<tbody>
+								
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+			</div>
         </div>
       </div>
     </div>

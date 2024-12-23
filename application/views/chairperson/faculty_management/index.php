@@ -8,6 +8,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="icon" href="<?php echo base_url('assets/images/logo/sbu_logo.svg'); ?>" type="image/x-icon">
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/globals.css?<?php echo time(); ?>"> 
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/style.css?<?php echo time(); ?>"> 
+
+	<!-- jQuery library -->
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
   </head>
   <body>
   <div class="dashboard-faculty">
@@ -245,7 +249,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<button id="addFacultyBtn" type="button" class="btn">+ &nbsp&nbsp Add Faculty</button>
 						</div>
 								
-								<!-- Add Faculty Modal 
+								<!-- Add Faculty Modal -->
 								<div id="addFacultyModal" class="modal">
 								<div class="modal-content">
 									
@@ -255,10 +259,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="modal-header">
 									<h3>Add Faculty Profile</h3>
 									</div>
-									<form id="addFacultyForm">
+									<form id="addFacultyForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/createFaculty1">
 										<div class="form-group">
-											<select id="role_name" name="role_name" required>
-												<option value="Faculty" disabled selected>Faculty</option>
+											<select id="user_role_id" name="user_role_id" required>
+												<option value="2">Faculty</option>
 											</select>
 										</div>
 										<div class="form-group">
@@ -276,10 +280,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</form>
 								</div>
 								</div> 
-								-->
+								
 
 								<!-- STEP 2 - Add Faculty Modal -->
-								<div id="addFacultyModal" class="modal">
+								<div id="addFacultyModalStep2" class="modal">
 								<div class="modal-content">
 									
 									<div class="modal-for-step">
@@ -288,7 +292,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="modal-header">
 									<h3>Add Faculty Profile</h3>
 									</div>
-									<form id="addFacultyForm">
+									<form id="addFacultyFormStep2" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/createFaculty2">
 										<div class="form-group">
 											<input type="text" id="first_name" name="first_name" placeholder="First Name" required>
 										</div>
@@ -296,7 +300,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
 										</div>
 										<div class="form-group">
-											<input type="text" id="middle_name" name="middle_name" placeholder="Middle Name" required>
+											<input type="text" id="middle_name" name="middle_name" placeholder="Middle Name">
 										</div>
 										<div class="form-group">
 											<select id="department" name="department" required>
@@ -309,8 +313,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="form-group">
 											<select id="employment_type" name="employment_type" required>
 												<option value="" disabled selected>Choose Employment Type</option>
-												<option value="Information Technology">Full-Time</option>
-												<option value="Computer Science">Part-Time</option>
+												<option value="Full-Time">Full-Time</option>
+												<option value="Part-Time">Part-Time</option>
 											</select>
 										</div>
 
@@ -325,7 +329,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 
-				<div class="the-content-container">
+				<div id="profileCardContainer" class="the-content-container">
+					<!--
 					<div class="profile-card-container">
 						<div class="card-left">
 							<div class="the-pic-container">
@@ -367,48 +372,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</div>
 						</div>
 					</div>
-
-					<div class="profile-card-container">
-						<div class="card-left">
-							<div class="the-pic-container">
-								<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">	
-							</div>
-
-							<div class="the-details-container">
-								<h4>Mapula, Paul Joshua G.</h4>
-								
-								<div class="the-sub-details">
-									<h6 class="role-class">Faculty</h6>
-									<h6>Information Technology Department</h6>
-									<h6>CC101 | IT101</h6>
-								</div>
-							</div>
-						</div>
-
-						<div class="card-right">
-							<div class="contact-row">
-								<div class="icon-contact">
-									<img src="<?php echo base_url('assets/images/icon/email.svg'); ?>" alt="">
-								</div>
-								
-								<h6>2022-02519@sanbeda.edu.ph</h6>
-							</div>
-
-							<div class="contact-row">
-								<div class="icon-contact">
-									<img src="<?php echo base_url('assets/images/icon/phone.svg'); ?>" alt="">
-								</div>
-								
-								<h6>09958541242</h6>
-							</div>
-						</div>
-
-						<div class="card-action-container">
-							<div class="card-action">
-								<button type="button" class="btn">View Profile</button>
-							</div>
-						</div>
-					</div>
+									-->
 				</div>
 			</div>
         </div>
@@ -416,6 +380,119 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
 
 	<script>
+
+			// Function to fetch user profiles and create the grid
+			function fetchUserProfiles() {
+				$.ajax({
+					url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchUserProfiles', // URL to fetch data
+					type: 'GET',
+					dataType: 'json',
+					success: function(result) {
+						console.log(result); // Debugging statement to check the structure of result
+						createGrid(result);  // Call the function to create the grid with the fetched data
+					},
+					error: function(xhr, status, error) {
+						console.error('Error fetching user profiles:', error);
+					}
+				});
+			}
+
+			// Function to dynamically generate the profile grid based on the fetched result
+			function createGrid(result) {
+				$('#profileCardContainer').empty(); // Clear the previous content
+				console.log(result); // Debugging statement to check the structure of result
+
+				for (let index in result) {
+					let user = result[index];
+					if (typeof user === 'object') {
+						let first_name = user.first_name  || '';
+						let last_name = user.last_name  || '';
+						let middle_name = user.middle_name  || '';
+						let department = user.department  || '';
+						let email = user.email  || '';
+						let mobile_number = user.mobile_number  || '';
+						let age = user.age || '';
+
+						// Construct the profile card dynamically with conditional commas
+						let name = '';
+						if (last_name && first_name) {
+							name = `${last_name}, ${first_name} ${middle_name}`;
+						} else if (last_name) {
+							name = `${last_name} ${middle_name}`;
+						} else if (first_name) {
+							name = `${first_name} ${middle_name}`;
+						} else {
+							name = `${middle_name}`;  // In case both first_name and last_name are null, just show the middle name
+						}
+
+						// Construct the profile card dynamically
+						let card = `
+							<div class="profile-card-container">
+								<div class="card-left">
+									<div class="the-pic-container">
+										<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">    
+									</div>
+
+									<div class="the-details-container">
+										<h4>${name}</h4>
+										
+										<div class="the-sub-details">
+											<h6 class="role-class">${age}</h6>
+											<h6>${department}</h6>
+											<h6></h6>
+										</div>
+									</div>
+								</div>
+
+								<div class="card-right">
+									<!-- Only show email if it's not empty -->
+									${email ? `
+									<div class="contact-row">
+										<div class="icon-contact">
+											<img src="<?php echo base_url('assets/images/icon/email.svg'); ?>" alt="">
+										</div>
+										<h6>${email}</h6>
+									</div>` : ''}
+
+									<!-- Only show mobile number contact row if it's not empty -->
+									${mobile_number ? `
+									<div class="contact-row">
+										<div class="icon-contact">
+											<img src="<?php echo base_url('assets/images/icon/phone.svg'); ?>" alt="">
+										</div>
+										<h6>${mobile_number}</h6>
+									</div>` : ''}
+								</div>
+
+								<div class="card-action-container">
+									<div class="card-action">
+										<button type="button" class="btn">View Profile</button>
+									</div>
+								</div>
+							</div>
+						`;
+						// Append the profile card to the container
+						$('#profileCardContainer').append(card);
+					} else {
+						console.error('Unexpected data format:', user);
+					}
+				}
+			}
+
+			// Call the function to fetch user profiles when the page loads
+			$(document).ready(function() {
+				fetchUserProfiles(); // Fetch data and create grid
+			});
+
+	// Check if step1 is completed and show Step 2 modal
+    <?php if ($this->session->userdata('step1_completed')): ?>
+        // Show the Step 2 modal after Step 1
+        document.getElementById('addFacultyModal').style.display = 'none';
+        document.getElementById('addFacultyModalStep2').style.display = 'block';
+        // Reset the session flag to ensure the modal isn't shown again unnecessarily
+        <?php $this->session->unset_userdata('step1_completed'); ?>
+    <?php endif; ?>
+
 	// Function to initialize a modal
 	function setupModal(modalId, openButtonId, closeButtonId) {
 	const modal = document.getElementById(modalId);
