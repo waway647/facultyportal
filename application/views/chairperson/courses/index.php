@@ -9,7 +9,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/globals.css?<?php echo time(); ?>"> 
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/style.css?<?php echo time(); ?>"> 
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/table.css?<?php echo time(); ?>"> 
-
+	
+	<!-- jQuery library -->
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	
   </head>
   <body>
   <div class="dashboard-faculty">
@@ -244,33 +247,45 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 
 						<div class="add-button">
-							<button id="addFacultyBtn" type="button" class="btn">+ &nbsp&nbsp Add Faculty</button>
+							<button id="addCourseBtn" type="button" class="btn">+ &nbsp&nbsp Add Course</button>
 						</div>
 								
 								<!-- Add Faculty Modal -->
-								<div id="addFacultyModal" class="modal">
+								<div id="addCourseModal" class="modal">
 								<div class="modal-content">
-									
-									<div class="modal-for-step">
-										<h6>Step 1 of 2</h6>
-									</div>
 									<div class="modal-header">
-									<h3>Add Faculty Profile</h3>
+									<h3>Add Course</h3>
 									</div>
-									<form id="addFacultyForm">
+									<form id="addFacultyForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/createCourse">
 										<div class="form-group">
-											<select id="role_name" name="role_name" required>
-												<option value="Faculty" disabled selected>Faculty</option>
+											<input type="text" id="course_code" name="course_code" placeholder="Course Code" required>
+										</div>
+										<div class="form-group">
+											<input type="text" id="course_name" name="course_name" placeholder="Course Name" required>
+										</div>
+										<div class="form-group">
+											<select id="number_of_units" name="number_of_units" required>
+												<option value="" disabled selected>Number of Units</option>
+												<option value="0">0</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												<option value="6">6</option>
 											</select>
 										</div>
 										<div class="form-group">
-											<input type="email" id="email" name="email" placeholder="Email" required>
+											<select id="faculty_id" name="faculty_profile_id" required>
+												<option value="" disabled selected>Faculty In-Charge</option>
+												<option value=""></option>
+											</select>
 										</div>
 										<div class="form-group">
-											<input type="password" id="pass" name="pass" placeholder="Password" required>
+											<input type="text" id="class_section" name="class_section" placeholder="Class Section" required>
 										</div>
 
-										<button type="submit" class="btn">Continue</button>
+										<button type="submit" class="btn">Save & Confirm</button>
 
 										<a href="">
 											<h6 class="back-step">Cancel</h6>
@@ -279,57 +294,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div>
 								</div> 
 								
-
-								<!-- STEP 2 - Add Faculty Modal -->
-								<div id="addFacultyModal" class="modal">
-								<div class="modal-content">
-									
-									<div class="modal-for-step">
-										<h6>Step 2 of 2</h6>
-									</div>
-									<div class="modal-header">
-									<h3>Add Faculty Profile</h3>
-									</div>
-									<form id="addFacultyForm">
-										<div class="form-group">
-											<input type="text" id="first_name" name="first_name" placeholder="First Name" required>
-										</div>
-										<div class="form-group">
-											<input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
-										</div>
-										<div class="form-group">
-											<input type="text" id="middle_name" name="middle_name" placeholder="Middle Name" required>
-										</div>
-										<div class="form-group">
-											<select id="department" name="department" required>
-												<option value="" disabled selected>Choose a Department</option>
-												<option value="Information Technology">Information Technology</option>
-												<option value="Computer Science">Computer Science</option>
-												<option value="Information Systems">Information Systems</option>
-											</select>
-										</div>
-										<div class="form-group">
-											<select id="employment_type" name="employment_type" required>
-												<option value="" disabled selected>Choose Employment Type</option>
-												<option value="Information Technology">Full-Time</option>
-												<option value="Computer Science">Part-Time</option>
-											</select>
-										</div>
-
-										<button type="submit" class="btn">Save & Confirm</button>
-
-										<a href="">
-											<h6 class="back-step">Go Back</h6>
-										</a>
-									</form>
-								</div>
-								</div>
 					</div>
 				</div>
 
 				<div class="the-content-container">
 					<div id="container">    
-						<table class="table" id="assetList" name="assetList">
+						<table class="table" id="courseList" name="courseList">
 							<thead>
 							<tr>
 								<th>#</th>
@@ -337,7 +307,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<th>Course Name</th>
 								<th>No. of Units</th>
 								<th>Course Professor</th>
-								<th>Section</th>
+								<th>Class Section</th>
 								<th>Action</th>
 							</tr>
 							</thead>
@@ -355,27 +325,118 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
 
 	<script>
-	// Get elements
-	const modal = document.getElementById("postAnnouncementModal");
-	const btn = document.getElementById("postAnnouncementBtn");
-	const closeModal = document.getElementById("closeModalBtn");
+	// Call the function to fetch faculty when the page loads
+	$(document).ready(function() {
+		fetchFaculty(); // Fetch faculty when Add Course modal opens
+		fetchCourses();
+	});
+
+	// Function to initialize a modal
+	function setupModal(modalId, openButtonId, closeButtonId) {
+	const modal = document.getElementById(modalId);
+	const openButton = document.getElementById(openButtonId);
+	const closeButton = document.getElementById(closeButtonId);
 
 	// Open modal
-	btn.onclick = function () {
-	  modal.style.display = "block";
+	openButton.onclick = function () {
+		modal.style.display = "block";
+		if (modalId === "addCourseModal") {
+        fetchFaculty(); // Fetch faculty when Add Course modal opens
+      }
 	};
 
 	// Close modal
-	closeModal.onclick = function () {
-	  modal.style.display = "none";
+	closeButton.onclick = function () {
+		modal.style.display = "none";
 	};
 
 	// Close modal when clicking outside of it
 	window.onclick = function (event) {
-	  if (event.target == modal) {
-	    modal.style.display = "none";
-	  }
+		if (event.target === modal) {
+		modal.style.display = "none";
+		}
 	};
+	}
+
+	// Initialize "Post Announcement" modal
+	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
+
+	// Initialize "Add Course" modal
+	setupModal("addCourseModal", "addCourseBtn", "closeaddCourseBtn");
+
+	// Fetch faculty_id for the select dropdown
+	function fetchFaculty() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getFaculty',
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success:', result);
+				if (Array.isArray(result)) {
+					$('#faculty_id').empty();
+					$('#faculty_id').append('<option value="" disabled selected>Faculty In-Charge</option>');
+					result.forEach(function(faculty_id) {
+					$('#faculty_id').append('<option value="' + faculty_id.id + '">' + faculty_id.full_name + '</option>');
+					});
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+				},
+
+			error: function(xhr, status, error) {
+				console.error('Error fetching faculty:', error);
+			}
+		});
+	}
+
+	// Function to fetch course data via AJAX
+	function fetchCourses() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getCourses',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Courses):', result);
+				if (Array.isArray(result)) {
+					createCourseTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching courses:', error);
+			}
+		});
+	}
+
+	// Function to create the table with course data
+	function createCourseTable(result, sno) {
+		sno = Number(sno);
+		$('#courseList tbody').empty(); // Clear existing rows
+		for (index in result) {
+			var id = result[index].id;
+			var course_code = result[index].course_code;
+			var course_name = result[index].course_name;
+			var number_of_units = result[index].number_of_units;
+			var faculty_assigned = result[index].faculty_assigned;
+			var class_section = result[index].class_section;
+
+			sno += 1;
+
+			var tr = "<tr>";
+			tr += "<td>" + sno + "</td>";  // Serial number
+			tr += "<td>" + course_code + "</td>";
+			tr += "<td>" + course_name + "</td>";
+			tr += "<td>" + number_of_units + "</td>";
+			tr += "<td>" + faculty_assigned + "</td>";
+			tr += "<td>" + class_section + "</td>";
+			tr += "<td><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/editCourse/" + id + "'>Edit</a>";
+			tr += "&nbsp;<a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/deleteCourse/" + id + "'>Delete</a></td>";
+			tr += "</tr>";
+
+			$('#courseList tbody').append(tr);  // Append the new row to the table body
+		}
+	}
 
 	// File attachment handling
 	const attachmentInput = document.getElementById("announcement_attachment");

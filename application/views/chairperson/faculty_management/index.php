@@ -321,7 +321,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<button type="submit" class="btn">Save & Confirm</button>
 
 										<a href="">
-											<h6 class="back-step">Go Back</h6>
+											<h6 class="back-step">Cancel</h6>
 										</a>
 									</form>
 								</div>

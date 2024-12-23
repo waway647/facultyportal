@@ -1,3 +1,60 @@
+@font-face {
+    font-family: 'TT Hoves Regular';
+    src: url('../fonts/tt_hoves_pro/TT_Hoves_Regular.ttf');
+  }
+  
+  @font-face {
+    font-family: 'TT Hoves Medium';
+    src: url('../fonts/tt_hoves_pro/TT\ Hoves\ Pro\ Trial\ Medium.ttf');
+  }
+  
+  @font-face {
+    font-family: 'TT Hoves Bold';
+    src: url('../fonts/tt_hoves_pro/TT\ Hoves\ Pro\ Trial\ Bold.ttf');
+  }
+  
+  @font-face {
+    font-family: 'TT Hoves Medium Italic';
+    src: url('../fonts/tt_hoves_pro/TT\ Hoves\ Pro\ Trial\ Medium\ Italic.ttf');
+  }
+  
+  
+  /* FONT */
+  h1 {
+    margin: 0;
+    font-family: 'TT Hoves Medium';
+  }
+  
+  h2 {
+    margin: 0;
+    font-family: 'TT Hoves Medium';
+    font-size: 30px;
+  }
+  
+  h3 {
+    margin: 0;
+    font-family: 'TT Hoves Medium';
+    font-size: 24px;
+  }
+  
+  h4 {
+    margin: 0;
+    font-family: 'TT Hoves Medium';
+    font-size: 18px;
+  }
+  
+  h5 {
+    margin: 0;
+    font-family: 'TT Hoves Medium';
+    font-size: 16px;
+  }
+  
+  h6 {
+    margin: 0;
+    font-family: 'TT Hoves Medium';
+    font-size: 14px;
+  }
+
 .table {
     font-family: 'TT Hoves Medium';
     font-size: 14px;
@@ -22,12 +79,14 @@ table {
 }
 
 .table td, .table th {
+    font-family: 'TT Hoves Medium' !important;
     padding: .75rem;
     vertical-align: top;
     border-top: 1px solid #dee2e6;
 }
 
 th {
+    font-family: 'TT Hoves Medium';
     color: #A4A4A4;
     text-align: inherit;
     text-align: -webkit-match-parent;
@@ -40,3 +99,4 @@ th {
     text-align: -internal-center;
     unicode-bidi: isolate;
 }
+
