@@ -349,7 +349,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<th>Course Code</th>
 								<th>Course Name</th>
 								<th>No. of Units</th>
-								<th>Course Professor</th>
+								<th>Faculty Assigned</th>
 								<th>Class Section</th>
 								<th>Action</th>
 							</tr>
@@ -492,8 +492,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td>" + number_of_units + "</td>";
 			tr += "<td>" + faculty_assigned + "</td>";
 			tr += "<td>" + class_section + "</td>";
-			tr += "<td><a href='#' onclick='fetchCourseById(" + id + ")'>Edit</a>";
-			tr += "&nbsp;<a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/deleteCourse/" + id + "'>Delete</a></td>";
+			tr += "<td><a href='#' onclick='fetchCourseById(" + id + ")'>" +
+					"<div class='table-icon-container'>" +
+						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
+						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/deleteCourse/" + id + "'>" +
+							"<img class='img' src='" + "<?php echo base_url('assets/images/icon/x.svg'); ?>" + "' /></a></div>" +
+					"</div></td>";
+
 			tr += "</tr>";
 
 			$('#courseList tbody').append(tr);  // Append the new row to the table body
@@ -524,13 +529,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#editCourseModal #course_code').val(course.course_code);
 		$('#editCourseModal #course_name').val(course.course_name);
 		$('#editCourseModal #number_of_units').val(course.number_of_units);
-
-		// Fetch faculty options before setting the selected value
-		fetchFaculty('editCourseModal'); // Fetch faculty for the edit modal
-		setTimeout(function() {
-			// Set the selected value of faculty_assigned dropdown to the faculty's ID
+		
+		// Fetch faculty options and set selected value
+		fetchFaculty('editCourseModal', function() {
 			$('#editCourseModal #faculty_assigned').val(course.faculty_profile_id);
-		}, 100); // Delay to ensure options are loaded
+		});
 
 		$('#editCourseModal #class_section').val(course.class_section);
 		$('#editCourseForm').attr('action', 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/updateCourse/' + course.id);

@@ -29,22 +29,37 @@ class Auth extends CI_Controller {
         $result = $this->Auth_model->checkCredentials($email_frompost, $pass_frompost);
 
         // If credentials are valid, login is successful
-        if ($result == true) {
+        if ($result == true) {		
 			//get user fullname
 			$userinfo = $this->Auth_model->getAccount($email_frompost);
 			if($userinfo == true)
 			{
 				$this->session->set_userdata(array(
-					
+					'logged_role_name' => $userinfo->role_name,
 					'logged_first_name' => $userinfo->first_name,
 					'logged_last_name' => $userinfo->last_name,
 					'logged_role' => $userinfo->role_name,
 					'logged_email' => $email_frompost
 				));
-				redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Dashboard/index');
+
+				if($userinfo->role_name == 'Admin'){
+					redirect('http://localhost/GitHub/facultyportal/index.php/admin_controllers/Dashboard/index');
+				}
+				elseif($userinfo->role_name == 'Faculty'){
+					redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Dashboard/index');
+				}
+				elseif($userinfo->role_name == 'Department Chair'){
+					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Dashboard/index');
+				}
+				else {
+					// invalid login! go back to login page
+					redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
+				}
+				
 			}
         } else {
-            echo 'Invalid login! Try again.';
+            // invalid login! go back to login page
+			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
         }
     }
 

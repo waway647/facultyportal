@@ -58,6 +58,7 @@
 .table {
     font-family: 'TT Hoves Medium';
     font-size: 14px;
+    font-weight: 600;
     width: 100%;
     margin-bottom: 1rem;
     color: #212529;
@@ -75,18 +76,19 @@ table {
 
 .table thead th {
     vertical-align: bottom;
-    border-bottom: 2px solid #dee2e6;
+    background-color: #f1f1f1;
 }
 
 .table td, .table th {
-    font-family: 'TT Hoves Medium' !important;
     padding: .75rem;
     vertical-align: top;
-    border-top: 1px solid #dee2e6;
+}
+.table td {
+  border-bottom: 1px solid #f1f1f1;
+  opacity: 85%;
 }
 
 th {
-    font-family: 'TT Hoves Medium';
     color: #A4A4A4;
     text-align: inherit;
     text-align: -webkit-match-parent;
@@ -100,3 +102,9 @@ th {
     unicode-bidi: isolate;
 }
 
+.table-icon-container {
+  display: flex;
+  align-items: center; /* Aligns items vertically in the center */
+  justify-content: baseline; /* Centers items horizontally within the container */
+  gap: 20px; /* Adds space between the icons */
+}
