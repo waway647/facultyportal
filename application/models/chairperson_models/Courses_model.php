@@ -23,7 +23,7 @@ class Courses_model extends CI_Model {
 	}
 
 	public function getCourseByID($course_id) {
-		return $this->db->get_where("courses_vw", array('id' => $course_id))->row();
+		return $this->db->get_where("courses", array('id' => $course_id))->row();
 	}
 
 	public function updateCourse($course_id, $course_data)

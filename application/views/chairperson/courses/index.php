@@ -300,7 +300,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="modal-header">
 									<h3>Edit Course</h3>
 									</div>
-									<form id="editFacultyForm" method="post" action="">
+									<form id="editCourseForm" method="post" action="">
 										<div class="form-group">
 											<input type="text" id="course_code" name="course_code" required>
 										</div>
@@ -322,7 +322,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="form-group">
 											<select id="faculty_assigned" name="faculty_profile_id" required>
 												<option value="" disabled>Faculty In-Charge</option>
-												<option id="faculty_assigned" value=""></option>
 											</select>
 										</div>
 										<div class="form-group">
@@ -339,8 +338,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div> 
 								
 					</div>
-					
-					<div class="the-content-container">
+				</div>
+
+				<div class="the-content-container">
 					<div id="container">    
 						<table class="table" id="courseList" name="courseList">
 							<thead>
@@ -361,7 +361,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</table>
 
 					</div>
-				</div>
 				</div>
 
 				
@@ -386,8 +385,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		// Open modal
 		openButton.onclick = function () {
 			modal.style.display = "block";
-			if (modalId === "addCourseModal") {
-				fetchFaculty();
+			if (modalId === "addCourseModal" || modalId === "editCourseModal") {
+				fetchFaculty(modalId);
 			}
 		};
 
@@ -399,7 +398,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		// Close modal when clicking outside of it
 		window.onclick = function (event) {
 			if (event.target === modal) {
-			modal.style.display = "none";
+				modal.style.display = "none";
 			}
 		};
 	}
@@ -410,30 +409,47 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Initialize "Add Course" modal
 	setupModal("addCourseModal", "addCourseBtn", "closeaddCourseBtn");
 
-	// Fetch faculty_id for the select dropdown
-	function fetchFaculty() {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getFaculty',
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('AJAX success:', result);
-				if (Array.isArray(result)) {
-					$('#faculty_id').empty();
-					$('#faculty_id').append('<option value="" disabled selected>Faculty In-Charge</option>');
-					result.forEach(function(faculty_id) {
-					$('#faculty_id').append('<option value="' + faculty_id.id + '">' + faculty_id.full_name + '</option>');
-					});
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-				},
+	// Initialize "Add Course" modal
+	setupModal("editCourseModal", "editCourseBtn", "closeeditCourseBtn");
 
-			error: function(xhr, status, error) {
-				console.error('Error fetching faculty:', error);
-			}
-		});
-	}
+	// Fetch faculty_id for the select dropdown
+	function fetchFaculty(modalId, callback) {
+    $.ajax({
+        url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getFaculty',
+        type: 'GET',
+        dataType: 'json',
+        success: function (result) {
+            console.log('AJAX success:', result);
+            if (Array.isArray(result)) {
+                let selectElement;
+                if (modalId === "addCourseModal") {
+                    selectElement = $('#faculty_id');
+                } else if (modalId === "editCourseModal") {
+                    selectElement = $('#faculty_assigned');
+                }
+
+                if (selectElement) {
+                    selectElement.empty();
+                    selectElement.append('<option value="" disabled selected>Faculty In-Charge</option>');
+                    result.forEach(function (faculty) {
+                        selectElement.append('<option value="' + faculty.id + '">' + faculty.full_name + '</option>');
+                    });
+
+                    // Execute the callback if provided
+                    if (callback && typeof callback === 'function') {
+                        callback();
+                    }
+                }
+            } else {
+                console.error('Expected an array but received:', result);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching faculty:', error);
+        }
+    });
+}
+
 
 	// Function to fetch course data via AJAX
 	function fetchCourses() {
@@ -508,11 +524,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#editCourseModal #course_code').val(course.course_code);
 		$('#editCourseModal #course_name').val(course.course_name);
 		$('#editCourseModal #number_of_units').val(course.number_of_units);
-		$('#editCourseModal #faculty_assigned').val(course.faculty_assigned);
+
+		// Fetch faculty options before setting the selected value
+		fetchFaculty('editCourseModal'); // Fetch faculty for the edit modal
+		setTimeout(function() {
+			// Set the selected value of faculty_assigned dropdown to the faculty's ID
+			$('#editCourseModal #faculty_assigned').val(course.faculty_profile_id);
+		}, 100); // Delay to ensure options are loaded
+
 		$('#editCourseModal #class_section').val(course.class_section);
-		$('#editFacultyForm').attr('action', 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/updateCourse/' + course.id);
+		$('#editCourseForm').attr('action', 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/updateCourse/' + course.id);
 		$('#editCourseModal').show(); // Display the modal
 	}
+
 
 	// File attachment handling
 	const attachmentInput = document.getElementById("announcement_attachment");
