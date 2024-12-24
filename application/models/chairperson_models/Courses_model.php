@@ -21,4 +21,22 @@ class Courses_model extends CI_Model {
 		$query = $this->db->get('courses_vw')->result();
 		return $query;
 	}
+
+	public function getCourseByID($course_id) {
+		return $this->db->get_where("courses_vw", array('id' => $course_id))->row();
+	}
+
+	public function updateCourse($course_id, $course_data)
+	{
+		$this->db->where('id', $course_id);
+		$this->db->update('courses', $course_data);
+		return true;
+	}
+	
+	public function delete($id)
+	{
+		$this->db->where('id', $id);
+		$this->db->delete('courses');
+		return true;
+	}
 }

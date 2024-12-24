@@ -250,7 +250,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<button id="addCourseBtn" type="button" class="btn">+ &nbsp&nbsp Add Course</button>
 						</div>
 								
-								<!-- Add Faculty Modal -->
+								<!-- Add Course Modal -->
 								<div id="addCourseModal" class="modal">
 								<div class="modal-content">
 									<div class="modal-header">
@@ -294,10 +294,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div>
 								</div> 
 								
-					</div>
-				</div>
+								<!-- Edit Course Modal -->
+								<div id="editCourseModal" class="modal">
+								<div class="modal-content">
+									<div class="modal-header">
+									<h3>Edit Course</h3>
+									</div>
+									<form id="editFacultyForm" method="post" action="">
+										<div class="form-group">
+											<input type="text" id="course_code" name="course_code" required>
+										</div>
+										<div class="form-group">
+											<input type="text" id="course_name" name="course_name" required>
+										</div>
+										<div class="form-group">
+											<select id="number_of_units" name="number_of_units" required>
+												<option value="" disabled>Number of Units</option>
+												<option value="0">0</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												<option value="6">6</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<select id="faculty_assigned" name="faculty_profile_id" required>
+												<option value="" disabled>Faculty In-Charge</option>
+												<option id="faculty_assigned" value=""></option>
+											</select>
+										</div>
+										<div class="form-group">
+											<input type="text" id="class_section" name="class_section" required>
+										</div>
 
-				<div class="the-content-container">
+										<button type="submit" class="btn">Save & Confirm</button>
+
+										<a href="">
+											<h6 class="back-step">Cancel</h6>
+										</a>
+									</form>
+								</div>
+								</div> 
+								
+					</div>
+					
+					<div class="the-content-container">
 					<div id="container">    
 						<table class="table" id="courseList" name="courseList">
 							<thead>
@@ -319,6 +362,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 					</div>
 				</div>
+				</div>
+
+				
 			</div>
         </div>
       </div>
@@ -333,29 +379,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	// Function to initialize a modal
 	function setupModal(modalId, openButtonId, closeButtonId) {
-	const modal = document.getElementById(modalId);
-	const openButton = document.getElementById(openButtonId);
-	const closeButton = document.getElementById(closeButtonId);
+		const modal = document.getElementById(modalId);
+		const openButton = document.getElementById(openButtonId);
+		const closeButton = document.getElementById(closeButtonId);
 
-	// Open modal
-	openButton.onclick = function () {
-		modal.style.display = "block";
-		if (modalId === "addCourseModal") {
-        fetchFaculty(); // Fetch faculty when Add Course modal opens
-      }
-	};
+		// Open modal
+		openButton.onclick = function () {
+			modal.style.display = "block";
+			if (modalId === "addCourseModal") {
+				fetchFaculty();
+			}
+		};
 
-	// Close modal
-	closeButton.onclick = function () {
-		modal.style.display = "none";
-	};
+		// Close modal
+		closeButton.onclick = function () {
+			modal.style.display = "none";
+		};
 
-	// Close modal when clicking outside of it
-	window.onclick = function (event) {
-		if (event.target === modal) {
-		modal.style.display = "none";
-		}
-	};
+		// Close modal when clicking outside of it
+		window.onclick = function (event) {
+			if (event.target === modal) {
+			modal.style.display = "none";
+			}
+		};
 	}
 
 	// Initialize "Post Announcement" modal
@@ -430,12 +476,42 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td>" + number_of_units + "</td>";
 			tr += "<td>" + faculty_assigned + "</td>";
 			tr += "<td>" + class_section + "</td>";
-			tr += "<td><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/editCourse/" + id + "'>Edit</a>";
+			tr += "<td><a href='#' onclick='fetchCourseById(" + id + ")'>Edit</a>";
 			tr += "&nbsp;<a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/deleteCourse/" + id + "'>Delete</a></td>";
 			tr += "</tr>";
 
 			$('#courseList tbody').append(tr);  // Append the new row to the table body
 		}
+	}
+
+	// Function to fetch course data via AJAX
+	function fetchCourseById(courseId) {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getCourseByID/' + courseId, // Updated URL with courseId
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('Fetched Course:', result);
+				if (result && result.id) {
+					populateEditModal(result); // Populate the modal with fetched data
+				} else {
+					console.error('Error: Course not found!');
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching course by ID:', error);
+			}
+		});
+	}
+	
+	function populateEditModal(course) {
+		$('#editCourseModal #course_code').val(course.course_code);
+		$('#editCourseModal #course_name').val(course.course_name);
+		$('#editCourseModal #number_of_units').val(course.number_of_units);
+		$('#editCourseModal #faculty_assigned').val(course.faculty_assigned);
+		$('#editCourseModal #class_section').val(course.class_section);
+		$('#editFacultyForm').attr('action', 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/updateCourse/' + course.id);
+		$('#editCourseModal').show(); // Display the modal
 	}
 
 	// File attachment handling

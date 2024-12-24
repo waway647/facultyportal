@@ -1214,29 +1214,37 @@ input {
   background-color: #DCDBDB;
 }
 
-#addFacultyModal .modal-content, #addCourseModal .modal-content{
+#addFacultyModal .modal-content, 
+#addCourseModal .modal-content, 
+#editCourseModal .modal-content {
   width: 28%;
   padding: 80px;
 }
 
-#addFacultyModal form, #addCourseModal form {
+#addFacultyModal form, 
+#addCourseModal form, 
+#editCourseModal form {
   display: flex;
   flex-direction: column;
   gap: 20px;
   padding: 10px;
 }
 
-#addFacultyModal .modal-for-step, #addCourseModal .modal-for-step {
+#addFacultyModal .modal-for-step, 
+#addCourseModal .modal-for-step, 
+#editCourseModal .modal-for-step {
   padding: 0px 10px;
 }
 
-#addFacultyModal .modal-header, #addCourseModal .modal-header{
+#addFacultyModal .modal-header, 
+#addCourseModal .modal-header, 
+#editCourseModal .modal-header {
   padding: 10px;
   font-family: 'TT Hoves Medium';
   font-weight: 900;
 }
 
-#addFacultyModalStep2 .modal-content{
+#addFacultyModalStep2 .modal-content {
   width: 28%;
   padding: 80px;
 }

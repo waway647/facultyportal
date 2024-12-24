@@ -47,8 +47,39 @@ class Courses extends CI_Controller {
 		echo json_encode($result);  // Return data as JSON
 	}
 
-	public function editCourse()
+	public function getCourseByID($course_id) {
+		$course = $this->Courses_model->getCourseByID($course_id);
+		if ($course) {
+			echo json_encode($course);
+		} else {
+			echo json_encode(["error" => "Course not found"]);
+		}
+	}
+
+	public function updateCourse($id)
 	{
-		
+		$course_data = array(
+			"course_code" => $this->input->post("course_code"),
+			"course_name" => $this->input->post("course_name"),
+			"number_of_units" => $this->input->post("number_of_units"),
+			"faculty_profile_id" => $this->input->post("faculty_profile_id"),
+			"class_section" => $this->input->post("class_section")
+		);
+
+		$result = $this->Courses_model->updateCourse($id, $course_data);
+		if($result == true)
+		{
+			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/index');
+			//$this->index();
+		}
+	}
+
+	public function deleteCourse($id)
+	{
+		$result = $this->Courses_model->delete($id);
+		if($result == true)
+		{
+			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/index');
+		}
 	}
 }
