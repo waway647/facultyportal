@@ -21,8 +21,29 @@ class Profile extends CI_Controller {
 		if($logged_email) 
 		{
 			$data['faculty'] = $this->Profile_model->getFacultyProfile($logged_email);
-			var_dump($data);
 			$this->load->view('chairperson/profile/index', $data);
 		}
+	}
+
+	public function editProfile($logged_email = null) // http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile
+	{
+		$logged_email = $this->session->userdata('logged_email');
+
+		//$this->load->view('chairperson/profile/index');
+		if($logged_email) 
+		{
+			$data['faculty'] = $this->Profile_model->getFacultyProfile($logged_email);
+			$this->load->view('chairperson/profile/edit', $data);
+		}
+	}
+
+	public function cancelEdit()
+	{
+		redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index');
+	}
+
+	public function updateProfile()
+	{
+		redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index');
 	}
 }

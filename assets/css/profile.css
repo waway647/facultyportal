@@ -60,8 +60,11 @@ body {
     font-family: 'TT Hoves Medium';
 }
 
-.main-content-2 {
+
+
+.main-content-2-profile {
     padding: 0 !important;
+    overflow: auto !important;
 }
 
 .cover-photo {
@@ -105,13 +108,14 @@ body {
     display: flex;
     width: 100%;
     justify-content: space-between;
+    padding-bottom: 35px;
 }
 
 .profile-headings-left {
     display: flex;
     flex-direction: column;
     padding-top: 70px;
-    gap: 20px;
+    gap: 30px;
 }
 
 .profile-headings-left .profile-left-subheadings {
@@ -124,6 +128,45 @@ body {
     display: flex;
     align-items: center;
     gap: 10px;
+}
+
+.profile-headings-left a {
+  width: fit-content;
+}
+
+.profile-headings-left .profile-buttons {
+  display: flex;
+  justify-content: space-between;
+  gap: 15px;
+}
+
+.profile-headings-left .cancel-btn {
+  background-color: #DCDBDB !important;
+}
+
+.profile-headings-left .cancel-btn h5 {
+  color: #000000;
+}
+
+.profile-headings-left .cancel-btn:hover {
+  background-color: #c9c9c9 !important;
+}
+
+.profile-headings-left .profile-button-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: fit-content;
+  padding: 20px 30px;
+  background-color: #e53b43;
+  border-radius: 50px;
+  color: #ffffff;
+  margin: 0; /* Ensure no extra space */
+}
+
+.profile-headings-left .profile-button-container:hover {
+  cursor: pointer;
+  background-color: #C21F27;
 }
 
 .profile-headings-right {

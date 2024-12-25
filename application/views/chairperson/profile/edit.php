@@ -234,9 +234,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 
 						<div class="profile-buttons">
-							<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile">
-								<div class="profile-button-container">
-									<h5>Edit Profile</h5>
+							<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/cancelEdit">
+								<div class="profile-button-container cancel-btn">
+									<h5>Cancel</h5>
+								</div>
+							</a>
+
+							<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/updateProfile">
+								<div class="profile-button-container save-btn">
+									<h5>Save Changes</h5>
 								</div>
 							</a>
 						</div>
@@ -273,6 +279,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Academic Degree</th>
 									<th>Institution</th>
 									<th>Year Graduated</th>
+									<th>Action</th>
 								</tr>
 								</thead>
 
@@ -297,6 +304,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Name of Company</th>
 									<th>Job Position</th>
 									<th>Years of Experience</th>
+									<th>Action</th>
 								</tr>
 								</thead>
 
@@ -320,6 +328,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>#</th>
 									<th>Title</th>
 									<th>Year Published</th>
+									<th>Action</th>
 								</tr>
 								</thead>
 
