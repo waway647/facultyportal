@@ -39,4 +39,5 @@ class Courses_model extends CI_Model {
 		$this->db->delete('courses');
 		return true;
 	}
+
 }

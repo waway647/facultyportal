@@ -204,7 +204,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<h4>Total</h4>
 							</div>
 							
-							<h2>3</h2>
+							<h2 id="totalFaculty"></h2>
 						</div>
 
 						<div class="item-box">
@@ -397,6 +397,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				});
 			}
 
+			// Function to fetch user profiles and create the grid
+			function countAllFaculty() {
+				$.ajax({
+					url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/countAllFaculty', // URL to fetch data
+					type: 'GET',
+					dataType: 'json',
+					success: function(result) {
+						console.log(result); // Debugging statement to check the structure of result
+						if (result && !result.error) {
+							// Update the total faculty count in the UI
+							document.getElementById("totalFaculty").textContent = result || "0";
+						} else {
+							console.error("Error: ", result.error || "Unexpected response format");
+							document.getElementById("totalFaculty").textContent = "Error";
+						}
+					},
+					error: function(xhr, status, error) {
+						console.error('Error fetching user profiles:', error);
+					}
+				});
+			}
+
 			// Function to dynamically generate the profile grid based on the fetched result
 			function createGrid(result) {
 				$('#profileCardContainer').empty(); // Clear the previous content
@@ -482,6 +504,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			// Call the function to fetch user profiles when the page loads
 			$(document).ready(function() {
 				fetchUserProfiles(); // Fetch data and create grid
+				countAllFaculty()
 			});
 
 	// Check if step1 is completed and show Step 2 modal

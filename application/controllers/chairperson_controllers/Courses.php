@@ -82,4 +82,6 @@ class Courses extends CI_Controller {
 			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/index');
 		}
 	}
+
+	
 }

@@ -9,12 +9,20 @@ class Profile extends CI_Controller {
 		parent::__construct();
 		$this->load->library('session');
 		$this->load->database();
-		$this->load->model('');
+		$this->load->model('chairperson_models/Profile_model');
 		$this->load->helper('url');
 	}
 
-	public function index() // http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index
+	public function index($logged_email = null) // http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index
 	{
-		$this->load->view('chairperson/profile/index');
+		$logged_email = $this->session->userdata('logged_email');
+
+		//$this->load->view('chairperson/profile/index');
+		if($logged_email) 
+		{
+			$data['faculty'] = $this->Profile_model->getFacultyProfile($logged_email);
+			var_dump($data);
+			$this->load->view('chairperson/profile/index', $data);
+		}
 	}
 }

@@ -8,7 +8,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="icon" href="<?php echo base_url('assets/images/logo/sbu_logo.svg'); ?>" type="image/x-icon">
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/globals.css?<?php echo time(); ?>"> 
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/style.css?<?php echo time(); ?>"> 
-  </head>
+	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/profile.css?<?php echo time(); ?>"> 
+  
+	</head>
   <body>
   <div class="dashboard-faculty">
       <div class="nav-container">
@@ -185,15 +187,88 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           </div>
         </div>
       </div>
-      <div class="main-content">
+    <div class="main-content">
         <div class="main-content-2">
-          <div class="heading-container"><div class="text-wrapper-8">Profile, Department Chair</div></div>
-          <div class="faculties-container-wrapper"><div class="faculties-container"></div></div>
+			<div class="cover-photo">
+				<img src="<?php echo base_url('assets/images/cover/sample.svg'); ?>" alt="Cover Photo">
+				<div class="profile-picture">
+					<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="Profile Picture">
+				</div>
+			</div>
+
+			<div class="the-profile-main-container">
+				<?php if (isset($faculty) && $faculty !== null): ?>
+				<div class="the-profile-headings">
+					<div class="profile-headings-left">
+						<h2><?php echo $faculty->first_name; ?> 
+
+													<?php if(isset($faculty->middle_name) && !empty($faculty->middle_name)): ?>
+								<?php echo substr($faculty->middle_name, 0, 1) . '.'; ?> 			
+							<?php endif; ?>
+							 
+							<?php echo $faculty->last_name; ?></h2>
+
+						<div class="profile-left-subheadings">
+							<h5>21 years old</h5>
+							
+							<div class="contact-row">
+								<img src="<?php echo base_url('assets/images/icon/email.svg'); ?>" alt="">
+								<h5>2022-02519@sanbeda.edu.ph</h5>
+							</div>
+
+							<div class="contact-row">
+								<img src="<?php echo base_url('assets/images/icon/phone.svg'); ?>" alt="">
+								<h5>09958541242</h5>
+							</div>
+						</div>
+					</div>
+
+					<div class="profile-headings-right">
+						<div class="role-heading-container role-row">
+							<h5>Current Role</h5>
+							<img src="<?php echo base_url('assets/images/icon/rolebag.svg'); ?>" alt="">
+						</div>
+
+						
+						<div class="role-item-container role-row">
+							<div class="role-item-profile">
+								<h5><?php echo $faculty->role_name; ?></h5>
+							</div>
+						</div>
+						
+					</div>
+				</div>
+				<?php endif ?>
+			</div>
         </div>
-      </div>
     </div>
+</div>
 
 	<script>
+	$(document).ready(function() {
+			fetchFaculty();
+		});
+
+	// Function to fetch faculty data via AJAX
+	function fetchFaculty() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/getFacultyProfile',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Courses):', result);
+				if (Array.isArray(result)) {
+					createCourseTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching courses:', error);
+			}
+		});
+	}
+	
 	// Get elements
 	const modal = document.getElementById("postAnnouncementModal");
 	const btn = document.getElementById("postAnnouncementBtn");

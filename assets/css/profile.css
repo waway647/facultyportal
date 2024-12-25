@@ -1,0 +1,148 @@
+@font-face {
+    font-family: 'TT Hoves Regular';
+    src: url('../fonts/tt_hoves_pro/TT_Hoves_Regular.ttf');
+  }
+  
+  @font-face {
+    font-family: 'TT Hoves Medium';
+    src: url('../fonts/tt_hoves_pro/TT\ Hoves\ Pro\ Trial\ Medium.ttf');
+  }
+  
+  @font-face {
+    font-family: 'TT Hoves Bold';
+    src: url('../fonts/tt_hoves_pro/TT\ Hoves\ Pro\ Trial\ Bold.ttf');
+  }
+  
+  @font-face {
+    font-family: 'TT Hoves Medium Italic';
+    src: url('../fonts/tt_hoves_pro/TT\ Hoves\ Pro\ Trial\ Medium\ Italic.ttf');
+  }
+  
+  
+  /* FONT */
+  h1 {
+    margin: 0;
+    font-family: 'TT Hoves Medium';
+  }
+  
+  h2 {
+    margin: 0;
+    font-family: 'TT Hoves Medium';
+    font-size: 30px;
+  }
+  
+  h3 {
+    margin: 0;
+    font-family: 'TT Hoves Medium';
+    font-size: 24px;
+  }
+  
+  h4 {
+    margin: 0;
+    font-family: 'TT Hoves Medium';
+    font-size: 18px;
+  }
+  
+  h5 {
+    margin: 0;
+    font-family: 'TT Hoves Medium';
+    font-size: 16px;
+  }
+  
+  h6 {
+    margin: 0;
+    font-family: 'TT Hoves Medium';
+    font-size: 14px;
+  }
+
+body {
+    margin: 0;
+    font-family: 'TT Hoves Medium';
+}
+
+.main-content-2 {
+    padding: 0 !important;
+}
+
+.cover-photo {
+    position: relative;
+    width: 100%;
+    height: 300px; /* Adjust height as needed */
+
+}
+
+.cover-photo img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.profile-picture {
+    position: absolute;
+    bottom: -100px; /* Adjust to position the profile picture */
+    margin-left: 70px;
+    width: 200px; /* Adjust size as needed */
+    height: 200px; /* Adjust size as needed */
+    border-radius: 50%;
+    overflow: hidden;
+    border: 10px solid white; /* Optional: Add border for better visibility */
+}
+
+.profile-picture img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+.the-profile-main-container {
+    padding: 40px 70px;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+}
+
+.the-profile-headings {
+    display: flex;
+    width: 100%;
+    justify-content: space-between;
+}
+
+.profile-headings-left {
+    display: flex;
+    flex-direction: column;
+    padding-top: 70px;
+    gap: 20px;
+}
+
+.profile-headings-left .profile-left-subheadings {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.profile-headings-left .contact-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-headings-right {
+    display: flex;
+    flex-direction: column;
+    align-items:flex-end;
+    gap: 20px;
+}
+
+.profile-headings-right .role-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.profile-headings-right .role-item-profile {
+    display: flex;
+    justify-content: center;
+    padding: 10px 20px;
+    background-color: #DCDBDB;
+    border-radius: 30px;
+}

@@ -35,6 +35,7 @@ class Auth extends CI_Controller {
 			if($userinfo == true)
 			{
 				$this->session->set_userdata(array(
+					'logged_id' => $userinfo->id,
 					'logged_role_name' => $userinfo->role_name,
 					'logged_first_name' => $userinfo->first_name,
 					'logged_last_name' => $userinfo->last_name,

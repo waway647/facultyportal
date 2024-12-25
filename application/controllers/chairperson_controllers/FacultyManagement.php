@@ -76,4 +76,14 @@ class FacultyManagement extends CI_Controller {
 				echo "User ID not found!";
 			}
 	}
+
+	public function countAllFaculty()
+	{
+		$totalFaculty = $this->FacultyManagement_model->countAllFaculty();
+		if ($totalFaculty) {
+			echo json_encode($totalFaculty);
+		} else {
+			echo json_encode(["error" => "Total number of faculty not found"]);
+		}
+	}
 }

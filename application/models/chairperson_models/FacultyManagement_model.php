@@ -37,4 +37,10 @@ class FacultyManagement_model extends CI_Model {
 		$this->db->insert("faculty_profiles",$facultyProfile_data);
 		return true;
 	}
+
+	public function countAllFaculty()
+	{
+		$query = $this->db->count_all('faculty_profiles_vw');
+		return $query;
+	}
 }
