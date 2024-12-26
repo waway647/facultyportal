@@ -173,91 +173,431 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
       <div class="main-content">
         <div class="main-content-2">
-          <div class="heading-container"><div class="text-wrapper-8">User Management, Admin</div></div>
-          <div class="faculties-container-wrapper"><div class="faculties-container"></div></div>
+          <div class="heading-container"><div class="text-wrapper-8">Courses, Department Chair</div></div>
+			<div class="container-management">
+				<div class="item-summary-container">
+					<div class="boxes-container">
+						<div class="item-box">
+							<div class="left-summary-container">
+								<div class="summary-img-container">
+									<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+								</div>
+
+								<h4>Total</h4>
+							</div>
+							
+							<h2>3</h2>
+						</div>
+
+						<div class="item-box">
+							<div class="summary-img-container">
+								<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+							</div>
+
+							<h4>Total</h4>
+
+							<h2>3</h2>
+						</div>
+
+						<div class="item-box">
+							<div class="summary-img-container">
+								<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+							</div>
+
+							<h4>Total</h4>
+
+							<h2>3</h2>
+						</div>
+					</div>
+				</div>
+
+				<div class="sub-content-container">
+					<div class="left-sub">
+						<h4>Faculty List&nbsp</h4>
+						<h4 class="left-sub-numbers">(3)</h4>
+					</div>
+
+					<div class="right-sub">
+						<div class="search-container">
+						<button class="button">
+							<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
+								<div class="div-wrapper">
+									<input type="search" name="" id="" placeholder="Search">
+								</div>
+						</button>
+						</div>
+
+						<div class="add-button">
+							<button id="addCourseBtn" type="button" class="btn">+ &nbsp&nbsp Add User</button>
+						</div>
+								
+								<!-- Add Course Modal -->
+								<div id="addCourseModal" class="modal">
+								<div class="modal-content">
+									<div class="modal-header">
+									<h3>Add Course</h3>
+									</div>
+									<form id="addFacultyForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/createCourse">
+										<div class="form-group">
+											<input type="text" id="course_code" name="course_code" placeholder="Course Code" required>
+										</div>
+										<div class="form-group">
+											<input type="text" id="course_name" name="course_name" placeholder="Course Name" required>
+										</div>
+										<div class="form-group">
+											<select id="number_of_units" name="number_of_units" required>
+												<option value="" disabled selected>Number of Units</option>
+												<option value="0">0</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												<option value="6">6</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<select id="faculty_id" name="faculty_profile_id" required>
+												<option value="" disabled selected>Faculty In-Charge</option>
+												<option value=""></option>
+											</select>
+										</div>
+										<div class="form-group">
+											<input type="text" id="class_section" name="class_section" placeholder="Class Section" required>
+										</div>
+
+										<button type="submit" class="btn">Save & Confirm</button>
+
+										<div>
+											<h6 class="back-step" id="closeaddCourseBtn">Cancel</h6>
+										</div>
+									</form>
+								</div>
+								</div> 
+								
+								<!-- Edit Course Modal -->
+								<div id="editCourseModal" class="modal">
+								<div class="modal-content">
+									<div class="modal-header">
+									<h3>Edit Course</h3>
+									</div>
+									<form id="editCourseForm" method="post" action="">
+										<div class="form-group">
+											<input type="text" id="course_code" name="course_code" required>
+										</div>
+										<div class="form-group">
+											<input type="text" id="course_name" name="course_name" required>
+										</div>
+										<div class="form-group">
+											<select id="number_of_units" name="number_of_units" required>
+												<option value="" disabled>Number of Units</option>
+												<option value="0">0</option>
+												<option value="1">1</option>
+												<option value="2">2</option>
+												<option value="3">3</option>
+												<option value="4">4</option>
+												<option value="5">5</option>
+												<option value="6">6</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<select id="faculty_assigned" name="faculty_profile_id" required>
+												<option value="" disabled>Faculty In-Charge</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<input type="text" id="class_section" name="class_section" required>
+										</div>
+
+										<button type="submit" class="btn">Save & Confirm</button>
+
+										<div>
+											<h6 class="back-step" id="closeeditCourseBtn">Cancel</h6>
+										</div>
+									</form>
+								</div>
+								</div> 
+								
+					</div>
+				</div>
+
+				<div class="the-content-container">
+					<div id="container">    
+						<table class="table" id="courseList" name="courseList">
+							<thead>
+							<tr>
+								<th>#</th>
+								<th>Email</th>
+								<th>Last Name</th>
+								<th>First Name</th>
+								<th>Middle Initial</th>
+								<th>Department</th>
+								<th>Action</th>
+							</tr>
+							</thead>
+
+							<tbody>
+								
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+
+				
+			</div>
         </div>
       </div>
     </div>
 
 	<script>
-	// Get elements
-	const modal = document.getElementById("postAnnouncementModal");
-	const btn = document.getElementById("postAnnouncementBtn");
-	const closeModal = document.getElementById("closeModalBtn");
+	// Call the function to fetch faculty when the page loads
+	$(document).ready(function() {
+		fetchFaculty(); // Fetch faculty when Add Course modal opens
+		fetchCourses();
+	});
 
-	// Open modal
-	btn.onclick = function () {
-	  modal.style.display = "block";
-	};
+	
 
-	// Close modal
-	closeModal.onclick = function () {
-	  modal.style.display = "none";
-	};
+	// Fetch faculty_id for the select dropdown
+	function fetchFaculty(modalId, callback) {
+    $.ajax({
+        url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getFaculty',
+        type: 'GET',
+        dataType: 'json',
+        success: function (result) {
+            console.log('AJAX success:', result);
+            if (Array.isArray(result)) {
+                let selectElement;
+                if (modalId === "addCourseModal") {
+                    selectElement = $('#faculty_id');
+                } else if (modalId === "editCourseModal") {
+                    selectElement = $('#faculty_assigned');
+                }
 
-	// Close modal when clicking outside of it
-	window.onclick = function (event) {
-	  if (event.target == modal) {
-	    modal.style.display = "none";
-	  }
-	};
+                if (selectElement) {
+                    selectElement.empty();
+                    selectElement.append('<option value="" disabled selected>Faculty In-Charge</option>');
+                    result.forEach(function (faculty) {
+                        selectElement.append('<option value="' + faculty.id + '">' + faculty.full_name + '</option>');
+                    });
+
+                    // Execute the callback if provided
+                    if (callback && typeof callback === 'function') {
+                        callback();
+                    }
+                }
+            } else {
+                console.error('Expected an array but received:', result);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching faculty:', error);
+        }
+    });
+}
+
+
+	// Function to fetch course data via AJAX
+	function fetchCourses() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getCourses',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Courses):', result);
+				if (Array.isArray(result)) {
+					createCourseTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching courses:', error);
+			}
+		});
+	}
+
+	// Function to create the table with course data
+	function createCourseTable(result, sno) {
+		sno = Number(sno);
+		$('#courseList tbody').empty(); // Clear existing rows
+		for (index in result) {
+			var id = result[index].id;
+			var course_code = result[index].course_code;
+			var course_name = result[index].course_name;
+			var number_of_units = result[index].number_of_units;
+			var faculty_assigned = result[index].faculty_assigned;
+			var class_section = result[index].class_section;
+
+			sno += 1;
+
+			var tr = "<tr>";
+			tr += "<td>" + sno + "</td>";  // Serial number
+			tr += "<td>" + course_code + "</td>";
+			tr += "<td>" + course_name + "</td>";
+			tr += "<td>" + number_of_units + "</td>";
+			tr += "<td>" + faculty_assigned + "</td>";
+			tr += "<td>" + class_section + "</td>";
+			tr += "<td><a href='#' onclick='fetchCourseById(" + id + ")'>" +
+					"<div class='table-icon-container'>" +
+						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
+						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/deleteCourse/" + id + "'>" +
+							"<img class='img' src='" + "<?php echo base_url('assets/images/icon/x.svg'); ?>" + "' /></a></div>" +
+					"</div></td>";
+
+			tr += "</tr>";
+
+			$('#courseList tbody').append(tr);  // Append the new row to the table body
+		}
+	}
+
+	// Function to fetch course data via AJAX
+	function fetchCourseById(courseId) {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getCourseByID/' + courseId, // Updated URL with courseId
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('Fetched Course:', result);
+				if (result && result.id) {
+					populateEditModal(result); // Populate the modal with fetched data
+				} else {
+					console.error('Error: Course not found!');
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching course by ID:', error);
+			}
+		});
+	}
+	
+	function populateEditModal(course) {
+		$('#editCourseModal #course_code').val(course.course_code);
+		$('#editCourseModal #course_name').val(course.course_name);
+		$('#editCourseModal #number_of_units').val(course.number_of_units);
+		
+		// Fetch faculty options and set selected value
+		fetchFaculty('editCourseModal', function() {
+			$('#editCourseModal #faculty_assigned').val(course.faculty_profile_id);
+		});
+
+		$('#editCourseModal #class_section').val(course.class_section);
+		$('#editCourseForm').attr('action', 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/updateCourse/' + course.id);
+		$('#editCourseModal').show(); // Display the modal
+	}
+
+	// Close modal when clicking outside of it (on the backdrop)
+	window.addEventListener("click", function (event) {
+		if (event.target === document.getElementById('editCourseModal')) {
+			$('#editCourseModal').hide(); // Use fadeOut for smoother hiding
+		}
+	});
+
+	// Attach event listener to "Cancel" button inside the Edit Course Modal
+	$('#closeeditCourseBtn').on('click', function () {
+		$('#editCourseModal').hide(); // Hide the modal when clicked
+	});
+
+	// Function to initialize a modal
+    function setupModal(modalId, openButtonId, closeButtonId) {
+        const modal = document.getElementById(modalId);
+        const openButton = document.getElementById(openButtonId);
+        const closeButton = document.getElementById(closeButtonId);
+
+        // Open modal
+        openButton.onclick = function () {
+            modal.style.display = "block";
+            if (modalId === "addCourseModal" || modalId === "editCourseModal") {
+                fetchFaculty(modalId);
+            }
+        };
+
+        // Close modal
+        closeButton.onclick = function () {
+            modal.style.display = "none";
+        };
+
+        // Close modal when clicking outside of it
+        window.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    }
+
+	// Initialize "Post Announcement" modal
+	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
+
+	// Initialize "Add Course" modal
+    setupModal("addCourseModal", "addCourseBtn", "closeaddCourseBtn");
 
 	// File attachment handling
-	const attachmentInput = document.getElementById("announcement_attachment");
-	const attachmentPreview = document.getElementById("attachment_preview");
+	function setupFileAttachment(attachmentInputId, attachmentPreviewId, allowMultiple = true) {
+	const attachmentInput = document.getElementById(attachmentInputId);
+	const attachmentPreview = document.getElementById(attachmentPreviewId);
 	let attachedFiles = []; // Store uploaded files dynamically
 
 	attachmentInput.addEventListener("change", function () {
-	  // Loop through selected files
-	  Array.from(attachmentInput.files).forEach((file) => {
-	    // Check if file is already attached
-	    if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
-	      alert(`File "${file.name}" is already attached.`);
-	      return;
-	    }
+		// Clear previous files if only one file is allowed (for research_attachment)
+		if (!allowMultiple) {
+		attachedFiles = []; // Clear the previous files list if only one file is allowed
+		attachmentPreview.innerHTML = ""; // Clear the preview area
+		}
 
-	    // Add file to the list of attached files
-	    attachedFiles.push(file);
+		// Loop through selected files
+		Array.from(attachmentInput.files).forEach((file) => {
+		// Check if file is already attached
+		if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
+			alert(`File "${file.name}" is already attached.`);
+			return;
+		}
 
-	    // Create preview item
-	    const previewItem = document.createElement("div");
-	    previewItem.className = "attachment-preview-item";
+		// Add file to the list of attached files
+		attachedFiles.push(file);
 
-	    if (file.type.startsWith("image/")) {
-	      // Display image preview
-	      const img = document.createElement("img");
-	      img.src = URL.createObjectURL(file);
-	      img.alt = file.name;
-	      img.onload = function () {
-	        URL.revokeObjectURL(img.src); // Free memory
-	      };
-	      previewItem.appendChild(img);
-	    }
+		// Create preview item
+		const previewItem = document.createElement("div");
+		previewItem.className = "attachment-preview-item";
 
-	    // Display file name
-	    const fileName = document.createElement("span");
-	    fileName.textContent = file.name;
-	    previewItem.appendChild(fileName);
+		if (file.type.startsWith("image/")) {
+			// Display image preview
+			const img = document.createElement("img");
+			img.src = URL.createObjectURL(file);
+			img.alt = file.name;
+			img.onload = function () {
+			URL.revokeObjectURL(img.src); // Free memory
+			};
+			previewItem.appendChild(img);
+		}
 
-	    // Add a remove button for each file
-	    const removeButton = document.createElement("button");
-	    removeButton.textContent = "Remove";
-	    removeButton.className = "remove-file-btn";
-	    removeButton.onclick = function () {
-	      // Remove file from the list of attached files
-	      attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
-	      previewItem.remove();
-	    };
-	    previewItem.appendChild(removeButton);
+		// Display file name
+		const fileName = document.createElement("span");
+		fileName.textContent = file.name;
+		previewItem.appendChild(fileName);
 
-	    // Add preview item to the container
-	    attachmentPreview.appendChild(previewItem);
-	  });
+		// Add a remove button for each file
+		const removeButton = document.createElement("button");
+		removeButton.textContent = "Remove";
+		removeButton.className = "remove-file-btn";
+		removeButton.onclick = function () {
+			// Remove file from the list of attached files
+			attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
+			previewItem.remove();
+		};
+		previewItem.appendChild(removeButton);
 
-	  // Reset file input to allow re-uploading the same file if removed
-	  attachmentInput.value = "";
+		// Add preview item to the container
+		attachmentPreview.appendChild(previewItem);
+		});
 
+		// Reset file input to allow re-uploading the same file if removed
+		attachmentInput.value = "";
 	});
+	}
+
+	// Call setupFileAttachment for 'addCourseModal'
+	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", false);
 
 	// Notification Panel Logic
 	const notificationBtn = document.getElementById('notificationBtn');
