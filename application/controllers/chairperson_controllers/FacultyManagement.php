@@ -10,6 +10,7 @@ class FacultyManagement extends CI_Controller {
 		$this->load->library('session');
 		$this->load->database();
 		$this->load->model('chairperson_models/FacultyManagement_model');
+		$this->load->model('chairperson_models/Profile_model');
 		$this->load->helper('url');
 	}
 

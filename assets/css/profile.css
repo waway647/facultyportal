@@ -130,10 +130,6 @@ body {
     gap: 10px;
 }
 
-.profile-headings-left a {
-  width: fit-content;
-}
-
 .profile-headings-left .profile-buttons {
   display: flex;
   justify-content: space-between;
@@ -188,4 +184,30 @@ body {
     padding: 10px 20px;
     background-color: #DCDBDB;
     border-radius: 30px;
+}
+
+.table-icon-container {
+  display: flex;
+  align-items: center; /* Aligns items vertically in the center */
+  justify-content: baseline; /* Centers items horizontally within the container */
+  gap: 20px; /* Adds space between the icons */
+}
+
+.tables-profile-container .the-content-container {
+  padding: 35px 0;
+  border-top: 1px solid #DCDBDB;
+  border-bottom: 1px solid #DCDBDB;
+  height: auto;
+}
+
+.tables-profile-container .table-heading {
+  display: flex !important;
+  align-items: center !important;
+}
+
+.tables-profile-container .sub-content-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 0 20px;
 }

@@ -55,7 +55,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									Attach Files
 								</label>
 								<input type="file" id="announcement_attachment" name="announcement_attachment" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" hidden>
-								<div id="attachment_preview" class="attachment-preview"></div>
+								<div id="announcement_attachment_preview" class="attachment-preview"></div>
 							</div>
 						</div>
 					</div>
@@ -287,9 +287,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 										<button type="submit" class="btn">Save & Confirm</button>
 
-										<a href="">
-											<h6 class="back-step">Cancel</h6>
-										</a>
+										<div>
+											<h6 class="back-step" id="closeaddCourseBtn">Cancel</h6>
+										</div>
 									</form>
 								</div>
 								</div> 
@@ -330,9 +330,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 										<button type="submit" class="btn">Save & Confirm</button>
 
-										<a href="">
-											<h6 class="back-step">Cancel</h6>
-										</a>
+										<div>
+											<h6 class="back-step" id="closeeditCourseBtn">Cancel</h6>
+										</div>
 									</form>
 								</div>
 								</div> 
@@ -376,41 +376,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		fetchCourses();
 	});
 
-	// Function to initialize a modal
-	function setupModal(modalId, openButtonId, closeButtonId) {
-		const modal = document.getElementById(modalId);
-		const openButton = document.getElementById(openButtonId);
-		const closeButton = document.getElementById(closeButtonId);
-
-		// Open modal
-		openButton.onclick = function () {
-			modal.style.display = "block";
-			if (modalId === "addCourseModal" || modalId === "editCourseModal") {
-				fetchFaculty(modalId);
-			}
-		};
-
-		// Close modal
-		closeButton.onclick = function () {
-			modal.style.display = "none";
-		};
-
-		// Close modal when clicking outside of it
-		window.onclick = function (event) {
-			if (event.target === modal) {
-				modal.style.display = "none";
-			}
-		};
-	}
-
-	// Initialize "Post Announcement" modal
-	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
-
-	// Initialize "Add Course" modal
-	setupModal("addCourseModal", "addCourseBtn", "closeaddCourseBtn");
-
-	// Initialize "Add Course" modal
-	setupModal("editCourseModal", "editCourseBtn", "closeeditCourseBtn");
+	
 
 	// Fetch faculty_id for the select dropdown
 	function fetchFaculty(modalId, callback) {
@@ -540,63 +506,117 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#editCourseModal').show(); // Display the modal
 	}
 
+	// Close modal when clicking outside of it (on the backdrop)
+	window.addEventListener("click", function (event) {
+		if (event.target === document.getElementById('editCourseModal')) {
+			$('#editCourseModal').hide(); // Use fadeOut for smoother hiding
+		}
+	});
+
+	// Attach event listener to "Cancel" button inside the Edit Course Modal
+	$('#closeeditCourseBtn').on('click', function () {
+		$('#editCourseModal').hide(); // Hide the modal when clicked
+	});
+
+	// Function to initialize a modal
+    function setupModal(modalId, openButtonId, closeButtonId) {
+        const modal = document.getElementById(modalId);
+        const openButton = document.getElementById(openButtonId);
+        const closeButton = document.getElementById(closeButtonId);
+
+        // Open modal
+        openButton.onclick = function () {
+            modal.style.display = "block";
+            if (modalId === "addCourseModal" || modalId === "editCourseModal") {
+                fetchFaculty(modalId);
+            }
+        };
+
+        // Close modal
+        closeButton.onclick = function () {
+            modal.style.display = "none";
+        };
+
+        // Close modal when clicking outside of it
+        window.addEventListener("click", function (event) {
+            if (event.target === modal) {
+                modal.style.display = "none";
+            }
+        });
+    }
+
+	// Initialize "Post Announcement" modal
+	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
+
+	// Initialize "Add Course" modal
+    setupModal("addCourseModal", "addCourseBtn", "closeaddCourseBtn");
 
 	// File attachment handling
-	const attachmentInput = document.getElementById("announcement_attachment");
-	const attachmentPreview = document.getElementById("attachment_preview");
+	function setupFileAttachment(attachmentInputId, attachmentPreviewId, allowMultiple = true) {
+	const attachmentInput = document.getElementById(attachmentInputId);
+	const attachmentPreview = document.getElementById(attachmentPreviewId);
 	let attachedFiles = []; // Store uploaded files dynamically
 
 	attachmentInput.addEventListener("change", function () {
-	  // Loop through selected files
-	  Array.from(attachmentInput.files).forEach((file) => {
-	    // Check if file is already attached
-	    if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
-	      alert(`File "${file.name}" is already attached.`);
-	      return;
-	    }
+		// Clear previous files if only one file is allowed (for research_attachment)
+		if (!allowMultiple) {
+		attachedFiles = []; // Clear the previous files list if only one file is allowed
+		attachmentPreview.innerHTML = ""; // Clear the preview area
+		}
 
-	    // Add file to the list of attached files
-	    attachedFiles.push(file);
+		// Loop through selected files
+		Array.from(attachmentInput.files).forEach((file) => {
+		// Check if file is already attached
+		if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
+			alert(`File "${file.name}" is already attached.`);
+			return;
+		}
 
-	    // Create preview item
-	    const previewItem = document.createElement("div");
-	    previewItem.className = "attachment-preview-item";
+		// Add file to the list of attached files
+		attachedFiles.push(file);
 
-	    if (file.type.startsWith("image/")) {
-	      // Display image preview
-	      const img = document.createElement("img");
-	      img.src = URL.createObjectURL(file);
-	      img.alt = file.name;
-	      img.onload = function () {
-	        URL.revokeObjectURL(img.src); // Free memory
-	      };
-	      previewItem.appendChild(img);
-	    }
+		// Create preview item
+		const previewItem = document.createElement("div");
+		previewItem.className = "attachment-preview-item";
 
-	    // Display file name
-	    const fileName = document.createElement("span");
-	    fileName.textContent = file.name;
-	    previewItem.appendChild(fileName);
+		if (file.type.startsWith("image/")) {
+			// Display image preview
+			const img = document.createElement("img");
+			img.src = URL.createObjectURL(file);
+			img.alt = file.name;
+			img.onload = function () {
+			URL.revokeObjectURL(img.src); // Free memory
+			};
+			previewItem.appendChild(img);
+		}
 
-	    // Add a remove button for each file
-	    const removeButton = document.createElement("button");
-	    removeButton.textContent = "Remove";
-	    removeButton.className = "remove-file-btn";
-	    removeButton.onclick = function () {
-	      // Remove file from the list of attached files
-	      attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
-	      previewItem.remove();
-	    };
-	    previewItem.appendChild(removeButton);
+		// Display file name
+		const fileName = document.createElement("span");
+		fileName.textContent = file.name;
+		previewItem.appendChild(fileName);
 
-	    // Add preview item to the container
-	    attachmentPreview.appendChild(previewItem);
-	  });
+		// Add a remove button for each file
+		const removeButton = document.createElement("button");
+		removeButton.textContent = "Remove";
+		removeButton.className = "remove-file-btn";
+		removeButton.onclick = function () {
+			// Remove file from the list of attached files
+			attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
+			previewItem.remove();
+		};
+		previewItem.appendChild(removeButton);
 
-	  // Reset file input to allow re-uploading the same file if removed
-	  attachmentInput.value = "";
+		// Add preview item to the container
+		attachmentPreview.appendChild(previewItem);
+		});
 
+		// Reset file input to allow re-uploading the same file if removed
+		attachmentInput.value = "";
 	});
+	}
+
+	// Call setupFileAttachment for 'addCourseModal'
+	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", false);
 
 	// Notification Panel Logic
 	const notificationBtn = document.getElementById('notificationBtn');

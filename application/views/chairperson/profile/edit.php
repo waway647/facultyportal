@@ -11,6 +11,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/profile.css?<?php echo time(); ?>"> 
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/table.css?<?php echo time(); ?>"> 
   
+	<!-- jQuery library -->
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+	
 	</head>
   <body>
   <div class="dashboard-faculty">
@@ -52,8 +55,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
 									Attach Files
 								</label>
-								<input type="file" id="announcement_attachment" name="announcement_attachment" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" hidden>
-								<div id="attachment_preview" class="attachment-preview"></div>
+								<input type="file" id="announcement_attachment" name="announcement_attachment" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" multiple hidden>
+								<div id="announcement_attachment_preview" class="attachment-preview"></div>
 							</div>
 						</div>
 					</div>
@@ -201,36 +204,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php if (isset($faculty) && $faculty !== null): ?>
 				<div class="the-profile-headings">
 					<div class="profile-headings-left">
-						<!-- Full name -->
-						<h2><?php echo $faculty->first_name; ?> 
-
-							<?php if(isset($faculty->middle_name) && !empty($faculty->middle_name)): ?>
-								<?php echo substr($faculty->middle_name, 0, 1) . '.'; ?> 			
-							<?php endif; ?>
-							 
-							<?php echo $faculty->last_name; ?></h2>
-
+					
 						<div class="profile-left-subheadings">
+							<!-- Full name -->
+							<input type="text" id="first_name" name="first_name" value="<?php echo $faculty->first_name; ?>" placeholder="First Name" required>
+							<input type="text" id="middle_name" name="middle_name" value="<?php echo $faculty->middle_name; ?>" placeholder="Middle Name" required>
+							<input type="text" id="last_name" name="last_name" value="<?php echo $faculty->last_name; ?>" placeholder="Last Name" required>
+
 							<!-- Age -->
-							<?php if(isset($faculty->age) && !empty($faculty->age)): ?>
-								<h5><?php echo $faculty->age ?> years old</h5>
-							<?php endif; ?>
+							<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday; ?>" placeholder="Birthday" required>
 							
 							<!-- Email -->
-							<?php if(isset($faculty->email) && !empty($faculty->email)): ?>
-							<div class="contact-row">
-								<img src="<?php echo base_url('assets/images/icon/email.svg'); ?>" alt="">
-								<h5><?php echo $faculty->email ?></h5>
-							</div>
-							<?php endif; ?>
-
+							<input type="text" id="email" name="email" value="<?php echo $faculty->email; ?>" placeholder="Email" required>
+						
 							<!-- Mobile Number -->
-							<?php if(isset($faculty->mobile_number) && !empty($faculty->mobile_number)): ?>
-							<div class="contact-row">
-								<img src="<?php echo base_url('assets/images/icon/phone.svg'); ?>" alt="">
-								<h5><?php echo $faculty->mobile_number ?></h5>
-							</div>
-							<?php endif; ?>
+							<input type="text" id="mobile_number" name="mobile_number" value="<?php echo $faculty->mobile_number; ?>" placeholder="Mobile Number" required>
+						
 						</div>
 
 						<div class="profile-buttons">
@@ -268,11 +257,55 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="tables-profile-container">
 					<!-- Qualifications -->
 					<div class="the-content-container">
-						<div class="table-heading">
-							<h4>Qualifications</h4>
+						<div class="sub-content-container">
+							<div class="table-heading">
+								<h4>Qualifications</h4>
+							</div>
+
+							<div class="add-button">
+								<button id="addQualificationsBtn" type="button" class="btn">+ &nbsp&nbsp Add Qualifications</button>
+							</div>
+									
+									<!-- Add Qualifications Modal -->
+									<div id="addQualificationsModal" class="modal">
+									<div class="modal-content">
+										<div class="modal-header">
+										<h3>Add Qualifications</h3>
+										</div>
+										<form id="addQualificationsForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/createQualifications">
+											<div class="form-group">
+												<select id="academic_degree" name="academic_degree" required>
+													<option value="" disabled selected>Academic Degree</option>
+													<option value="Associate Degree">Associate Degree</option>
+													<option value="Bachelor's Degree">Bachelor's Degree</option>
+													<option value="Master's Degree">Master's Degree</option>
+													<option value="Doctoral Degree">Doctoral Degree</option>
+
+												</select>
+											</div>
+
+											<div class="form-group">
+												<input type="text" id="institution" name="institution" placeholder="Institution" required>
+											</div>
+
+											<div class="form-group">
+												<select id="year_graduated" name="year_graduated" required>
+													<option value="" disabled selected>Year Graduated</option>
+												</select>
+											</div>
+
+											<button type="submit" class="btn">Save & Confirm</button>
+
+											<div class="close-text" id="closeaddQualificationsBtn">
+												<h6 class="back-step">Cancel</h6>
+											</div>
+										</form>
+									</div>
+									</div> 
 						</div>
+						
 						<div id="container">    
-							<table class="table" id="courseList" name="courseList">
+							<table class="table" id="QualificationsList" name="QualificationsList">
 								<thead>
 								<tr>
 									<th>#</th>
@@ -293,11 +326,46 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 					<!-- Industry Experience -->
 					<div class="the-content-container">
-						<div class="table-heading">
-							<h4>Industry Experience</h4>
+						<div class="sub-content-container">
+							<div class="table-heading">
+								<h4>Industry Experience</h4>
+							</div>
+							
+							<div class="add-button">
+								<button id="addExperienceBtn" type="button" class="btn">+ &nbsp&nbsp Add Experience</button>
+							</div>
+									
+									<!-- Add Experience Modal -->
+									<div id="addExperienceModal" class="modal">
+									<div class="modal-content">
+										<div class="modal-header">
+										<h3>Add Experience</h3>
+										</div>
+										<form id="addExperienceForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/createExperience">
+											<div class="form-group">
+												<input type="text" id="company_name" name="company_name" placeholder="Name of Company" required>
+											</div>
+											<div class="form-group">
+												<input type="text" id="job_position" name="job_position" placeholder="Job Position" required>
+											</div>
+											<div class="form-group">
+												<select id="years_of_experience" name="years_of_experience" required>
+													<option value="" disabled selected>Years of Experience</option>
+												</select>
+											</div>
+											
+											<button type="submit" class="btn">Save & Confirm</button>
+
+											<div class="close-text" id="closeaddExperienceBtn">
+												<h6 class="back-step">Cancel</h6>
+											</div>
+										</form>
+									</div>
+									</div> 
 						</div>
+
 						<div id="container">    
-							<table class="table" id="courseList" name="courseList">
+							<table class="table" id="ExperienceList" name="ExperienceList">
 								<thead>
 								<tr>
 									<th>#</th>
@@ -318,11 +386,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 					<!-- Research Outputs -->
 					<div class="the-content-container">
-						<div class="table-heading">
-							<h4>Research Outputs</h4>
+						<div class="sub-content-container">
+							<div class="table-heading">
+								<h4>Research Outputs</h4>
+							</div>
+							
+							<div class="add-button">
+								<button id="addResearchBtn" type="button" class="btn">+ &nbsp&nbsp Add Research</button>
+							</div>
+									
+									<!-- Add Research Modal -->
+									<div id="addResearchModal" class="modal">
+									<div class="modal-content">
+										<div class="modal-header">
+										<h3>Add Research</h3>
+										</div>
+										<form id="addResearchForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/createResearch" enctype="multipart/form-data">
+											<div class="form-group">
+												<input type="text" id="title" name="title" placeholder="Research Title" required>
+											</div>
+											<div class="form-group">
+												<select id="publication_year" name="publication_year" required>
+													<option value="" disabled selected>Year Published</option>
+												</select>
+											</div>
+											<div class="form-group">
+												<div class="attachment-container">
+													<label for="research_attachment" class="attachment-button">
+														<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
+														Attach Files
+													</label>
+													<input type="file" id="research_attachment" name="research_attachment" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" hidden>
+													<div id="research_attachment_preview" class="attachment-preview"></div>
+												</div>
+											</div>
+										
+											<button type="submit" class="btn">Save & Confirm</button>
+
+											<div class="close-text" id="closeaddResearchBtn">
+												<h6 class="back-step">Cancel</h6>
+											</div>
+										</form>
+									</div>
+									</div> 
 						</div>
+
 						<div id="container">    
-							<table class="table" id="courseList" name="courseList">
+							<table class="table" id="ResearchList" name="ResearchList">
 								<thead>
 								<tr>
 									<th>#</th>
@@ -349,107 +459,157 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<script>
 	$(document).ready(function() {
-			fetchFaculty();
 		});
 
-	// Function to fetch faculty data via AJAX
-	function fetchFaculty() {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/getFacultyProfile',  // Update the URL as necessary
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('AJAX success (Courses):', result);
-				if (Array.isArray(result)) {
-					createCourseTable(result, 0);  // Call the function to create the table and pass the result
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching courses:', error);
+	// Function to initialize a modal
+		function setupModal(modalId, openButtonId, closeButtonId) {
+		const modal = document.getElementById(modalId);
+		const openButton = document.getElementById(openButtonId);
+		const closeButton = document.getElementById(closeButtonId);
+
+		// Open modal
+		openButton.onclick = function () {
+			modal.style.display = "block";
+		};
+
+		// Close modal
+		closeButton.onclick = function () {
+			modal.style.display = "none";
+		};
+
+		// Close modal when clicking outside
+		window.addEventListener("click", function (event) {
+			if (event.target === modal) {
+				modal.style.display = "none";
 			}
 		});
 	}
-	
-	// Get elements
-	const modal = document.getElementById("postAnnouncementModal");
-	const btn = document.getElementById("postAnnouncementBtn");
-	const closeModal = document.getElementById("closeModalBtn");
 
-	// Open modal
-	btn.onclick = function () {
-	  modal.style.display = "block";
-	};
+	// Initialize "Post Announcement" modal
+	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
 
-	// Close modal
-	closeModal.onclick = function () {
-	  modal.style.display = "none";
-	};
+	// Initialize "Add Qualifications" modal
+	setupModal("addQualificationsModal", "addQualificationsBtn", "closeaddQualificationsBtn");
 
-	// Close modal when clicking outside of it
-	window.onclick = function (event) {
-	  if (event.target == modal) {
-	    modal.style.display = "none";
-	  }
-	};
+	// Initialize "Add Experience" modal
+	setupModal("addExperienceModal", "addExperienceBtn", "closeaddExperienceBtn");
+
+	// Initialize "Add Research" modal
+    setupModal("addResearchModal", "addResearchBtn", "closeaddResearchBtn");
+
+			// Get the current year
+			const currentYear = new Date().getFullYear();
+
+			// Populate publication year dropdown
+			const publicationYearSelect = document.getElementById("publication_year");
+			for (let i = currentYear; i >= 2000; i--) { // Adjust the range of years here
+				const option = document.createElement("option");
+				option.value = i;
+				option.textContent = i;
+				publicationYearSelect.appendChild(option);
+			}
+
+			// Populate year graduated dropdown
+			const yearGraduatedSelect = document.getElementById("year_graduated");
+			for (let i = currentYear; i >= 1950; i--) { // Adjust the range of years here
+				const option = document.createElement("option");
+				option.value = i;
+				option.textContent = i;
+				yearGraduatedSelect.appendChild(option);
+			}
+
+			// Populate year graduated dropdown
+			const yearsExperienced = document.getElementById("years_of_experience");
+			for (let i = 1; i <= 50  ; i++) { // Adjust the range of years here
+				const option = document.createElement("option");
+				option.value = i;
+				option.textContent = i;
+				yearsExperienced.appendChild(option);
+			}
+
+			
 
 	// File attachment handling
-	const attachmentInput = document.getElementById("announcement_attachment");
-	const attachmentPreview = document.getElementById("attachment_preview");
-	let attachedFiles = []; // Store uploaded files dynamically
+	function setupFileAttachment(attachmentInputId, attachmentPreviewId, allowMultiple = true) {
+		const attachmentInput = document.getElementById(attachmentInputId);
+		const attachmentPreview = document.getElementById(attachmentPreviewId);
+		let attachedFiles = []; // Store uploaded files dynamically
 
-	attachmentInput.addEventListener("change", function () {
-	  // Loop through selected files
-	  Array.from(attachmentInput.files).forEach((file) => {
-	    // Check if file is already attached
-	    if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
-	      alert(`File "${file.name}" is already attached.`);
-	      return;
-	    }
+		// Listen for file selection
+		attachmentInput.addEventListener("change", function () {
+			// Clear previous files if only one file is allowed (for research_attachment)
+			if (!allowMultiple) {
+				attachedFiles = []; // Clear the previous files list if only one file is allowed
+				attachmentPreview.innerHTML = ""; // Clear the preview area
+			}
 
-	    // Add file to the list of attached files
-	    attachedFiles.push(file);
+			// Loop through selected files and add them to attachedFiles array
+			Array.from(attachmentInput.files).forEach((file) => {
+				// Check if file is already attached
+				if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
+					alert(`File "${file.name}" is already attached.`);
+					return;
+				}
 
-	    // Create preview item
-	    const previewItem = document.createElement("div");
-	    previewItem.className = "attachment-preview-item";
+				// Add file to the list of attached files
+				attachedFiles.push(file);
 
-	    if (file.type.startsWith("image/")) {
-	      // Display image preview
-	      const img = document.createElement("img");
-	      img.src = URL.createObjectURL(file);
-	      img.alt = file.name;
-	      img.onload = function () {
-	        URL.revokeObjectURL(img.src); // Free memory
-	      };
-	      previewItem.appendChild(img);
-	    }
+				// Create preview item for the file
+				const previewItem = document.createElement("div");
+				previewItem.className = "attachment-preview-item";
 
-	    // Display file name
-	    const fileName = document.createElement("span");
-	    fileName.textContent = file.name;
-	    previewItem.appendChild(fileName);
+				if (file.type.startsWith("image/")) {
+					// Display image preview
+					const img = document.createElement("img");
+					img.src = URL.createObjectURL(file);
+					img.alt = file.name;
+					img.onload = function () {
+						URL.revokeObjectURL(img.src); // Free memory
+					};
+					previewItem.appendChild(img);
+				}
 
-	    // Add a remove button for each file
-	    const removeButton = document.createElement("button");
-	    removeButton.textContent = "Remove";
-	    removeButton.className = "remove-file-btn";
-	    removeButton.onclick = function () {
-	      // Remove file from the list of attached files
-	      attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
-	      previewItem.remove();
-	    };
-	    previewItem.appendChild(removeButton);
+				// Display file name
+				const fileName = document.createElement("span");
+				fileName.textContent = file.name;
+				previewItem.appendChild(fileName);
 
-	    // Add preview item to the container
-	    attachmentPreview.appendChild(previewItem);
-	  });
+				// Add a remove button for each file
+				const removeButton = document.createElement("button");
+				removeButton.textContent = "Remove";
+				removeButton.className = "remove-file-btn";
+				removeButton.onclick = function () {
+					// Remove file from the list of attached files
+					attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
+					previewItem.remove();
+				};
+				previewItem.appendChild(removeButton);
 
-	  // Reset file input to allow re-uploading the same file if removed
-	  attachmentInput.value = "";
+				// Add preview item to the container
+				attachmentPreview.appendChild(previewItem);
+			});
+		});
 
-	});
+		// On form submission, ensure attached files are included
+		const form = document.querySelector("form"); // Ensure you are selecting the right form
+		form.addEventListener("submit", function (event) {
+			// Only proceed if there are attached files
+			if (attachedFiles.length > 0) {
+				const dataTransfer = new DataTransfer(); // Necessary for adding files programmatically
+				attachedFiles.forEach((file) => {
+					dataTransfer.items.add(file);
+				});
+				attachmentInput.files = dataTransfer.files; // Set the file input to include attached files
+			}
+		});
+	}
+
+	// Call setupFileAttachment for 'research_attachment'
+	setupFileAttachment("research_attachment", "research_attachment_preview", false);
+
+	// Call setupFileAttachment for 'announcement_attachment' if required
+	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
+
 
 	// Notification Panel Logic
 	const notificationBtn = document.getElementById('notificationBtn');

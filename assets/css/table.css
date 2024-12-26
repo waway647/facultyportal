@@ -108,14 +108,3 @@ th {
   justify-content: baseline; /* Centers items horizontally within the container */
   gap: 20px; /* Adds space between the icons */
 }
-
-.tables-profile-container .the-content-container {
-  padding: 35px 0;
-  border-top: 1px solid #DCDBDB;
-  border-bottom: 1px solid #DCDBDB;
-  height: auto;
-}
-
-.tables-profile-container .table-heading {
-  padding: 0 0 35px;
-}

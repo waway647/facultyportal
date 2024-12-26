@@ -733,7 +733,7 @@ input {
 .modal {
   display: none; /* Hidden by default */
   position: fixed;
-  z-index: 1;
+  z-index: 999;
   left: 0;
   top: 0;
   width: 100%;
@@ -1215,15 +1215,35 @@ input {
 }
 
 #addFacultyModal .modal-content, 
+
 #addCourseModal .modal-content, 
-#editCourseModal .modal-content {
+#editCourseModal .modal-content,
+
+#addQualificationsModal .modal-content,
+#editQualificationsModal .modal-content,
+
+#addExperienceModal .modal-content,
+#editExperienceModal .modal-content,
+
+#addResearchModal .modal-content,
+#editResearchModal .modal-content {
   width: 28%;
   padding: 80px;
 }
 
 #addFacultyModal form, 
+
 #addCourseModal form, 
-#editCourseModal form {
+#editCourseModal form,
+
+#addQualificationsModal form,
+#editQualificationsModal form,
+
+#addExperienceModal form,
+#editExperienceModal form,
+
+#addResearchModal form,
+#editResearchModal form {
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -1231,14 +1251,34 @@ input {
 }
 
 #addFacultyModal .modal-for-step, 
+
 #addCourseModal .modal-for-step, 
-#editCourseModal .modal-for-step {
+#editCourseModal .modal-for-step,
+
+#addQualificationsModal .modal-for-step,
+#editQualificationsModal .modal-for-step,
+
+#addExperienceModal .modal-for-step,
+#editExperienceModal .modal-for-step,
+
+#addResearchModal .modal-for-step,
+#editResearchModal .modal-for-step {
   padding: 0px 10px;
 }
 
 #addFacultyModal .modal-header, 
+
 #addCourseModal .modal-header, 
-#editCourseModal .modal-header {
+#editCourseModal .modal-header,
+
+#addQualificationsModal .modal-header,
+#editQualificationsModal .modal-header,
+
+#addExperienceModal .modal-header,
+#editExperienceModal .modal-header,
+
+#addResearchModal .modal-header,
+#editResearchModal .modal-header {
   padding: 10px;
   font-family: 'TT Hoves Medium';
   font-weight: 900;

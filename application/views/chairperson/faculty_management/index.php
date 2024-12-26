@@ -11,7 +11,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<!-- jQuery library -->
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-
+	
   </head>
   <body>
   <div class="dashboard-faculty">
@@ -33,6 +33,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
           </a>
         </div>
+
 		<!-- Modal -->
 		<div id="postAnnouncementModal" class="modal">
 			<div class="modal-content">
@@ -54,7 +55,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									Attach Files
 								</label>
 								<input type="file" id="announcement_attachment" name="announcement_attachment" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" hidden>
-								<div id="attachment_preview" class="attachment-preview"></div>
+								<div id="announcement_attachment_preview" class="attachment-preview"></div>
 							</div>
 						</div>
 					</div>
@@ -274,9 +275,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 										<button type="submit" class="btn">Continue</button>
 
-										<a href="">
-											<h6 class="back-step">Cancel</h6>
-										</a>
+										<div>
+											<h6 id="closeAddFacultyBtn" class="back-step">Cancel</h6>
+										</div>
 									</form>
 								</div>
 								</div> 
@@ -320,9 +321,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 										<button type="submit" class="btn">Save & Confirm</button>
 
-										<a href="">
-											<h6 class="back-step">Cancel</h6>
-										</a>
+										<div>
+											<h6 id="closeAddFacultyBtn" class="back-step">Cancel</h6>
+										</div>
 									</form>
 								</div>
 								</div>
@@ -380,9 +381,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
 
 	<script>
-
-			// Function to fetch user profiles and create the grid
-			function fetchUserProfiles() {
+	// Function to fetch user profiles and create the grid
+	function fetchUserProfiles() {
 				$.ajax({
 					url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchUserProfiles', // URL to fetch data
 					type: 'GET',
@@ -427,6 +427,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				for (let index in result) {
 					let user = result[index];
 					if (typeof user === 'object') {
+						let id = user.id  || '';
 						let first_name = user.first_name  || '';
 						let last_name = user.last_name  || '';
 						let middle_name = user.middle_name  || '';
@@ -487,9 +488,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div>
 
 								<div class="card-action-container">
-									<div class="card-action">
-										<button type="button" class="btn">View Profile</button>
-									</div>
+									
+										<div class="card-action">
+										<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/viewProfile/${id}">
+											<button type="button" class="btn">View Profile</button>
+											</a>
+										</div>
+									
 								</div>
 							</div>
 						`;
@@ -516,28 +521,29 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         <?php $this->session->unset_userdata('step1_completed'); ?>
     <?php endif; ?>
 
+
 	// Function to initialize a modal
 	function setupModal(modalId, openButtonId, closeButtonId) {
-	const modal = document.getElementById(modalId);
-	const openButton = document.getElementById(openButtonId);
-	const closeButton = document.getElementById(closeButtonId);
+		const modal = document.getElementById(modalId);
+		const openButton = document.getElementById(openButtonId);
+		const closeButton = document.getElementById(closeButtonId);
 
-	// Open modal
-	openButton.onclick = function () {
-		modal.style.display = "block";
-	};
+		// Open modal
+		openButton.onclick = function () {
+			modal.style.display = "block";
+		};
 
-	// Close modal
-	closeButton.onclick = function () {
-		modal.style.display = "none";
-	};
+		// Close modal
+		closeButton.onclick = function () {
+			modal.style.display = "none";
+		};
 
-	// Close modal when clicking outside of it
-	window.onclick = function (event) {
-		if (event.target === modal) {
-		modal.style.display = "none";
-		}
-	};
+		// Close modal when clicking outside
+		window.addEventListener("click", function (event) {
+			if (event.target === modal) {
+				modal.style.display = "none";
+			}
+		});
 	}
 
 	// Initialize "Post Announcement" modal
@@ -547,61 +553,71 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	setupModal("addFacultyModal", "addFacultyBtn", "closeAddFacultyBtn");
 
 	// File attachment handling
-	const attachmentInput = document.getElementById("announcement_attachment");
-	const attachmentPreview = document.getElementById("attachment_preview");
+	function setupFileAttachment(attachmentInputId, attachmentPreviewId, allowMultiple = true) {
+	const attachmentInput = document.getElementById(attachmentInputId);
+	const attachmentPreview = document.getElementById(attachmentPreviewId);
 	let attachedFiles = []; // Store uploaded files dynamically
 
 	attachmentInput.addEventListener("change", function () {
-	  // Loop through selected files
-	  Array.from(attachmentInput.files).forEach((file) => {
-	    // Check if file is already attached
-	    if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
-	      alert(`File "${file.name}" is already attached.`);
-	      return;
-	    }
+		// Clear previous files if only one file is allowed (for research_attachment)
+		if (!allowMultiple) {
+		attachedFiles = []; // Clear the previous files list if only one file is allowed
+		attachmentPreview.innerHTML = ""; // Clear the preview area
+		}
 
-	    // Add file to the list of attached files
-	    attachedFiles.push(file);
+		// Loop through selected files
+		Array.from(attachmentInput.files).forEach((file) => {
+		// Check if file is already attached
+		if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
+			alert(`File "${file.name}" is already attached.`);
+			return;
+		}
 
-	    // Create preview item
-	    const previewItem = document.createElement("div");
-	    previewItem.className = "attachment-preview-item";
+		// Add file to the list of attached files
+		attachedFiles.push(file);
 
-	    if (file.type.startsWith("image/")) {
-	      // Display image preview
-	      const img = document.createElement("img");
-	      img.src = URL.createObjectURL(file);
-	      img.alt = file.name;
-	      img.onload = function () {
-	        URL.revokeObjectURL(img.src); // Free memory
-	      };
-	      previewItem.appendChild(img);
-	    }
+		// Create preview item
+		const previewItem = document.createElement("div");
+		previewItem.className = "attachment-preview-item";
 
-	    // Display file name
-	    const fileName = document.createElement("span");
-	    fileName.textContent = file.name;
-	    previewItem.appendChild(fileName);
+		if (file.type.startsWith("image/")) {
+			// Display image preview
+			const img = document.createElement("img");
+			img.src = URL.createObjectURL(file);
+			img.alt = file.name;
+			img.onload = function () {
+			URL.revokeObjectURL(img.src); // Free memory
+			};
+			previewItem.appendChild(img);
+		}
 
-	    // Add a remove button for each file
-	    const removeButton = document.createElement("button");
-	    removeButton.textContent = "Remove";
-	    removeButton.className = "remove-file-btn";
-	    removeButton.onclick = function () {
-	      // Remove file from the list of attached files
-	      attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
-	      previewItem.remove();
-	    };
-	    previewItem.appendChild(removeButton);
+		// Display file name
+		const fileName = document.createElement("span");
+		fileName.textContent = file.name;
+		previewItem.appendChild(fileName);
 
-	    // Add preview item to the container
-	    attachmentPreview.appendChild(previewItem);
-	  });
+		// Add a remove button for each file
+		const removeButton = document.createElement("button");
+		removeButton.textContent = "Remove";
+		removeButton.className = "remove-file-btn";
+		removeButton.onclick = function () {
+			// Remove file from the list of attached files
+			attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
+			previewItem.remove();
+		};
+		previewItem.appendChild(removeButton);
 
-	  // Reset file input to allow re-uploading the same file if removed
-	  attachmentInput.value = "";
+		// Add preview item to the container
+		attachmentPreview.appendChild(previewItem);
+		});
 
+		// Reset file input to allow re-uploading the same file if removed
+		attachmentInput.value = "";
 	});
+	}
+
+	// Call setupFileAttachment for 'addCourseModal'
+	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
 
 	// Notification Panel Logic
 	const notificationBtn = document.getElementById('notificationBtn');
