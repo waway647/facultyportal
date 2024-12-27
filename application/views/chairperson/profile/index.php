@@ -332,6 +332,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>#</th>
 									<th>Title</th>
 									<th>Year Published</th>
+
 								</tr>
 								</thead>
 
@@ -353,7 +354,131 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script>
 	$(document).ready(function() {
 			fetchFaculty();
+			fetchQualifications();
+			fetchExperience();
+			fetchResearch();
 		});
+
+	function fetchQualifications() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/getQualifications',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Qualifications):', result);
+				if (Array.isArray(result)) {
+					createQualificationsTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching qualifications:', error);
+			}
+		});
+	}
+
+	function createQualificationsTable(result, sno) {
+		sno = Number(sno);
+		$('#QualificationsList tbody').empty(); // Clear existing rows
+		for (index in result) {
+			var id = result[index].id;
+			var academic_degree = result[index].academic_degree;
+			var institution = result[index].institution;
+			var year_graduated = result[index].year_graduated;
+
+			sno += 1;
+
+			var tr = "<tr>";
+			tr += "<td>" + sno + "</td>";  // Serial number
+			tr += "<td>" + academic_degree + "</td>";
+			tr += "<td>" + institution + "</td>";
+			tr += "<td>" + year_graduated + "</td>";
+			tr += "</tr>";
+
+			$('#QualificationsList tbody').append(tr);  // Append the new row to the table body
+		}
+	}
+
+	function fetchExperience() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/getExperience',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Experience):', result);
+				if (Array.isArray(result)) {
+					createExperienceTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching experience:', error);
+			}
+		});
+	}
+
+	function createExperienceTable(result, sno) {
+		sno = Number(sno);
+		$('#ExperienceList tbody').empty(); // Clear existing rows
+		for (index in result) {
+			var id = result[index].id;
+			var company_name = result[index].company_name;
+			var job_position = result[index].job_position;
+			var years_of_experience = result[index].years_of_experience;
+
+			sno += 1;
+
+			var tr = "<tr>";
+			tr += "<td>" + sno + "</td>";  // Serial number
+			tr += "<td>" + company_name + "</td>";
+			tr += "<td>" + job_position + "</td>";
+			tr += "<td>" + years_of_experience + "</td>";				
+			tr += "</tr>";
+
+			$('#ExperienceList tbody').append(tr);  // Append the new row to the table body
+		}
+	}
+
+	function fetchResearch() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/getResearch',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Research):', result);
+				if (Array.isArray(result)) {
+					createResearchTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching research:', error);
+			}
+		});
+	}
+
+	function createResearchTable(result, sno) {
+		sno = Number(sno);
+		$('#ResearchList tbody').empty(); // Clear existing rows
+		for (index in result) {
+			var id = result[index].id;
+			var title = result[index].title;
+			var publication_year = result[index].publication_year;
+
+			sno += 1;
+
+			var tr = "<tr>";
+			tr += "<td>" + sno + "</td>";  // Serial number
+			tr += "<td>" + title + "</td>";
+			tr += "<td>" + publication_year + "</td>";				
+			tr += "</tr>";
+
+			$('#ResearchList tbody').append(tr);  // Append the new row to the table body
+		}
+	}
 
 	// Function to fetch faculty data via AJAX
 	function fetchFaculty() {

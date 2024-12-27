@@ -160,6 +160,12 @@ body {
   margin: 0; /* Ensure no extra space */
 }
 
+.profile-headings-left .save-btn {
+  padding: 0 30px !important;
+  height: 100%;
+  border-radius: 50px;
+}
+
 .profile-headings-left .profile-button-container:hover {
   cursor: pointer;
   background-color: #C21F27;

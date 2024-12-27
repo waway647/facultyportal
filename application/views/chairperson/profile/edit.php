@@ -201,6 +201,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 
 			<div class="the-profile-main-container">
+				<form method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/insertUpdatedProfile">
 				<?php if (isset($faculty) && $faculty !== null): ?>
 				<div class="the-profile-headings">
 					<div class="profile-headings-left">
@@ -229,11 +230,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div>
 							</a>
 
-							<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/updateProfile">
-								<div class="profile-button-container save-btn">
-									<h5>Save Changes</h5>
-								</div>
-							</a>
+							<button type="submit" class="save-btn">								
+								<h5>Save Changes</h5>			
+							</button>
 						</div>
 					</div>
 
@@ -252,6 +251,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 				</div>
 				<?php endif ?>
+				</form>
 
 				<!-- Tables -->
 				<div class="tables-profile-container">
@@ -459,7 +459,153 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<script>
 	$(document).ready(function() {
+			fetchQualifications();
+			fetchExperience();
+			fetchResearch();
 		});
+
+	function fetchQualifications() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/getQualifications',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Qualifications):', result);
+				if (Array.isArray(result)) {
+					createQualificationsTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching qualifications:', error);
+			}
+		});
+	}
+
+	function createQualificationsTable(result, sno) {
+		sno = Number(sno);
+		$('#QualificationsList tbody').empty(); // Clear existing rows
+		for (index in result) {
+			var id = result[index].id;
+			var academic_degree = result[index].academic_degree;
+			var institution = result[index].institution;
+			var year_graduated = result[index].year_graduated;
+
+			sno += 1;
+
+			var tr = "<tr>";
+			tr += "<td>" + sno + "</td>";  // Serial number
+			tr += "<td>" + academic_degree + "</td>";
+			tr += "<td>" + institution + "</td>";
+			tr += "<td>" + year_graduated + "</td>";
+			tr += "<td><a href='#' onclick='fetchCourseById(" + id + ")'>" +
+					"<div class='table-icon-container'>" +
+						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
+						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/deleteCourse/" + id + "'>" +
+							"<img class='img' src='" + "<?php echo base_url('assets/images/icon/x.svg'); ?>" + "' /></a></div>" +
+					"</div></td>";
+					
+			tr += "</tr>";
+
+			$('#QualificationsList tbody').append(tr);  // Append the new row to the table body
+		}
+	}
+
+	function fetchExperience() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/getExperience',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Experience):', result);
+				if (Array.isArray(result)) {
+					createExperienceTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching experience:', error);
+			}
+		});
+	}
+
+	function createExperienceTable(result, sno) {
+		sno = Number(sno);
+		$('#ExperienceList tbody').empty(); // Clear existing rows
+		for (index in result) {
+			var id = result[index].id;
+			var company_name = result[index].company_name;
+			var job_position = result[index].job_position;
+			var years_of_experience = result[index].years_of_experience;
+
+			sno += 1;
+
+			var tr = "<tr>";
+			tr += "<td>" + sno + "</td>";  // Serial number
+			tr += "<td>" + company_name + "</td>";
+			tr += "<td>" + job_position + "</td>";
+			tr += "<td>" + years_of_experience + "</td>";
+			tr += "<td><a href='#' onclick='fetchCourseById(" + id + ")'>" +
+					"<div class='table-icon-container'>" +
+						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
+						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/deleteCourse/" + id + "'>" +
+							"<img class='img' src='" + "<?php echo base_url('assets/images/icon/x.svg'); ?>" + "' /></a></div>" +
+					"</div></td>";
+					
+			tr += "</tr>";
+
+			$('#ExperienceList tbody').append(tr);  // Append the new row to the table body
+		}
+	}
+
+	function fetchResearch() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/getResearch',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Research):', result);
+				if (Array.isArray(result)) {
+					createResearchTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching research:', error);
+			}
+		});
+	}
+
+	function createResearchTable(result, sno) {
+		sno = Number(sno);
+		$('#ResearchList tbody').empty(); // Clear existing rows
+		for (index in result) {
+			var id = result[index].id;
+			var title = result[index].title;
+			var publication_year = result[index].publication_year;
+			var research_attachment = result[index].research_attachment;
+
+			sno += 1;
+
+			var tr = "<tr>";
+			tr += "<td>" + sno + "</td>";  // Serial number
+			tr += "<td>" + title + "</td>";
+			tr += "<td>" + publication_year + "</td>";
+			tr += "<td>" + research_attachment + "</td>";
+			tr += "<td><a href='#' onclick='fetchCourseById(" + id + ")'>" +
+					"<div class='table-icon-container'>" +
+						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
+						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/deleteCourse/" + id + "'>" +
+							"<img class='img' src='" + "<?php echo base_url('assets/images/icon/x.svg'); ?>" + "' /></a></div>" +
+					"</div></td>";				
+			tr += "</tr>";
+
+			$('#ResearchList tbody').append(tr);  // Append the new row to the table body
+		}
+	}
 
 	// Function to initialize a modal
 		function setupModal(modalId, openButtonId, closeButtonId) {
