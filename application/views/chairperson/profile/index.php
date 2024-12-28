@@ -194,7 +194,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="main-content">
         <div class="main-content-2 main-content-2-profile">
 			<div class="cover-photo">
-				<img src="<?php echo base_url('assets/images/cover/sample.svg'); ?>" alt="Cover Photo">
+				<div class="cover-photo-real">
+					<img src="<?php echo base_url('assets/images/cover/sample.svg'); ?>" alt="Cover Photo">
+				</div>
+				
 				<div class="profile-picture">
 					<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="Profile Picture">
 				</div>
@@ -332,6 +335,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>#</th>
 									<th>Title</th>
 									<th>Year Published</th>
+									<th></th>
 
 								</tr>
 								</thead>
@@ -473,7 +477,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			var tr = "<tr>";
 			tr += "<td>" + sno + "</td>";  // Serial number
 			tr += "<td>" + title + "</td>";
-			tr += "<td>" + publication_year + "</td>";				
+			tr += "<td>" + publication_year + "</td>";			
+			tr += "<td><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/ViewResearchPDF/" + id + "'>View PDF</a>";
 			tr += "</tr>";
 
 			$('#ResearchList tbody').append(tr);  // Append the new row to the table body

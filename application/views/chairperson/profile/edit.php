@@ -194,11 +194,64 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="main-content">
         <div class="main-content-2 main-content-2-profile">
 			<div class="cover-photo">
-				<img src="<?php echo base_url('assets/images/cover/sample.svg'); ?>" alt="Cover Photo">
+				<div class="cover-photo-real">
+					<button>
+					<img src="<?php echo base_url('assets/images/cover/sample.svg'); ?>" alt="Cover Photo">
+						<div class="overlay">
+								<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
+						</div>
+					</button>
+				</div>
+				
 				<div class="profile-picture">
-					<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="Profile Picture">
+					<button>
+						<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="Profile Picture">
+						<div class="overlay">
+							<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
+						</div>
+					</button>
 				</div>
 			</div>
+
+									<!-- Edit Profile Modal -->
+									<div id="editProfilePictureModal" class="">
+									<div class="modal-content img-modal-content">
+										<div class="modal-header">
+											<h3>Edit Profile</h3>
+											<h6>Choose your profile picture.</h6>
+											
+											<div class="close-btn-modal">
+												<img src="<?php echo base_url('assets/images/icon/x.svg'); ?>" alt="">
+											</div>
+										</div>
+										<form id="editProfilePictureForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/createQualifications">
+											<div class="form-group img-form-group">
+												<div class="pic-preview-container">
+													<div class="preview px184">
+														<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+														<h6>184px</h6>
+													</div>
+													<div class="preview px64">
+														<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+														<h6>64px</h6>
+													</div>
+
+													<div class="preview px32">
+														<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+														<h6>32px</h6>
+													</div>
+												</div>
+
+												<div class="pic-upload-container">
+													<input type="file" id="announcement_attachment" name="announcement_attachment" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
+													<h6>Upload a file from your device. Image should be square, at least 184px x 184px.</h6>
+												</div>
+											</div>
+
+											<button type="submit" class="btn">Save & Confirm</button>
+										</form>
+									</div>
+									</div> 
 
 			<div class="the-profile-main-container">
 				<form method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/insertUpdatedProfile">
@@ -209,17 +262,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="profile-left-subheadings">
 							<!-- Full name -->
 							<input type="text" id="first_name" name="first_name" value="<?php echo $faculty->first_name; ?>" placeholder="First Name" required>
-							<input type="text" id="middle_name" name="middle_name" value="<?php echo $faculty->middle_name; ?>" placeholder="Middle Name" required>
+							<input type="text" id="middle_name" name="middle_name" value="<?php echo $faculty->middle_name; ?>" placeholder="Middle Name">
 							<input type="text" id="last_name" name="last_name" value="<?php echo $faculty->last_name; ?>" placeholder="Last Name" required>
 
 							<!-- Age -->
-							<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday; ?>" placeholder="Birthday" required>
+							<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday; ?>" placeholder="Birthday">
 							
 							<!-- Email -->
 							<input type="text" id="email" name="email" value="<?php echo $faculty->email; ?>" placeholder="Email" required>
 						
 							<!-- Mobile Number -->
-							<input type="text" id="mobile_number" name="mobile_number" value="<?php echo $faculty->mobile_number; ?>" placeholder="Mobile Number" required>
+							<input type="text" id="mobile_number" name="mobile_number" value="<?php echo $faculty->mobile_number; ?>" placeholder="Mobile Number">
 						
 						</div>
 
@@ -406,7 +459,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<input type="text" id="title" name="title" placeholder="Research Title" required>
 											</div>
 											<div class="form-group">
-												<select id="publication_year" name="publication_year" required>
+												<select id="publication_year" name="publication_year">
 													<option value="" disabled selected>Year Published</option>
 												</select>
 											</div>
@@ -438,6 +491,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>#</th>
 									<th>Title</th>
 									<th>Year Published</th>
+									<th>Attachment File Location</th>
 									<th>Action</th>
 								</tr>
 								</thead>
@@ -502,7 +556,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td><a href='#' onclick='fetchCourseById(" + id + ")'>" +
 					"<div class='table-icon-container'>" +
 						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
-						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/deleteCourse/" + id + "'>" +
+						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/deleteQualifications/" + id + "'>" +
 							"<img class='img' src='" + "<?php echo base_url('assets/images/icon/x.svg'); ?>" + "' /></a></div>" +
 					"</div></td>";
 					
@@ -550,7 +604,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td><a href='#' onclick='fetchCourseById(" + id + ")'>" +
 					"<div class='table-icon-container'>" +
 						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
-						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/deleteCourse/" + id + "'>" +
+						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/deleteExperience/" + id + "'>" +
 							"<img class='img' src='" + "<?php echo base_url('assets/images/icon/x.svg'); ?>" + "' /></a></div>" +
 					"</div></td>";
 					
@@ -598,7 +652,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td><a href='#' onclick='fetchCourseById(" + id + ")'>" +
 					"<div class='table-icon-container'>" +
 						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
-						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/deleteCourse/" + id + "'>" +
+						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/deleteResearch/" + id + "'>" +
 							"<img class='img' src='" + "<?php echo base_url('assets/images/icon/x.svg'); ?>" + "' /></a></div>" +
 					"</div></td>";				
 			tr += "</tr>";
@@ -664,9 +718,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				yearGraduatedSelect.appendChild(option);
 			}
 
-			// Populate year graduated dropdown
+			// Populate year years Experienced dropdown
 			const yearsExperienced = document.getElementById("years_of_experience");
-			for (let i = 1; i <= 50  ; i++) { // Adjust the range of years here
+			for (let i = 0; i <= 50  ; i++) { // Adjust the range of years here
 				const option = document.createElement("option");
 				option.value = i;
 				option.textContent = i;

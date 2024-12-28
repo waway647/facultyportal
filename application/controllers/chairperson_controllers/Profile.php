@@ -59,14 +59,110 @@ class Profile extends CI_Controller {
 		$current_id = $this->session->userdata('current_id');
 
 		if ($current_id) {
-			// If editing another user's profile, redirect back to viewProfile
+			// Restore data from qualifications_bin to qualifications for the given faculty_id
+			$this->db->trans_start();
+			
+			$this->Profile_model->deleteAllDataByFacultyId($current_id);
+
+					//Qualifications
+					$this->db->query("
+						INSERT INTO qualifications (faculty_profile_id, academic_degree, institution, year_graduated)
+						SELECT faculty_profile_id, academic_degree, institution, year_graduated
+						FROM qualifications_bin
+						WHERE faculty_profile_id = ?
+					", array($current_id));
+
+						// Delete restored data from qualifications_bin
+						$this->db->query("
+							DELETE FROM qualifications_bin
+							WHERE faculty_profile_id = ?
+						", array($current_id));
+
+					//Experience
+					$this->db->query("
+						INSERT INTO industry_experience (faculty_profile_id, company_name, job_position, years_of_experience)
+						SELECT faculty_profile_id, company_name, job_position, years_of_experience
+						FROM industry_experience_bin
+						WHERE faculty_profile_id = ?
+					", array($current_id));
+
+						// Delete restored data from industry_experience_bin
+						$this->db->query("
+							DELETE FROM industry_experience_bin
+							WHERE faculty_profile_id = ?
+						", array($current_id));
+
+					//Research
+					$this->db->query("
+						INSERT INTO research_outputs (faculty_profile_id, title, publication_year, research_attachment)
+						SELECT faculty_profile_id, title, publication_year, research_attachment
+						FROM research_outputs_bin
+						WHERE faculty_profile_id = ?
+					", array($current_id));
+
+						// Delete restored data from research_outputs_bin
+						$this->db->query("
+							DELETE FROM research_outputs_bin
+							WHERE faculty_profile_id = ?
+						", array($current_id));
+
+			$this->db->trans_complete();
+
+			// Redirect to view profile
 			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/viewProfile/' . $current_id);
-		} 
+		}
 
 		$logged_id = $this->session->userdata('logged_id');
 
 		if ($logged_id) {
-			// Redirect to the logged-in user's profile
+			$this->db->trans_start();
+			
+			$this->Profile_model->deleteAllDataByFacultyId($logged_id);
+
+					//Qualifications
+					$this->db->query("
+						INSERT INTO qualifications (faculty_profile_id, academic_degree, institution, year_graduated)
+						SELECT faculty_profile_id, academic_degree, institution, year_graduated
+						FROM qualifications_bin
+						WHERE faculty_profile_id = ?
+					", array($logged_id));
+
+						// Delete restored data from qualifications_bin
+						$this->db->query("
+							DELETE FROM qualifications_bin
+							WHERE faculty_profile_id = ?
+						", array($logged_id));
+
+					//Experience
+					$this->db->query("
+						INSERT INTO industry_experience (faculty_profile_id, company_name, job_position, years_of_experience)
+						SELECT faculty_profile_id, company_name, job_position, years_of_experience
+						FROM industry_experience_bin
+						WHERE faculty_profile_id = ?
+					", array($logged_id));
+
+						// Delete restored data from qualifications_bin
+						$this->db->query("
+							DELETE FROM industry_experience_bin
+							WHERE faculty_profile_id = ?
+						", array($logged_id));
+
+					//Research
+					$this->db->query("
+						INSERT INTO research_outputs (faculty_profile_id, title, publication_year, research_attachment)
+						SELECT faculty_profile_id, title, publication_year, research_attachment
+						FROM research_outputs_bin
+						WHERE faculty_profile_id = ?
+					", array($logged_id));
+
+						// Delete restored data from research_outputs_bin
+						$this->db->query("
+							DELETE FROM research_outputs_bin
+							WHERE faculty_profile_id = ?
+						", array($logged_id));
+
+			$this->db->trans_complete();
+
 			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index');
 		} else {
 			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
@@ -211,10 +307,6 @@ class Profile extends CI_Controller {
 				if ($this->upload->do_upload('research_attachment')) {
 					$uploaded_data = $this->upload->data();
 					$attachment_path = 'assets/images/research_attachments/' . $uploaded_data['file_name'];
-				} else {
-					$error = $this->upload->display_errors();
-					echo 'Error: ' . $error;
-					return;
 				}
 
 				// Get faculty profile ID
@@ -261,68 +353,229 @@ class Profile extends CI_Controller {
 	{
 		$current_id = $this->session->userdata('current_id');
 
-			//basic info update
-			if ($current_id) {
-				// Fetch user_id from faculty_profiles
-				$user_id = $this->Profile_model->getUserIdByFacultyProfileId($current_id);
-				if (!$user_id) {
-					show_error('User not found for the provided faculty_profile_id.');
-					return;
-				}
+		if ($current_id) {
+			// Save changes for the current profile
+			$this->db->trans_start();
 
-				//basic info update
-				$basic_data = array(
-					"first_name" => $this->input->post("first_name"),
-					"middle_name" => $this->input->post("middle_name"),
-					"last_name" => $this->input->post("last_name"),
-					"birthday" => $this->input->post("birthday"),
-					"email" => $this->input->post("email"),
-					"mobile_number" => $this->input->post("mobile_number")
-				);
+			// Permanently delete qualifications_bin data for the current faculty_id
+			$this->db->query("
+				DELETE FROM qualifications_bin
+				WHERE faculty_profile_id = ?
+			", array($current_id));
 
-				$this->Profile_model->updateProfile($user_id, $basic_data);
+			$this->Profile_model->insertQualifications($current_id);
 
-			//qualifications update
-			$qualifications_result = $this->Profile_model->insertQualifications($current_id);
+			// Permanently delete industry_experience_bin data for the current faculty_id
+			$this->db->query("
+				DELETE FROM industry_experience_bin
+				WHERE faculty_profile_id = ?
+			", array($current_id));
 
-			//industry experience update
-			$industry_experience_result = $this->Profile_model->insertIndustryExperience($current_id);
-			
+			$this->Profile_model->insertIndustryExperience($current_id);
+
+			// Permanently delete research_outputs_bin data for the current faculty_id
+			$this->db->query("
+				DELETE FROM research_outputs_bin
+				WHERE faculty_profile_id = ?
+			", array($current_id));
+
+			$this->Profile_model->insertResearchOutputs($current_id);
+
+			$this->db->trans_complete();
 
 			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/viewProfile/' . $current_id);
-		} 
+		}
 
 		$logged_id = $this->session->userdata('logged_id');
 
 		if ($logged_id) {
-			// Fetch user_id from faculty_profiles
-			$user_id = $this->Profile_model->getUserIdByFacultyProfileId($logged_id);
-			if (!$user_id) {
-				show_error('User not found for the provided faculty_profile_id.');
-				return;
-			}
+			$this->db->trans_start();
 
-			//basic info update
-			$basic_data = array(
-				"first_name" => $this->input->post("first_name"),
-				"middle_name" => $this->input->post("middle_name"),
-				"last_name" => $this->input->post("last_name"),
-				"birthday" => $this->input->post("birthday"),
-				"email" => $this->input->post("email"),
-				"mobile_number" => $this->input->post("mobile_number")
-			);
+			// Permanently delete qualifications_bin data for the current faculty_id
+			$this->db->query("
+				DELETE FROM qualifications_bin
+				WHERE faculty_profile_id = ?
+			", array($logged_id));
 
-			$this->Profile_model->updateProfile($user_id, $basic_data);
+			$this->Profile_model->insertQualifications($logged_id);
 
-			//qualifications update
-			$qualifications_result = $this->Profile_model->insertQualifications($logged_id);
+			// Permanently delete industry_experience_bin data for the current faculty_id
+			$this->db->query("
+				DELETE FROM industry_experience_bin
+				WHERE faculty_profile_id = ?
+			", array($logged_id));
 
-			//industry experience update
-			$industry_experience_result = $this->Profile_model->insertIndustryExperience($current_id);
+			$this->Profile_model->insertIndustryExperience($logged_id);
+
+			// Permanently delete research_outputs_bin data for the current faculty_id
+			$this->db->query("
+				DELETE FROM research_outputs_bin
+				WHERE faculty_profile_id = ?
+			", array($logged_id));
+
+			$this->Profile_model->insertResearchOutputs($logged_id);
+
+			$this->db->trans_complete();
 
 			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index');
 		} else {
 			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
+		}
+	}
+
+	public function deleteQualifications($id)
+	{
+		// Check if the qualification exists in the temporary table
+		$existsInTemp = $this->db
+			->where('id', $id)
+			->get('qualifications_temp')
+			->num_rows();
+
+		if ($existsInTemp > 0) {
+			$qualification_data = $this->Profile_model->fetchQualifications_temp($id);
+			if ($qualification_data) {
+				// Backup to qualifications_bin
+				$this->Profile_model->deleteQualifications_temp($qualification_data);
+
+				// Delete from qualifications_temp
+				$this->db->where('id', $id)->delete('qualifications_temp');
+			}
+		} else {
+			// Check if the qualification exists in the main table
+			$existsInMain = $this->db
+				->where('id', $id)
+				->get('qualifications')
+				->num_rows();
+
+			if ($existsInMain > 0) {
+				$qualification_data = $this->Profile_model->fetchQualifications_main($id);
+				if ($qualification_data) {
+					// Backup to qualifications_bin
+					$this->Profile_model->deleteQualifications_main($qualification_data);
+
+					// Delete from qualifications
+					$this->db->where('id', $id)->delete('qualifications');
+				}
+			}
+		}
+
+		// Redirect after deletion or failure
+		redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+	}
+
+	public function deleteExperience($id)
+	{
+		// Check if the industry_experience exists in the temporary table
+		$existsInTemp = $this->db
+			->where('id', $id)
+			->get('industry_experience_temp')
+			->num_rows();
+
+		if ($existsInTemp > 0) {
+			$experience_data = $this->Profile_model->fetchExperience_temp($id);
+			if ($experience_data) {
+				// Backup to industry_experience_bin
+				$this->Profile_model->deleteExperience_temp($experience_data);
+
+				// Delete from industry_experience_temp
+				$this->db->where('id', $id)->delete('industry_experience_temp');
+			}
+		} else {
+			// Check if the industry_experience exists in the main table
+			$existsInMain = $this->db
+				->where('id', $id)
+				->get('industry_experience')
+				->num_rows();
+
+			if ($existsInMain > 0) {
+				$experience_data = $this->Profile_model->fetchExperience_main($id);
+				if ($experience_data) {
+					// Backup to industry_experience_bin
+					$this->Profile_model->deleteExperience_main($experience_data);
+
+					// Delete from industry_experience
+					$this->db->where('id', $id)->delete('industry_experience');
+				}
+			}
+		}
+
+		// Redirect after deletion or failure
+		redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+	}
+
+	public function deleteResearch($id)
+	{
+		// Check if the research_outputs exists in the temporary table
+		$existsInTemp = $this->db
+			->where('id', $id)
+			->get('research_outputs_temp')
+			->num_rows();
+
+		if ($existsInTemp > 0) {
+			$research_data = $this->Profile_model->fetchResearch_temp($id);
+			if ($research_data) {
+				// Backup to research_outputs_bin
+				$this->Profile_model->deleteResearch_temp($research_data);
+
+				// Delete from research_outputs_temp
+				$this->db->where('id', $id)->delete('research_outputs_temp');
+			}
+		} else {
+			// Check if the research exists in the main table
+			$existsInMain = $this->db
+				->where('id', $id)
+				->get('research_outputs')
+				->num_rows();
+
+			if ($existsInMain > 0) {
+				$research_data = $this->Profile_model->fetchResearch_main($id);
+				if ($research_data) {
+					// Backup to research_outputs_bin
+					$this->Profile_model->deleteResearch_main($research_data);
+
+					// Delete from research_outputs
+					$this->db->where('id', $id)->delete('research_outputs');
+				}
+			}
+		}
+
+		// Redirect after deletion or failure
+		redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+	}
+
+	public function ViewResearchPDF($id)
+	{
+		// Fetch the PDF file path from the database
+		$result = $this->Profile_model->ViewResearchPDF($id);
+
+		if ($result) {
+			$file_path = $result->research_attachment; // Assuming this column stores the file path
+
+			// Check if the file exists
+			if (file_exists($file_path)) {
+				// Serve the file with proper headers for PDF preview
+				header('Content-Type: application/pdf');
+				header('Content-Disposition: inline; filename="' . basename($file_path) . '"');
+				header('Content-Length: ' . filesize($file_path));
+
+				// Output the file
+				readfile($file_path);
+			} else {
+				$current_id = $this->session->userdata('current_id');
+				if($current_id)
+				{
+					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/viewProfile/' . $current_id);
+				}
+
+				$logged_id = $this->session->userdata('logged_id');
+				if($logged_id)
+				{
+					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index');
+				}
+			}
+		} else {
+			// Handle the case where the database query does not return any result
+			echo "Error: No research found with the given ID.";
 		}
 	}
 }

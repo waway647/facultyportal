@@ -67,34 +67,128 @@ body {
     overflow: auto !important;
 }
 
+/* Styling for Cover Photo */
 .cover-photo {
-    position: relative;
-    width: 100%;
-    height: 300px; /* Adjust height as needed */
-
+  position: relative;
+  width: 100%;
+  max-width: 100%; /* Ensure the width doesn't exceed container */
+  height: 300px; /* Adjust height as needed */
 }
 
-.cover-photo img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+.cover-photo-real {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden; /* Ensure content doesn't overflow */
 }
 
+.cover-photo-real img {
+  width: 100%;
+  height: auto;
+  object-fit: cover; /* Ensures the image scales properly to cover the container */
+}
+
+.cover-photo-real button {
+  padding: 0;
+  border: 0;
+  width: 100%;
+  height: auto;
+  cursor: pointer;
+}
+
+/* Overlay for Cover Photo */
+.cover-photo-real .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0); /* Initially transparent */
+  display: flex; /* Center the content */
+  justify-content: center;
+  align-items: center;
+  z-index: 2; /* Place above the image */
+  transition: background-color 0.3s ease-in-out; /* Smooth hover effect */
+}
+
+.cover-photo-real .overlay img {
+  width: 40px; /* Size of the edit icon */
+  height: auto;
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease-in-out;
+}
+
+.cover-photo-real:hover .overlay {
+  background-color: rgba(0, 0, 0, 0.5); /* Darken background on hover */
+}
+
+.cover-photo-real:hover .overlay img {
+  opacity: 1; /* Show edit icon on hover */
+}
+
+/* Styling for Profile Picture */
 .profile-picture {
-    position: absolute;
-    bottom: -100px; /* Adjust to position the profile picture */
-    margin-left: 70px;
-    width: 200px; /* Adjust size as needed */
-    height: 200px; /* Adjust size as needed */
-    border-radius: 50%;
-    overflow: hidden;
-    border: 10px solid white; /* Optional: Add border for better visibility */
+  position: absolute;
+  bottom: -100px; /* Adjust position */
+  left: 70px; /* Align horizontally */
+  width: 200px;
+  height: 200px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 10px solid white; /* Optional border */
+  z-index: 10;
+}
+
+.profile-picture button {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: none;
+  padding: 0;
+  position: relative;
+  overflow: hidden; /* Ensure content stays inside */
+  cursor: pointer;
 }
 
 .profile-picture img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: transform 0.3s ease-in-out; /* Smooth scaling */
+}
+
+.profile-picture button:hover img {
+  transform: scale(1.05); /* Slight zoom effect */
+}
+
+/* Overlay for Profile Picture */
+.profile-picture button .overlay {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0); /* Initially transparent */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2; /* Place above the image */
+  transition: background-color 0.3s ease-in-out;
+}
+
+.profile-picture button .overlay img {
+  width: 30px; /* Smaller edit icon */
+  height: auto;
+  opacity: 0; /* Initially hidden */
+  transition: opacity 0.3s ease-in-out;
+}
+
+.profile-picture button:hover .overlay {
+  background-color: rgba(0, 0, 0, 0.5); /* Darken overlay on hover */
+}
+
+.profile-picture button:hover .overlay img {
+  opacity: 1; /* Show icon */
 }
 
 .the-profile-main-container {
@@ -216,4 +310,39 @@ body {
   align-items: center;
   justify-content: space-between;
   padding: 0 0 20px;
+}
+
+.img-modal-content {
+  width: 60%;
+}
+
+.img-form-group {
+  display: flex;
+  height: 0;
+  width: 0;
+}
+
+.pic-preview-container {
+  display: flex;
+  gap: 20px;
+}
+
+.preview .px184 {
+  width: 184px;
+  height: 184px;
+}
+
+.preview .px64 {
+  width: 64px;
+  height: 64px;
+}
+
+.preview .px32 {
+  width: 32px;
+  height: 32px;
+}
+
+.preview img {
+  width: 100%;
+  height: auto;
 }
