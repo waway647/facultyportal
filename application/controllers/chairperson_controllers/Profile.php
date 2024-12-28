@@ -64,6 +64,17 @@ class Profile extends CI_Controller {
 			
 			$this->Profile_model->deleteAllDataByFacultyId($current_id);
 
+			// Get the original profile picture from the database (before the edit)
+			$faculty = $this->Profile_model->getFacultyProfile($current_id);
+			$original_profile_pic = $faculty->profile_picture; // Store the original image path
+	
+			// Revert the profile picture to the original image
+			$user_id = $this->Profile_model->getUserIdByFacultyProfileId($current_id);
+			if ($user_id) {
+				// Update the profile picture to the original one
+				$this->Profile_model->updateProfile($user_id, ['profile_picture' => $original_profile_pic]);
+			}
+
 					//Qualifications
 					$this->db->query("
 						INSERT INTO qualifications (faculty_profile_id, academic_degree, institution, year_graduated)
@@ -118,6 +129,17 @@ class Profile extends CI_Controller {
 			$this->db->trans_start();
 			
 			$this->Profile_model->deleteAllDataByFacultyId($logged_id);
+
+			// Get the original profile picture from the database (before the edit)
+			$faculty = $this->Profile_model->getFacultyProfile($logged_id);
+			$original_profile_pic = $faculty->profile_picture; // Store the original image path
+	
+			// Revert the profile picture to the original image
+			$user_id = $this->Profile_model->getUserIdByFacultyProfileId($logged_id);
+			if ($user_id) {
+				// Update the profile picture to the original one
+				$this->Profile_model->updateProfile($user_id, ['profile_picture' => $original_profile_pic]);
+			}
 
 					//Qualifications
 					$this->db->query("
@@ -357,6 +379,44 @@ class Profile extends CI_Controller {
 			// Save changes for the current profile
 			$this->db->trans_start();
 
+			// Fetch user_id from faculty_profiles
+			$user_id = $this->Profile_model->getUserIdByFacultyProfileId($current_id);
+			if (!$user_id) {
+				show_error('User not found for the provided faculty_profile_id.');
+				return;
+			}
+
+			//basic info update
+			$basic_data = array(
+				"first_name" => $this->input->post("first_name"),
+				"middle_name" => $this->input->post("middle_name"),
+				"last_name" => $this->input->post("last_name"),
+				"birthday" => $this->input->post("birthday"),
+				"email" => $this->input->post("email"),
+				"mobile_number" => $this->input->post("mobile_number")
+			);
+
+			$this->Profile_model->updateProfile($user_id, $basic_data);
+
+			// Check if the profile picture is being updated
+			if ($_FILES['profile_picture']['name']) {
+				$config['upload_path'] = './assets/images/profile/';
+				$config['allowed_types'] = 'jpg|jpeg|png';
+				$this->load->library('upload', $config);
+	
+				if ($this->upload->do_upload('profile_picture')) {
+					$uploaded_data = $this->upload->data();
+					$attachment_path = 'assets/images/profile/' . $uploaded_data['file_name'];
+	
+					// Update the profile picture path in the database
+					$this->Profile_model->updateProfile($user_id, ['profile_picture' => $attachment_path]);
+				} else {
+					// Handle errors if upload fails
+					echo $this->upload->display_errors();
+					return;
+				}
+			}
+
 			// Permanently delete qualifications_bin data for the current faculty_id
 			$this->db->query("
 				DELETE FROM qualifications_bin
@@ -390,6 +450,44 @@ class Profile extends CI_Controller {
 
 		if ($logged_id) {
 			$this->db->trans_start();
+
+			// Fetch user_id from faculty_profiles
+			$user_id = $this->Profile_model->getUserIdByFacultyProfileId($logged_id);
+			if (!$user_id) {
+				show_error('User not found for the provided faculty_profile_id.');
+				return;
+			}
+
+			//basic info update
+			$basic_data = array(
+				"first_name" => $this->input->post("first_name"),
+				"middle_name" => $this->input->post("middle_name"),
+				"last_name" => $this->input->post("last_name"),
+				"birthday" => $this->input->post("birthday"),
+				"email" => $this->input->post("email"),
+				"mobile_number" => $this->input->post("mobile_number")
+			);
+
+			$this->Profile_model->updateProfile($user_id, $basic_data);
+
+			// Check if the profile picture is being updated
+			if ($_FILES['profile_picture']['name']) {
+				$config['upload_path'] = './assets/images/profile/';
+				$config['allowed_types'] = 'jpg|jpeg|png';
+				$this->load->library('upload', $config);
+	
+				if ($this->upload->do_upload('profile_picture')) {
+					$uploaded_data = $this->upload->data();
+					$attachment_path = 'assets/images/profile/' . $uploaded_data['file_name'];
+	
+					// Update the profile picture path in the database
+					$this->Profile_model->updateProfile($user_id, ['profile_picture' => $attachment_path]);
+				} else {
+					// Handle errors if upload fails
+					echo $this->upload->display_errors();
+					return;
+				}
+			}
 
 			// Permanently delete qualifications_bin data for the current faculty_id
 			$this->db->query("
@@ -578,4 +676,81 @@ class Profile extends CI_Controller {
 			echo "Error: No research found with the given ID.";
 		}
 	}
+
+	public function getProfilePic()
+	{
+		$current_id = $this->session->userdata('current_id');
+		$logged_id = $this->session->userdata('logged_id');
+
+		$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
+
+		if ($faculty_id) {
+			$result = $this->Profile_model->getProfilePic($faculty_id);
+			echo json_encode($result); // Return data as JSON
+		} else {
+			echo json_encode(['error' => 'No valid faculty ID found.']);
+		}
+	}
+
+			public function changeProfilePic()
+			{
+				$config['upload_path'] = './assets/images/profile/';
+				$config['allowed_types'] = 'jpg|jpeg|png';
+				$this->load->library('upload', $config);
+				
+				if ($this->upload->do_upload('profile_picture')) {
+					$uploaded_data = $this->upload->data();
+					$attachment_path = 'assets/images/profile/' . $uploaded_data['file_name'];
+				} else {
+					echo $this->upload->display_errors(); // Debugging purpose
+					return;
+				}
+
+				// Get faculty profile ID
+				$current_id = $this->session->userdata('current_id');
+
+				// Prepare research data to insert
+				if ($current_id) {
+					$user_id = $this->Profile_model->getUserIdByFacultyProfileId($current_id);
+					if (!$user_id) {
+						show_error('User not found for the provided faculty_profile_id.');
+						return;
+					}
+
+					//basic info update
+					$user_data = array(
+						"profile_picture" => $attachment_path
+					);
+
+					// Insert research data into database
+					$result = $this->Profile_model->updateProfile($user_id, $user_data);
+					if ($result) {
+						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+					}
+				}
+
+				// Check if logged in by logged_id
+				$logged_id = $this->session->userdata('logged_id');
+
+				if ($logged_id) {
+					$user_id = $this->Profile_model->getUserIdByFacultyProfileId($logged_id);
+					if (!$user_id) {
+						show_error('User not found for the provided faculty_profile_id.');
+						return;
+					}
+
+					//basic info update
+					$user_data = array(
+						"profile_picture" => $attachment_path
+					);
+
+					// Insert research data into database
+					$result = $this->Profile_model->updateProfile($user_id, $user_data);
+					if ($result) {
+						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+					}
+				} else {
+					redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
+				}
+			}
 }

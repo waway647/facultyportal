@@ -194,13 +194,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="main-content">
         <div class="main-content-2 main-content-2-profile">
 			<div class="cover-photo">
-				<div class="cover-photo-real">
-					<img src="<?php echo base_url('assets/images/cover/sample.svg'); ?>" alt="Cover Photo">
-				</div>
-				
-				<div class="profile-picture">
-					<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="Profile Picture">
-				</div>
+				<?php if (isset($faculty) && $faculty !== null): ?>
+					<div class="cover-photo-real">
+						<img src="<?php echo base_url('assets/images/cover/sample.svg'); ?>" alt="Cover Photo">
+					</div>
+					
+					<div class="profile-picture">
+						<img src="<?php echo base_url($faculty->profile_picture); ?>" alt="Profile Picture">
+					</div>
+				<?php endif ?>
 			</div>
 
 			<div class="the-profile-main-container">

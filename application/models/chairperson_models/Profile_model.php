@@ -273,4 +273,18 @@ class Profile_model extends CI_Model {
             $this->db->insert('research_outputs', $research_data);
         }
     }
+
+    public function getProfilePic($faculty_profile_id)
+	{
+        $this->db->select('profile_picture');
+		$this->db->where('faculty_profile_id', $faculty_profile_id);
+        $query = $this->db->get('research_outputs_vw');
+        return $query->result_array(); // Use row() to get a single row
+	}
+
+    public function insertNewProfilePic($user_data)
+	{
+		$this->db->insert("research_outputs_temp", $user_data);
+		return true;
+	}
 }

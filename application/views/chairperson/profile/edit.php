@@ -194,61 +194,75 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="main-content">
         <div class="main-content-2 main-content-2-profile">
 			<div class="cover-photo">
-				<div class="cover-photo-real">
-					<button>
-					<img src="<?php echo base_url('assets/images/cover/sample.svg'); ?>" alt="Cover Photo">
-						<div class="overlay">
+				<?php if (isset($faculty) && $faculty !== null): ?>
+					<div class="cover-photo-real">
+						<button>
+						<img src="<?php echo base_url('assets/images/cover/sample.svg'); ?>" alt="Cover Photo">
+							<div class="overlay">
+									<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
+							</div>
+						</button>
+					</div>
+					
+					<div class="profile-picture">
+						<button id="editProfilePictureBtn">
+							<img id="profilePicture" src="<?php echo base_url($faculty->profile_picture); ?>" alt="Profile Picture">
+							<div class="overlay">
 								<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
-						</div>
-					</button>
-				</div>
-				
-				<div class="profile-picture">
-					<button>
-						<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="Profile Picture">
-						<div class="overlay">
-							<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
-						</div>
-					</button>
-				</div>
+							</div>
+						</button>
+					</div>
+				<?php endif ?>
 			</div>
 
 									<!-- Edit Profile Modal -->
-									<div id="editProfilePictureModal" class="">
+									<div id="editProfilePictureModal" class="modal">
 									<div class="modal-content img-modal-content">
 										<div class="modal-header">
-											<h3>Edit Profile</h3>
-											<h6>Choose your profile picture.</h6>
+											<div class="modal-header-text">
+												<h3>Edit Profile</h3>
+												<h6>Choose your profile picture.</h6>
+											</div>
 											
-											<div class="close-btn-modal">
+											<div class="close-btn-modal" id="closeeditProfilePictureBtn">
 												<img src="<?php echo base_url('assets/images/icon/x.svg'); ?>" alt="">
 											</div>
 										</div>
-										<form id="editProfilePictureForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/createQualifications">
+										<form id="editProfilePictureForm" method="post" enctype="multipart/form-data" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/changeProfilePic">
 											<div class="form-group img-form-group">
 												<div class="pic-preview-container">
-													<div class="preview px184">
-														<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+													<div class="preview">
+														<div class="px184">
+															<img id="preview_184" src="<?php echo base_url($faculty->profile_picture); ?>" alt="">
+														</div>
 														<h6>184px</h6>
 													</div>
-													<div class="preview px64">
-														<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+													<div class="preview">
+														<div class="px64">
+															<img id="preview_64" src="<?php echo base_url($faculty->profile_picture); ?>" alt="">
+														</div>
 														<h6>64px</h6>
 													</div>
 
-													<div class="preview px32">
-														<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+													<div class="preview">
+														<div class="px32">
+															<img id="preview_32"src="<?php echo base_url($faculty->profile_picture); ?>" alt="">
+														</div>
 														<h6>32px</h6>
 													</div>
 												</div>
 
+
 												<div class="pic-upload-container">
-													<input type="file" id="announcement_attachment" name="announcement_attachment" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx">
+													<input type="file" id="profile_pic_change" name="profile_picture" accept=".jpg,.jpeg,.png">
+													<label for="profile_pic_change">Upload your profile</label>
 													<h6>Upload a file from your device. Image should be square, at least 184px x 184px.</h6>
 												</div>
 											</div>
-
-											<button type="submit" class="btn">Save & Confirm</button>
+											
+											<div class="button-submit-container">
+												<button type="submit" class="btn">Save & Confirm</button>
+											</div>					
 										</form>
 									</div>
 									</div> 
@@ -697,6 +711,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Initialize "Add Research" modal
     setupModal("addResearchModal", "addResearchBtn", "closeaddResearchBtn");
 
+	// Initialize "Add Research" modal
+    setupModal("editProfilePictureModal", "editProfilePictureBtn", "closeeditProfilePictureBtn");
+
 			// Get the current year
 			const currentYear = new Date().getFullYear();
 
@@ -807,9 +824,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Call setupFileAttachment for 'research_attachment'
 	setupFileAttachment("research_attachment", "research_attachment_preview", false);
 
+	// Call setupFileAttachment for 'research_attachment'
+	setupFileAttachment("profile_pic_change", "profile_pic_change_preview", false);
+
 	// Call setupFileAttachment for 'announcement_attachment' if required
 	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
 
+
+	document.getElementById('profile_pic_change').addEventListener('change', function (event) {
+		const file = event.target.files[0]; // Get the selected file
+		if (file) {
+			const reader = new FileReader(); // Create a FileReader to read the file
+
+			// Load the file and update the preview images
+			reader.onload = function (e) {
+				const preview184 = document.getElementById('preview_184');
+				const preview64 = document.getElementById('preview_64');
+				const preview32 = document.getElementById('preview_32');
+
+				// Update the src of preview images
+				preview184.src = e.target.result;
+				preview64.src = e.target.result;
+				preview32.src = e.target.result;
+			};
+
+			reader.readAsDataURL(file); // Read the file as a data URL
+		}
+	});
 
 	// Notification Panel Logic
 	const notificationBtn = document.getElementById('notificationBtn');
