@@ -11,6 +11,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<!-- jQuery library -->
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+	<script type="text/javascript">
+		var base_url = "<?php echo base_url(); ?>"; // Passing PHP base_url to JS
+	</script>
 	
   </head>
   <body>
@@ -331,49 +335,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 
 				<div id="profileCardContainer" class="the-content-container">
-					<!--
-					<div class="profile-card-container">
-						<div class="card-left">
-							<div class="the-pic-container">
-								<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">	
-							</div>
-
-							<div class="the-details-container">
-								<h4>Mapula, Paul Joshua G.</h4>
-								
-								<div class="the-sub-details">
-									<h6 class="role-class">Faculty</h6>
-									<h6>Information Technology Department</h6>
-									<h6>CC101 | IT101</h6>
-								</div>
-							</div>
-						</div>
-
-						<div class="card-right">
-							<div class="contact-row">
-								<div class="icon-contact">
-									<img src="<?php echo base_url('assets/images/icon/email.svg'); ?>" alt="">
-								</div>
-								
-								<h6>2022-02519@sanbeda.edu.ph</h6>
-							</div>
-
-							<div class="contact-row">
-								<div class="icon-contact">
-									<img src="<?php echo base_url('assets/images/icon/phone.svg'); ?>" alt="">
-								</div>
-								
-								<h6>09958541242</h6>
-							</div>
-						</div>
-
-						<div class="card-action-container">
-							<div class="card-action">
-								<button type="button" class="btn">View Profile</button>
-							</div>
-						</div>
-					</div>
-									-->
+					
 				</div>
 			</div>
         </div>
@@ -435,6 +397,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						let email = user.email  || '';
 						let mobile_number = user.mobile_number  || '';
 						let age = user.age || '';
+						let profile_picture = user.profile_picture || '';
+
 
 						// Construct the profile card dynamically with conditional commas
 						let name = '';
@@ -453,14 +417,14 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="profile-card-container">
 								<div class="card-left">
 									<div class="the-pic-container">
-										<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">    
+										<img src="${base_url}${profile_picture || 'assets/images/profile/sample.svg'}" alt="">    
 									</div>
 
 									<div class="the-details-container">
 										<h4>${name}</h4>
 										
 										<div class="the-sub-details">
-											<h6 class="role-class">${age}</h6>
+											<h6 class="role-class">${age} years old</h6>
 											<h6>${department}</h6>
 											<h6></h6>
 										</div>

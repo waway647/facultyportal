@@ -14,6 +14,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<!-- jQuery library -->
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
 	</head>
   <body>
   <div class="dashboard-faculty">
@@ -196,7 +198,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="cover-photo">
 				<?php if (isset($faculty) && $faculty !== null): ?>
 					<div class="cover-photo-real">
-						<img src="<?php echo base_url('assets/images/cover/sample.svg'); ?>" alt="Cover Photo">
+						<img src="<?php echo base_url($faculty->cover_photo); ?>" alt="Cover Photo">
 					</div>
 					
 					<div class="profile-picture">
@@ -329,7 +331,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<h4>Research Outputs</h4>
 							</div>
 						</div>
-						
+
+						<!-- Flash Message for Error -->
+						<?php if ($this->session->flashdata('error')): ?>
+						<script type="text/javascript">
+							Swal.fire({
+								icon: 'error',
+								title: 'Oops...',
+								text: "<?php echo $this->session->flashdata('error'); ?>"
+							});
+						</script>
+						<?php endif; ?>
+											
 						<div id="container">    
 							<table class="table" id="ResearchList" name="ResearchList">
 								<thead>
@@ -349,8 +362,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						</div>
 					</div>
-						
-					</div>
+					
+				</div>
 				</div>
 			</div>
         </div>
@@ -480,11 +493,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td>" + sno + "</td>";  // Serial number
 			tr += "<td>" + title + "</td>";
 			tr += "<td>" + publication_year + "</td>";			
-			tr += "<td><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/ViewResearchPDF/" + id + "'>View PDF</a>";
+			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + id + ")'>View PDF</a></td>";
 			tr += "</tr>";
 
 			$('#ResearchList tbody').append(tr);  // Append the new row to the table body
 		}
+	}
+
+	// JavaScript function to open the PDF in a new tab
+	function openPDFInNewTab(id) {
+		// Construct the URL to open the PDF
+		var url = 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/ViewResearchPDF/' + id;
+		// Open the URL in a new tab
+		window.open(url, '_blank');
 	}
 
 	// Function to fetch faculty data via AJAX
@@ -655,6 +676,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		notificationPanel.classList.remove('open');
 	}
 	});
+	
 	</script>
 
 

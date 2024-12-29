@@ -1128,37 +1128,45 @@ input {
   overflow: auto; /* Enables vertical scrolling when content exceeds height */
 }
 
+/* Container for the profile cards */
 .the-content-container .profile-card-container {
   display: grid; /* Use CSS Grid */
   grid-template-columns: repeat(3, 1fr); /* Create 3 equal columns */
-  gap: 10%; /* Add some space between the grid items */
+  gap: 30px; /* Add some space between the grid items */
   padding: 30px 100px;
   border-top: 1px solid #DCDBDB;
   border-bottom: 1px solid #DCDBDB;
 }
 
+/* Left section for the profile card */
 .the-content-container .card-left {
   display: flex;
-  gap: 30px;
-  width: 400px;
+  gap: 25px;
 }
 
+/* Profile image container */
 .the-content-container .the-pic-container {
   width: 100px;
-  height: auto;
+  height: 100px;
+  overflow: hidden; /* Hide overflow for rounded corners */
+  flex-shrink: 0; /* Prevent it from shrinking */
 }
 
+/* Image styling */
 .the-content-container .the-pic-container img {
-  width: 100px;
-  width: 100px;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* Ensure the image covers the container */
 }
 
+/* Container for profile details */
 .the-content-container .the-details-container {
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
+/* Sub details section */
 .the-content-container .the-sub-details {
   display: flex;
   flex-direction: column;
@@ -1168,38 +1176,46 @@ input {
   font-style: italic;
 }
 
+/* Profile name styling */
 .the-content-container h4 {
   font-family: 'TT Hoves Medium';
   font-weight: 900;
 }
 
+/* Role styling */
 .the-content-container .role-class {
   font-family: 'TT Hoves Medium';
   font-weight: 900;
   font-style: normal !important;
 }
 
+/* Right section for contact info */
 .the-content-container .card-right {
   display: flex;
   flex-direction: column;
   gap: 10px;
 }
 
+/* Contact row styling */
 .the-content-container .contact-row {
   display: flex;
   align-items: center;
   gap: 10px;
 }
 
+/* Styling for the contact info */
 .the-content-container .contact-row h6 {
   font-family: 'TT Hoves Medium';
   color: #A4A4A4;
 }
 
+/* Button container */
 .the-content-container .card-action-container {
   display: flex;
+  justify-content: end;
 }
 
+/* Button styling */
 .the-content-container .card-action-container button {
   border: 1px solid #DCDBDB;
   border-radius: 3px;
@@ -1209,6 +1225,7 @@ input {
   color: #A4A4A4;
 }
 
+/* Button hover effect */
 .the-content-container .card-action-container button:hover {
   cursor: pointer;
   background-color: #DCDBDB;

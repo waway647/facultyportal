@@ -39,6 +39,11 @@ class Profile extends CI_Controller {
 		$this->session->set_userdata('current_id', $current_id);
 	
 		$data['faculty'] = $this->Profile_model->getFacultyProfile($current_id);
+
+		// Update session data with the latest profile picture and cover photo
+		$this->session->set_userdata('profile_picture', $data['faculty']->profile_picture);
+		$this->session->set_userdata('cover_photo', $data['faculty']->cover_photo);
+
 		$this->load->view('chairperson/profile/index', $data);
 	}
 
@@ -48,6 +53,11 @@ class Profile extends CI_Controller {
 
 		if ($current_id) {
 			$data['faculty'] = $this->Profile_model->getFacultyProfile($current_id);
+			
+			// Update session data with the latest profile picture and cover photo
+			$this->session->set_userdata('profile_picture', $data['faculty']->profile_picture);
+			$this->session->set_userdata('cover_photo', $data['faculty']->cover_photo);
+
 			$this->load->view('chairperson/profile/edit', $data);
 		} else {
 			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index');
@@ -64,16 +74,14 @@ class Profile extends CI_Controller {
 			
 			$this->Profile_model->deleteAllDataByFacultyId($current_id);
 
-			// Get the original profile picture from the database (before the edit)
+			// Get the original profile picture and cover photo from the database
 			$faculty = $this->Profile_model->getFacultyProfile($current_id);
-			$original_profile_pic = $faculty->profile_picture; // Store the original image path
+			$original_profile_pic = $faculty->profile_picture;
+			$original_cover_photo = $faculty->cover_photo;
 	
-			// Revert the profile picture to the original image
-			$user_id = $this->Profile_model->getUserIdByFacultyProfileId($current_id);
-			if ($user_id) {
-				// Update the profile picture to the original one
-				$this->Profile_model->updateProfile($user_id, ['profile_picture' => $original_profile_pic]);
-			}
+			// Reset session data to match the original state
+			$this->session->set_userdata('profile_picture', $original_profile_pic);
+			$this->session->set_userdata('cover_photo', $original_cover_photo);
 
 					//Qualifications
 					$this->db->query("
@@ -130,16 +138,14 @@ class Profile extends CI_Controller {
 			
 			$this->Profile_model->deleteAllDataByFacultyId($logged_id);
 
-			// Get the original profile picture from the database (before the edit)
+			// Get the original profile picture and cover photo from the database
 			$faculty = $this->Profile_model->getFacultyProfile($logged_id);
-			$original_profile_pic = $faculty->profile_picture; // Store the original image path
+			$original_profile_pic = $faculty->profile_picture;
+			$original_cover_photo = $faculty->cover_photo;
 	
-			// Revert the profile picture to the original image
-			$user_id = $this->Profile_model->getUserIdByFacultyProfileId($logged_id);
-			if ($user_id) {
-				// Update the profile picture to the original one
-				$this->Profile_model->updateProfile($user_id, ['profile_picture' => $original_profile_pic]);
-			}
+			// Reset session data to match the original state
+			$this->session->set_userdata('profile_picture', $original_profile_pic);
+			$this->session->set_userdata('cover_photo', $original_cover_photo);
 
 					//Qualifications
 					$this->db->query("
@@ -386,6 +392,9 @@ class Profile extends CI_Controller {
 				return;
 			}
 
+			$profile_picture = $this->session->userdata('profile_picture');
+			$cover_photo = $this->session->userdata('cover_photo');
+
 			//basic info update
 			$basic_data = array(
 				"first_name" => $this->input->post("first_name"),
@@ -393,25 +402,41 @@ class Profile extends CI_Controller {
 				"last_name" => $this->input->post("last_name"),
 				"birthday" => $this->input->post("birthday"),
 				"email" => $this->input->post("email"),
-				"mobile_number" => $this->input->post("mobile_number")
+				"mobile_number" => $this->input->post("mobile_number"),
+				"profile_picture" => $profile_picture,
+				"cover_photo" => $cover_photo
 			);
 
 			$this->Profile_model->updateProfile($user_id, $basic_data);
 
-			// Check if the profile picture is being updated
+			// Update session and database only if files are uploaded
 			if ($_FILES['profile_picture']['name']) {
 				$config['upload_path'] = './assets/images/profile/';
 				$config['allowed_types'] = 'jpg|jpeg|png';
 				$this->load->library('upload', $config);
-	
+
 				if ($this->upload->do_upload('profile_picture')) {
 					$uploaded_data = $this->upload->data();
-					$attachment_path = 'assets/images/profile/' . $uploaded_data['file_name'];
-	
-					// Update the profile picture path in the database
-					$this->Profile_model->updateProfile($user_id, ['profile_picture' => $attachment_path]);
+					$profile_picture = 'assets/images/profile/' . $uploaded_data['file_name'];
+					$this->Profile_model->updateProfile($user_id, ['profile_picture' => $profile_picture]);
+					$this->session->set_userdata('profile_picture', $profile_picture);
 				} else {
-					// Handle errors if upload fails
+					echo $this->upload->display_errors();
+					return;
+				}
+			}
+
+			if ($_FILES['cover_photo']['name']) {
+				$config['upload_path'] = './assets/images/cover/';
+				$config['allowed_types'] = 'jpg|jpeg|png';
+				$this->load->library('upload', $config);
+			
+				if ($this->upload->do_upload('cover_photo')) {
+					$uploaded_data = $this->upload->data();
+					$cover_photo = 'assets/images/cover/' . $uploaded_data['file_name'];
+					$this->Profile_model->updateProfile($user_id, ['cover_photo' => $cover_photo]);
+					$this->session->set_userdata('cover_photo', $cover_photo);
+				} else {
 					echo $this->upload->display_errors();
 					return;
 				}
@@ -458,6 +483,9 @@ class Profile extends CI_Controller {
 				return;
 			}
 
+			$profile_picture = $this->session->userdata('profile_picture');
+			$cover_photo = $this->session->userdata('cover_photo');
+
 			//basic info update
 			$basic_data = array(
 				"first_name" => $this->input->post("first_name"),
@@ -465,25 +493,41 @@ class Profile extends CI_Controller {
 				"last_name" => $this->input->post("last_name"),
 				"birthday" => $this->input->post("birthday"),
 				"email" => $this->input->post("email"),
-				"mobile_number" => $this->input->post("mobile_number")
+				"mobile_number" => $this->input->post("mobile_number"),
+				"profile_picture" => $profile_picture,
+				"cover_photo" => $cover_photo
 			);
 
 			$this->Profile_model->updateProfile($user_id, $basic_data);
 
-			// Check if the profile picture is being updated
+			// Update session and database only if files are uploaded
 			if ($_FILES['profile_picture']['name']) {
 				$config['upload_path'] = './assets/images/profile/';
 				$config['allowed_types'] = 'jpg|jpeg|png';
 				$this->load->library('upload', $config);
-	
+
 				if ($this->upload->do_upload('profile_picture')) {
 					$uploaded_data = $this->upload->data();
-					$attachment_path = 'assets/images/profile/' . $uploaded_data['file_name'];
-	
-					// Update the profile picture path in the database
-					$this->Profile_model->updateProfile($user_id, ['profile_picture' => $attachment_path]);
+					$profile_picture = 'assets/images/profile/' . $uploaded_data['file_name'];
+					$this->Profile_model->updateProfile($user_id, ['profile_picture' => $profile_picture]);
+					$this->session->set_userdata('profile_picture', $profile_picture);
 				} else {
-					// Handle errors if upload fails
+					echo $this->upload->display_errors();
+					return;
+				}
+			}
+
+			if ($_FILES['cover_photo']['name']) {
+				$config['upload_path'] = './assets/images/cover/';
+				$config['allowed_types'] = 'jpg|jpeg|png';
+				$this->load->library('upload', $config);
+			
+				if ($this->upload->do_upload('cover_photo')) {
+					$uploaded_data = $this->upload->data();
+					$cover_photo = 'assets/images/cover/' . $uploaded_data['file_name'];
+					$this->Profile_model->updateProfile($user_id, ['cover_photo' => $cover_photo]);
+					$this->session->set_userdata('cover_photo', $cover_photo);
+				} else {
 					echo $this->upload->display_errors();
 					return;
 				}
@@ -662,12 +706,14 @@ class Profile extends CI_Controller {
 				$current_id = $this->session->userdata('current_id');
 				if($current_id)
 				{
+					$this->session->set_flashdata('error', 'Sorry, this document doesn\'t have a downloadable PDF.');
 					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/viewProfile/' . $current_id);
 				}
 
 				$logged_id = $this->session->userdata('logged_id');
 				if($logged_id)
 				{
+					$this->session->set_flashdata('error', 'Sorry, this document doesn\'t have a downloadable PDF.');
 					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index');
 				}
 			}
@@ -697,60 +743,111 @@ class Profile extends CI_Controller {
 				$config['upload_path'] = './assets/images/profile/';
 				$config['allowed_types'] = 'jpg|jpeg|png';
 				$this->load->library('upload', $config);
-				
+			
 				if ($this->upload->do_upload('profile_picture')) {
 					$uploaded_data = $this->upload->data();
 					$attachment_path = 'assets/images/profile/' . $uploaded_data['file_name'];
 				} else {
-					echo $this->upload->display_errors(); // Debugging purpose
+					$error = $this->upload->display_errors();
+					echo json_encode(['status' => 'error', 'message' => $error]);
 					return;
 				}
-
-				// Get faculty profile ID
+			
+				// Get faculty profile ID from session
 				$current_id = $this->session->userdata('current_id');
-
-				// Prepare research data to insert
+				$logged_id = $this->session->userdata('logged_id');
+				$user_id = null;
+			
 				if ($current_id) {
 					$user_id = $this->Profile_model->getUserIdByFacultyProfileId($current_id);
-					if (!$user_id) {
-						show_error('User not found for the provided faculty_profile_id.');
-						return;
-					}
-
-					//basic info update
-					$user_data = array(
-						"profile_picture" => $attachment_path
-					);
-
-					// Insert research data into database
-					$result = $this->Profile_model->updateProfile($user_id, $user_data);
-					if ($result) {
-						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
-					}
-				}
-
-				// Check if logged in by logged_id
-				$logged_id = $this->session->userdata('logged_id');
-
-				if ($logged_id) {
+				} elseif ($logged_id) {
 					$user_id = $this->Profile_model->getUserIdByFacultyProfileId($logged_id);
-					if (!$user_id) {
-						show_error('User not found for the provided faculty_profile_id.');
-						return;
-					}
-
-					//basic info update
-					$user_data = array(
-						"profile_picture" => $attachment_path
-					);
-
-					// Insert research data into database
-					$result = $this->Profile_model->updateProfile($user_id, $user_data);
-					if ($result) {
-						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
-					}
-				} else {
-					redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
 				}
+			
+				if (!$user_id) {
+					echo json_encode(['status' => 'error', 'message' => 'User not found for the provided faculty_profile_id.']);
+					return;
+				}
+			
+				// Update session data
+				$this->session->set_userdata([
+					'profile_picture' => $attachment_path,
+					'user_id' => $user_id,
+				]);
+			
+				// Optionally, update the database with the new profile picture
+				// Uncomment the following lines if necessary:
+				// $this->Profile_model->updateProfile($user_id, ['profile_picture' => $attachment_path]);
+			
+				// Respond with a JSON success message
+				echo json_encode([
+					'status' => 'success',
+					'profile_picture' => base_url($attachment_path),
+					'message' => 'Profile picture updated successfully.'
+				]);
+			}
+
+	public function getCoverPhoto()
+	{
+		$current_id = $this->session->userdata('current_id');
+		$logged_id = $this->session->userdata('logged_id');
+
+		$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
+
+		if ($faculty_id) {
+			$result = $this->Profile_model->getProfilePic($faculty_id);
+			echo json_encode($result); // Return data as JSON
+		} else {
+			echo json_encode(['error' => 'No valid faculty ID found.']);
+		}
+	}
+
+			public function changeCoverPhoto()
+			{
+				$config['upload_path'] = './assets/images/cover/';
+				$config['allowed_types'] = 'jpg|jpeg|png';
+				$this->load->library('upload', $config);
+			
+				if ($this->upload->do_upload('cover_photo')) {
+					$uploaded_data = $this->upload->data();
+					$attachment_path = 'assets/images/cover/' . $uploaded_data['file_name'];
+				} else {
+					$error = $this->upload->display_errors();
+					echo json_encode(['status' => 'error', 'message' => $error]);
+					return;
+				}
+			
+				// Get faculty profile ID from session
+				$current_id = $this->session->userdata('current_id');
+				$logged_id = $this->session->userdata('logged_id');
+				$user_id = null;
+			
+				if ($current_id) {
+					$user_id = $this->Profile_model->getUserIdByFacultyProfileId($current_id);
+				} elseif ($logged_id) {
+					$user_id = $this->Profile_model->getUserIdByFacultyProfileId($logged_id);
+				}
+			
+				if (!$user_id) {
+					echo json_encode(['status' => 'error', 'message' => 'User not found for the provided faculty_profile_id.']);
+					return;
+				}
+			
+				// Update session data
+				$this->session->set_userdata([
+					'cover_photo' => $attachment_path,
+					'user_id' => $user_id,
+				]);
+			
+				// Optionally, update the database with the new profile picture
+				// Uncomment the following lines if necessary:
+				// $this->Profile_model->updateProfile($user_id, ['profile_picture' => $attachment_path]);
+			
+				// Respond with a JSON success message
+				echo json_encode([
+					'status' => 'success',
+					'cover_photo' => base_url($attachment_path),
+					'message' => 'Cover photo updated successfully.'
+				]);
 			}
 }

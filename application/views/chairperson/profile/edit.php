@@ -196,8 +196,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="cover-photo">
 				<?php if (isset($faculty) && $faculty !== null): ?>
 					<div class="cover-photo-real">
-						<button>
-						<img src="<?php echo base_url('assets/images/cover/sample.svg'); ?>" alt="Cover Photo">
+						<button id="editCoverPhotoBtn">
+						<img id="coverPhoto" src="<?php echo base_url($faculty->cover_photo); ?>" alt="Cover Photo">
 							<div class="overlay">
 									<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
 							</div>
@@ -256,6 +256,58 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<div class="pic-upload-container">
 													<input type="file" id="profile_pic_change" name="profile_picture" accept=".jpg,.jpeg,.png">
 													<label for="profile_pic_change">Upload your profile</label>
+													<h6>Upload a file from your device. Image should be square, at least 184px x 184px.</h6>
+												</div>
+											</div>
+											
+											<div class="button-submit-container">
+												<button type="submit" class="btn">Save & Confirm</button>
+											</div>					
+										</form>
+									</div>
+									</div> 
+
+									<!-- Edit Cover Photo Modal -->
+									<div id="editCoverPhotoModal" class="modal">
+									<div class="modal-content img-modal-content">
+										<div class="modal-header">
+											<div class="modal-header-text">
+												<h3>Edit Cover Photo</h3>
+												<h6>Choose your cover photo.</h6>
+											</div>
+											
+											<div class="close-btn-modal" id="closeeditCoverPhotoBtn">
+												<img src="<?php echo base_url('assets/images/icon/x.svg'); ?>" alt="">
+											</div>
+										</div>
+										<form id="editCoverPhotoForm" method="post" enctype="multipart/form-data" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/changeCoverPhoto">
+											<div class="form-group img-form-group">
+												<div class="pic-preview-container">
+													<div class="preview">
+														<div class="px184">
+															<img id="preview_184_cover" src="<?php echo base_url($faculty->cover_photo); ?>" alt="">
+														</div>
+														<h6>184px</h6>
+													</div>
+													<div class="preview">
+														<div class="px64">
+															<img id="preview_64_cover" src="<?php echo base_url($faculty->cover_photo); ?>" alt="">
+														</div>
+														<h6>64px</h6>
+													</div>
+
+													<div class="preview">
+														<div class="px32">
+															<img id="preview_32_cover"src="<?php echo base_url($faculty->cover_photo); ?>" alt="">
+														</div>
+														<h6>32px</h6>
+													</div>
+												</div>
+
+
+												<div class="pic-upload-container">
+													<input type="file" id="cover_photo_change" name="cover_photo" accept=".jpg,.jpeg,.png">
+													<label for="cover_photo_change">Upload your profile</label>
 													<h6>Upload a file from your device. Image should be square, at least 184px x 184px.</h6>
 												</div>
 											</div>
@@ -714,6 +766,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Initialize "Add Research" modal
     setupModal("editProfilePictureModal", "editProfilePictureBtn", "closeeditProfilePictureBtn");
 
+	// Initialize "Add Research" modal
+    setupModal("editCoverPhotoModal", "editCoverPhotoBtn", "closeeditCoverPhotoBtn");
+
 			// Get the current year
 			const currentYear = new Date().getFullYear();
 
@@ -824,9 +879,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Call setupFileAttachment for 'research_attachment'
 	setupFileAttachment("research_attachment", "research_attachment_preview", false);
 
-	// Call setupFileAttachment for 'research_attachment'
-	setupFileAttachment("profile_pic_change", "profile_pic_change_preview", false);
-
 	// Call setupFileAttachment for 'announcement_attachment' if required
 	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
 
@@ -850,6 +902,80 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			reader.readAsDataURL(file); // Read the file as a data URL
 		}
+	});
+
+	document.getElementById('cover_photo_change').addEventListener('change', function (event) {
+		const file = event.target.files[0]; // Get the selected file
+		if (file) {
+			const reader = new FileReader(); // Create a FileReader to read the file
+
+			// Load the file and update the preview images
+			reader.onload = function (e) {
+				const preview184 = document.getElementById('preview_184_cover');
+				const preview64 = document.getElementById('preview_64_cover');
+				const preview32 = document.getElementById('preview_32_cover');
+
+				// Update the src of preview images
+				preview184.src = e.target.result;
+				preview64.src = e.target.result;
+				preview32.src = e.target.result;
+			};
+
+			reader.readAsDataURL(file); // Read the file as a data URL
+		}
+	});
+
+
+	$(document).on('submit', '#editProfilePictureForm', function (e) {
+		e.preventDefault();
+
+		let formData = new FormData(this);
+
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/changeProfilePic',
+			type: 'POST',
+			data: formData,
+			contentType: false,
+			processData: false,
+			dataType: 'json',
+			success: function (response) {
+				if (response.status === 'success') {
+					$('#profilePicture').attr('src', response.profile_picture);			
+					$('#editProfilePictureModal').hide();
+				} else {
+					alert('Error: ' + response.message);
+				}
+			},
+			error: function () {
+				alert('An unexpected error occurred.');
+			},
+		});
+	});
+
+	$(document).on('submit', '#editCoverPhotoForm', function (e) {
+		e.preventDefault();
+
+		let formData = new FormData(this);
+
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/changeCoverPhoto',
+			type: 'POST',
+			data: formData,
+			contentType: false,
+			processData: false,
+			dataType: 'json',
+			success: function (response) {
+				if (response.status === 'success') {
+					$('#coverPhoto').attr('src', response.cover_photo);			
+					$('#editCoverPhotoModal').hide();
+				} else {
+					alert('Error: ' + response.message);
+				}
+			},
+			error: function () {
+				alert('An unexpected error occurred.');
+			},
+		});
 	});
 
 	// Notification Panel Logic
