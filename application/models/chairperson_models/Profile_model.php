@@ -295,4 +295,70 @@ class Profile_model extends CI_Model {
 		$this->db->insert("research_outputs_temp", $user_data);
 		return true;
 	}
+
+    public function getQualificationsByID($id) {
+        // Query to fetch the row by ID
+        return $this->db
+        ->where('id', $id)
+        ->get('qualifications_vw')
+        ->row_array(); // Return a single row as an associative array
+    }
+
+    public function getExperienceByID($id) {
+        // Query to fetch the row by ID
+        return $this->db
+        ->where('id', $id)
+        ->get('industry_experience_vw')
+        ->row_array(); // Return a single row as an associative array
+    }
+
+    public function getResearchByID($id) {
+        // Query to fetch the row by ID
+        return $this->db
+        ->where('id', $id)
+        ->get('research_outputs_vw')
+        ->row_array(); // Return a single row as an associative array
+    }
+
+    public function updateQualifications_temp($qualifications_id, $qualifications_data)
+	{
+		$this->db->where('id', $qualifications_id);
+		$this->db->update('qualifications_temp', $qualifications_data);
+		return true;
+	}
+
+            public function updateQualifications_main($qualifications_id, $qualifications_data)
+            {
+                $this->db->where('id', $qualifications_id);
+                $this->db->update('qualifications', $qualifications_data);
+                return true;
+            }
+
+    public function updateExperience_temp($experience_id, $experience_data)
+	{
+		$this->db->where('id', $experience_id);
+		$this->db->update('industry_experience_temp', $experience_data);
+		return true;
+	}
+
+            public function updateExperience_main($experience_id, $experience_data)
+            {
+                $this->db->where('id', $experience_id);
+                $this->db->update('industry_experience', $experience_data);
+                return true;
+            }
+
+    public function updateResearch_temp($research_id, $research_data)
+	{
+		$this->db->where('id', $research_id);
+		$this->db->update('research_outputs_temp', $research_data);
+		return true;
+	}
+
+            public function updateResearch_main($research_id, $research_data)
+            {
+                $this->db->where('id', $research_id);
+                $this->db->update('research_outputs', $research_data);
+                return true;
+            }
 }

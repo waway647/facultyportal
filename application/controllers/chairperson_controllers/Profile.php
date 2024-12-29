@@ -329,7 +329,7 @@ class Profile extends CI_Controller {
 			public function createResearch()
 			{
 				$config['upload_path'] = './assets/images/research_attachments/';
-				$config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx';
+				$config['allowed_types'] = 'pdf';
 				$this->load->library('upload', $config);
 				
 				if ($this->upload->do_upload('research_attachment')) {
@@ -849,5 +849,189 @@ class Profile extends CI_Controller {
 					'cover_photo' => base_url($attachment_path),
 					'message' => 'Cover photo updated successfully.'
 				]);
+			}
+
+	public function getQualificationsByID($id) 
+	{
+		// Validate the ID and fetch the qualification row
+		$qualification_data = $this->Profile_model->getQualificationsByID($id);
+
+		if ($qualification_data) {
+			echo json_encode($qualification_data); // Return the data as JSON for AJAX
+		} else {
+			echo json_encode(['error' => 'Qualification not found.']);
+		}
+	}
+
+			public function updateQualifications($id)
+			{
+				$current_id = $this->session->userdata('current_id');
+				$logged_id = $this->session->userdata('logged_id');
+				$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
+			
+				if (!$faculty_id) {
+					// Handle the case where faculty_id is not available
+					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+					return;
+				}
+			
+				$qualifications_data = array(
+					"faculty_profile_id" => $faculty_id,
+					"academic_degree" => $this->input->post("academic_degree"),
+					"institution" => $this->input->post("institution"),
+					"year_graduated" => $this->input->post("year_graduated")
+				);
+			
+				// Check if the qualification exists in the temporary table
+				$existsInTemp = $this->db->where('id', $id)->get('qualifications_temp')->num_rows();
+			
+				if ($existsInTemp > 0) {
+					// Update the temporary table
+					$result = $this->Profile_model->updateQualifications_temp($id, $qualifications_data);
+			
+					if ($result) {
+						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+					} else {
+						// Handle update failure
+						$this->session->set_flashdata('error', 'Failed to update qualification in temporary table.');
+						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+					}
+				} else {
+					// Check if the qualification exists in the main table
+					$existsInMain = $this->db->where('id', $id)->get('qualifications')->num_rows();
+			
+					if ($existsInMain > 0) {
+						// Update the main table
+						$result = $this->Profile_model->updateQualifications_main($id, $qualifications_data);
+			
+						if ($result) {
+							redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+						} else {
+							// Handle update failure
+							$this->session->set_flashdata('error', 'Failed to update qualification in main table.');
+							redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+						}
+					} else {
+						// Qualification does not exist in either table
+						$this->session->set_flashdata('error', 'Qualification not found.');
+						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+					}
+				}
+			}
+
+	public function getExperienceByID($id) 
+	{
+		// Validate the ID and fetch the qualification row
+		$experience_data = $this->Profile_model->getExperienceByID($id);
+
+		if ($experience_data) {
+			echo json_encode($experience_data); // Return the data as JSON for AJAX
+		} else {
+			echo json_encode(['error' => 'Experience not found.']);
+		}
+	}
+
+			public function updateExperience($id)
+			{
+				$current_id = $this->session->userdata('current_id');
+				$logged_id = $this->session->userdata('logged_id');
+				$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
+			
+				if (!$faculty_id) {
+					// Handle the case where faculty_id is not available
+					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+					return;
+				}
+			
+				$experience_data = array(
+					"faculty_profile_id" => $faculty_id,
+					"company_name" => $this->input->post("company_name"),
+					"job_position" => $this->input->post("job_position"),
+					"years_of_experience" => $this->input->post("years_of_experience")
+				);
+			
+				// Check if the qualification exists in the temporary table
+				$existsInTemp = $this->db->where('id', $id)->get('industry_experience_temp')->num_rows();
+			
+				if ($existsInTemp > 0) {
+					// Update the temporary table
+					$result = $this->Profile_model->updateExperience_temp($id, $experience_data);
+			
+					if ($result) {
+						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+					} else {
+						// Handle update failure
+						$this->session->set_flashdata('error', 'Failed to update experience in temporary table.');
+						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+					}
+				} else {
+					// Check if the qualification exists in the main table
+					$existsInMain = $this->db->where('id', $id)->get('industry_experience')->num_rows();
+			
+					if ($existsInMain > 0) {
+						// Update the main table
+						$result = $this->Profile_model->updateExperience_main($id, $experience_data);
+			
+						if ($result) {
+							redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+						} else {
+							// Handle update failure
+							$this->session->set_flashdata('error', 'Failed to update experience in main table.');
+							redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+						}
+					} else {
+						// Qualification does not exist in either table
+						$this->session->set_flashdata('error', 'Experience not found.');
+						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+					}
+				}
+			}
+
+	public function getResearchByID($id) 
+	{
+		// Validate the ID and fetch the qualification row
+		$research_data = $this->Profile_model->getResearchByID($id);
+
+		if ($research_data) {
+			echo json_encode($research_data); // Return the data as JSON for AJAX
+		} else {
+			echo json_encode(['error' => 'Research not found.']);
+		}
+	}
+
+			public function updateResearch($id)
+			{
+				$current_id = $this->session->userdata('current_id');
+				$logged_id = $this->session->userdata('logged_id');
+
+				$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
+
+				if ($faculty_id) {
+					$research_data = array(
+						"faculty_profile_id" => $faculty_id,
+						"title" => $this->input->post("title"),
+						"publication_year" => $this->input->post("publication_year"),
+						"research_attachment" => $this->input->post("research_attachment")
+					);
+			
+					$result = $this->Profile_model->updateResearch($id, $research_data);
+					if($result == true)
+					{
+						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/editProfile');
+					}
+				} else {
+					$research_data = array(
+						"faculty_profile_id" => $faculty_id,
+						"title" => $this->input->post("title"),
+						"publication_year" => $this->input->post("publication_year"),
+						"research_attachment" => $this->input->post("research_attachment")
+					);
+			
+					$result = $this->Profile_model->updateResearch($id, $research_data);
+					if($result == true)
+					{
+						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/editProfile');
+					}
+				}
 			}
 }

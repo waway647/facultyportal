@@ -408,14 +408,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>
 
 											<div class="form-group">
-												<select id="year_graduated" name="year_graduated" required>
-													<option value="" disabled selected>Year Graduated</option>
+												<select id="add_year_graduated" name="year_graduated" required>
 												</select>
 											</div>
 
 											<button type="submit" class="btn">Save & Confirm</button>
 
 											<div class="close-text" id="closeaddQualificationsBtn">
+												<h6 class="back-step">Cancel</h6>
+											</div>
+										</form>
+									</div>
+									</div> 
+
+									<!-- Edit Qualifications Modal -->
+									<div id="editQualificationsModal" class="modal">
+									<div class="modal-content">
+										<div class="modal-header">
+										<h3>Edit Qualifications</h3>
+										</div>
+										<form id="editQualificationsForm" method="post" action="">
+											<div class="form-group">
+												<select id="academic_degree" name="academic_degree" required>
+													<option value="" disabled selected>Academic Degree</option>
+													<option value="Associate Degree">Associate Degree</option>
+													<option value="Bachelor's Degree">Bachelor's Degree</option>
+													<option value="Master's Degree">Master's Degree</option>
+													<option value="Doctoral Degree">Doctoral Degree</option>
+
+												</select>
+											</div>
+
+											<div class="form-group">
+												<input type="text" id="institution" name="institution" placeholder="Institution" required>
+											</div>
+
+											<div class="form-group">
+												<select id="edit_year_graduated" name="year_graduated" required>
+													<option value="" disabled selected>Year Graduated</option>
+												</select>
+											</div>
+
+											<button type="submit" class="btn">Save & Confirm</button>
+
+											<div class="close-text" id="closeeditQualificationsBtn">
 												<h6 class="back-step">Cancel</h6>
 											</div>
 										</form>
@@ -468,7 +504,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<input type="text" id="job_position" name="job_position" placeholder="Job Position" required>
 											</div>
 											<div class="form-group">
-												<select id="years_of_experience" name="years_of_experience" required>
+												<select id="add_years_of_experience" name="years_of_experience" required>
 													<option value="" disabled selected>Years of Experience</option>
 												</select>
 											</div>
@@ -481,6 +517,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										</form>
 									</div>
 									</div> 
+
+									<!-- Edit Experience Modal -->
+									<div id="editExperienceModal" class="modal">
+									<div class="modal-content">
+										<div class="modal-header">
+										<h3>Edit Experience</h3>
+										</div>
+										<form id="editExperienceForm" method="post" action="">
+											<div class="form-group">
+												<input type="text" id="company_name" name="company_name" placeholder="Name of Company" required>
+											</div>
+											<div class="form-group">
+												<input type="text" id="job_position" name="job_position" placeholder="Job Position" required>
+											</div>
+											<div class="form-group">
+												<select id="edit_years_of_experience" name="years_of_experience" required>
+													<option value="" disabled selected>Years of Experience</option>
+												</select>
+											</div>
+											
+											<button type="submit" class="btn">Save & Confirm</button>
+
+											<div class="close-text" id="closeeditExperienceBtn">
+												<h6 class="back-step">Cancel</h6>
+											</div>
+										</form>
+									</div>
+									</div> 
+									
 						</div>
 
 						<div id="container">    
@@ -533,9 +598,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<div class="attachment-container">
 													<label for="research_attachment" class="attachment-button">
 														<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
-														Attach Files
+														Attach PDF
 													</label>
-													<input type="file" id="research_attachment" name="research_attachment" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" hidden>
+													<input type="file" id="research_attachment" name="research_attachment" accept=".pdf" hidden>
 													<div id="research_attachment_preview" class="attachment-preview"></div>
 												</div>
 											</div>
@@ -543,6 +608,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											<button type="submit" class="btn">Save & Confirm</button>
 
 											<div class="close-text" id="closeaddResearchBtn">
+												<h6 class="back-step">Cancel</h6>
+											</div>
+										</form>
+									</div>
+									</div> 
+
+									<!-- Edit Research Modal -->
+									<div id="editResearchModal" class="modal">
+									<div class="modal-content">
+										<div class="modal-header">
+										<h3>Edit Research</h3>
+										</div>
+										<form id="editResearchForm" method="post" action="" enctype="multipart/form-data">
+											<div class="form-group">
+												<input type="number" id="title" name="title" placeholder="Research Title" required>
+											</div>
+											<div class="form-group">
+												<select id="publication_year" name="publication_year">
+													<option value="" disabled selected>Year Published</option>
+												</select>
+											</div>
+											<div class="form-group">
+												<div class="attachment-container">
+													<label for="research_attachment" class="attachment-button">
+														<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
+														Attach PDF
+													</label>
+													<input type="file" id="research_attachment" name="research_attachment" accept=".pdf" hidden>
+													<div id="research_attachment_preview" class="attachment-preview"></div>
+												</div>
+											</div>
+										
+											<button type="submit" class="btn">Save & Confirm</button>
+
+											<div class="close-text" id="closeeditResearchBtn">
 												<h6 class="back-step">Cancel</h6>
 											</div>
 										</form>
@@ -606,31 +706,111 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	function createQualificationsTable(result, sno) {
 		sno = Number(sno);
 		$('#QualificationsList tbody').empty(); // Clear existing rows
-		for (index in result) {
-			var id = result[index].id;
-			var academic_degree = result[index].academic_degree;
-			var institution = result[index].institution;
-			var year_graduated = result[index].year_graduated;
+		for (let index in result) {
+			let id = result[index].id;
+			let academic_degree = result[index].academic_degree;
+			let institution = result[index].institution;
+			let year_graduated = result[index].year_graduated;
 
 			sno += 1;
 
-			var tr = "<tr>";
-			tr += "<td>" + sno + "</td>";  // Serial number
+			let tr = "<tr>";
+			tr += "<td>" + sno + "</td>"; // Serial number
 			tr += "<td>" + academic_degree + "</td>";
 			tr += "<td>" + institution + "</td>";
 			tr += "<td>" + year_graduated + "</td>";
-			tr += "<td><a href='#' onclick='fetchCourseById(" + id + ")'>" +
-					"<div class='table-icon-container'>" +
-						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
-						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/deleteQualifications/" + id + "'>" +
-							"<img class='img' src='" + "<?php echo base_url('assets/images/icon/x.svg'); ?>" + "' /></a></div>" +
-					"</div></td>";
-					
+			tr +=
+				"<td><a href='#' onclick='fetchQualificationsById(" +
+				id +
+				")'>" +
+				"<div class='table-icon-container'>" +
+				"<div><img class='img' src='" +
+				"<?php echo base_url('assets/images/icon/edit.svg'); ?>" +
+				"' /></div>" +
+				"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/deleteQualifications/" +
+				id +
+				"'>" +
+				"<img class='img' src='" +
+				"<?php echo base_url('assets/images/icon/x.svg'); ?>" +
+				"' /></a></div>" +
+				"</div></td>";
+
 			tr += "</tr>";
 
-			$('#QualificationsList tbody').append(tr);  // Append the new row to the table body
+			$('#QualificationsList tbody').append(tr); // Append the new row to the table body
 		}
 	}
+
+	// Function to fetch course data via AJAX
+	function fetchQualificationsById(qualificationsId) {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/getQualificationsByID/' + qualificationsId,
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				if (result && !result.error) {
+					populateEditQualificationsModal(result); // Populate the modal with the fetched data
+				} else {
+					console.error('Error: ' + (result.error || 'Qualification not found!'));
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching qualification by ID:', error);
+			}
+		});
+	}
+	
+	function populateEditQualificationsModal(qualification) {
+		console.log("Populating modal with qualification:", qualification);
+
+		// Populate the year graduated dropdown
+		fetchYearsInYearGraduated('editQualificationsModal', function() {
+			// Set the selected value after populating the dropdown
+			$('#edit_year_graduated').val(qualification.year_graduated);
+			console.log(`Set selected year: ${qualification.year_graduated}`);
+		});
+
+		// Populate other fields
+		$('#editQualificationsModal #academic_degree').val(qualification.academic_degree);
+		$('#editQualificationsModal #institution').val(qualification.institution);
+
+		// Set form action URL
+		$('#editQualificationsForm').attr(
+			'action',
+			'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/updateQualifications/' + qualification.id
+		);
+
+		$('#editQualificationsModal').show();
+	}
+
+	// Close modal when clicking outside of it (on the backdrop)
+	window.addEventListener("click", function (event) {
+		if (event.target === document.getElementById('editQualificationsModal')) {
+			$('#editQualificationsModal').hide();
+		}
+
+		if (event.target === document.getElementById('editExperienceModal')) {
+			$('#editExperienceModal').hide();
+		}
+
+		if (event.target === document.getElementById('editResearchModal')) {
+			$('#editResearchModal').hide();
+		}
+	});
+
+	// Attach event listener to "Cancel" button inside the Edit Course Modal
+	$('#closeeditQualificationsBtn').on('click', function () {
+		$('#editQualificationsModal').hide();
+	});
+
+	$('#closeeditExperienceBtn').on('click', function () {
+		$('#editExperienceModal').hide();
+	});
+
+	$('#closeeditResearchBtn').on('click', function () {
+		$('#editResearchModal').hide();
+	});
+
 
 	function fetchExperience() {
 		$.ajax({
@@ -667,7 +847,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td>" + company_name + "</td>";
 			tr += "<td>" + job_position + "</td>";
 			tr += "<td>" + years_of_experience + "</td>";
-			tr += "<td><a href='#' onclick='fetchCourseById(" + id + ")'>" +
+			tr += "<td><a href='#' onclick='fetchExperienceById(" + id + ")'>" +
 					"<div class='table-icon-container'>" +
 						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
 						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/deleteExperience/" + id + "'>" +
@@ -678,6 +858,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('#ExperienceList tbody').append(tr);  // Append the new row to the table body
 		}
+	}
+
+	// Function to fetch course data via AJAX
+	function fetchExperienceById(experienceId) {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/getExperienceByID/' + experienceId,
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				if (result && !result.error) {
+					populateEditExperienceModal(result); // Populate the modal with the fetched data
+				} else {
+					console.error('Error: ' + (result.error || 'Experience not found!'));
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching experience by ID:', error);
+			}
+		});
+	}
+	
+	function populateEditExperienceModal(experience) {
+		console.log("Populating modal with experience:", experience);
+
+		// Populate the year graduated dropdown
+		fetchYearsInExperience('editExperienceModal', function() {
+			// Set the selected value after populating the dropdown
+			$('#edit_years_of_experience').val(experience.years_of_experience);
+			console.log(`Set selected year: ${experience.years_of_experience}`);
+		});
+
+		// Populate other fields
+		$('#editExperienceModal #company_name').val(experience.company_name);
+		$('#editExperienceModal #job_position').val(experience.job_position);
+
+		// Set form action URL
+		$('#editExperienceForm').attr(
+			'action',
+			'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/updateExperience/' + experience.id
+		);
+
+		$('#editExperienceModal').show();
 	}
 
 	function fetchResearch() {
@@ -715,7 +937,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td>" + title + "</td>";
 			tr += "<td>" + publication_year + "</td>";
 			tr += "<td>" + research_attachment + "</td>";
-			tr += "<td><a href='#' onclick='fetchCourseById(" + id + ")'>" +
+			tr += "<td><a href='#' onclick='fetchResearchById(" + id + ")'>" +
 					"<div class='table-icon-container'>" +
 						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
 						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/deleteResearch/" + id + "'>" +
@@ -725,6 +947,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			$('#ResearchList tbody').append(tr);  // Append the new row to the table body
 		}
+	}
+
+	// Function to fetch course data via AJAX
+	function fetchResearchById(researchId) {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/getResearchByID/' + researchId,
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				if (result && !result.error) {
+					populateEditResearchModal(result); // Populate the modal with the fetched data
+				} else {
+					console.error('Error: ' + (result.error || 'Research not found!'));
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching research by ID:', error);
+			}
+		});
+	}
+	
+	function populateEditResearchModal(research) {
+		console.log("Populating modal with research:", research);
+
+		$('#editResearchModal #title').val(research.title);
+		$('#editResearchModal #publication_year').val(research.publication_year);
+		$('#editResearchModal #research_attachment').val(research.research_attachment);
+
+		// Set form action URL for updating research
+		$('#editResearchForm').attr(
+			'action',
+			'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/updateResearch/' + research.id
+		);
+
+		$('#editResearchModal').show();
 	}
 
 	// Function to initialize a modal
@@ -781,24 +1038,67 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				publicationYearSelect.appendChild(option);
 			}
 
-			// Populate year graduated dropdown
-			const yearGraduatedSelect = document.getElementById("year_graduated");
-			for (let i = currentYear; i >= 1950; i--) { // Adjust the range of years here
-				const option = document.createElement("option");
-				option.value = i;
-				option.textContent = i;
-				yearGraduatedSelect.appendChild(option);
-			}
+	function fetchYearsInYearGraduated(modalId, callback) {
+		const currentYear = new Date().getFullYear();
+		const selectElement = modalId === 'addQualificationsModal'
+			? $('#add_year_graduated') 
+			: $('#edit_year_graduated');
 
-			// Populate year years Experienced dropdown
-			const yearsExperienced = document.getElementById("years_of_experience");
-			for (let i = 0; i <= 50  ; i++) { // Adjust the range of years here
-				const option = document.createElement("option");
-				option.value = i;
-				option.textContent = i;
-				yearsExperienced.appendChild(option);
-			}
+		if (selectElement.length === 0) {
+			console.error('Dropdown element not found for modal:', modalId);
+			return;
+		}
 
+		// Clear existing options and add a default placeholder
+		selectElement.empty();
+		selectElement.append('<option value="" disabled selected>Year Graduated</option>');
+
+		// Populate the dropdown with years from 1950 to the current year
+		for (let i = currentYear; i >= 1950; i--) {
+			selectElement.append('<option value="' + i + '">' + i + '</option>');
+		}
+
+		// Execute the callback if provided
+		if (callback && typeof callback === 'function') {
+			callback();
+		}
+	}
+
+	function fetchYearsInExperience(modalId, callback) {
+		const currentYear = new Date().getFullYear();
+		const selectElement = modalId === 'addExperienceModal'
+			? $('#add_years_of_experience') 
+			: $('#edit_years_of_experience');
+
+		if (selectElement.length === 0) {
+			console.error('Dropdown element not found for modal:', modalId);
+			return;
+		}
+
+		// Clear existing options and add a default placeholder
+		selectElement.empty();
+		selectElement.append('<option value="" disabled selected>Years of Experience</option>');
+
+		// Populate the dropdown with years from 1950 to the current year
+		for (let i = 0; i <= 50  ; i++) {
+			selectElement.append('<option value="' + i + '">' + i + '</option>');
+		}
+
+		// Execute the callback if provided
+		if (callback && typeof callback === 'function') {
+			callback();
+		}
+	}
+
+	$('#addQualificationsBtn').on('click', function() {
+			fetchYearsInYearGraduated('addQualificationsModal');
+		$('#addQualificationsModal').show();
+	});
+
+	$('#addExperienceBtn').on('click', function() {
+			fetchYearsInExperience('addExperienceModal');
+		$('#addExperienceModal').show();
+	});
 			
 
 	// File attachment handling
