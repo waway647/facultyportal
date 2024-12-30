@@ -173,8 +173,86 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
       <div class="main-content">
         <div class="main-content-2">
-          <div class="heading-container"><div class="text-wrapper-8">Courses, Faculty member</div></div>
-          <div class="faculties-container-wrapper"><div class="faculties-container"></div></div>
+          <div class="heading-container"><div class="text-wrapper-8">Courses, Department Chair</div></div>
+			<div class="container-management">
+				<div class="item-summary-container">
+					<div class="boxes-container">
+						<div class="item-box">
+							<div class="left-summary-container">
+								<div class="summary-img-container">
+									<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+								</div>
+
+								<h4>Total</h4>
+							</div>
+							
+							<h2>3</h2>
+						</div>
+
+						<div class="item-box">
+							<div class="summary-img-container">
+								<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+							</div>
+
+							<h4>Total</h4>
+
+							<h2>3</h2>
+						</div>
+
+						<div class="item-box">
+							<div class="summary-img-container">
+								<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+							</div>
+
+							<h4>Total</h4>
+
+							<h2>3</h2>
+						</div>
+					</div>
+				</div>
+
+				<div class="sub-content-container">
+					<div class="left-sub">
+						<h4>Faculty List&nbsp</h4>
+						<h4 class="left-sub-numbers">(3)</h4>
+					</div>
+
+					<div class="right-sub">
+						<div class="search-container">
+							<button class="button">
+								<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
+									<div class="div-wrapper">
+										<input type="search" name="" id="" placeholder="Search">
+									</div>
+							</button>
+						</div>
+								
+					</div>
+				</div>
+
+				<div class="the-content-container">
+					<div id="container">    
+						<table class="table" id="courseList" name="courseList">
+							<thead>
+							<tr>
+								<th>#</th>
+								<th>Course Code</th>
+								<th>Course Name</th>
+								<th>No. of Units</th>
+								<th>Section</th>
+							</tr>
+							</thead>
+
+							<tbody>
+								
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+
+				
+			</div>
         </div>
       </div>
     </div>
