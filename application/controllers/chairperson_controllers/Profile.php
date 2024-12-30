@@ -47,19 +47,47 @@ class Profile extends CI_Controller {
 		$this->load->view('chairperson/profile/index', $data);
 	}
 
-	public function editProfile()
+	public function prepareForEditProfile()
 	{
+		// Get the current faculty ID
 		$current_id = $this->session->userdata('current_id') ?: $this->session->userdata('logged_id');
 
 		if ($current_id) {
+			// Backup qualifications before loading the edit profile page
+			$this->Profile_model->backupTable($current_id);
+
+			// Now load the profile edit page
 			$data['faculty'] = $this->Profile_model->getFacultyProfile($current_id);
 			
 			// Update session data with the latest profile picture and cover photo
 			$this->session->set_userdata('profile_picture', $data['faculty']->profile_picture);
 			$this->session->set_userdata('cover_photo', $data['faculty']->cover_photo);
 
+			// Load the view for editing the profile
+			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+		} else {
+			// Redirect to the index page if no current ID is found
+			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index');
+		}
+	}
+
+	public function editProfile()
+	{
+		// Get the current faculty ID
+		$current_id = $this->session->userdata('current_id') ?: $this->session->userdata('logged_id');
+
+		if ($current_id) {
+			// Load the faculty profile data for editing
+			$data['faculty'] = $this->Profile_model->getFacultyProfile($current_id);
+
+			// Update session data with the latest profile picture and cover photo
+			$this->session->set_userdata('profile_picture', $data['faculty']->profile_picture);
+			$this->session->set_userdata('cover_photo', $data['faculty']->cover_photo);
+
+			// Load the view for editing the profile
 			$this->load->view('chairperson/profile/edit', $data);
 		} else {
+			// Redirect to the index page if no current ID is found
 			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index');
 		}
 	}
@@ -83,19 +111,7 @@ class Profile extends CI_Controller {
 			$this->session->set_userdata('profile_picture', $original_profile_pic);
 			$this->session->set_userdata('cover_photo', $original_cover_photo);
 
-					//Qualifications
-					$this->db->query("
-						INSERT INTO qualifications (faculty_profile_id, academic_degree, institution, year_graduated)
-						SELECT faculty_profile_id, academic_degree, institution, year_graduated
-						FROM qualifications_bin
-						WHERE faculty_profile_id = ?
-					", array($current_id));
-
-						// Delete restored data from qualifications_bin
-						$this->db->query("
-							DELETE FROM qualifications_bin
-							WHERE faculty_profile_id = ?
-						", array($current_id));
+			$this->Profile_model->restoreTable($current_id);
 
 					//Experience
 					$this->db->query("
@@ -147,19 +163,7 @@ class Profile extends CI_Controller {
 			$this->session->set_userdata('profile_picture', $original_profile_pic);
 			$this->session->set_userdata('cover_photo', $original_cover_photo);
 
-					//Qualifications
-					$this->db->query("
-						INSERT INTO qualifications (faculty_profile_id, academic_degree, institution, year_graduated)
-						SELECT faculty_profile_id, academic_degree, institution, year_graduated
-						FROM qualifications_bin
-						WHERE faculty_profile_id = ?
-					", array($logged_id));
-
-						// Delete restored data from qualifications_bin
-						$this->db->query("
-							DELETE FROM qualifications_bin
-							WHERE faculty_profile_id = ?
-						", array($logged_id));
+			$this->Profile_model->restoreTable($logged_id);	
 
 					//Experience
 					$this->db->query("
@@ -409,20 +413,22 @@ class Profile extends CI_Controller {
 
 			$this->Profile_model->updateProfile($user_id, $basic_data);
 
+            $this->Profile_model->insertUpdatedTable($current_id);
+            $this->Profile_model->deleteBackup($current_id);
+
 			// Update session and database only if files are uploaded
-			if ($_FILES['profile_picture']['name']) {
+			if (!empty($_FILES['profile_picture']['name'])) {
 				$config['upload_path'] = './assets/images/profile/';
 				$config['allowed_types'] = 'jpg|jpeg|png';
 				$this->load->library('upload', $config);
-
+			
 				if ($this->upload->do_upload('profile_picture')) {
 					$uploaded_data = $this->upload->data();
 					$profile_picture = 'assets/images/profile/' . $uploaded_data['file_name'];
 					$this->Profile_model->updateProfile($user_id, ['profile_picture' => $profile_picture]);
 					$this->session->set_userdata('profile_picture', $profile_picture);
 				} else {
-					echo $this->upload->display_errors();
-					return;
+					log_message('error', 'Profile picture upload failed: ' . $this->upload->display_errors());
 				}
 			}
 
@@ -448,7 +454,7 @@ class Profile extends CI_Controller {
 				WHERE faculty_profile_id = ?
 			", array($current_id));
 
-			$this->Profile_model->insertQualifications($current_id);
+
 
 			// Permanently delete industry_experience_bin data for the current faculty_id
 			$this->db->query("
@@ -456,7 +462,7 @@ class Profile extends CI_Controller {
 				WHERE faculty_profile_id = ?
 			", array($current_id));
 
-			$this->Profile_model->insertIndustryExperience($current_id);
+
 
 			// Permanently delete research_outputs_bin data for the current faculty_id
 			$this->db->query("
@@ -464,7 +470,7 @@ class Profile extends CI_Controller {
 				WHERE faculty_profile_id = ?
 			", array($current_id));
 
-			$this->Profile_model->insertResearchOutputs($current_id);
+
 
 			$this->db->trans_complete();
 
@@ -500,20 +506,22 @@ class Profile extends CI_Controller {
 
 			$this->Profile_model->updateProfile($user_id, $basic_data);
 
+			$this->Profile_model->insertUpdatedTable($logged_id);
+            $this->Profile_model->deleteBackup($logged_id);
+
 			// Update session and database only if files are uploaded
-			if ($_FILES['profile_picture']['name']) {
+			if (!empty($_FILES['profile_picture']['name'])) {
 				$config['upload_path'] = './assets/images/profile/';
 				$config['allowed_types'] = 'jpg|jpeg|png';
 				$this->load->library('upload', $config);
-
+			
 				if ($this->upload->do_upload('profile_picture')) {
 					$uploaded_data = $this->upload->data();
 					$profile_picture = 'assets/images/profile/' . $uploaded_data['file_name'];
 					$this->Profile_model->updateProfile($user_id, ['profile_picture' => $profile_picture]);
 					$this->session->set_userdata('profile_picture', $profile_picture);
 				} else {
-					echo $this->upload->display_errors();
-					return;
+					log_message('error', 'Profile picture upload failed: ' . $this->upload->display_errors());
 				}
 			}
 
@@ -539,23 +547,17 @@ class Profile extends CI_Controller {
 				WHERE faculty_profile_id = ?
 			", array($logged_id));
 
-			$this->Profile_model->insertQualifications($logged_id);
-
 			// Permanently delete industry_experience_bin data for the current faculty_id
 			$this->db->query("
 				DELETE FROM industry_experience_bin
 				WHERE faculty_profile_id = ?
 			", array($logged_id));
 
-			$this->Profile_model->insertIndustryExperience($logged_id);
-
 			// Permanently delete research_outputs_bin data for the current faculty_id
 			$this->db->query("
 				DELETE FROM research_outputs_bin
 				WHERE faculty_profile_id = ?
 			", array($logged_id));
-
-			$this->Profile_model->insertResearchOutputs($logged_id);
 
 			$this->db->trans_complete();
 
@@ -570,17 +572,17 @@ class Profile extends CI_Controller {
 		// Check if the qualification exists in the temporary table
 		$existsInTemp = $this->db
 			->where('id', $id)
-			->get('qualifications_temp')
+			->get('qualifications')
 			->num_rows();
 
 		if ($existsInTemp > 0) {
-			$qualification_data = $this->Profile_model->fetchQualifications_temp($id);
+			$qualification_data = $this->Profile_model->fetchQualifications($id);
 			if ($qualification_data) {
 				// Backup to qualifications_bin
-				$this->Profile_model->deleteQualifications_temp($qualification_data);
+				$this->Profile_model->deleteQualifications($qualification_data);
 
 				// Delete from qualifications_temp
-				$this->db->where('id', $id)->delete('qualifications_temp');
+				$this->db->where('id', $id)->delete('qualifications');
 			}
 		} else {
 			// Check if the qualification exists in the main table
@@ -590,10 +592,10 @@ class Profile extends CI_Controller {
 				->num_rows();
 
 			if ($existsInMain > 0) {
-				$qualification_data = $this->Profile_model->fetchQualifications_main($id);
+				$qualification_data = $this->Profile_model->fetchQualifications($id);
 				if ($qualification_data) {
 					// Backup to qualifications_bin
-					$this->Profile_model->deleteQualifications_main($qualification_data);
+					$this->Profile_model->deleteQualifications($qualification_data);
 
 					// Delete from qualifications
 					$this->db->where('id', $id)->delete('qualifications');
@@ -610,17 +612,17 @@ class Profile extends CI_Controller {
 		// Check if the industry_experience exists in the temporary table
 		$existsInTemp = $this->db
 			->where('id', $id)
-			->get('industry_experience_temp')
+			->get('industry_experience')
 			->num_rows();
 
 		if ($existsInTemp > 0) {
-			$experience_data = $this->Profile_model->fetchExperience_temp($id);
+			$experience_data = $this->Profile_model->fetchExperience($id);
 			if ($experience_data) {
 				// Backup to industry_experience_bin
-				$this->Profile_model->deleteExperience_temp($experience_data);
+				$this->Profile_model->deleteExperience($experience_data);
 
 				// Delete from industry_experience_temp
-				$this->db->where('id', $id)->delete('industry_experience_temp');
+				$this->db->where('id', $id)->delete('industry_experience');
 			}
 		} else {
 			// Check if the industry_experience exists in the main table
@@ -630,10 +632,10 @@ class Profile extends CI_Controller {
 				->num_rows();
 
 			if ($existsInMain > 0) {
-				$experience_data = $this->Profile_model->fetchExperience_main($id);
+				$experience_data = $this->Profile_model->fetchExperience($id);
 				if ($experience_data) {
 					// Backup to industry_experience_bin
-					$this->Profile_model->deleteExperience_main($experience_data);
+					$this->Profile_model->deleteExperience($experience_data);
 
 					// Delete from industry_experience
 					$this->db->where('id', $id)->delete('industry_experience');
@@ -650,17 +652,17 @@ class Profile extends CI_Controller {
 		// Check if the research_outputs exists in the temporary table
 		$existsInTemp = $this->db
 			->where('id', $id)
-			->get('research_outputs_temp')
+			->get('research_outputs')
 			->num_rows();
 
 		if ($existsInTemp > 0) {
-			$research_data = $this->Profile_model->fetchResearch_temp($id);
+			$research_data = $this->Profile_model->fetchResearch($id);
 			if ($research_data) {
 				// Backup to research_outputs_bin
-				$this->Profile_model->deleteResearch_temp($research_data);
+				$this->Profile_model->deleteResearch($research_data);
 
 				// Delete from research_outputs_temp
-				$this->db->where('id', $id)->delete('research_outputs_temp');
+				$this->db->where('id', $id)->delete('research_outputs');
 			}
 		} else {
 			// Check if the research exists in the main table
@@ -670,10 +672,10 @@ class Profile extends CI_Controller {
 				->num_rows();
 
 			if ($existsInMain > 0) {
-				$research_data = $this->Profile_model->fetchResearch_main($id);
+				$research_data = $this->Profile_model->fetchResearch($id);
 				if ($research_data) {
 					// Backup to research_outputs_bin
-					$this->Profile_model->deleteResearch_main($research_data);
+					$this->Profile_model->deleteResearch($research_data);
 
 					// Delete from research_outputs
 					$this->db->where('id', $id)->delete('research_outputs');
@@ -857,11 +859,23 @@ class Profile extends CI_Controller {
 		$qualification_data = $this->Profile_model->getQualificationsByID($id);
 
 		if ($qualification_data) {
-			echo json_encode($qualification_data); // Return the data as JSON for AJAX
+			echo json_encode($qualification_data);
 		} else {
+			// Return an error if the qualification is not found
 			echo json_encode(['error' => 'Qualification not found.']);
 		}
 	}
+
+			public function deleteBackup($id)
+			{
+				$delete_success = $this->Profile_model->deleteBackup($id);
+			
+				if ($delete_success) {
+					echo json_encode(['success' => true]);
+				} else {
+					echo json_encode(['error' => 'Failed to delete backup qualification.']);
+				}
+			}
 
 			public function updateQualifications($id)
 			{
@@ -883,13 +897,13 @@ class Profile extends CI_Controller {
 				);
 			
 				// Check if the qualification exists in the temporary table
-				$existsInTemp = $this->db->where('id', $id)->get('qualifications_temp')->num_rows();
+				$existsInTemp = $this->db->where('id', $id)->get('qualifications')->num_rows();
 			
 				if ($existsInTemp > 0) {
 					// Update the temporary table
-					$result = $this->Profile_model->updateQualifications_temp($id, $qualifications_data);
+					$result = $this->Profile_model->updateQualifications($id, $qualifications_data);
 			
-					if ($result) {
+					if ($result) {	
 						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 					} else {
 						// Handle update failure
@@ -902,9 +916,12 @@ class Profile extends CI_Controller {
 			
 					if ($existsInMain > 0) {
 						// Update the main table
-						$result = $this->Profile_model->updateQualifications_main($id, $qualifications_data);
+						$result = $this->Profile_model->updateQualifications($id, $qualifications_data);
 			
-						if ($result) {
+						if ($result) {		
+							// Delete from qualifications
+							$this->db->where('id', $id)->delete('qualifications');
+
 							redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 						} else {
 							// Handle update failure
@@ -951,11 +968,11 @@ class Profile extends CI_Controller {
 				);
 			
 				// Check if the qualification exists in the temporary table
-				$existsInTemp = $this->db->where('id', $id)->get('industry_experience_temp')->num_rows();
+				$existsInTemp = $this->db->where('id', $id)->get('industry_experience')->num_rows();
 			
 				if ($existsInTemp > 0) {
 					// Update the temporary table
-					$result = $this->Profile_model->updateExperience_temp($id, $experience_data);
+					$result = $this->Profile_model->updateExperience($id, $experience_data);
 			
 					if ($result) {
 						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
@@ -970,7 +987,7 @@ class Profile extends CI_Controller {
 			
 					if ($existsInMain > 0) {
 						// Update the main table
-						$result = $this->Profile_model->updateExperience_main($id, $experience_data);
+						$result = $this->Profile_model->updateExperience($id, $experience_data);
 			
 						if ($result) {
 							redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
@@ -1001,37 +1018,47 @@ class Profile extends CI_Controller {
 
 			public function updateResearch($id)
 			{
-				$current_id = $this->session->userdata('current_id');
-				$logged_id = $this->session->userdata('logged_id');
-
-				$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
-
-				if ($faculty_id) {
-					$research_data = array(
-						"faculty_profile_id" => $faculty_id,
-						"title" => $this->input->post("title"),
-						"publication_year" => $this->input->post("publication_year"),
-						"research_attachment" => $this->input->post("research_attachment")
-					);
+				$faculty_id = $this->session->userdata('current_id') ?: $this->session->userdata('logged_id');
 			
-					$result = $this->Profile_model->updateResearch($id, $research_data);
-					if($result == true)
-					{
-						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/editProfile');
+				if (!$faculty_id) {
+					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+					return;
+				}
+			
+				// Set upload configuration
+				$config['upload_path'] = './assets/images/research_attachments/';
+				$config['allowed_types'] = 'pdf';
+				$config['max_size'] = 2048; // 2MB limit
+			
+				$this->load->library('upload', $config);
+			
+				$research_data = [
+					"faculty_profile_id" => $faculty_id,
+					"title" => $this->input->post("title"),
+					"publication_year" => $this->input->post("publication_year"),
+				];
+			
+				// Handle file upload
+				if (!empty($_FILES['research_attachment']['name'])) {
+					if ($this->upload->do_upload('research_attachment')) {
+						$file_data = $this->upload->data();
+						$research_data['research_attachment'] = $file_data['file_name']; // Store file name in the database
+					} else {
+						$this->session->set_flashdata('error', $this->upload->display_errors());
+						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+						return;
 					}
+				}
+			
+				// Update research data in the database
+				$result = $this->Profile_model->updateResearch($id, $research_data);
+			
+				// Redirect based on the result
+				if ($result) {
+					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 				} else {
-					$research_data = array(
-						"faculty_profile_id" => $faculty_id,
-						"title" => $this->input->post("title"),
-						"publication_year" => $this->input->post("publication_year"),
-						"research_attachment" => $this->input->post("research_attachment")
-					);
-			
-					$result = $this->Profile_model->updateResearch($id, $research_data);
-					if($result == true)
-					{
-						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/editProfile');
-					}
+					$this->session->set_flashdata('error', 'Failed to update research data.');
+					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 				}
 			}
 }

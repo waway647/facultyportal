@@ -13,6 +13,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
   
 	<!-- jQuery library -->
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+	<!-- Bootstrap JS -->
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"></script>
 	
 	</head>
   <body>
@@ -590,7 +593,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<input type="text" id="title" name="title" placeholder="Research Title" required>
 											</div>
 											<div class="form-group">
-												<select id="publication_year" name="publication_year">
+												<select id="add_publication_year" name="publication_year">
 													<option value="" disabled selected>Year Published</option>
 												</select>
 											</div>
@@ -622,10 +625,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										</div>
 										<form id="editResearchForm" method="post" action="" enctype="multipart/form-data">
 											<div class="form-group">
-												<input type="number" id="title" name="title" placeholder="Research Title" required>
+												<input type="text" id="title" name="title" placeholder="Research Title" required>
 											</div>
 											<div class="form-group">
-												<select id="publication_year" name="publication_year">
+												<select id="edit_publication_year" name="publication_year">
 													<option value="" disabled selected>Year Published</option>
 												</select>
 											</div>
@@ -741,6 +744,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 	}
 
+	let currentBackupId = null;
+
 	// Function to fetch course data via AJAX
 	function fetchQualificationsById(qualificationsId) {
 		$.ajax({
@@ -749,6 +754,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			dataType: 'json',
 			success: function(result) {
 				if (result && !result.error) {
+					currentBackupId = qualificationsId;
 					populateEditQualificationsModal(result); // Populate the modal with the fetched data
 				} else {
 					console.error('Error: ' + (result.error || 'Qualification not found!'));
@@ -758,6 +764,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				console.error('Error fetching qualification by ID:', error);
 			}
 		});
+	}
+
+	function deleteBackup() {
+		if (currentBackupId) {
+			$.ajax({
+				url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/deleteBackup/' + currentBackupId,
+				type: 'POST',
+				dataType: 'json',
+				success: function (response) {
+					if (response.success) {
+						console.log('Backup qualification deleted successfully.');
+					} else {
+						console.error('Error: ' + (response.error || 'Failed to delete backup qualification.'));
+					}
+				},
+				error: function (xhr, status, error) {
+					console.error('Error deleting backup qualification:', error);
+				}
+			});
+			currentBackupId = null; // Reset the backup ID
+		}
 	}
 	
 	function populateEditQualificationsModal(qualification) {
@@ -787,6 +814,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	window.addEventListener("click", function (event) {
 		if (event.target === document.getElementById('editQualificationsModal')) {
 			$('#editQualificationsModal').hide();
+			deleteBackup();
 		}
 
 		if (event.target === document.getElementById('editExperienceModal')) {
@@ -801,6 +829,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Attach event listener to "Cancel" button inside the Edit Course Modal
 	$('#closeeditQualificationsBtn').on('click', function () {
 		$('#editQualificationsModal').hide();
+		deleteBackup();
 	});
 
 	$('#closeeditExperienceBtn').on('click', function () {
@@ -971,9 +1000,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	function populateEditResearchModal(research) {
 		console.log("Populating modal with research:", research);
 
-		$('#editResearchModal #title').val(research.title);
-		$('#editResearchModal #publication_year').val(research.publication_year);
-		$('#editResearchModal #research_attachment').val(research.research_attachment);
+		// Populate the year published dropdown
+		fetchYearsInYearPublished('editResearchModal', function() {
+			// Set the selected value for the publication year after populating the dropdown
+			$('#edit_publication_year').val(research.publication_year);
+			console.log(`Set selected year: ${research.publication_year}`);
+		});
+
+		// Populate the form fields with the research data
+		$('#editResearchModal #title').val(research.title); // Correctly populate the title field
+
+		// Handle file preview
+		const attachmentPreview = $('#research_attachment_preview');
+		if (research.research_attachment) {
+			// If there is a previously uploaded attachment
+			attachmentPreview.html(`<a href="path_to_your_file_directory/${research.research_attachment}" target="_blank">View Attachment</a>`);
+		} else {
+			attachmentPreview.html(""); // Clear the preview if no attachment
+		}
+
+		// Leave the attachment input field empty for new uploads
+		$('#editResearchModal #research_attachment').val('');
 
 		// Set form action URL for updating research
 		$('#editResearchForm').attr(
@@ -981,8 +1028,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/updateResearch/' + research.id
 		);
 
-		$('#editResearchModal').show();
+		// Show the modal
+		$('#editResearchModal').modal('show');
 	}
+
 
 	// Function to initialize a modal
 		function setupModal(modalId, openButtonId, closeButtonId) {
@@ -1025,18 +1074,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	// Initialize "Add Research" modal
     setupModal("editCoverPhotoModal", "editCoverPhotoBtn", "closeeditCoverPhotoBtn");
-
-			// Get the current year
-			const currentYear = new Date().getFullYear();
-
-			// Populate publication year dropdown
-			const publicationYearSelect = document.getElementById("publication_year");
-			for (let i = currentYear; i >= 2000; i--) { // Adjust the range of years here
-				const option = document.createElement("option");
-				option.value = i;
-				option.textContent = i;
-				publicationYearSelect.appendChild(option);
-			}
 
 	function fetchYearsInYearGraduated(modalId, callback) {
 		const currentYear = new Date().getFullYear();
@@ -1090,6 +1127,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 	}
 
+	function fetchYearsInYearPublished(modalId, callback) {
+		const currentYear = new Date().getFullYear();
+		const startYear = 2000; // Fixed start year
+		const selectElement = modalId === 'addResearchModal'
+			? $('#add_publication_year')
+			: $('#edit_publication_year');
+
+		if (selectElement.length === 0) {
+			console.error('Dropdown element not found for modal:', modalId);
+			return;
+		}
+
+		// Clear existing options and add a default placeholder
+		selectElement.empty();
+		selectElement.append('<option value="" disabled selected>Year Published</option>');
+
+		// Populate the dropdown with years from 2000 to the current year
+		for (let i = currentYear; i >= startYear; i--) {
+			selectElement.append('<option value="' + i + '">' + i + '</option>');
+		}
+
+		// Execute the callback if provided
+		if (callback && typeof callback === 'function') {
+			callback();
+		}
+	}
+
 	$('#addQualificationsBtn').on('click', function() {
 			fetchYearsInYearGraduated('addQualificationsModal');
 		$('#addQualificationsModal').show();
@@ -1098,6 +1162,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$('#addExperienceBtn').on('click', function() {
 			fetchYearsInExperience('addExperienceModal');
 		$('#addExperienceModal').show();
+	});
+
+	$('#addResearchBtn').on('click', function() {
+		fetchYearsInYearPublished('addResearchModal');
+		$('#addResearchModal').show();
 	});
 			
 

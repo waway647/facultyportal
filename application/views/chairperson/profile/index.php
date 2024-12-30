@@ -244,7 +244,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 
 						<div class="profile-buttons">
-							<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile">
+							<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/prepareForEditProfile">
 								<div class="profile-button-container">
 									<h5>Edit Profile</h5>
 								</div>

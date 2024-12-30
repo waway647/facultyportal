@@ -13,40 +13,40 @@ class Profile_model extends CI_Model {
 
 	public function insertNewQualification($qualification_data)
 	{
-		$this->db->insert("qualifications_temp", $qualification_data);
+		$this->db->insert("qualifications", $qualification_data);
 		return true;
 	}
 	
 	public function insertNewExperience($experience_data)
 	{
-		$this->db->insert("industry_experience_temp", $experience_data);
+		$this->db->insert("industry_experience", $experience_data);
 		return true;
 	}
 
 	public function insertNewResearch($research_data)
 	{
-		$this->db->insert("research_outputs_temp", $research_data);
+		$this->db->insert("research_outputs", $research_data);
 		return true;
 	}
 
 	public function getQualifications($faculty_profile_id)
 	{
 		$this->db->where('faculty_profile_id', $faculty_profile_id);
-        $query = $this->db->get('Qualifications_vw');
+        $query = $this->db->get('Qualifications');
         return $query->result_array(); // Use row() to get a single row
 	}
 
 	public function getExperience($faculty_profile_id)
 	{
 		$this->db->where('faculty_profile_id', $faculty_profile_id);
-        $query = $this->db->get('industry_experience_vw');
+        $query = $this->db->get('industry_experience');
         return $query->result_array(); // Use row() to get a single row
 	}
 
 	public function getResearch($faculty_profile_id)
 	{
 		$this->db->where('faculty_profile_id', $faculty_profile_id);
-        $query = $this->db->get('research_outputs_vw');
+        $query = $this->db->get('research_outputs');
         return $query->result_array(); // Use row() to get a single row
 	}
 
@@ -65,190 +65,54 @@ class Profile_model extends CI_Model {
 		$this->db->update('users', $basic_data);
 		return true;
 	}
-
-	public function insertQualifications($faculty_profile_id)
-	{
-		// Start a transaction to ensure data integrity
-        $this->db->trans_start();
-
-        // Insert data from qualifications_temp into qualifications for the given faculty_profile_id
-        $this->db->query("
-            INSERT INTO qualifications (faculty_profile_id, academic_degree, institution, year_graduated)
-            SELECT faculty_profile_id, academic_degree, institution, year_graduated
-            FROM qualifications_temp
-            WHERE faculty_profile_id
-        ", array($faculty_profile_id));
-
-        // Delete the same data from qualifications_temp after insertion
-        $this->db->query("
-            DELETE FROM qualifications_temp
-            WHERE faculty_profile_id
-        ", array($faculty_profile_id));
-
-        // Complete the transaction
-        $this->db->trans_complete();
-
-        // Check if there was an error during the transaction
-        if ($this->db->trans_status() === FALSE) {
-            // If the transaction failed, return an error
-            log_message('error', 'Failed to save and delete changes.');
-            return false;
-        }
-
-        return true;
-	}
-
-	public function insertIndustryExperience($faculty_profile_id)
-	{
-		// Start a transaction to ensure data integrity
-        $this->db->trans_start();
-
-        // Insert data from qualifications_temp into qualifications for the given faculty_profile_id
-        $this->db->query("
-            INSERT INTO industry_experience (faculty_profile_id, company_name, job_position, years_of_experience)
-            SELECT faculty_profile_id, company_name, job_position, years_of_experience
-            FROM industry_experience_temp
-            WHERE faculty_profile_id
-        ", array($faculty_profile_id));
-
-        // Delete the same data from qualifications_temp after insertion
-        $this->db->query("
-            DELETE FROM industry_experience_temp
-            WHERE faculty_profile_id
-        ", array($faculty_profile_id));
-
-        // Complete the transaction
-        $this->db->trans_complete();
-
-        // Check if there was an error during the transaction
-        if ($this->db->trans_status() === FALSE) {
-            // If the transaction failed, return an error
-            log_message('error', 'Failed to save and delete changes.');
-            return false;
-        }
-
-        return true;
-	}
-
-    public function insertResearchOutputs($faculty_profile_id)
-	{
-		// Start a transaction to ensure data integrity
-        $this->db->trans_start();
-
-        // Insert data from qualifications_temp into qualifications for the given faculty_profile_id
-        $this->db->query("
-            INSERT INTO research_outputs (faculty_profile_id, title, publication_year, research_attachment)
-            SELECT faculty_profile_id, title, publication_year, research_attachment
-            FROM research_outputs_temp
-            WHERE faculty_profile_id
-        ", array($faculty_profile_id));
-
-        // Delete the same data from qualifications_temp after insertion
-        $this->db->query("
-            DELETE FROM research_outputs_temp
-            WHERE faculty_profile_id
-        ", array($faculty_profile_id));
-
-        // Complete the transaction
-        $this->db->trans_complete();
-
-        // Check if there was an error during the transaction
-        if ($this->db->trans_status() === FALSE) {
-            // If the transaction failed, return an error
-            log_message('error', 'Failed to save and delete changes.');
-            return false;
-        }
-
-        return true;
-	}
     
-    public function fetchQualifications_temp($id)
+    public function fetchQualifications($id)
     {  
         $this->db->where('id', $id);
-        return $this->db->get('qualifications_temp')->row_array();
+        return $this->db->get('qualifications')->row_array();
     }
 
-            public function fetchQualifications_main($id)
-            {  
-                $this->db->where('id', $id);
-                return $this->db->get('qualifications')->row_array();
-            }
-
-
-            public function deleteQualifications_temp($qualification_data)
+            public function deleteQualifications($qualification_data)
             {
                 $this->db->insert('qualifications_bin', $qualification_data);
                 return $this->db->insert_id(); // Returns the ID of the inserted backup record
             }
 
-            public function deleteQualifications_main($qualification_data)
-            {  
-                $this->db->insert('qualifications_bin', $qualification_data);
-                return $this->db->insert_id();
-            }
-
-    public function fetchExperience_temp($id)
+    public function fetchExperience($id)
     {  
         $this->db->where('id', $id);
-        return $this->db->get('industry_experience_temp')->row_array();
+        return $this->db->get('industry_experience')->row_array();
     }
 
-            public function fetchExperience_main($id)
-            {  
-                $this->db->where('id', $id);
-                return $this->db->get('industry_experience')->row_array();
-            }
 
-
-            public function deleteExperience_temp($experience_data)
+            public function deleteExperience($experience_data)
             {
                 $this->db->insert('industry_experience_bin', $experience_data);
                 return $this->db->insert_id(); // Returns the ID of the inserted backup record
             }
 
-            public function deleteExperience_main($experience_data)
-            {  
-                $this->db->insert('industry_experience_bin', $experience_data);
-                return $this->db->insert_id();
-            }
-
-    public function fetchResearch_temp($id)
+    public function fetchResearch($id)
     {  
         $this->db->where('id', $id);
-        return $this->db->get('research_outputs_temp')->row_array();
+        return $this->db->get('research_outputs')->row_array();
     }
 
-            public function fetchResearch_main($id)
-            {  
-                $this->db->where('id', $id);
-                return $this->db->get('research_outputs')->row_array();
-            }
-
-
-            public function deleteResearch_temp($research_data)
+            public function deleteResearch($research_data)
             {
                 $this->db->insert('research_outputs_bin', $research_data);
                 return $this->db->insert_id(); // Returns the ID of the inserted backup record
             }
-
-            public function deleteResearch_main($research_data)
-            {  
-                $this->db->insert('research_outputs_bin', $research_data);
-                return $this->db->insert_id();
-            }
-
-   
 
     public function deleteAllDataByFacultyId($faculty_id)
     {
         // Delete qualifications
-        $this->db->where('faculty_profile_id', $faculty_id)->delete('qualifications_temp');
+        $this->db->where('faculty_profile_id', $faculty_id)->delete('qualifications_bin');
 
         // Delete industry experience
-        $this->db->where('faculty_profile_id', $faculty_id)->delete('industry_experience_temp');
+        $this->db->where('faculty_profile_id', $faculty_id)->delete('industry_experience_bin');
 
         // Delete research outputs
-        $this->db->where('faculty_profile_id', $faculty_id)->delete('research_outputs_temp');
+        $this->db->where('faculty_profile_id', $faculty_id)->delete('research_outputs_bin');
     }
 
     public function ViewResearchPDF($id)
@@ -278,7 +142,7 @@ class Profile_model extends CI_Model {
 	{
         $this->db->select('profile_picture');
 		$this->db->where('faculty_profile_id', $faculty_profile_id);
-        $query = $this->db->get('research_outputs_vw');
+        $query = $this->db->get('research_outputs');
         return $query->result_array(); // Use row() to get a single row
 	}
 
@@ -286,21 +150,15 @@ class Profile_model extends CI_Model {
 	{
         $this->db->select('cover_photo');
 		$this->db->where('faculty_profile_id', $faculty_profile_id);
-        $query = $this->db->get('research_outputs_vw');
+        $query = $this->db->get('research_outputs');
         return $query->result_array(); // Use row() to get a single row
-	}
-
-    public function insertNewProfilePic($user_data)
-	{
-		$this->db->insert("research_outputs_temp", $user_data);
-		return true;
 	}
 
     public function getQualificationsByID($id) {
         // Query to fetch the row by ID
         return $this->db
         ->where('id', $id)
-        ->get('qualifications_vw')
+        ->get('qualifications')
         ->row_array(); // Return a single row as an associative array
     }
 
@@ -308,7 +166,7 @@ class Profile_model extends CI_Model {
         // Query to fetch the row by ID
         return $this->db
         ->where('id', $id)
-        ->get('industry_experience_vw')
+        ->get('industry_experience')
         ->row_array(); // Return a single row as an associative array
     }
 
@@ -316,49 +174,144 @@ class Profile_model extends CI_Model {
         // Query to fetch the row by ID
         return $this->db
         ->where('id', $id)
-        ->get('research_outputs_vw')
+        ->get('research_outputs')
         ->row_array(); // Return a single row as an associative array
     }
 
-    public function updateQualifications_temp($qualifications_id, $qualifications_data)
+    public function updateQualifications($qualifications_id, $qualifications_data)
 	{
 		$this->db->where('id', $qualifications_id);
-		$this->db->update('qualifications_temp', $qualifications_data);
+		$this->db->update('qualifications', $qualifications_data);
 		return true;
 	}
 
-            public function updateQualifications_main($qualifications_id, $qualifications_data)
-            {
-                $this->db->where('id', $qualifications_id);
-                $this->db->update('qualifications', $qualifications_data);
-                return true;
-            }
-
-    public function updateExperience_temp($experience_id, $experience_data)
+    public function updateExperience($experience_id, $experience_data)
 	{
 		$this->db->where('id', $experience_id);
-		$this->db->update('industry_experience_temp', $experience_data);
+		$this->db->update('industry_experience', $experience_data);
 		return true;
 	}
 
-            public function updateExperience_main($experience_id, $experience_data)
-            {
-                $this->db->where('id', $experience_id);
-                $this->db->update('industry_experience', $experience_data);
-                return true;
-            }
+    public function updateResearch($research_id, $research_data)
+    {
+        $this->db->where('id', $research_id);
+        $this->db->update('research_outputs', $research_data);
+        return $this->db->affected_rows() > 0;
+    }
 
-    public function updateResearch_temp($research_id, $research_data)
-	{
-		$this->db->where('id', $research_id);
-		$this->db->update('research_outputs_temp', $research_data);
-		return true;
-	}
+    public function backupTable($faculty_id) {
+        // Backup existing qualifications
+        $this->db->query("
+            INSERT INTO qualifications_backup (faculty_profile_id, academic_degree, institution, year_graduated)
+            SELECT faculty_profile_id, academic_degree, institution, year_graduated
+            FROM qualifications
+            WHERE faculty_profile_id = ?
+        ", array($faculty_id));
 
-            public function updateResearch_main($research_id, $research_data)
-            {
-                $this->db->where('id', $research_id);
-                $this->db->update('research_outputs', $research_data);
-                return true;
+        // Backup existing experience
+        $this->db->query("
+            INSERT INTO industry_experience_backup (faculty_profile_id, company_name, job_position, years_of_experience)
+            SELECT faculty_profile_id, company_name, job_position, years_of_experience
+            FROM industry_experience
+            WHERE faculty_profile_id = ?
+        ", array($faculty_id));
+
+         // Backup existing research_outputs
+         $this->db->query("
+         INSERT INTO research_outputs_backup (faculty_profile_id, title, publication_year, research_attachment)
+         SELECT faculty_profile_id, title, publication_year, research_attachment
+         FROM research_outputs
+         WHERE faculty_profile_id = ?
+     ", array($faculty_id));
+    }
+
+    public function restoreTable($faculty_id) {
+        // Clear current qualifications
+        $this->db->query("DELETE FROM qualifications WHERE faculty_profile_id = ?", array($faculty_id));
+        $this->db->query("DELETE FROM industry_experience WHERE faculty_profile_id = ?", array($faculty_id));
+        $this->db->query("DELETE FROM research_outputs WHERE faculty_profile_id = ?", array($faculty_id));
+
+        // Restore from backup
+        $this->db->query("
+            INSERT INTO qualifications (faculty_profile_id, academic_degree, institution, year_graduated)
+            SELECT faculty_profile_id, academic_degree, institution, year_graduated
+            FROM qualifications_backup
+            WHERE faculty_profile_id = ?
+        ", array($faculty_id));
+
+        $this->db->query("
+            INSERT INTO industry_experience (faculty_profile_id, company_name, job_position, years_of_experience)
+            SELECT faculty_profile_id, company_name, job_position, years_of_experience
+            FROM industry_experience_backup
+            WHERE faculty_profile_id = ?
+        ", array($faculty_id));
+
+        $this->db->query("
+            INSERT INTO research_outputs (faculty_profile_id, title, publication_year, research_attachment)
+            SELECT faculty_profile_id, title, publication_year, research_attachment
+            FROM research_outputs_backup
+            WHERE faculty_profile_id = ?
+        ", array($faculty_id));
+
+        // Remove backup
+        $this->db->query("DELETE FROM qualifications_backup WHERE faculty_profile_id = ?", array($faculty_id));
+        $this->db->query("DELETE FROM industry_experience_backup WHERE faculty_profile_id = ?", array($faculty_id));
+        $this->db->query("DELETE FROM research_outputs_backup WHERE faculty_profile_id = ?", array($faculty_id));
+    }
+
+    public function insertUpdatedTable($faculty_id) {
+        $qualifications = $this->input->post('qualifications');
+    
+        if (is_array($qualifications)) {
+            foreach ($qualifications as $qualification) {
+                $qualifications_data = array(
+                    'faculty_profile_id' => $faculty_id,
+                    'academic_degree' => $qualification['academic_degree'],
+                    'institution' => $qualification['institution'],
+                    'year_graduated' => $qualification['year_graduated'],
+                );
+                $this->db->insert('qualifications', $qualifications_data);
             }
+        } else {
+            log_message('error', 'No qualifications data found for faculty ID: ' . $faculty_id);
+        }
+
+        $experiences = $this->input->post('industry_experience');
+    
+        if (is_array($qualifications)) {
+            foreach ($experiences as $experience) {
+                $experiences_data = array(
+                    'faculty_profile_id' => $faculty_id,
+                    'company_name' => $experience['company_name'],
+                    'job_position' => $experience['job_position'],
+                    'years_of_experience' => $experience['years_of_experience'],
+                );
+                $this->db->insert('industry_experience', $experiences_data);
+            }
+        } else {
+            log_message('error', 'No experiences data found for faculty ID: ' . $faculty_id);
+        }
+
+        $research_outputs = $this->input->post('research_outputs');
+    
+        if (is_array($research_outputs)) {
+            foreach ($research_outputs as $research_output) {
+                $research_outputs_data = array(
+                    'faculty_profile_id' => $faculty_id,
+                    'title' => $research_output['title'],
+                    'publication_year' => $research_output['publication_year'],
+                    'research_attachment' => $research_output['research_attachment'],
+                );
+                $this->db->insert('industry_experience', $research_outputs_data);
+            }
+        } else {
+            log_message('error', 'No experiences data found for faculty ID: ' . $faculty_id);
+        }
+    }
+
+    public function deleteBackup($faculty_id) {
+        $this->db->query("DELETE FROM qualifications_backup WHERE faculty_profile_id = ?", array($faculty_id));
+        $this->db->query("DELETE FROM industry_experience_backup WHERE faculty_profile_id = ?", array($faculty_id));
+        $this->db->query("DELETE FROM research_outputs_backup WHERE faculty_profile_id = ?", array($faculty_id));
+    }
 }
