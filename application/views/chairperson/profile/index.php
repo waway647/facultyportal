@@ -350,7 +350,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>#</th>
 									<th>Title</th>
 									<th>Year Published</th>
-									<th></th>
+									<th>Research PDF</th>
 
 								</tr>
 								</thead>

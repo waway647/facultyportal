@@ -1032,9 +1032,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#editResearchModal').modal('show');
 	}
 
+	// Function to handle the modal visibility and reset it properly
+	function closeModal(modalId) {
+		const modal = $('#' + modalId);
+		const attachmentPreview = $('#' + modalId + ' #research_attachment_preview_edit');
+		
+		// Clear attachment preview when closing modal
+		attachmentPreview.html('');
+		
+		// Clear form inputs (to prevent stale data)
+		modal.find('form')[0].reset();
+
+		modal.modal('hide');  // Use Bootstrap modal hide method
+	}
+
+	// Close modal when clicking outside of it (on the backdrop)
+	$(window).on('click', function (event) {
+		if ($(event.target).is('#editResearchModal')) {
+			closeModal('editResearchModal');
+		}
+	});
+
+	// Attach event listener to "Cancel" button inside the Edit Research Modal
+	$(document).on('click', '#closeeditResearchBtn', function () {
+		closeModal('editResearchModal');
+	});
+
 
 	// Function to initialize a modal
-		function setupModal(modalId, openButtonId, closeButtonId) {
+	function setupModal(modalId, openButtonId, closeButtonId) {
 		const modal = document.getElementById(modalId);
 		const openButton = document.getElementById(openButtonId);
 		const closeButton = document.getElementById(closeButtonId);
