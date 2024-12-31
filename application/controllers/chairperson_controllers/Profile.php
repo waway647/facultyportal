@@ -1018,46 +1018,51 @@ class Profile extends CI_Controller {
 
 			public function updateResearch($id)
 			{
-				$faculty_id = $this->session->userdata('current_id') ?: $this->session->userdata('logged_id');
+				// Load the current faculty ID
+				$current_id = $this->session->userdata('current_id');
+				$logged_id = $this->session->userdata('logged_id');
+				$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
 			
 				if (!$faculty_id) {
+					// Redirect if faculty_id is unavailable
 					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 					return;
 				}
 			
-				// Set upload configuration
+				// Load the existing research entry
+				$research = $this->Profile_model->getResearchByID($id);
+			
+				if (!$research) {
+					$this->session->set_flashdata('error', 'Research not found.');
+					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+					return;
+				}
+			
 				$config['upload_path'] = './assets/images/research_attachments/';
 				$config['allowed_types'] = 'pdf';
-				$config['max_size'] = 2048; // 2MB limit
-			
 				$this->load->library('upload', $config);
 			
-				$research_data = [
+				$attachment_path = $research->research_attachment; // Default to existing attachment
+			
+				if ($this->upload->do_upload('research_attachment')) {
+					$uploaded_data = $this->upload->data();
+					$attachment_path = 'assets/images/research_attachments/' . $uploaded_data['file_name'];
+				}
+			
+				$research_data = array(
 					"faculty_profile_id" => $faculty_id,
 					"title" => $this->input->post("title"),
 					"publication_year" => $this->input->post("publication_year"),
-				];
+					"research_attachment" => $attachment_path
+				);
 			
-				// Handle file upload
-				if (!empty($_FILES['research_attachment']['name'])) {
-					if ($this->upload->do_upload('research_attachment')) {
-						$file_data = $this->upload->data();
-						$research_data['research_attachment'] = $file_data['file_name']; // Store file name in the database
-					} else {
-						$this->session->set_flashdata('error', $this->upload->display_errors());
-						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
-						return;
-					}
-				}
-			
-				// Update research data in the database
+				// Update research data
 				$result = $this->Profile_model->updateResearch($id, $research_data);
 			
-				// Redirect based on the result
 				if ($result) {
 					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 				} else {
-					$this->session->set_flashdata('error', 'Failed to update research data.');
+					$this->session->set_flashdata('error', 'Failed to update research.');
 					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 				}
 			}

@@ -634,12 +634,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>
 											<div class="form-group">
 												<div class="attachment-container">
-													<label for="research_attachment" class="attachment-button">
+													<label for="research_attachment_edit" class="attachment-button">
 														<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
 														Attach PDF
 													</label>
-													<input type="file" id="research_attachment" name="research_attachment" accept=".pdf" hidden>
-													<div id="research_attachment_preview" class="attachment-preview"></div>
+													<input type="file" id="research_attachment_edit" name="research_attachment" accept=".pdf" hidden>
+													<div id="research_attachment_preview_edit" class="attachment-preview"></div>
 												</div>
 											</div>
 										
@@ -1011,16 +1011,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#editResearchModal #title').val(research.title); // Correctly populate the title field
 
 		// Handle file preview
-		const attachmentPreview = $('#research_attachment_preview');
+		const attachmentPreview = $('#research_attachment_preview_edit');
 		if (research.research_attachment) {
 			// If there is a previously uploaded attachment
-			attachmentPreview.html(`<a href="path_to_your_file_directory/${research.research_attachment}" target="_blank">View Attachment</a>`);
+			attachmentPreview.html(`<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/viewResearchPDF/${research.id}" target="_blank">View Existing PDF</a>`);
 		} else {
 			attachmentPreview.html(""); // Clear the preview if no attachment
 		}
 
 		// Leave the attachment input field empty for new uploads
-		$('#editResearchModal #research_attachment').val('');
+		$('#editResearchModal #research_attachment_edit').val('');
 
 		// Set form action URL for updating research
 		$('#editResearchForm').attr(
@@ -1247,6 +1247,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	// Call setupFileAttachment for 'research_attachment'
 	setupFileAttachment("research_attachment", "research_attachment_preview", false);
+
+	setupFileAttachment("research_attachment_edit", "research_attachment_preview_edit", false);
 
 	// Call setupFileAttachment for 'announcement_attachment' if required
 	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
