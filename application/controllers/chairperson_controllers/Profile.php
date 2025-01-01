@@ -201,11 +201,6 @@ class Profile extends CI_Controller {
 		}
 	}
 
-	public function updateProfile()
-	{
-		redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index');
-	}
-
 	public function getQualifications()
 	{
 		$current_id = $this->session->userdata('current_id');

@@ -8,7 +8,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="icon" href="<?php echo base_url('assets/images/logo/sbu_logo.svg'); ?>" type="image/x-icon">
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/globals.css?<?php echo time(); ?>"> 
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/style.css?<?php echo time(); ?>"> 
-  </head>
+	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/profile.css?<?php echo time(); ?>"> 
+	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/table.css?<?php echo time(); ?>"> 
+  
+	<!-- jQuery library -->
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+	</head>
   <body>
   <div class="dashboard-faculty">
       <div class="nav-container">
@@ -49,8 +57,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
 									Attach Files
 								</label>
-								<input type="file" id="announcement_attachment" name="announcement_attachment" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" hidden>
-								<div id="attachment_preview" class="attachment-preview"></div>
+								<input type="file" id="announcement_attachment" name="announcement_attachment" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" multiple hidden>
+								<div id="announcement_attachment_preview" class="attachment-preview"></div>
 							</div>
 						</div>
 					</div>
@@ -78,7 +86,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           </button>
         </div>
         <div class="nav-links-container">
-			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Dashboard/index">
+		<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Dashboard/index">
 				<div class="nav-link">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/dash.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Dashboard</div></div>
@@ -171,15 +179,341 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           </div>
         </div>
       </div>
-      <div class="main-content">
-        <div class="main-content-2">
-          <div class="heading-container"><div class="text-wrapper-8">Profile, Faculty member</div></div>
-          <div class="faculties-container-wrapper"><div class="faculties-container"></div></div>
+    <div class="main-content">
+        <div class="main-content-2 main-content-2-profile">
+			<div class="cover-photo">
+				<?php if (isset($faculty) && $faculty !== null): ?>
+					<div class="cover-photo-real">
+						<img src="<?php echo base_url($faculty->cover_photo); ?>" alt="Cover Photo">
+					</div>
+					
+					<div class="profile-picture">
+						<img src="<?php echo base_url($faculty->profile_picture); ?>" alt="Profile Picture">
+					</div>
+				<?php endif ?>
+			</div>
+
+			<div class="the-profile-main-container">
+				<?php if (isset($faculty) && $faculty !== null): ?>
+				<div class="the-profile-headings">
+					<div class="profile-headings-left">
+						<!-- Full name -->
+						<h2><?php echo $faculty->first_name; ?> 
+
+							<?php if(isset($faculty->middle_name) && !empty($faculty->middle_name)): ?>
+								<?php echo substr($faculty->middle_name, 0, 1) . '.'; ?> 			
+							<?php endif; ?>
+							 
+							<?php echo $faculty->last_name; ?></h2>
+
+						<div class="profile-left-subheadings">
+							<!-- Age -->
+							<?php if(isset($faculty->age) && !empty($faculty->age)): ?>
+								<h5><?php echo $faculty->age ?> years old</h5>
+							<?php endif; ?>
+							
+							<!-- Email -->
+							<?php if(isset($faculty->email) && !empty($faculty->email)): ?>
+							<div class="contact-row">
+								<img src="<?php echo base_url('assets/images/icon/email.svg'); ?>" alt="">
+								<h5><?php echo $faculty->email ?></h5>
+							</div>
+							<?php endif; ?>
+
+							<!-- Mobile Number -->
+							<?php if(isset($faculty->mobile_number) && !empty($faculty->mobile_number)): ?>
+							<div class="contact-row">
+								<img src="<?php echo base_url('assets/images/icon/phone.svg'); ?>" alt="">
+								<h5><?php echo $faculty->mobile_number ?></h5>
+							</div>
+							<?php endif; ?>
+						</div>
+
+						<div class="profile-buttons">
+							<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/prepareForEditProfile">
+								<div class="profile-button-container">
+									<h5>Edit Profile</h5>
+								</div>
+							</a>
+						</div>
+					</div>
+
+					<div class="profile-headings-right">
+						<div class="role-heading-container role-row">
+							<h5>Current Role</h5>
+							<img src="<?php echo base_url('assets/images/icon/rolebag.svg'); ?>" alt="">
+						</div>
+
+						
+						<div class="role-item-container role-row">
+							<div class="role-item-profile">
+								<h5><?php echo $faculty->role_name; ?></h5>
+							</div>
+						</div>
+					</div>
+				</div>
+				<?php endif ?>
+
+				<!-- Tables -->
+				<div class="tables-profile-container">
+					<!-- Qualifications -->
+					<div class="the-content-container">
+						<div class="sub-content-container">
+							<div class="table-heading">
+								<h4>Qualifications</h4>
+							</div>
+						</div>
+						
+						<div id="container">    
+							<table class="table" id="QualificationsList" name="QualificationsList">
+								<thead>
+								<tr>
+									<th>#</th>
+									<th>Academic Degree</th>
+									<th>Institution</th>
+									<th>Year Graduated</th>
+								</tr>
+								</thead>
+
+								<tbody>
+									
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+
+					<!-- Industry Experience -->
+					<div class="the-content-container">
+						<div class="sub-content-container">
+							<div class="table-heading">
+								<h4>Industry Experience</h4>
+							</div>
+						</div>
+						
+						<div id="container">    
+							<table class="table" id="ExperienceList" name="ExperienceList">
+								<thead>
+								<tr>
+									<th>#</th>
+									<th>Name of Company</th>
+									<th>Job Position</th>
+									<th>Years of Experience</th>
+								</tr>
+								</thead>
+
+								<tbody>
+									
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+
+					<!-- Research Outputs -->
+					<div class="the-content-container">
+						<div class="sub-content-container">
+							<div class="table-heading">
+								<h4>Research Outputs</h4>
+							</div>
+						</div>
+
+						<!-- Flash Message for Error -->
+						<?php if ($this->session->flashdata('error')): ?>
+						<script type="text/javascript">
+							Swal.fire({
+								icon: 'error',
+								title: 'Oops...',
+								text: "<?php echo $this->session->flashdata('error'); ?>"
+							});
+						</script>
+						<?php endif; ?>
+											
+						<div id="container">    
+							<table class="table" id="ResearchList" name="ResearchList">
+								<thead>
+								<tr>
+									<th>#</th>
+									<th>Title</th>
+									<th>Year Published</th>
+									<th>Research PDF</th>
+
+								</tr>
+								</thead>
+
+								<tbody>
+									
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+					
+				</div>
+				</div>
+			</div>
         </div>
-      </div>
     </div>
+</div>
 
 	<script>
+	$(document).ready(function() {
+			fetchFaculty();
+			fetchQualifications();
+			fetchExperience();
+			fetchResearch();
+		});
+
+	function fetchQualifications() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/getQualifications',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Qualifications):', result);
+				if (Array.isArray(result)) {
+					createQualificationsTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching qualifications:', error);
+			}
+		});
+	}
+
+	function createQualificationsTable(result, sno) {
+		sno = Number(sno);
+		$('#QualificationsList tbody').empty(); // Clear existing rows
+		for (index in result) {
+			var id = result[index].id;
+			var academic_degree = result[index].academic_degree;
+			var institution = result[index].institution;
+			var year_graduated = result[index].year_graduated;
+
+			sno += 1;
+
+			var tr = "<tr>";
+			tr += "<td>" + sno + "</td>";  // Serial number
+			tr += "<td>" + academic_degree + "</td>";
+			tr += "<td>" + institution + "</td>";
+			tr += "<td>" + year_graduated + "</td>";
+			tr += "</tr>";
+
+			$('#QualificationsList tbody').append(tr);  // Append the new row to the table body
+		}
+	}
+
+	function fetchExperience() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/getExperience',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Experience):', result);
+				if (Array.isArray(result)) {
+					createExperienceTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching experience:', error);
+			}
+		});
+	}
+
+	function createExperienceTable(result, sno) {
+		sno = Number(sno);
+		$('#ExperienceList tbody').empty(); // Clear existing rows
+		for (index in result) {
+			var id = result[index].id;
+			var company_name = result[index].company_name;
+			var job_position = result[index].job_position;
+			var years_of_experience = result[index].years_of_experience;
+
+			sno += 1;
+
+			var tr = "<tr>";
+			tr += "<td>" + sno + "</td>";  // Serial number
+			tr += "<td>" + company_name + "</td>";
+			tr += "<td>" + job_position + "</td>";
+			tr += "<td>" + years_of_experience + "</td>";				
+			tr += "</tr>";
+
+			$('#ExperienceList tbody').append(tr);  // Append the new row to the table body
+		}
+	}
+
+	function fetchResearch() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/getResearch',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Research):', result);
+				if (Array.isArray(result)) {
+					createResearchTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching research:', error);
+			}
+		});
+	}
+
+	function createResearchTable(result, sno) {
+		sno = Number(sno);
+		$('#ResearchList tbody').empty(); // Clear existing rows
+		for (index in result) {
+			var id = result[index].id;
+			var title = result[index].title;
+			var publication_year = result[index].publication_year;
+
+			sno += 1;
+
+			var tr = "<tr>";
+			tr += "<td>" + sno + "</td>";  // Serial number
+			tr += "<td>" + title + "</td>";
+			tr += "<td>" + publication_year + "</td>";			
+			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + id + ")'>View PDF</a></td>";
+			tr += "</tr>";
+
+			$('#ResearchList tbody').append(tr);  // Append the new row to the table body
+		}
+	}
+
+	// JavaScript function to open the PDF in a new tab
+	function openPDFInNewTab(id) {
+		// Construct the URL to open the PDF
+		var url = 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/ViewResearchPDF/' + id;
+		// Open the URL in a new tab
+		window.open(url, '_blank');
+	}
+
+	// Function to fetch faculty data via AJAX
+	function fetchFaculty() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/getFacultyProfile',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Courses):', result);
+				if (Array.isArray(result)) {
+					createCourseTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching courses:', error);
+			}
+		});
+	}
+	
 	// Get elements
 	const modal = document.getElementById("postAnnouncementModal");
 	const btn = document.getElementById("postAnnouncementBtn");
@@ -202,62 +536,105 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  }
 	};
 
+	// Function to initialize a modal
+	function setupModal(modalId, openButtonId, closeButtonId) {
+		const modal = document.getElementById(modalId);
+		const openButton = document.getElementById(openButtonId);
+		const closeButton = document.getElementById(closeButtonId);
+
+		// Open modal
+		openButton.onclick = function () {
+			modal.style.display = "block";
+			if (modalId === "addCourseModal" || modalId === "editCourseModal") {
+				fetchFaculty(modalId);
+			}
+		};
+
+		// Close modal
+		closeButton.onclick = function () {
+			modal.style.display = "none";
+		};
+
+		// Close modal when clicking outside of it
+		window.onclick = function (event) {
+			if (event.target === modal) {
+				modal.style.display = "none";
+			}
+		};
+	}
+
+	// Initialize "Post Announcement" modal
+	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
+
 	// File attachment handling
-	const attachmentInput = document.getElementById("announcement_attachment");
-	const attachmentPreview = document.getElementById("attachment_preview");
+	function setupFileAttachment(attachmentInputId, attachmentPreviewId, allowMultiple = true) {
+	const attachmentInput = document.getElementById(attachmentInputId);
+	const attachmentPreview = document.getElementById(attachmentPreviewId);
 	let attachedFiles = []; // Store uploaded files dynamically
 
 	attachmentInput.addEventListener("change", function () {
-	  // Loop through selected files
-	  Array.from(attachmentInput.files).forEach((file) => {
-	    // Check if file is already attached
-	    if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
-	      alert(`File "${file.name}" is already attached.`);
-	      return;
-	    }
+		// Clear previous files if only one file is allowed (for research_attachment)
+		if (!allowMultiple) {
+		attachedFiles = []; // Clear the previous files list if only one file is allowed
+		attachmentPreview.innerHTML = ""; // Clear the preview area
+		}
 
-	    // Add file to the list of attached files
-	    attachedFiles.push(file);
+		// Loop through selected files
+		Array.from(attachmentInput.files).forEach((file) => {
+		// Check if file is already attached
+		if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
+			alert(`File "${file.name}" is already attached.`);
+			return;
+		}
 
-	    // Create preview item
-	    const previewItem = document.createElement("div");
-	    previewItem.className = "attachment-preview-item";
+		// Add file to the list of attached files
+		attachedFiles.push(file);
 
-	    if (file.type.startsWith("image/")) {
-	      // Display image preview
-	      const img = document.createElement("img");
-	      img.src = URL.createObjectURL(file);
-	      img.alt = file.name;
-	      img.onload = function () {
-	        URL.revokeObjectURL(img.src); // Free memory
-	      };
-	      previewItem.appendChild(img);
-	    }
+		// Create preview item
+		const previewItem = document.createElement("div");
+		previewItem.className = "attachment-preview-item";
 
-	    // Display file name
-	    const fileName = document.createElement("span");
-	    fileName.textContent = file.name;
-	    previewItem.appendChild(fileName);
+		if (file.type.startsWith("image/")) {
+			// Display image preview
+			const img = document.createElement("img");
+			img.src = URL.createObjectURL(file);
+			img.alt = file.name;
+			img.onload = function () {
+			URL.revokeObjectURL(img.src); // Free memory
+			};
+			previewItem.appendChild(img);
+		}
 
-	    // Add a remove button for each file
-	    const removeButton = document.createElement("button");
-	    removeButton.textContent = "Remove";
-	    removeButton.className = "remove-file-btn";
-	    removeButton.onclick = function () {
-	      // Remove file from the list of attached files
-	      attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
-	      previewItem.remove();
-	    };
-	    previewItem.appendChild(removeButton);
+		// Display file name
+		const fileName = document.createElement("span");
+		fileName.textContent = file.name;
+		previewItem.appendChild(fileName);
 
-	    // Add preview item to the container
-	    attachmentPreview.appendChild(previewItem);
-	  });
+		// Add a remove button for each file
+		const removeButton = document.createElement("button");
+		removeButton.textContent = "Remove";
+		removeButton.className = "remove-file-btn";
+		removeButton.onclick = function () {
+			// Remove file from the list of attached files
+			attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
+			previewItem.remove();
+		};
+		previewItem.appendChild(removeButton);
 
-	  // Reset file input to allow re-uploading the same file if removed
-	  attachmentInput.value = "";
+		// Add preview item to the container
+		attachmentPreview.appendChild(previewItem);
+		});
 
+		// Reset file input to allow re-uploading the same file if removed
+		attachmentInput.value = "";
 	});
+	}
+
+	// Call setupFileAttachment for 'addCourseModal'
+	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
+
+	// Call setupFileAttachment for 'addCourseModal'
+	setupFileAttachment("research_attachment", "research_attachment_preview", false);
 
 	// Notification Panel Logic
 	const notificationBtn = document.getElementById('notificationBtn');
@@ -285,6 +662,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		notificationPanel.classList.remove('open');
 	}
 	});
+	
 	</script>
 
 
