@@ -1368,5 +1368,6 @@ form .back-step {
   color: #A4A4A4;
   font-family: 'TT Hoves Medium';
   font-weight: 900;
+  cursor: pointer;
 }
 
