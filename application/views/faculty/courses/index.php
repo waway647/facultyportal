@@ -8,6 +8,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="icon" href="<?php echo base_url('assets/images/logo/sbu_logo.svg'); ?>" type="image/x-icon">
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/globals.css?<?php echo time(); ?>"> 
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/style.css?<?php echo time(); ?>"> 
+	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/table.css?<?php echo time(); ?>"> 
+
+	<!-- jQuery library -->
+	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
+
   </head>
   <body>
   <div class="dashboard-faculty">
@@ -173,7 +178,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
       <div class="main-content">
         <div class="main-content-2">
-          <div class="heading-container"><div class="text-wrapper-8">Courses, Department Chair</div></div>
+          <div class="heading-container"><div class="text-wrapper-8">My Courses</div></div>
 			<div class="container-management">
 				<div class="item-summary-container">
 					<div class="boxes-container">
@@ -260,55 +265,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script>
 	// Call the function to fetch faculty when the page loads
 	$(document).ready(function() {
-		fetchFaculty(); // Fetch faculty when Add Course modal opens
 		fetchCourses();
 	});
-
-	
-
-	// Fetch faculty_id for the select dropdown
-	function fetchFaculty(modalId, callback) {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getFaculty',
-			type: 'GET',
-			dataType: 'json',
-			success: function (result) {
-				console.log('AJAX success:', result);
-				if (Array.isArray(result)) {
-					let selectElement;
-					if (modalId === "addCourseModal") {
-						selectElement = $('#faculty_id');
-					} else if (modalId === "editCourseModal") {
-						selectElement = $('#faculty_assigned');
-					}
-
-					if (selectElement) {
-						selectElement.empty();
-						selectElement.append('<option value="" disabled selected>Faculty In-Charge</option>');
-						result.forEach(function (faculty) {
-							selectElement.append('<option value="' + faculty.id + '">' + faculty.full_name + '</option>');
-						});
-
-						// Execute the callback if provided
-						if (callback && typeof callback === 'function') {
-							callback();
-						}
-					}
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-			},
-			error: function (xhr, status, error) {
-				console.error('Error fetching faculty:', error);
-			}
-		});
-	}
-
 
 	// Function to fetch course data via AJAX
 	function fetchCourses() {
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getCourses',  // Update the URL as necessary
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Courses/getCourses',  // Update the URL as necessary
 			type: 'GET',
 			dataType: 'json',
 			success: function(result) {
@@ -334,7 +297,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			var course_code = result[index].course_code;
 			var course_name = result[index].course_name;
 			var number_of_units = result[index].number_of_units;
-			var faculty_assigned = result[index].faculty_assigned;
 			var class_section = result[index].class_section;
 
 			sno += 1;
@@ -344,32 +306,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td>" + course_code + "</td>";
 			tr += "<td>" + course_name + "</td>";
 			tr += "<td>" + number_of_units + "</td>";
-			tr += "<td>" + faculty_assigned + "</td>";
 			tr += "<td>" + class_section + "</td>";
 			tr += "</tr>";
 
 			$('#courseList tbody').append(tr);  // Append the new row to the table body
 		}
-	}
-
-	// Function to fetch course data via AJAX
-	function fetchCourseById(courseId) {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Courses/getCourseByID/' + courseId, // Updated URL with courseId
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('Fetched Course:', result);
-				if (result && result.id) {
-					populateEditModal(result); // Populate the modal with fetched data
-				} else {
-					console.error('Error: Course not found!');
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching course by ID:', error);
-			}
-		});
 	}
 	
 	// Function to initialize a modal
@@ -401,9 +342,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	// Initialize "Post Announcement" modal
 	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
-
-	// Initialize "Add Course" modal
-    setupModal("addCourseModal", "addCourseBtn", "closeaddCourseBtn");
 
 	// File attachment handling
 	function setupFileAttachment(attachmentInputId, attachmentPreviewId, allowMultiple = true) {
