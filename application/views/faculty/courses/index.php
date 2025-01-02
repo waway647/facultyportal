@@ -346,13 +346,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td>" + number_of_units + "</td>";
 			tr += "<td>" + faculty_assigned + "</td>";
 			tr += "<td>" + class_section + "</td>";
-			tr += "<td><a href='#' onclick='fetchCourseById(" + id + ")'>" +
-					"<div class='table-icon-container'>" +
-						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
-						"<div><a href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/deleteCourse/" + id + "'>" +
-							"<img class='img' src='" + "<?php echo base_url('assets/images/icon/x.svg'); ?>" + "' /></a></div>" +
-					"</div></td>";
-
 			tr += "</tr>";
 
 			$('#courseList tbody').append(tr);  // Append the new row to the table body
@@ -362,7 +355,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Function to fetch course data via AJAX
 	function fetchCourseById(courseId) {
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getCourseByID/' + courseId, // Updated URL with courseId
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Courses/getCourseByID/' + courseId, // Updated URL with courseId
 			type: 'GET',
 			dataType: 'json',
 			success: function(result) {
@@ -379,33 +372,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	}
 	
-	function populateEditModal(course) {
-		$('#editCourseModal #course_code').val(course.course_code);
-		$('#editCourseModal #course_name').val(course.course_name);
-		$('#editCourseModal #number_of_units').val(course.number_of_units);
-		
-		// Fetch faculty options and set selected value
-		fetchFaculty('editCourseModal', function() {
-			$('#editCourseModal #faculty_assigned').val(course.faculty_profile_id);
-		});
-
-		$('#editCourseModal #class_section').val(course.class_section);
-		$('#editCourseForm').attr('action', 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/updateCourse/' + course.id);
-		$('#editCourseModal').show(); // Display the modal
-	}
-
-	// Close modal when clicking outside of it (on the backdrop)
-	window.addEventListener("click", function (event) {
-		if (event.target === document.getElementById('editCourseModal')) {
-			$('#editCourseModal').hide(); // Use fadeOut for smoother hiding
-		}
-	});
-
-	// Attach event listener to "Cancel" button inside the Edit Course Modal
-	$('#closeeditCourseBtn').on('click', function () {
-		$('#editCourseModal').hide(); // Hide the modal when clicked
-	});
-
 	// Function to initialize a modal
     function setupModal(modalId, openButtonId, closeButtonId) {
         const modal = document.getElementById(modalId);
