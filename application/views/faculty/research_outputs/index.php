@@ -269,9 +269,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												</select>
 											</div>
 											<div class="form-group">
-												<select id="faculty_id" name="faculty_profile_id" required>
-													<option value="" disabled>Author</option>
-												</select>
+												<input type="text" id="faculty_id" name="faculty_profile_id" placeholder="Author name" required>
 											</div>
 											<div class="form-group">
 												<div class="attachment-container">
