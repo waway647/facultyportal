@@ -107,13 +107,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</a>
 
-			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/FacultyManagement/index">
-				<div class="nav-link">
-					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/facultymanage.svg'); ?>" /></div>
-					<div class="frame-2"><div class="text-wrapper-4">Faculty Management</div></div>
-				</div>
-			</a>
-          
 		  	<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Courses/index">
 				<div class="nav-link">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/course.svg'); ?>" /></div>
@@ -135,21 +128,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</a>
 
-			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Reports/index">
-				<div class="nav-link">
-					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/reports.svg'); ?>" /></div>
-					<div class="frame-2"><div class="text-wrapper-4">Reports</div></div>
-				</div>
-			</a>
         </div>
-        <div class="nav-links-container-2">
-			<!-- Notification Button -->
-			<a href="javascript:void(0);" id="notificationBtn">
-				<div class="nav-link">
-					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/notif.svg'); ?>" /></div>
-					<div class="frame-2"><div class="text-wrapper-4">Notifications</div></div>
-				</div>
-			</a>
+        	<div class="nav-links-container-2">
+				<!-- Notification Button -->
+				<a href="javascript:void(0);" id="notificationBtn">
+					<div class="nav-link">
+						<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/notif.svg'); ?>" /></div>
+						<div class="frame-2"><div class="text-wrapper-4">Notifications</div></div>
+					</div>
+				</a>
 			
 			<!-- Slide-in Notification Panel -->
 			<div id="notificationPanel" class="notification-panel">
