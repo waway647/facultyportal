@@ -178,7 +178,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<!-- Your profile link and other content here -->
 			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/index">
 				<div class="nav-link-3">
-					<div class="img-wrapper"><img class="img" src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" /></div>
+					<?php if (isset($faculty) && $faculty !== null): ?>
+					<div class="img-wrapper">
+						<img class="img-account" src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="Profile Picture">
+					</div>
+					<?php endif ?>
+					
 					<div class="frame-3">
 					<div class="text-wrapper-5">Paul Joshua Mapula</div>
 					<div class="text-wrapper-6">2022-02519@sanbeda.edu.ph</div>
@@ -198,11 +203,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="cover-photo">
 				<?php if (isset($faculty) && $faculty !== null): ?>
 					<div class="cover-photo-real">
-						<img src="<?php echo base_url($faculty->cover_photo); ?>" alt="Cover Photo">
+						<img src="<?php echo base_url(!empty($faculty->cover_photo) ? $faculty->cover_photo : 'assets/images/cover/sbu_default_cover.png'); ?>" alt="Cover Photo">
 					</div>
 					
 					<div class="profile-picture">
-						<img src="<?php echo base_url($faculty->profile_picture); ?>" alt="Profile Picture">
+						<img src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="Profile Picture">
 					</div>
 				<?php endif ?>
 			</div>
@@ -249,8 +254,36 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<h5>Edit Profile</h5>
 								</div>
 							</a>
+
+							<a href="#" id="removeFacultyBtn">
+								<div class="profile-button-container">
+									<h5>Remove Faculty</h5>
+								</div>
+							</a>
 						</div>
 					</div>
+
+								<!-- Confirmation Modal -->
+								<div id="confirmDeleteModal" class="modal">
+										<div class="modal-content confirm-delete-modal-content">
+											<div class="modal-header confirm-delete-modal">
+												<h3>Remove Faculty</h3>
+											</div>
+
+											<div class="form-group confirm-delete-form-group">
+												Are you sure you want to remove this faculty profile? This action cannot be undone.
+											</div>
+
+											<div class="confirm-delete-container">
+												<div class="confirm-delete-button-cancel" id="cancelDeleteBtn">
+													<h6 class="back-step">Cancel</h6>
+												</div>
+
+												<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/deleteProfile" class="confirm-delete-button">Confirm Removal</a>
+											</div>
+											
+										</div>
+									</div>
 
 					<div class="profile-headings-right">
 						<div class="role-heading-container role-row">
@@ -579,6 +612,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	// Initialize "Post Announcement" modal
 	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
+
+	// Initialize "Post Announcement" modal
+	setupModal("confirmDeleteModal", "removeFacultyBtn", "cancelDeleteBtn");
 
 	// File attachment handling
 	function setupFileAttachment(attachmentInputId, attachmentPreviewId, allowMultiple = true) {

@@ -15,6 +15,10 @@ class Announcements extends CI_Controller {
 
 	public function index() // http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index
 	{
-		$this->load->view('chairperson/announcements/index');
+		$this->load->model('common_models/Faculty_model');
+		$faculty_id = $this->session->userdata('logged_id');
+		$data['faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
+
+		$this->load->view('chairperson/announcements/index', $data);
 	}
 }

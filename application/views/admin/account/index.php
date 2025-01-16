@@ -182,13 +182,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 
 						<div class="profile-details-container">
-						<div class="profile-details">
-							<a href="">
-								<h6>Edit</h6>
-							</a>
+							<div class="profile-details">
+								<a href="">
+									<h6>Edit</h6>
+								</a>
+							</div>
 						</div>
 					</div>
-					</div>
+
+					<a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/logout">
+						<div class="logout-button">
+							<h6>Log Out</h6>
+						</div>
+					</a>
 				</div>
 
 				<div class="right-account-container">

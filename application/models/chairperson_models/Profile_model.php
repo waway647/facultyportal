@@ -154,7 +154,8 @@ class Profile_model extends CI_Model {
         return $query->result_array(); // Use row() to get a single row
 	}
 
-    public function getQualificationsByID($id) {
+    public function getQualificationsByID($id) 
+    {
         // Query to fetch the row by ID
         return $this->db
         ->where('id', $id)
@@ -162,7 +163,8 @@ class Profile_model extends CI_Model {
         ->row_array(); // Return a single row as an associative array
     }
 
-    public function getExperienceByID($id) {
+    public function getExperienceByID($id) 
+    {
         // Query to fetch the row by ID
         return $this->db
         ->where('id', $id)
@@ -170,7 +172,8 @@ class Profile_model extends CI_Model {
         ->row_array(); // Return a single row as an associative array
     }
 
-    public function getResearchByID($id) {
+    public function getResearchByID($id) 
+    {
         // Query to fetch the row by ID
         return $this->db
         ->where('id', $id)
@@ -199,7 +202,8 @@ class Profile_model extends CI_Model {
         return $this->db->affected_rows() > 0;
     }
 
-    public function backupTable($faculty_id) {
+    public function backupTable($faculty_id) 
+    {
         // Backup existing qualifications
         $this->db->query("
             INSERT INTO qualifications_backup (faculty_profile_id, academic_degree, institution, year_graduated)
@@ -225,7 +229,8 @@ class Profile_model extends CI_Model {
      ", array($faculty_id));
     }
 
-    public function restoreTable($faculty_id) {
+    public function restoreTable($faculty_id) 
+    {
         // Clear current qualifications
         $this->db->query("DELETE FROM qualifications WHERE faculty_profile_id = ?", array($faculty_id));
         $this->db->query("DELETE FROM industry_experience WHERE faculty_profile_id = ?", array($faculty_id));
@@ -259,7 +264,8 @@ class Profile_model extends CI_Model {
         $this->db->query("DELETE FROM research_outputs_backup WHERE faculty_profile_id = ?", array($faculty_id));
     }
 
-    public function insertUpdatedTable($faculty_id) {
+    public function insertUpdatedTable($faculty_id) 
+    {
         $qualifications = $this->input->post('qualifications');
     
         if (is_array($qualifications)) {
@@ -309,9 +315,35 @@ class Profile_model extends CI_Model {
         }
     }
 
-    public function deleteBackup($faculty_id) {
+    public function deleteBackup($faculty_id) 
+    {
         $this->db->query("DELETE FROM qualifications_backup WHERE faculty_profile_id = ?", array($faculty_id));
         $this->db->query("DELETE FROM industry_experience_backup WHERE faculty_profile_id = ?", array($faculty_id));
         $this->db->query("DELETE FROM research_outputs_backup WHERE faculty_profile_id = ?", array($faculty_id));
+    }
+
+    public function deleteUser($user_id)    
+    {
+        $query = $this->db->delete('users', array('id' => $user_id));
+        return $query;
+    }
+
+    public function deleteProfile($faculty_id)
+    {
+        $query = $this->db->delete('faculty_profiles', array('id' => $faculty_id));
+        return $query;
+    }
+
+    public function deleteProfileInformation($faculty_id)
+    {
+        $profile_tables = array('certifications', 'consultations', 'courses', 'industry_experience', 'qualifications', 'research_outputs');
+        $this->db->where('faculty_profile_id', $faculty_id);
+        
+        foreach ($profile_tables as $table) {
+            $this->db->where('faculty_profile_id', $faculty_id);
+            $this->db->delete($table);
+        }
+
+        return true;
     }
 }

@@ -15,7 +15,11 @@ class ResearchOutputs extends CI_Controller {
 
 	public function index() // http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/ResearchOutputs/index
 	{
-		$this->load->view('chairperson/research_outputs/index');
+		$this->load->model('common_models/Faculty_model');
+		$faculty_id = $this->session->userdata('logged_id');
+		$data['faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
+
+		$this->load->view('chairperson/research_outputs/index', $data);
 	}
 
 	public function getResearch()

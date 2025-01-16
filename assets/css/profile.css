@@ -226,7 +226,6 @@ body {
 
 .profile-headings-left .profile-buttons {
   display: flex;
-  justify-content: space-between;
   gap: 15px;
 }
 
@@ -431,4 +430,53 @@ body {
     padding: 10px;
     background-color: #C21F27;
     color: #ffffff;
+} 
+
+.confirm-delete-modal-content {
+  width: 32%;
+}
+
+.confirm-delete-modal {
+  padding: 10px;
+  font-weight: 700;
+}
+
+.confirm-delete-form-group {
+  padding: 10px;
+}
+
+.confirm-delete-container {
+  justify-content:end;
+  padding: 10px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.confirm-delete-container a {
+  font-size: 14px;
+}
+
+.confirm-delete-button-cancel {
+  padding: 10px 20px;
+  border-radius: 3px;
+  background-color: #DCDBDB;
+  color: #000000;
+}
+
+.confirm-delete-button-cancel:hover {
+  cursor: pointer;
+  background-color: #a4a4a4;
+}
+
+.confirm-delete-button {
+  padding: 10px 20px;
+  border-radius: 3px;
+  background-color: #e53b43;
+  color: #ffffff;
+}
+
+.confirm-delete-button:hover {
+  cursor: pointer;
+  background-color: #C21F27;
 }

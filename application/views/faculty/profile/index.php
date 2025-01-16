@@ -164,7 +164,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<!-- Your profile link and other content here -->
 			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index">
 				<div class="nav-link-3">
-					<div class="img-wrapper"><img class="img" src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" /></div>
+					<?php if (isset($faculty) && $faculty !== null): ?>
+					<div class="img-wrapper">
+						<img class="img-account" src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="Profile Picture">
+					</div>
+					<?php endif ?>
+					
 					<div class="frame-3">
 					<div class="text-wrapper-5">Paul Joshua Mapula</div>
 					<div class="text-wrapper-6">2022-02519@sanbeda.edu.ph</div>

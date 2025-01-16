@@ -47,6 +47,34 @@ class Profile extends CI_Controller {
 		$this->load->view('chairperson/profile/index', $data);
 	}
 
+	public function deleteProfile()
+	{
+		// Get the current faculty ID
+		$faculty_id = $this->session->userdata('current_id') ?: $this->session->userdata('logged_id');
+
+		if ($faculty_id) {
+			$user_id = $this->Profile_model->getUserIdByFacultyProfileId($faculty_id);
+			if($user_id)
+			{
+				$deleteUser = $this->Profile_model->deleteUser($user_id);
+				if($deleteUser)
+				{
+					$deleteProfile = $this->Profile_model->deleteProfile($faculty_id);
+					if($deleteProfile)
+					{
+						$deleteProfileInformation = $this->Profile_model->deleteProfileInformation($faculty_id);
+						if($deleteProfileInformation)
+						{
+							redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/index');
+						}
+					}
+				}
+			}
+		} else {
+			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index');
+		}
+	}
+
 	public function prepareForEditProfile()
 	{
 		// Get the current faculty ID

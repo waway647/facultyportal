@@ -15,6 +15,10 @@ class Courses extends CI_Controller {
 
 	public function index() // http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Courses/index
 	{
+		$this->load->model('common_models/Faculty_model');
+		$user_id = $this->session->userdata('logged_id');
+		$data['faculty'] = $this->Faculty_model->getFacultyProfile($user_id);
+
 		$logged_user_id = $this->session->userdata('logged_id');
 
 		// Get faculty ID using the logged-in user's ID
@@ -26,7 +30,7 @@ class Courses extends CI_Controller {
 
 			// Verify if the session data is set
 			if ($this->session->userdata('faculty_id')) {
-				$this->load->view('faculty/courses/index');
+				$this->load->view('faculty/courses/index', $data);
 			} else {
 				echo "Failed to set session data!";
 			}
