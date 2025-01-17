@@ -63,6 +63,7 @@ class FacultyManagement extends CI_Controller {
 			if ($user_id) {
 				$facultyProfile_data = array(
 					"user_id" => $user_id, // Associate the user_id from the previous insert
+					"date_hired" => $this->input->post("date_hired"),
 					"department" => $this->input->post("department"),
 					"employment_type" => $this->input->post("employment_type")
 				);
@@ -89,6 +90,17 @@ class FacultyManagement extends CI_Controller {
 			echo json_encode($totalFaculty);
 		} else {
 			echo json_encode(["error" => "Total number of faculty not found"]);
+		}
+	}
+
+	public function checkEmailExists()
+	{
+		$email = $this->input->post('email');
+
+		if ($this->FacultyManagement_model->isEmailExists($email)) {
+			echo 'Email already in use';
+		} else {
+			echo 'Email is available';
 		}
 	}
 }

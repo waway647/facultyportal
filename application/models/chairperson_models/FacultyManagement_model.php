@@ -43,4 +43,11 @@ class FacultyManagement_model extends CI_Model {
 		$query = $this->db->count_all('faculty_profiles_vw');
 		return $query;
 	}
+
+	public function isEmailExists($email)
+	{
+		$query = $this->db->get_where('users', array('email' => $email)); // Replace 'users' with your table name
+		return $query->num_rows() > 0; // Return true if email exists
+	}
+
 }

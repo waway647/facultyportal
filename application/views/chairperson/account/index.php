@@ -181,12 +181,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="img-wrapper">
 						<img class="img-account" src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="Profile Picture">
 					</div>
-					<?php endif ?>
+					
 					
 					<div class="frame-3">
-					<div class="text-wrapper-5">Paul Joshua Mapula</div>
-					<div class="text-wrapper-6">2022-02519@sanbeda.edu.ph</div>
+						<div class="text-wrapper-5"><?php echo $faculty->first_name?> <?php echo $faculty->last_name?></div>
+						<div class="text-wrapper-6"><?php echo $faculty->email?></div>
 					</div>
+					<?php endif ?>
 				</div>
 			</a>
           
@@ -235,20 +236,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<div class="pic-preview-container">
 													<div class="preview">
 														<div class="px184">
-															<img id="preview_184" src="<?php echo base_url($faculty->profile_picture); ?>" alt="">
+															<img id="preview_184" src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="">
 														</div>
 														<h6>184px</h6>
 													</div>
 													<div class="preview">
 														<div class="px64">
-															<img id="preview_64" src="<?php echo base_url($faculty->profile_picture); ?>" alt="">
+															<img id="preview_64" src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="">
 														</div>
 														<h6>64px</h6>
 													</div>
 
 													<div class="preview">
 														<div class="px32">
-															<img id="preview_32"src="<?php echo base_url($faculty->profile_picture); ?>" alt="">
+															<img id="preview_32"src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="">
 														</div>
 														<h6>32px</h6>
 													</div>
@@ -278,48 +279,69 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 
 				<div class="right-account-container">
+					<?php if (isset($faculty) && $faculty !== null): ?>
 					<div class="form-container">
-						<div class="input-container">
+						<h4>Account Details</h4>
+
+						<div class="input-container index">
 							<h6>Email</h6>
-							<input type="text" id="email" name="email" placeholder="Email">
+							<input type="text" id="email" name="email" value="<?php echo $faculty->email; ?>" placeholder="Email" disabled>
 						</div>
 
-						<div class="input-container">
+						<div class="input-container index">
 							<h6>Password</h6>
-							<input type="text" id="pass" name="pass" placeholder="Pass">
+							<input type="text" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Pass" disabled>
 						</div>
 
-						<div class="input-container">
+						<div class="input-container index">
 							<h6>Mobile number</h6>
-							<input type="text" id="mobile_number" name="mobile_number" placeholder="Mobile number">
+							<input type="text" id="mobile_number" name="mobile_number" value="<?php echo $faculty->mobile_number; ?>" placeholder="Mobile number" disabled>
 						</div>
 
-						<div class="input-container">
+						<div class="input-container index">
 							<h6>First name</h6>
-							<input type="text" id="first_name" name="first_name" placeholder="First name">
+							<input type="text" id="first_name" name="first_name" value="<?php echo $faculty->first_name; ?>" placeholder="First name" disabled>
 						</div>
 
-						<div class="input-container">
+						<div class="input-container index">
 							<h6>Last name</h6>
-							<input type="text" id="last_name" name="last_name" placeholder="Last name">
+							<input type="text" id="last_name" name="last_name" value="<?php echo $faculty->last_name; ?>" placeholder="Last name" disabled>
 						</div>
 
-						<div class="input-container">
+						<div class="input-container index">
 							<h6>Middle name</h6>
-							<input type="text" id="middle_name" name="middle_name" placeholder="Middle name">
+							<input type="text" id="middle_name" name="middle_name" value="<?php echo $faculty->middle_name; ?>" placeholder="Middle name" disabled>
 						</div>
 
-						<div class="input-container">
+						<div class="input-container index">
 							<h6>Birthday</h6>
-							<input type="text" id="birthday" name="birthday" placeholder="Birthday">
+							<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday; ?>" placeholder="Birthday" disabled>
 						</div>
 
 						<div class="input-container edit">
-							<a href="">
+							<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/edit">
 								<h6>Edit</h6>
 							</a>
 						</div>
 					</div>
+
+					<div class="form-container">
+						<h4>Privacy</h4>
+
+						<div class="privacy-row">
+							<div class="title"><h5>Show Birthday on Profile</h5></div>
+							<div class="status">
+								<h6>Visibility: Only me</h6>
+							</div>
+						</div>
+
+						<div class="input-container edit">
+							<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/editPrivacy">
+								<h6>Edit</h6>
+							</a>
+						</div>
+					</div>
+					<?php endif ?>
 				</div>
 			</div>
         </div>

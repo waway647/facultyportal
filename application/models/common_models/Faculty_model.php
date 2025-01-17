@@ -17,4 +17,11 @@ class Faculty_model extends CI_Model {
 		$this->db->update('users');
 		return true;
 	}
+
+	public function updateProfile($user_id, $user_data)
+	{
+		$this->db->where('id', $user_id);
+		$query = $this->db->update('users', $user_data);
+		return $query;
+	}
 }

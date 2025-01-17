@@ -15,6 +15,10 @@ class Profile extends CI_Controller {
 
 	public function index($logged_id = null) // http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index
 	{
+		$this->load->model('common_models/Faculty_model');
+		$faculty_id = $this->session->userdata('logged_id');
+		$data['logged_faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
+			
 		$logged_id = $this->session->userdata('logged_id');
 
 		if ($logged_id) {
@@ -34,6 +38,10 @@ class Profile extends CI_Controller {
 			// Redirect to the logged-in user's profile if no ID is provided
 			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index');
 		}
+
+		$this->load->model('common_models/Faculty_model');
+		$faculty_id = $this->session->userdata('logged_id');
+		$data['logged_faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
 	
 		// Set current_id to allow viewing another user's profile
 		$this->session->set_userdata('current_id', $current_id);
@@ -101,6 +109,10 @@ class Profile extends CI_Controller {
 
 	public function editProfile()
 	{
+		$this->load->model('common_models/Faculty_model');
+		$faculty_id = $this->session->userdata('logged_id');
+		$data['logged_faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
+
 		// Get the current faculty ID
 		$current_id = $this->session->userdata('current_id') ?: $this->session->userdata('logged_id');
 

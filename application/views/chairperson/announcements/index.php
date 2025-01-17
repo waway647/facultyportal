@@ -174,12 +174,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="img-wrapper">
 						<img class="img-account" src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="Profile Picture">
 					</div>
-					<?php endif ?>
+					
 					
 					<div class="frame-3">
-					<div class="text-wrapper-5">Paul Joshua Mapula</div>
-					<div class="text-wrapper-6">2022-02519@sanbeda.edu.ph</div>
+						<div class="text-wrapper-5"><?php echo $faculty->first_name?> <?php echo $faculty->last_name?></div>
+						<div class="text-wrapper-6"><?php echo $faculty->email?></div>
 					</div>
+					<?php endif ?>
 				</div>
 			</a>
           

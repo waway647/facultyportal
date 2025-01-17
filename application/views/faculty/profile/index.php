@@ -162,18 +162,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
           
 			<!-- Your profile link and other content here -->
-			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index">
+			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/index">
 				<div class="nav-link-3">
 					<?php if (isset($faculty) && $faculty !== null): ?>
 					<div class="img-wrapper">
 						<img class="img-account" src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="Profile Picture">
 					</div>
-					<?php endif ?>
+					
 					
 					<div class="frame-3">
-					<div class="text-wrapper-5">Paul Joshua Mapula</div>
-					<div class="text-wrapper-6">2022-02519@sanbeda.edu.ph</div>
+						<div class="text-wrapper-5"><?php echo $faculty->first_name?> <?php echo $faculty->last_name?></div>
+						<div class="text-wrapper-6"><?php echo $faculty->email?></div>
 					</div>
+					<?php endif ?>
 				</div>
 			</a>
           
@@ -189,11 +190,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			<div class="cover-photo">
 				<?php if (isset($faculty) && $faculty !== null): ?>
 					<div class="cover-photo-real">
-						<img src="<?php echo base_url($faculty->cover_photo); ?>" alt="Cover Photo">
+						<img src="<?php echo base_url(!empty($faculty->cover_photo) ? $faculty->cover_photo : 'assets/images/cover/sbu_default_cover.png'); ?>" alt="Cover Photo">
 					</div>
 					
 					<div class="profile-picture">
-						<img src="<?php echo base_url($faculty->profile_picture); ?>" alt="Profile Picture">
+						<img src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="Profile Picture">
 					</div>
 				<?php endif ?>
 			</div>
@@ -214,7 +215,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="profile-left-subheadings">
 							<!-- Age -->
 							<?php if(isset($faculty->age) && !empty($faculty->age)): ?>
-								<h5><?php echo $faculty->age ?> years old</h5>
+								<h5>
+									<?php 
+										$age = $faculty->age;
+										echo $age . ' ' . ($age == 1 ? 'year' : 'years') . ' old';
+								 	?>
+								</h5>
 							<?php endif; ?>
 							
 							<!-- Email -->
@@ -244,16 +250,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 
 					<div class="profile-headings-right">
-						<div class="role-heading-container role-row">
-							<h5>Current Role</h5>
-							<img src="<?php echo base_url('assets/images/icon/rolebag.svg'); ?>" alt="">
+						<div class="faculty-role-container">
+							<div class="role-heading-container role-row">
+								<h5>Current Role</h5>
+								<img src="<?php echo base_url('assets/images/icon/rolebag.svg'); ?>" alt="">
+							</div>
+
+							
+							<div class="role-item-container role-row">
+								<div class="role-item-profile">
+									<h5><?php echo $faculty->role_name; ?></h5>
+								</div>
+							</div>
 						</div>
 
-						
-						<div class="role-item-container role-row">
-							<div class="role-item-profile">
-								<h5><?php echo $faculty->role_name; ?></h5>
-							</div>
+						<div class="faculty-job-information">
+							<div><h5><?php echo $faculty->department; ?><h5 class="sub-h5">&nbsp| Department</h5></h5></div>
+							<div><h5><?php echo $faculty->employment_type; ?><h5 class="sub-h5">&nbsp| Employment Type</h5></h5></div>
+							<div><h5><?php echo $faculty->date_hired; ?><h5 class="sub-h5">&nbsp| Date Hired</h5></h5></div>
 						</div>
 					</div>
 				</div>

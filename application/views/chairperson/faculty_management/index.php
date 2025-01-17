@@ -8,6 +8,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="icon" href="<?php echo base_url('assets/images/logo/sbu_logo.svg'); ?>" type="image/x-icon">
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/globals.css?<?php echo time(); ?>"> 
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/style.css?<?php echo time(); ?>"> 
+	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/profile.css?<?php echo time(); ?>"> 
 
 	<!-- jQuery library -->
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -183,12 +184,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="img-wrapper">
 						<img class="img-account" src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="Profile Picture">
 					</div>
-					<?php endif ?>
+					
 					
 					<div class="frame-3">
-					<div class="text-wrapper-5">Paul Joshua Mapula</div>
-					<div class="text-wrapper-6">2022-02519@sanbeda.edu.ph</div>
+						<div class="text-wrapper-5"><?php echo $faculty->first_name?> <?php echo $faculty->last_name?></div>
+						<div class="text-wrapper-6"><?php echo $faculty->email?></div>
 					</div>
+					<?php endif ?>
 				</div>
 			</a>
           
@@ -271,15 +273,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</div>
 									<form id="addFacultyForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/createFaculty1">
 										<div class="form-group">
-											<select id="user_role_id" name="user_role_id" required>
-												<option value="2">Faculty</option>
-											</select>
+											<div class="form-input">
+												<h6>Role</h6>
+												<select id="user_role_id" name="user_role_id" required>
+													<option value="2">Faculty</option>
+												</select>
+											</div>
 										</div>
 										<div class="form-group">
-											<input type="email" id="email" name="email" placeholder="Email" required>
+											<div class="form-input">
+												<h6>Email</h6>
+												<input type="email" id="email" name="email" placeholder="Email" required>
+												<small id="email-status" style="color:red;"></small>
+											</div>
 										</div>
 										<div class="form-group">
-											<input type="password" id="pass" name="pass" placeholder="Password" required>
+											<div class="form-input">
+												<h6>Password</h6>
+												<input type="password" id="pass" name="pass" placeholder="Password" required>
+											</div>
 										</div>
 
 										<button type="submit" class="btn">Continue</button>
@@ -304,28 +316,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									</div>
 									<form id="addFacultyFormStep2" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/createFaculty2">
 										<div class="form-group">
-											<input type="text" id="first_name" name="first_name" placeholder="First Name" required>
+											<div class="form-input">
+												<h6>First Name</h6>
+												<input type="text" id="first_name" name="first_name" placeholder="First Name" required>
+											</div>
 										</div>
 										<div class="form-group">
-											<input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
+											<div class="form-input">
+												<h6>Last Name</h6>
+												<input type="text" id="last_name" name="last_name" placeholder="Last Name" required>
+											</div>
 										</div>
 										<div class="form-group">
-											<input type="text" id="middle_name" name="middle_name" placeholder="Middle Name">
+											<div class="form-input">
+												<h6>Middle Name</h6>
+												<input type="text" id="middle_name" name="middle_name" placeholder="Middle Name">
+											</div>
 										</div>
 										<div class="form-group">
-											<select id="department" name="department" required>
-												<option value="" disabled selected>Choose a Department</option>
-												<option value="Information Technology">Information Technology</option>
-												<option value="Computer Science">Computer Science</option>
-												<option value="Information Systems">Information Systems</option>
-											</select>
+											<div class="form-input">
+												<h6>Date Hired</h6>
+												<input type="date" id="date_hired" name="date_hired" placeholder="Date Hired" required>
+											</div>
 										</div>
 										<div class="form-group">
-											<select id="employment_type" name="employment_type" required>
-												<option value="" disabled selected>Choose Employment Type</option>
-												<option value="Full-Time">Full-Time</option>
-												<option value="Part-Time">Part-Time</option>
-											</select>
+											<div class="form-input">
+												<h6>Department</h6>
+												<select id="department" name="department" required>
+													<option value="" disabled selected>Choose a Department</option>
+													<option value="Information Technology">Information Technology</option>
+													<option value="Computer Science">Computer Science</option>
+													<option value="Information Systems">Information Systems</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="form-input">
+												<h6>Employment Type</h6>
+												<select id="employment_type" name="employment_type" required>
+													<option value="" disabled selected>Choose Employment Type</option>
+													<option value="Full-Time">Full-Time</option>
+													<option value="Part-Time">Part-Time</option>
+												</select>
+											</div>
 										</div>
 
 										<button type="submit" class="btn">Save & Confirm</button>
@@ -417,6 +450,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							name = `${middle_name}`;  // In case both first_name and last_name are null, just show the middle name
 						}
 
+						// Age display logic: only show if age > 0
+						let ageLine = '';
+						age = parseInt(age);
+						if (age > 0) {
+							ageLine = `<h6 class="role-class">${age} ${age === 1 ? 'year' : 'years'} old</h6>`;
+						}
+
 						// Construct the profile card dynamically
 						let card = `
 							<div class="profile-card-container">
@@ -429,7 +469,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<h4>${name}</h4>
 										
 										<div class="the-sub-details">
-											<h6 class="role-class">${age} years old</h6>
+											${ageLine}
 											<h6>${department}</h6>
 											<h6></h6>
 										</div>
@@ -614,6 +654,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		notificationPanel.classList.remove('open');
 	}
 	});
+
+	document.getElementById('email').addEventListener('input', function() {
+        let email = this.value;
+        let statusMessage = document.getElementById('email-status');
+
+        if (email.length > 0) {
+            // Make an AJAX request to check if the email already exists
+            fetch('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/checkEmailExists', {
+                method: 'POST',
+                body: new URLSearchParams({ email: email }),
+                headers: {
+                    'Content-Type': 'application/x-www-form-urlencoded',
+                },
+            })
+            .then(response => response.text())
+            .then(result => {
+                if (result === 'Email already in use') {
+                    statusMessage.textContent = 'This email is already in use.';
+					statusMessage.style.color = 'maroon';
+                } else {
+                    statusMessage.textContent = '';
+                }
+            })
+            .catch(error => console.error('Error:', error));
+        } else {
+            statusMessage.textContent = '';
+        }
+    });
 	</script>
 
 

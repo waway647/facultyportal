@@ -257,6 +257,7 @@ body {
   padding: 0 30px !important;
   height: 100%;
   border-radius: 50px;
+  margin: 0;
 }
 
 .profile-headings-left .profile-button-container:hover {
@@ -268,7 +269,14 @@ body {
     display: flex;
     flex-direction: column;
     align-items:flex-end;
-    gap: 20px;
+    justify-content: space-between;
+}
+
+.profile-headings-right .faculty-role-container {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  align-items:flex-end;
 }
 
 .profile-headings-right .role-row {
@@ -283,6 +291,27 @@ body {
     padding: 10px 20px;
     background-color: #DCDBDB;
     border-radius: 30px;
+}
+
+.profile-headings-right .faculty-job-information {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 10px;
+}
+
+.profile-headings-right .faculty-job-information div {
+  display: flex;
+}
+
+.profile-headings-right .faculty-job-information h5 {
+  font-size: 16px;
+  display: flex;
+}
+
+.profile-headings-right .faculty-job-information .sub-h5 {
+  color: #838383;
+  font-family: 'TT Hoves Regular';
 }
 
 .table-icon-container {
@@ -479,4 +508,9 @@ body {
 .confirm-delete-button:hover {
   cursor: pointer;
   background-color: #C21F27;
+}
+
+.form-input h6 {
+  padding: 5px 0;
+  color: #a4a4a4;
 }
