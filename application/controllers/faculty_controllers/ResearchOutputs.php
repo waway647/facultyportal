@@ -19,13 +19,25 @@ class ResearchOutputs extends CI_Controller {
 		$user_id = $this->session->userdata('logged_id');
 		$data['faculty'] = $this->Faculty_model->getFacultyProfile($user_id);
 
-		$this->load->view('faculty/research_outputs/index', $data);
+		$logged_user_id = $this->session->userdata('logged_id');
+
+		$faculty_id = $this->ResearchOutputs_model->getFacultyID($logged_user_id);
+		if($faculty_id)
+		{
+			$this->session->set_userdata('faculty_id', $faculty_id);
+
+			$this->load->view('faculty/research_outputs/index', $data);
+		}
 	}
 
 	public function getResearch()
 	{
-		$result = $this->ResearchOutputs_model->getResearch();
-		echo json_encode($result); // Return data as JSON
+		$faculty_id = $this->session->userdata('faculty_id');
+		if($faculty_id)
+		{
+			$result = $this->ResearchOutputs_model->getResearch($faculty_id);
+			echo json_encode($result); // Return data as JSON
+		}
 	}
 
 	public function getFaculty() {

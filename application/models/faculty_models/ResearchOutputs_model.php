@@ -4,9 +4,10 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 
 class ResearchOutputs_model extends CI_Model {
 
-	public function getResearch()
+	public function getResearch($faculty_id)
 	{
-        $query = $this->db->get('research_outputs_vw');
+		$this->db->where('faculty_profile_id', $faculty_id);
+        $query = $this->db->get('research_outputs');
         return $query->result_array(); // Use row() to get a single row
 	}
 
@@ -51,4 +52,14 @@ class ResearchOutputs_model extends CI_Model {
         }
         return false;
     }    
+
+	public function getFacultyID($logged_user_id)
+	{
+		$query = $this->db->select('id')
+						->where('user_id', $logged_user_id)
+						->get('faculty_profiles');
+
+		$result = $query->row_array(); // Fetch the first row as an associative array
+		return $result ? $result['id'] : null; // Return the ID if found, otherwise return null
+	}
 }

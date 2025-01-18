@@ -337,7 +337,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<th>#</th>
 								<th>Title</th>
 								<th>Year Published</th>
-								<th>Author</th>
 								<th>Research PDF</th>
 								<th>Action</th>
 							</tr>
@@ -439,7 +438,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			var id = result[index].id;
 			var title = result[index].title;
 			var publication_year = result[index].publication_year;
-			var author = result[index].author;
 			var research_attachment = result[index].research_attachment;
 
 			sno += 1;
@@ -448,7 +446,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td>" + sno + "</td>";  // Serial number
 			tr += "<td>" + title + "</td>";
 			tr += "<td>" + publication_year + "</td>";
-			tr += "<td>" + author + "</td>";
 			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + id + ")'>View PDF</a></td>";
 			tr += "<td><a href='#' onclick='fetchResearchById(" + id + ")'>" +
 					"<div class='table-icon-container'>" +
