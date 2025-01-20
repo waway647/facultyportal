@@ -159,7 +159,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
           
 			<!-- Your profile link and other content here -->
-			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/index">
+			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index">
 				<div class="nav-link-3">
 					<?php if (isset($faculty) && $faculty !== null): ?>
 					<div class="img-wrapper">
