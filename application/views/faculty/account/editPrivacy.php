@@ -286,6 +286,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<button type="submit">
 								<h6>Save changes</h6>
 							</button>
+
+							<div class="input-container edit a">
+								<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index"><h6>Cancel</h6></a>
+							</div>
 						</div>
 					</div>
 					<?php endif ?>

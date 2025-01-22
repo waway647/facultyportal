@@ -262,7 +262,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="modal-header">
 									<h3>Add Course</h3>
 									</div>
-									<form id="addFacultyForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/createCourse">
+									<form id="addCourseForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/createCourse">
 										<div class="form-group">
 											<input type="text" id="course_code" name="course_code" placeholder="Course Code" required>
 										</div>

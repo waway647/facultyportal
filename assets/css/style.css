@@ -709,6 +709,11 @@ input {
       color: #A4A4A4;
     }
 
+    .right-account-container .edit .a {
+      width: auto;
+      text-align: center;
+    }
+
     .right-account-container .edit a {
       text-decoration: underline;
       color: #A4A4A4;
@@ -1267,7 +1272,10 @@ input {
 #editExperienceModal .modal-content,
 
 #addResearchModal .modal-content,
-#editResearchModal .modal-content {
+#editResearchModal .modal-content, 
+
+#addConsultationModal .modal-content,
+#editConsultationModal .modal-content {
   width: 28%;
   padding: 80px;
 }
@@ -1284,7 +1292,10 @@ input {
 #editExperienceModal form,
 
 #addResearchModal form,
-#editResearchModal form {
+#editResearchModal form,
+
+#addConsultationModal form,
+#editConsultationModal form {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -1303,7 +1314,10 @@ input {
 #editExperienceModal .modal-for-step,
 
 #addResearchModal .modal-for-step,
-#editResearchModal .modal-for-step {
+#editResearchModal .modal-for-step,
+
+#addConsultationModal .modal-for-step,
+#editConsultationModal .modal-for-step {
   padding: 0px 10px;
 }
 
@@ -1319,7 +1333,10 @@ input {
 #editExperienceModal .modal-header,
 
 #addResearchModal .modal-header,
-#editResearchModal .modal-header {
+#editResearchModal .modal-header,
+
+#addConsultationModal .modal-header,
+#editConsultationModal .modal-header {
   padding: 10px;
   font-family: 'TT Hoves Medium';
   font-weight: 900;
