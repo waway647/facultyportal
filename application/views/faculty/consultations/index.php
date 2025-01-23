@@ -248,16 +248,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<div class="modal-header">
 									<h3>Add Timeslot</h3>
 									</div>
-									<form id="addConsultationForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/createConsultation">
-										<div class="form-group">
-											<div class="form-input">
-												<h6>Faculty</h6>
-												<select id="faculty_id" name="faculty_profile_id" required>
-													<option value="" disabled selected>Faculty</option>
-													<option value=""></option>
-												</select>
-											</div>
-										</div>
+									<form id="addConsultationForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/createConsultation">	
 										<div class="form-group">
 											<div class="form-input">
 												<h6>Day</h6>
@@ -311,15 +302,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<h3>Edit Timeslot</h3>
 									</div>
 									<form id="editConsultationForm" method="post" action="">
-									<div class="form-group">
-											<div class="form-input">
-												<h6>Faculty</h6>
-												<select id="faculty_assigned" name="faculty_profile_id" required>
-													<option value="" disabled selected>Faculty</option>
-													<option value=""></option>
-												</select>
-											</div>
-										</div>
 										<div class="form-group">
 											<div class="form-input">
 												<h6>Day</h6>
@@ -375,7 +357,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<thead>
 							<tr>
 								<th>#</th>
-								<th>Faculty</th>
 								<th>Day</th>
 								<th>Start Time</th>
 								<th>End Time</th>
@@ -469,7 +450,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#consultationList tbody').empty(); // Clear existing rows
 		for (index in result) {
 			var id = result[index].id;
-			var faculty = result[index].faculty;
 			var day = result[index].day;
 			var start_time = result[index].start_time;
 			var end_time = result[index].end_time;
@@ -479,7 +459,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			var tr = "<tr>";
 			tr += "<td>" + sno + "</td>";  // Serial number
-			tr += "<td>" + faculty + "</td>";
 			tr += "<td>" + day + "</td>";
 			tr += "<td>" + start_time + "</td>";
 			tr += "<td>" + end_time + "</td>";
@@ -517,10 +496,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 	
 	function populateEditModal(consultation) {
-		fetchFaculty('editConsultationModal', function() {
-			$('#editConsultationModal #faculty_assigned').val(consultation.faculty_profile_id);
-		});
-
 		$('#editConsultationModal #day').val(consultation.day);
 		$('#editConsultationModal #start_time').val(consultation.start_time);
 		$('#editConsultationModal #end_time').val(consultation.end_time);

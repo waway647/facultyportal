@@ -19,13 +19,37 @@ class Consultations extends CI_Controller {
 		$faculty_id = $this->session->userdata('logged_id');
 		$data['faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
 
-		$this->load->view('faculty/consultations/index', $data);
+		$logged_user_id = $this->session->userdata('logged_id');
+
+		// Get faculty ID using the logged-in user's ID
+		$faculty_id = $this->Consultations_model->getFacultyID($logged_user_id);
+
+		if ($faculty_id) { // Check if a faculty ID was retrieved
+			// Set faculty ID in the session
+			$this->session->set_userdata('faculty_id', $faculty_id);
+
+			// Verify if the session data is set
+			if ($this->session->userdata('faculty_id')) {
+				$this->load->view('faculty/consultations/index', $data);
+			} else {
+				echo "Failed to set session data!";
+			}
+		} else {
+			echo "Faculty ID not found!";
+		}
 	}
 	
 	public function getConsultations()
 	{
-		$result = $this->Consultations_model->getConsultationsTable();
-		echo json_encode($result);  // Return data as JSON
+		$faculty_id = $this->session->userdata('faculty_id');
+		if($faculty_id)
+		{
+			$result = $this->Consultations_model->getConsultationsTable($faculty_id);
+			echo json_encode($result);  // Return data as JSON
+		} else {
+			echo json_encode(['error' => 'No valid faculty ID found.']);
+		}
+		
 	}
 
 	public function createConsultation()
