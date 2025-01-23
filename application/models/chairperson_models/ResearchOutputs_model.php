@@ -4,10 +4,20 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 
 class ResearchOutputs_model extends CI_Model {
 
-	public function getResearch()
+	public function getResearch($search)
 	{
-        $query = $this->db->get('research_outputs_vw');
-        return $query->result_array(); // Use row() to get a single row
+		// Apply search filter if provided
+		if (!empty($search)) {
+			$this->db->like('title', $search);  // Search in 'faculty' column
+			$this->db->or_like('author', $search);   // Search in 'day' column
+			$this->db->or_like('publication_year', $search);  // Search in 'start_time'
+		}
+
+		// Query the consultation_timeslots_vw view
+		$query = $this->db->get('research_outputs_vw');
+
+		// Return the result as an array
+		return $query->result();
 	}
 
 	public function getFaculty() 

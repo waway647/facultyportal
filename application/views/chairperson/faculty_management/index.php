@@ -248,13 +248,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 
 					<div class="right-sub">
+						<div class="searchDisplay">
+							<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
+							<h6 id="searchDisplay"></h6>
+						</div>
+						
 						<div class="search-container">
-						<button class="button">
-							<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
+							<button class="button">
+								<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
 								<div class="div-wrapper">
-									<input type="search" name="" id="" placeholder="Search">
+									<input type="search" name="search" id="searchInput" placeholder="Search">
 								</div>
-						</button>
+							</button>
 						</div>
 
 						<div class="add-button">
@@ -381,15 +386,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
 
 	<script>
+	// Call the function to fetch user profiles when the page loads
+	$(document).ready(function() {
+		fetchUserProfiles(); // Fetch data and create grid
+		countAllFaculty();
+
+		$('#searchInput').on('keypress', function(event) {
+			if (event.which == 13) {  // Enter key is pressed
+				var searchTerm = $(this).val().trim();  // Get and trim the search term from the input field
+
+				// Check if there's a search term
+				if (searchTerm === '') {
+					// Hide the search display if there's no search term
+					$('.searchDisplay').removeClass('show'); // Remove 'show' class
+				} else {
+					// Display the search term on the left side of the search bar
+					$('#searchDisplay').text(searchTerm);  // Display the search term in the h6 element
+					
+					// Show the search display by adding 'show' class
+					$('.searchDisplay').addClass('show');  // Add 'show' class to display it as flex
+				}
+
+				// Call the function to fetch consultations with the search term
+				fetchUserProfiles(searchTerm);  
+			}
+		});
+	});
+
 	// Function to fetch user profiles and create the grid
-	function fetchUserProfiles() {
+	function fetchUserProfiles(query = '') {
 				$.ajax({
 					url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchUserProfiles', // URL to fetch data
 					type: 'GET',
+					data: { search: query },
 					dataType: 'json',
 					success: function(result) {
 						console.log(result); // Debugging statement to check the structure of result
-						createGrid(result);  // Call the function to create the grid with the fetched data
+						createGrid(result, 0);  // Call the function to create the grid with the fetched data
 					},
 					error: function(xhr, status, error) {
 						console.error('Error fetching user profiles:', error);
@@ -419,107 +452,84 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				});
 			}
 
-			// Function to dynamically generate the profile grid based on the fetched result
-			function createGrid(result) {
-				$('#profileCardContainer').empty(); // Clear the previous content
-				console.log(result); // Debugging statement to check the structure of result
+	function createGrid(result) {
+		$('#profileCardContainer').empty(); // Clear previous content
+		let sno = 0; // Initialize serial number
 
-				for (let index in result) {
-					let user = result[index];
-					if (typeof user === 'object') {
-						let id = user.id  || '';
-						let first_name = user.first_name  || '';
-						let last_name = user.last_name  || '';
-						let middle_name = user.middle_name  || '';
-						let department = user.department  || '';
-						let email = user.email  || '';
-						let mobile_number = user.mobile_number  || '';
-						let age = user.age || '';
-						let profile_picture = user.profile_picture || '';
+		result.forEach(function(user) {
+			sno += 1;
 
+			// Extract user details with fallback for null/undefined values
+			const id = user.id || '';
+			const firstName = user.first_name || '';
+			const lastName = user.last_name || '';
+			const middleName = user.middle_name || '';
+			const department = user.department || '';
+			const email = user.email || '';
+			const mobileNumber = user.mobile_number || '';
+			const age = parseInt(user.age) || 0;
+			const profilePicture = user.profile_picture || 'assets/images/profile/default_profile.png';
 
-						// Construct the profile card dynamically with conditional commas
-						let name = '';
-						if (last_name && first_name) {
-							name = `${last_name}, ${first_name} ${middle_name}`;
-						} else if (last_name) {
-							name = `${last_name} ${middle_name}`;
-						} else if (first_name) {
-							name = `${first_name} ${middle_name}`;
-						} else {
-							name = `${middle_name}`;  // In case both first_name and last_name are null, just show the middle name
-						}
+			// Construct full name
+			const name = [lastName, firstName, middleName].filter(Boolean).join(', ').replace(/, $/, '');
 
-						// Age display logic: only show if age > 0
-						let ageLine = '';
-						age = parseInt(age);
-						if (age > 0) {
-							ageLine = `<h6 class="role-class">${age} ${age === 1 ? 'year' : 'years'} old</h6>`;
-						}
+			// Age display
+			const ageLine = age > 0 ? `<h6 class="role-class">${age} ${age === 1 ? 'year' : 'years'} old</h6>` : '';
 
-						// Construct the profile card dynamically
-						let card = `
-							<div class="profile-card-container">
-								<div class="card-left">
-									<div class="the-pic-container">
-										<img src="${base_url}${profile_picture || 'assets/images/profile/default_profile.png'}" alt="">    
-									</div>
+			// Email and mobile number rows
+			const emailRow = email
+				? `<div class="contact-row">
+					<div class="icon-contact">
+						<img src="<?php echo base_url('assets/images/icon/email.svg'); ?>" alt="">
+					</div>
+					<h6>${email}</h6>
+				</div>`
+				: '';
+			const mobileRow = mobileNumber
+				? `<div class="contact-row">
+					<div class="icon-contact">
+						<img src="<?php echo base_url('assets/images/icon/phone.svg'); ?>" alt="">
+					</div>
+					<h6>${mobileNumber}</h6>
+				</div>`
+				: '';
 
-									<div class="the-details-container">
-										<h4>${name}</h4>
-										
-										<div class="the-sub-details">
-											${ageLine}
-											<h6>${department}</h6>
-											<h6></h6>
-										</div>
-									</div>
-								</div>
-
-								<div class="card-right">
-									<!-- Only show email if it's not empty -->
-									${email ? `
-									<div class="contact-row">
-										<div class="icon-contact">
-											<img src="<?php echo base_url('assets/images/icon/email.svg'); ?>" alt="">
-										</div>
-										<h6>${email}</h6>
-									</div>` : ''}
-
-									<!-- Only show mobile number contact row if it's not empty -->
-									${mobile_number ? `
-									<div class="contact-row">
-										<div class="icon-contact">
-											<img src="<?php echo base_url('assets/images/icon/phone.svg'); ?>" alt="">
-										</div>
-										<h6>${mobile_number}</h6>
-									</div>` : ''}
-								</div>
-
-								<div class="card-action-container">
-									
-										<div class="card-action">
-										<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/viewProfile/${id}">
-											<button type="button" class="btn">View Profile</button>
-											</a>
-										</div>
-									
-								</div>
+			// Profile card
+			const card = `
+				<div class="profile-card-container">
+					<div class="card-left">
+						<div class="the-pic-container">
+							<img src="${base_url}${profilePicture}" alt="Profile Picture">
+						</div>
+						<div class="the-details-container">
+							<h4>${name}</h4>
+							<div class="the-sub-details">
+								${ageLine}
+								<h6>${department}</h6>
 							</div>
-						`;
-						// Append the profile card to the container
-						$('#profileCardContainer').append(card);
-					} else {
-						console.error('Unexpected data format:', user);
-					}
-				}
-			}
+						</div>
+					</div>
+					<div class="card-right">
+						${emailRow}
+						${mobileRow}
+					</div>
+					<div class="card-action-container">
+						<div class="card-action">
+							<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/viewProfile/${id}">
+								<button type="button" class="btn">View Profile</button>
+							</a>
+						</div>
+					</div>
+				</div>
+			`;
 
-			// Call the function to fetch user profiles when the page loads
-			$(document).ready(function() {
-				fetchUserProfiles(); // Fetch data and create grid
-				countAllFaculty()
-			});
+			// Append the profile card to the container
+			$('#profileCardContainer').append(card);
+		});
+	}
+
+
+			
 
 	// Check if step1 is completed and show Step 2 modal
     <?php if ($this->session->userdata('step1_completed')): ?>

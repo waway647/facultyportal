@@ -24,7 +24,9 @@ class ResearchOutputs extends CI_Controller {
 
 	public function getResearch()
 	{
-		$result = $this->ResearchOutputs_model->getResearch();
+		$search = $this->input->get('search');
+
+		$result = $this->ResearchOutputs_model->getResearch($search);
 		echo json_encode($result); // Return data as JSON
 	}
 

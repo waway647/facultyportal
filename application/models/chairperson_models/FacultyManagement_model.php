@@ -4,9 +4,20 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 
 class FacultyManagement_model extends CI_Model {
 
-	public function getUserProfiles() {
+	public function getUserProfiles($search) 
+	{
+		if (!empty($search)) {
+			$this->db->like('first_name', $search);
+			$this->db->or_like('last_name', $search); 
+			$this->db->or_like('middle_name', $search);
+			$this->db->or_like('department', $search);
+			$this->db->or_like('email', $search);
+			$this->db->or_like('mobile_number', $search);
+			$this->db->or_like('age', $search);
+		}
+
 		$query = $this->db->get('faculty_profiles_vw');
-		return $query->result_array();
+		return $query->result();
 	}
 
 	public function saveUserData($user_data)

@@ -1149,6 +1149,31 @@ input {
   background-color: #DCDBDB;
 }
 
+.sub-content-container .searchDisplay {
+  display: none;
+  padding: 10px 20px;
+  background-color: #f1f1f1;
+  border-radius: 20px;
+  align-items: center;
+}
+
+.sub-content-container .searchDisplay.show {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.sub-content-container .searchDisplay.show a {
+  display: inline-flex;  /* Make the anchor tag inline-flex to fit its content */
+  align-items: center;   /* Vertically center the image inside the link */
+  justify-content: center; /* Horizontally center the image inside the link */
+}
+
+.sub-content-container .searchDisplay.show img {
+  width: 7px;
+  height: 7px;
+}
+
 .the-content-container {
   display: flex;
   flex-direction: column;

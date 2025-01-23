@@ -24,7 +24,9 @@ class Consultations extends CI_Controller {
 	
 	public function getConsultations()
 	{
-		$result = $this->Consultations_model->getConsultationsTable();
+		$search = $this->input->get('search');
+		
+		$result = $this->Consultations_model->getConsultationsTable($search);
 		echo json_encode($result);  // Return data as JSON
 	}
 

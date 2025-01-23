@@ -47,7 +47,9 @@ class Courses extends CI_Controller {
 
 	public function getCourses()
 	{
-		$result = $this->Courses_model->getCoursesTable();
+		$search = $this->input->get('search');
+
+		$result = $this->Courses_model->getCoursesTable($search);
 		echo json_encode($result);  // Return data as JSON
 	}
 

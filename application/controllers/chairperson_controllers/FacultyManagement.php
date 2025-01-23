@@ -23,8 +23,11 @@ class FacultyManagement extends CI_Controller {
 		$this->load->view('chairperson/faculty_management/index', $data);
 	}
 
-	public function fetchUserProfiles() {
-		$result = $this->FacultyManagement_model->getUserProfiles();  // Fetch data from SQL view
+	public function fetchUserProfiles() 
+	{
+		$search = $this->input->get('search');
+
+		$result = $this->FacultyManagement_model->getUserProfiles($search);  // Fetch data from SQL view
 		echo json_encode($result);  // Return data as JSON
 	}
 
