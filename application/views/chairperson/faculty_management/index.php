@@ -364,7 +364,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<button type="submit" class="btn">Save & Confirm</button>
 
 										<div>
-											<h6 id="closeAddFacultyBtn" class="back-step">Cancel</h6>
+											<h6 id="closeAddFacultyBtnStep2" class="back-step">Cancel</h6>
 										</div>
 									</form>
 								</div>
@@ -524,7 +524,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Check if step1 is completed and show Step 2 modal
     <?php if ($this->session->userdata('step1_completed')): ?>
         // Show the Step 2 modal after Step 1
-        document.getElementById('addFacultyModal').style.display = 'none';
+		document.getElementById('addFacultyModal').style.display = 'none';
         document.getElementById('addFacultyModalStep2').style.display = 'block';
         // Reset the session flag to ensure the modal isn't shown again unnecessarily
         <?php $this->session->unset_userdata('step1_completed'); ?>
@@ -534,13 +534,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Function to initialize a modal
 	function setupModal(modalId, openButtonId, closeButtonId) {
 		const modal = document.getElementById(modalId);
-		const openButton = document.getElementById(openButtonId);
+		const openButton = openButtonId ? document.getElementById(openButtonId) : null;
 		const closeButton = document.getElementById(closeButtonId);
 
-		// Open modal
-		openButton.onclick = function () {
-			modal.style.display = "block";
-		};
+		// Open modal (only if openButtonId is provided)
+		if (openButton) {
+			openButton.onclick = function () {
+				modal.style.display = "block";
+			};
+		}
 
 		// Close modal
 		closeButton.onclick = function () {
@@ -560,6 +562,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	// Initialize "Add Faculty" modal
 	setupModal("addFacultyModal", "addFacultyBtn", "closeAddFacultyBtn");
+
+	// Step 2 modal (no open button)
+    setupModal("addFacultyModalStep2", null, "closeAddFacultyBtnStep2");
 
 	// File attachment handling
 	function setupFileAttachment(attachmentInputId, attachmentPreviewId, allowMultiple = true) {
@@ -655,33 +660,41 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 	});
 
-	document.getElementById('email').addEventListener('input', function() {
-        let email = this.value;
-        let statusMessage = document.getElementById('email-status');
+	document.getElementById('email').addEventListener('input', function () {
+		let email = this.value;
+		let statusMessage = document.getElementById('email-status');
+		let submitButton = document.querySelector('#addFacultyForm button[type="submit"]');
 
-        if (email.length > 0) {
-            // Make an AJAX request to check if the email already exists
-            fetch('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/checkEmailExists', {
-                method: 'POST',
-                body: new URLSearchParams({ email: email }),
-                headers: {
-                    'Content-Type': 'application/x-www-form-urlencoded',
-                },
-            })
-            .then(response => response.text())
-            .then(result => {
-                if (result === 'Email already in use') {
-                    statusMessage.textContent = 'This email is already in use.';
-					statusMessage.style.color = 'maroon';
-                } else {
-                    statusMessage.textContent = '';
-                }
-            })
-            .catch(error => console.error('Error:', error));
-        } else {
-            statusMessage.textContent = '';
-        }
-    });
+		if (email.length > 0) {
+			// Make an AJAX request to check if the email already exists
+			fetch('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/checkEmailExists', {
+				method: 'POST',
+				body: new URLSearchParams({ email: email }),
+				headers: {
+					'Content-Type': 'application/x-www-form-urlencoded',
+				},
+			})
+				.then(response => response.text())
+				.then(result => {
+					if (result === 'Email already in use') {
+						statusMessage.textContent = 'This email is already in use.';
+						statusMessage.style.color = 'maroon';
+						submitButton.disabled = true; // Disable the submit button
+					} else {
+						statusMessage.textContent = '';
+						submitButton.disabled = false; // Enable the submit button
+					}
+				})
+				.catch(error => {
+					console.error('Error:', error);
+					// If there's an error, ensure the button remains disabled
+					submitButton.disabled = true;
+				});
+		} else {
+			statusMessage.textContent = '';
+			submitButton.disabled = false; // Reset the button state if the email field is empty
+		}
+	});
 	</script>
 
 
