@@ -229,13 +229,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 
 					<div class="right-sub">
+						<div class="searchDisplay">
+							<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
+							<h6 id="searchDisplay"></h6>
+						</div>
+						
 						<div class="search-container">
-						<button class="button">
-							<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
+							<button class="button">
+								<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
 								<div class="div-wrapper">
-									<input type="search" name="" id="" placeholder="Search">
+									<input type="search" name="search" id="searchInput" placeholder="Search">
 								</div>
-						</button>
+							</button>
 						</div>
 
 						<div class="add-button">
@@ -383,6 +388,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(document).ready(function() {
 		fetchFaculty(); // Fetch faculty when Add Course modal opens
 		fetchConsultations();
+
+		$('#searchInput').on('keypress', function(event) {
+			if (event.which == 13) {  // Enter key is pressed
+				var searchTerm = $(this).val().trim();  // Get and trim the search term from the input field
+
+				// Check if there's a search term
+				if (searchTerm === '') {
+					// Hide the search display if there's no search term
+					$('.searchDisplay').removeClass('show'); // Remove 'show' class
+				} else {
+					// Display the search term on the left side of the search bar
+					$('#searchDisplay').text(searchTerm);  // Display the search term in the h6 element
+					
+					// Show the search display by adding 'show' class
+					$('.searchDisplay').addClass('show');  // Add 'show' class to display it as flex
+				}
+
+				// Call the function to fetch consultations with the search term
+				fetchConsultations(searchTerm);  
+			}
+		});
 	});
 
 	// Fetch faculty_id for the select dropdown
@@ -425,10 +451,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 
 	// Function to fetch course data via AJAX
-	function fetchConsultations() {
+	function fetchConsultations(query = '') {
 		$.ajax({
 			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/getConsultations',  // Update the URL as necessary
 			type: 'GET',
+			data: { search: query },
 			dataType: 'json',
 			success: function(result) {
 				console.log('AJAX success (Consultations):', result);
@@ -445,35 +472,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 
 	// Function to create the table with course data
-	function createConsultationTable(result, sno) {
-		sno = Number(sno);
-		$('#consultationList tbody').empty(); // Clear existing rows
-		for (index in result) {
-			var id = result[index].id;
-			var day = result[index].day;
-			var start_time = result[index].start_time;
-			var end_time = result[index].end_time;
-			var mode_of_consultation = result[index].mode_of_consultation;
-
+	function createConsultationTable(result) {
+		$('#consultationList tbody').empty();  // Clear existing rows
+		var sno = 0;  // Initialize serial number
+		result.forEach(function(item) {
 			sno += 1;
 
 			var tr = "<tr>";
 			tr += "<td>" + sno + "</td>";  // Serial number
-			tr += "<td>" + day + "</td>";
-			tr += "<td>" + start_time + "</td>";
-			tr += "<td>" + end_time + "</td>";
-			tr += "<td>" + mode_of_consultation + "</td>";
-			tr += "<td><a href='#' onclick='fetchConsultationById(" + id + ")'>" +
+			tr += "<td>" + item.day + "</td>";
+			tr += "<td>" + item.start_time + "</td>";
+			tr += "<td>" + item.end_time + "</td>";
+			tr += "<td>" + item.mode_of_consultation + "</td>";
+			tr += "<td><a href='#' onclick='fetchConsultationById(" + item.id + ")'>" +
 					"<div class='table-icon-container'>" +
-						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
-						"<div><a href='http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/deleteConsultation/" + id + "'>" +
-							"<img class='img' src='" + "<?php echo base_url('assets/images/icon/x.svg'); ?>" + "' /></a></div>" +
+						"<div><img class='img' src='<?php echo base_url('assets/images/icon/edit.svg'); ?>' /></div>" +
+						"<div><a href='http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/deleteConsultation/" + item.id + "'>" +
+							"<img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a></div>" +
 					"</div></td>";
-
 			tr += "</tr>";
 
 			$('#consultationList tbody').append(tr);  // Append the new row to the table body
-		}
+		});
 	}
 
 	function fetchConsultationById(consultationId) {

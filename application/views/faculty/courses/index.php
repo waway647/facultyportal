@@ -229,13 +229,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 
 					<div class="right-sub">
+						<div class="searchDisplay">
+							<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
+							<h6 id="searchDisplay"></h6>
+						</div>
+						
 						<div class="search-container">
-						<button class="button">
-							<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
+							<button class="button">
+								<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
 								<div class="div-wrapper">
-									<input type="search" name="" id="" placeholder="Search">
+									<input type="search" name="search" id="searchInput" placeholder="Search">
 								</div>
-						</button>
+							</button>
 						</div>
 								
 					</div>
@@ -272,13 +277,35 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Call the function to fetch faculty when the page loads
 	$(document).ready(function() {
 		fetchCourses();
+
+		$('#searchInput').on('keypress', function(event) {
+			if (event.which == 13) {  // Enter key is pressed
+				var searchTerm = $(this).val().trim();  // Get and trim the search term from the input field
+
+				// Check if there's a search term
+				if (searchTerm === '') {
+					// Hide the search display if there's no search term
+					$('.searchDisplay').removeClass('show'); // Remove 'show' class
+				} else {
+					// Display the search term on the left side of the search bar
+					$('#searchDisplay').text(searchTerm);  // Display the search term in the h6 element
+					
+					// Show the search display by adding 'show' class
+					$('.searchDisplay').addClass('show');  // Add 'show' class to display it as flex
+				}
+
+				// Call the function to fetch consultations with the search term
+				fetchCourses(searchTerm);  
+			}
+		});
 	});
 
 	// Function to fetch course data via AJAX
-	function fetchCourses() {
+	function fetchCourses(query = '') {
 		$.ajax({
 			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Courses/getCourses',  // Update the URL as necessary
 			type: 'GET',
+			data: { search: query },
 			dataType: 'json',
 			success: function(result) {
 				console.log('AJAX success (Courses):', result);
@@ -295,28 +322,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 
 	// Function to create the table with course data
-	function createCourseTable(result, sno) {
-		sno = Number(sno);
+	function createCourseTable(result) {
 		$('#courseList tbody').empty(); // Clear existing rows
-		for (index in result) {
-			var id = result[index].id;
-			var course_code = result[index].course_code;
-			var course_name = result[index].course_name;
-			var number_of_units = result[index].number_of_units;
-			var class_section = result[index].class_section;
-
+		var sno = 0; // Initialize serial number
+		result.forEach(function(item) {
 			sno += 1;
 
 			var tr = "<tr>";
-			tr += "<td>" + sno + "</td>";  // Serial number
-			tr += "<td>" + course_code + "</td>";
-			tr += "<td>" + course_name + "</td>";
-			tr += "<td>" + number_of_units + "</td>";
-			tr += "<td>" + class_section + "</td>";
+			tr += "<td>" + sno + "</td>"; // Serial number
+			tr += "<td>" + item.course_code + "</td>";
+			tr += "<td>" + item.course_name + "</td>";
+			tr += "<td>" + item.number_of_units + "</td>";
+			tr += "<td>" + item.class_section + "</td>";
 			tr += "</tr>";
 
-			$('#courseList tbody').append(tr);  // Append the new row to the table body
-		}
+			$('#courseList tbody').append(tr); // Append the new row to the table body
+		});
 	}
 	
 	// Function to initialize a modal

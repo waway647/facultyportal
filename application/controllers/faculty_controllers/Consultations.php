@@ -42,9 +42,11 @@ class Consultations extends CI_Controller {
 	public function getConsultations()
 	{
 		$faculty_id = $this->session->userdata('faculty_id');
+		$search = $this->input->get('search');
+
 		if($faculty_id)
 		{
-			$result = $this->Consultations_model->getConsultationsTable($faculty_id);
+			$result = $this->Consultations_model->getConsultationsTable($faculty_id, $search);
 			echo json_encode($result);  // Return data as JSON
 		} else {
 			echo json_encode(['error' => 'No valid faculty ID found.']);

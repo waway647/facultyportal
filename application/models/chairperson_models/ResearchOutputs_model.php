@@ -8,9 +8,9 @@ class ResearchOutputs_model extends CI_Model {
 	{
 		// Apply search filter if provided
 		if (!empty($search)) {
-			$this->db->like('title', $search);  // Search in 'faculty' column
-			$this->db->or_like('author', $search);   // Search in 'day' column
-			$this->db->or_like('publication_year', $search);  // Search in 'start_time'
+			$this->db->like('title', $search);  
+			$this->db->or_like('author', $search);
+			$this->db->or_like('publication_year', $search);  
 		}
 
 		// Query the consultation_timeslots_vw view

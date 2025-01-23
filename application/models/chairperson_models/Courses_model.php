@@ -19,11 +19,11 @@ class Courses_model extends CI_Model {
 	public function getCoursesTable($search)
 	{
 		if (!empty($search)) {
-			$this->db->like('course_code', $search);  // Search in 'faculty' column
-			$this->db->or_like('course_name', $search);   // Search in 'day' column
-			$this->db->or_like('number_of_units', $search);  // Search in 'start_time'
-			$this->db->or_like('faculty_assigned', $search);    // Search in 'end_time'
-			$this->db->or_like('class_section', $search);  // Search in 'mode_of_consultation'
+			$this->db->like('course_code', $search);  
+			$this->db->or_like('course_name', $search); 
+			$this->db->or_like('number_of_units', $search); 
+			$this->db->or_like('faculty_assigned', $search);  
+			$this->db->or_like('class_section', $search);  
 		}
 
 		$query = $this->db->get('courses_vw');

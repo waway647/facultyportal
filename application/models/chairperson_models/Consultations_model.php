@@ -8,11 +8,11 @@ class Consultations_model extends CI_Model {
 	{
 		// Apply search filter if provided
 		if (!empty($search)) {
-			$this->db->like('faculty', $search);  // Search in 'faculty' column
-			$this->db->or_like('day', $search);   // Search in 'day' column
-			$this->db->or_like('start_time', $search);  // Search in 'start_time'
-			$this->db->or_like('end_time', $search);    // Search in 'end_time'
-			$this->db->or_like('mode_of_consultation', $search);  // Search in 'mode_of_consultation'
+			$this->db->like('faculty', $search);
+			$this->db->or_like('day', $search);   
+			$this->db->or_like('start_time', $search);  
+			$this->db->or_like('end_time', $search);   
+			$this->db->or_like('mode_of_consultation', $search);  
 		}
 
 		// Query the consultation_timeslots_vw view

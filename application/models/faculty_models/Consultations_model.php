@@ -13,11 +13,21 @@ class Consultations_model extends CI_Model {
 		return $result ? $result['id'] : null; // Return the ID if found, otherwise return null
 	}
 	
-	public function getConsultationsTable($faculty_profile_id)
+	public function getConsultationsTable($faculty_profile_id, $search)
 	{
-		$this->db->where('faculty_profile_id', $faculty_profile_id);
-        $query = $this->db->get('consultation_timeslots_vw');
-        return $query->result_array(); // Use row() to get a single row
+		$this->db->where('faculty_profile_id', $faculty_profile_id); // Apply where clause first
+
+		if (!empty($search)) {
+			$this->db->group_start(); // Start grouping for OR conditions
+			$this->db->or_like('day', $search);
+			$this->db->or_like('start_time', $search);
+			$this->db->or_like('end_time', $search);
+			$this->db->or_like('mode_of_consultation', $search);
+			$this->db->group_end(); // End grouping for OR conditions
+		}
+
+		$query = $this->db->get('consultation_timeslots_vw');
+		return $query->result_array(); // Return all rows as an array
 	}
 
 	public function insertNewConsultation($consultation_data)

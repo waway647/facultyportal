@@ -233,13 +233,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					</div>
 
 					<div class="right-sub">
+						<div class="searchDisplay">
+							<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
+							<h6 id="searchDisplay"></h6>
+						</div>
+						
 						<div class="search-container">
-						<button class="button">
-							<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
+							<button class="button">
+								<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
 								<div class="div-wrapper">
-									<input type="search" name="" id="" placeholder="Search">
+									<input type="search" name="search" id="searchInput" placeholder="Search">
 								</div>
-						</button>
+							</button>
 						</div>
 
 						<div class="add-button">
@@ -361,6 +366,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(document).ready(function() {
 		fetchResearch();
 		fetchFaculty();
+
+		$('#searchInput').on('keypress', function(event) {
+			if (event.which == 13) {  // Enter key is pressed
+				var searchTerm = $(this).val().trim();  // Get and trim the search term from the input field
+
+				// Check if there's a search term
+				if (searchTerm === '') {
+					// Hide the search display if there's no search term
+					$('.searchDisplay').removeClass('show'); // Remove 'show' class
+				} else {
+					// Display the search term on the left side of the search bar
+					$('#searchDisplay').text(searchTerm);  // Display the search term in the h6 element
+					
+					// Show the search display by adding 'show' class
+					$('.searchDisplay').addClass('show');  // Add 'show' class to display it as flex
+				}
+
+				// Call the function to fetch consultations with the search term
+				fetchResearch(searchTerm);  
+			}
+		});
 	});
 
 	// Fetch faculty_id for the select dropdown
@@ -412,10 +438,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	}
 
-	function fetchResearch() {
+	function fetchResearch(query = '') {
 		$.ajax({
 			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/getResearch',  // Update the URL as necessary
 			type: 'GET',
+			data: { search: query },
 			dataType: 'json',
 			success: function(result) {
 				console.log('AJAX success (Research):', result);
@@ -431,32 +458,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	}
 
-	function createResearchTable(result, sno) {
-		sno = Number(sno);
+	function createResearchTable(result) {
 		$('#researchList tbody').empty(); // Clear existing rows
-		for (index in result) {
-			var id = result[index].id;
-			var title = result[index].title;
-			var publication_year = result[index].publication_year;
-			var research_attachment = result[index].research_attachment;
+		var sno = 0; // Initialize serial number
 
+		result.forEach(function(item) {
 			sno += 1;
 
 			var tr = "<tr>";
 			tr += "<td>" + sno + "</td>";  // Serial number
-			tr += "<td>" + title + "</td>";
-			tr += "<td>" + publication_year + "</td>";
-			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + id + ")'>View PDF</a></td>";
-			tr += "<td><a href='#' onclick='fetchResearchById(" + id + ")'>" +
+			tr += "<td>" + item.title + "</td>";
+			tr += "<td>" + item.publication_year + "</td>";
+			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + item.id + ")'>View PDF</a></td>";
+			tr += "<td><a href='#' onclick='fetchResearchById(" + item.id + ")'>" +
 					"<div class='table-icon-container'>" +
-						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
-						"<div><a href='http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/deleteResearch/" + id + "'>" +
-							"<img class='img' src='" + "<?php echo base_url('assets/images/icon/x.svg'); ?>" + "' /></a></div>" +
-					"</div></td>";				
+						"<div><img class='img' src='<?php echo base_url('assets/images/icon/edit.svg'); ?>' /></div>" +
+						"<div><a href='http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/deleteResearch/" + item.id + "'>" +
+							"<img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a></div>" +
+					"</div></a></td>";
 			tr += "</tr>";
 
-			$('#researchList tbody').append(tr);  // Append the new row to the table body
-		}
+			$('#researchList tbody').append(tr); // Append the new row to the table body
+		});
 	}
 
 	// JavaScript function to open the PDF in a new tab

@@ -42,9 +42,10 @@ class Courses extends CI_Controller {
 	public function getCourses()
 	{
 		$faculty_id = $this->session->userdata('faculty_id');
+		$search = $this->input->get('search');
 
 		if ($faculty_id) {
-			$result = $this->Courses_model->getCourses($faculty_id);
+			$result = $this->Courses_model->getCourses($faculty_id, $search);
 			echo json_encode($result); // Return data as JSON
 		} else {
 			echo json_encode(['error' => 'No valid faculty ID found.']);

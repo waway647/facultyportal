@@ -4,9 +4,17 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 
 class ResearchOutputs_model extends CI_Model {
 
-	public function getResearch($faculty_id)
+	public function getResearch($faculty_id, $search)
 	{
 		$this->db->where('faculty_profile_id', $faculty_id);
+
+		if (!empty($search)) {
+			$this->db->group_start();
+			$this->db->or_like('title', $search);
+			$this->db->or_like('publication_year', $search);
+			$this->db->group_end();
+		}
+
         $query = $this->db->get('research_outputs');
         return $query->result_array(); // Use row() to get a single row
 	}
