@@ -586,6 +586,115 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 					</div>
 
+					<!-- Certifications -->
+					<div class="the-content-container">
+						<div class="sub-content-container">
+							<div class="table-heading">
+								<h4>Certifications</h4>
+							</div>
+
+							<div class="add-button">
+								<button id="addCertificationBtn" type="button" class="btn">+ &nbsp&nbsp Add Certification</button>
+							</div>
+
+							<!-- Add Certification Modal -->
+							<div id="addCertificationModal" class="modal">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h3>Add Certification</h3>
+									</div>
+									<form id="addCertificationForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/createCertification" enctype="multipart/form-data">
+										<div class="form-group">
+											<input type="text" id="certification_title" name="certification_title" placeholder="Certification Title" required>
+										</div>
+										<div class="form-group">
+											<input type="text" id="organization_name" name="organization_name" placeholder="Organization Name" required>
+										</div>
+										<div class="form-group">
+											<select id="add_certification_year" name="certification_year">
+												<option value="" disabled selected>Year Received</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<div class="attachment-container">
+												<label for="certification_attachment" class="attachment-button">
+													<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
+													Attach PDF
+												</label>
+												<input type="file" id="certification_attachment" name="certification_attachment" accept=".pdf" hidden>
+												<div id="certification_attachment_preview" class="attachment-preview"></div>
+											</div>
+										</div>
+
+										<button type="submit" class="btn">Save & Confirm</button>
+
+										<div class="close-text" id="closeAddCertificationBtn">
+											<h6 class="back-step">Cancel</h6>
+										</div>
+									</form>
+								</div>
+							</div>
+
+							<!-- Edit Certification Modal -->
+							<div id="editCertificationModal" class="modal">
+								<div class="modal-content">
+									<div class="modal-header">
+										<h3>Edit Certification</h3>
+									</div>
+									<form id="editCertificationForm" method="post" action="" enctype="multipart/form-data">
+										<div class="form-group">
+											<input type="text" id="edit_certification_title" name="certification_title" placeholder="Certification Title" required>
+										</div>
+										<div class="form-group">
+											<input type="text" id="edit_organization_name" name="organization_name" placeholder="Organization Name" required>
+										</div>
+										<div class="form-group">
+											<select id="edit_certification_year" name="certification_year">
+												<option value="" disabled selected>Year Received</option>
+											</select>
+										</div>
+										<div class="form-group">
+											<div class="attachment-container">
+												<label for="certification_attachment_edit" class="attachment-button">
+													<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
+													Attach PDF
+												</label>
+												<input type="file" id="certification_attachment_edit" name="certification_attachment" accept=".pdf" hidden>
+												<div id="certification_attachment_preview_edit" class="attachment-preview"></div>
+											</div>
+										</div>
+
+										<button type="submit" class="btn">Save & Confirm</button>
+
+										<div class="close-text" id="closeEditCertificationBtn">
+											<h6 class="back-step">Cancel</h6>
+										</div>
+									</form>
+								</div>
+							</div>
+						</div>
+
+						<div id="container">    
+							<table class="table" id="CertificationList" name="CertificationList">
+								<thead>
+									<tr>
+										<th>#</th>
+										<th>Name of Organization/Company</th>
+										<th>Certification Title</th>
+										<th>Year Received</th>
+										<th>Attachment File Location</th>
+										<th>Action</th>
+									</tr>
+								</thead>
+
+								<tbody>
+									
+								</tbody>
+							</table>
+						</div>
+					</div>
+
+
 					<!-- Research Outputs -->
 					<div class="the-content-container">
 						<div class="sub-content-container">
@@ -1107,8 +1216,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Initialize "Add Experience" modal
 	setupModal("addExperienceModal", "addExperienceBtn", "closeaddExperienceBtn");
 
-	/* // Initialize "Add Certifications" modal
-    setupModal("addResearchModal", "addResearchBtn", "closeaddResearchBtn"); */
+	// Initialize "Add Certifications" modal
+    setupModal("addCertificationModal", "addCertificationBtn", "closeAddCertificationBtn");
 
 	// Initialize "Add Research" modal
     setupModal("addResearchModal", "addResearchBtn", "closeaddResearchBtn");
