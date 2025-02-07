@@ -1107,13 +1107,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Initialize "Add Experience" modal
 	setupModal("addExperienceModal", "addExperienceBtn", "closeaddExperienceBtn");
 
+	/* // Initialize "Add Certifications" modal
+    setupModal("addResearchModal", "addResearchBtn", "closeaddResearchBtn"); */
+
 	// Initialize "Add Research" modal
     setupModal("addResearchModal", "addResearchBtn", "closeaddResearchBtn");
 
-	// Initialize "Add Research" modal
+	// Initialize "Add Profile" modal
     setupModal("editProfilePictureModal", "editProfilePictureBtn", "closeeditProfilePictureBtn");
 
-	// Initialize "Add Research" modal
+	// Initialize "Add Cover Photo" modal
     setupModal("editCoverPhotoModal", "editCoverPhotoBtn", "closeeditCoverPhotoBtn");
 
 	function fetchYearsInYearGraduated(modalId, callback) {

@@ -291,6 +291,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Academic Degree</th>
 									<th>Institution</th>
 									<th>Year Graduated</th>
+									<th>Diploma</th>
 								</tr>
 								</thead>
 
@@ -318,6 +319,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Name of Company</th>
 									<th>Job Position</th>
 									<th>Years of Experience</th>
+								</tr>
+								</thead>
+
+								<tbody>
+									
+								</tbody>
+							</table>
+
+						</div>
+					</div>
+
+					<!-- Certifications -->
+					<div class="the-content-container">
+						<div class="sub-content-container">
+							<div class="table-heading">
+								<h4>Certifications</h4>
+							</div>
+						</div>
+						
+						<div id="container">    
+							<table class="table" id="CertificationList" name="CertificationList">
+								<thead>
+								<tr>
+									<th>#</th>
+									<th>Name of Organization/Company</th>
+									<th>Certificate Title</th>
+									<th>Copy of Certificate</th>
 								</tr>
 								</thead>
 
@@ -380,6 +408,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			fetchFaculty();
 			fetchQualifications();
 			fetchExperience();
+			fetchCertifications();
 			fetchResearch();
 		});
 
@@ -418,6 +447,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td>" + academic_degree + "</td>";
 			tr += "<td>" + institution + "</td>";
 			tr += "<td>" + year_graduated + "</td>";
+			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + id + ", \"certification\")'>View PDF</a></td>";
 			tr += "</tr>";
 
 			$('#QualificationsList tbody').append(tr);  // Append the new row to the table body
@@ -465,6 +495,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 	}
 
+	function fetchCertifications() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/getCertifications',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Certifications):', result);
+				if (Array.isArray(result)) {
+					createCertificationTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching certifications:', error);
+			}
+		});
+	}
+
+	function createCertificationTable(result, sno) {
+		sno = Number(sno);
+		$('#CertificationList tbody').empty(); // Clear existing rows
+		for (index in result) {
+			var id = result[index].id;
+			var organization_name = result[index].organization_name;
+			var certification_title = result[index].certification_title;
+			var certificate_image = result[index].certificate_image; // Assuming this is the image URL
+			var certificate_pdf = result[index].certificate_pdf; // Assuming this contains the PDF file path
+
+			sno += 1;
+
+			var tr = "<tr>";
+			tr += "<td>" + sno + "</td>";  // Serial number
+			tr += "<td>" + organization_name + "</td>";
+			tr += "<td>" + certification_title + "</td>";
+			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + id + ", \"certification\")'>View PDF</a></td>";
+			tr += "</tr>";
+
+			$('#CertificationList tbody').append(tr);  // Append the new row to the table body
+		}
+	}
+
+
+
 	function fetchResearch() {
 		$.ajax({
 			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/getResearch',  // Update the URL as necessary
@@ -498,20 +572,33 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td>" + sno + "</td>";  // Serial number
 			tr += "<td>" + title + "</td>";
 			tr += "<td>" + publication_year + "</td>";			
-			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + id + ")'>View PDF</a></td>";
+			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + id + ", \"research\")'>View PDF</a></td>";
 			tr += "</tr>";
 
 			$('#ResearchList tbody').append(tr);  // Append the new row to the table body
 		}
 	}
 
-	// JavaScript function to open the PDF in a new tab
-	function openPDFInNewTab(id) {
-		// Construct the URL to open the PDF
-		var url = 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/ViewResearchPDF/' + id;
-		// Open the URL in a new tab
-		window.open(url, '_blank');
-	}
+		// JavaScript function to open the PDF in a new tab (Reusable for different types of PDFs)
+		function openPDFInNewTab(id, type) {
+			// Determine the URL based on the type of document
+			var baseUrl = 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/';
+			var url = '';
+
+			if (type === 'research') {
+				url = baseUrl + 'ViewResearchPDF/' + id;
+			} else if (type === 'certification') {
+				url = baseUrl + 'ViewCertificationPDF/' + id;  // Adjust the endpoint as needed
+			} else if(type === 'qualification') {
+				url = baseUrl + 'ViewQualificationPDF/' + id;
+			}else {
+				console.error('Invalid document type specified.');
+				return;
+			}
+
+			// Open the URL in a new tab
+			window.open(url, '_blank');
+		}
 
 	// Function to fetch faculty data via AJAX
 	function fetchFaculty() {
