@@ -185,13 +185,13 @@ class Profile extends CI_Controller {
 
 	public function createResearch()
 	{
-		$config['upload_path'] = './assets/images/research_attachments/';
+		$config['upload_path'] = './assets/research_attachments/';
 		$config['allowed_types'] = 'pdf';
 		$this->load->library('upload', $config);
 		
 		if ($this->upload->do_upload('research_attachment')) {
 			$uploaded_data = $this->upload->data();
-			$attachment_path = 'assets/images/research_attachments/' . $uploaded_data['file_name'];
+			$attachment_path = 'assets/research_attachments/' . $uploaded_data['file_name'];
 		}
 
 		$faculty_id = $this->session->userdata('faculty_id');
@@ -657,7 +657,7 @@ class Profile extends CI_Controller {
 			return;
 		}
 	
-		$config['upload_path'] = './assets/images/research_attachments/';
+		$config['upload_path'] = './assets/research_attachments/';
 		$config['allowed_types'] = 'pdf';
 		$this->load->library('upload', $config);
 	
@@ -665,7 +665,7 @@ class Profile extends CI_Controller {
 	
 		if ($this->upload->do_upload('research_attachment')) {
 			$uploaded_data = $this->upload->data();
-			$attachment_path = 'assets/images/research_attachments/' . $uploaded_data['file_name'];
+			$attachment_path = 'assets/research_attachments/' . $uploaded_data['file_name'];
 		}
 	
 		$research_data = array(
