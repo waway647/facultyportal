@@ -1297,7 +1297,10 @@ input {
 #editExperienceModal .modal-content,
 
 #addResearchModal .modal-content,
-#editResearchModal .modal-content, 
+#editResearchModal .modal-content,
+
+#addCertificationModal .modal-content,
+#editCertificationModal .modal-content,
 
 #addConsultationModal .modal-content,
 #editConsultationModal .modal-content {
@@ -1318,6 +1321,9 @@ input {
 
 #addResearchModal form,
 #editResearchModal form,
+
+#addCertificationModal form,
+#editCertificationModal form,
 
 #addConsultationModal form,
 #editConsultationModal form {
@@ -1341,6 +1347,9 @@ input {
 #addResearchModal .modal-for-step,
 #editResearchModal .modal-for-step,
 
+#addCertificationModal .modal-for-step,
+#editCertificationModal .modal-for-step,
+
 #addConsultationModal .modal-for-step,
 #editConsultationModal .modal-for-step {
   padding: 0px 10px;
@@ -1359,6 +1368,9 @@ input {
 
 #addResearchModal .modal-header,
 #editResearchModal .modal-header,
+
+#addCertificationModal .modal-header,
+#editCertificationModal .modal-header,
 
 #addConsultationModal .modal-header,
 #editConsultationModal .modal-header {

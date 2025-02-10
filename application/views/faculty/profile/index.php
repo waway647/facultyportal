@@ -345,6 +345,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>#</th>
 									<th>Name of Organization/Company</th>
 									<th>Certificate Title</th>
+									<th>Year</th>
+									<th>Expiration Date</th>
 									<th>Copy of Certificate</th>
 								</tr>
 								</thead>
@@ -384,7 +386,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Title</th>
 									<th>Year Published</th>
 									<th>Research PDF</th>
-
 								</tr>
 								</thead>
 
@@ -439,16 +440,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			var academic_degree = result[index].academic_degree;
 			var institution = result[index].institution;
 			var year_graduated = result[index].year_graduated;
+			var diploma = result[index].diploma; // Assuming this is the image URL
 
 			sno += 1;
 
-			var tr = "<tr>";
-			tr += "<td>" + sno + "</td>";  // Serial number
-			tr += "<td>" + academic_degree + "</td>";
-			tr += "<td>" + institution + "</td>";
-			tr += "<td>" + year_graduated + "</td>";
-			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + id + ", \"certification\")'>View PDF</a></td>";
-			tr += "</tr>";
+			var tr = `<tr>
+            <td>${sno}</td>
+            <td>${academic_degree}</td>
+            <td>${institution}</td>
+            <td>${year_graduated}</td>
+            <td><a href='javascript:void(0)' onclick='openPDFInNewTab(${id}, "qualification")'>View Diploma</a></td>
+        </tr>`;
 
 			$('#QualificationsList tbody').append(tr);  // Append the new row to the table body
 		}
@@ -484,12 +486,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			sno += 1;
 
-			var tr = "<tr>";
-			tr += "<td>" + sno + "</td>";  // Serial number
-			tr += "<td>" + company_name + "</td>";
-			tr += "<td>" + job_position + "</td>";
-			tr += "<td>" + years_of_experience + "</td>";				
-			tr += "</tr>";
+			var tr = `<tr>
+            <td>${sno}</td>
+            <td>${company_name}</td>
+            <td>${job_position}</td>
+            <td>${years_of_experience}</td>
+        </tr>`;
 
 			$('#ExperienceList tbody').append(tr);  // Append the new row to the table body
 		}
@@ -521,17 +523,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			var id = result[index].id;
 			var organization_name = result[index].organization_name;
 			var certification_title = result[index].certification_title;
-			var certificate_image = result[index].certificate_image; // Assuming this is the image URL
-			var certificate_pdf = result[index].certificate_pdf; // Assuming this contains the PDF file path
+			var year = result[index].year; 
+			var expiration_date = result[index].expiration_date; 
+
 
 			sno += 1;
 
-			var tr = "<tr>";
-			tr += "<td>" + sno + "</td>";  // Serial number
-			tr += "<td>" + organization_name + "</td>";
-			tr += "<td>" + certification_title + "</td>";
-			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + id + ", \"certification\")'>View PDF</a></td>";
-			tr += "</tr>";
+			var tr = `<tr>
+            <td>${sno}</td>
+            <td>${organization_name}</td>
+            <td>${certification_title}</td>
+            <td>${year}</td>
+			<td>${expiration_date}</td>
+            <td><a href='javascript:void(0)' onclick='openPDFInNewTab(${id}, "certification")'>View Certificate</a></td>
+        </tr>`;
 
 			$('#CertificationList tbody').append(tr);  // Append the new row to the table body
 		}
@@ -568,17 +573,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			sno += 1;
 
-			var tr = "<tr>";
-			tr += "<td>" + sno + "</td>";  // Serial number
-			tr += "<td>" + title + "</td>";
-			tr += "<td>" + publication_year + "</td>";			
-			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + id + ", \"research\")'>View PDF</a></td>";
-			tr += "</tr>";
+			var tr = `<tr>
+            <td>${sno}</td>
+            <td>${title}</td>
+            <td>${publication_year}</td>
+            <td><a href='javascript:void(0)' onclick='openPDFInNewTab(${id}, "research")'>View Research</a></td>
+        </tr>`;
 
 			$('#ResearchList tbody').append(tr);  // Append the new row to the table body
 		}
 	}
 
+			/* // JavaScript function to open the PDF in a new tab
+			function openPDFInNewTab(id) {
+				// Construct the URL to open the PDF
+				var url = 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/ViewResearchPDF/' + id;
+				// Open the URL in a new tab
+				window.open(url, '_blank');
+			}
+		*/
+		
 		// JavaScript function to open the PDF in a new tab (Reusable for different types of PDFs)
 		function openPDFInNewTab(id, type) {
 			// Determine the URL based on the type of document
@@ -741,6 +755,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	// Call setupFileAttachment for 'addCourseModal'
 	setupFileAttachment("research_attachment", "research_attachment_preview", false);
+	setupFileAttachment("qualification_diploma", "qualification_diploma_preview", false);
+	setupFileAttachment("certification_certificate", "certification_certificate_preview", false);
 
 	// Notification Panel Logic
 	const notificationBtn = document.getElementById('notificationBtn');
