@@ -58,10 +58,12 @@ class ResearchOutputs extends CI_Controller {
 			$attachment_path = 'assets/research_attachments/' . $uploaded_data['file_name'];
 		}
 
+		$faculty_id = $this->session->userdata('faculty_id');
+
 		$research_data = array(
 			"title" => $this->input->post("title"),
 			"publication_year" => $this->input->post("publication_year"),
-			"faculty_profile_id" => $this->input->post("faculty_profile_id"),
+			"faculty_profile_id" => $faculty_id,
 			"research_attachment" => $attachment_path
 		);
 
