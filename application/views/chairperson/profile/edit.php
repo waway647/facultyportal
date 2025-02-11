@@ -203,10 +203,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="main-content">
         <div class="main-content-2 main-content-2-profile">
 			<div class="cover-photo">
-				<?php if (isset($faculty) && $faculty !== null): ?>
 					<div class="cover-photo-real">
 						<button id="editCoverPhotoBtn">
-						<img src="<?php echo base_url(!empty($faculty->cover_photo) ? $faculty->cover_photo : 'assets/images/cover/sbu_default_cover.png'); ?>" alt="Cover Photo">
+						<img id="coverPhoto" src="<?php echo base_url($faculty->cover_photo); ?>" alt="Cover Photo">
 							<div class="overlay">
 								<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
 							</div>
@@ -215,13 +214,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 					<div class="profile-picture">
 						<button id="editProfilePictureBtn">
-						<img src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="Profile Picture">
+						<img id="profilePicture" src="<?php echo base_url($faculty->profile_picture); ?>" alt="Profile Picture">
 							<div class="overlay">
 								<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
 							</div>
 						</button>
 					</div>
-				<?php endif ?>
 			</div>
 
 									<!-- Edit Profile Modal -->

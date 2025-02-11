@@ -189,10 +189,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     <div class="main-content">
         <div class="main-content-2 main-content-2-profile">
 			<div class="cover-photo">
-			<?php if (isset($faculty) && $faculty !== null): ?>
 					<div class="cover-photo-real">
 						<button id="editCoverPhotoBtn">
-						<img src="<?php echo base_url(!empty($faculty->cover_photo) ? $faculty->cover_photo : 'assets/images/cover/sbu_default_cover.png'); ?>" alt="Cover Photo">
+						<img id="coverPhoto" src="<?php echo base_url($faculty->cover_photo); ?>" alt="Cover Photo">
 							<div class="overlay">
 								<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
 							</div>
@@ -201,13 +200,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 					<div class="profile-picture">
 						<button id="editProfilePictureBtn">
-						<img src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="Profile Picture">
+						<img id="profilePicture" src="<?php echo base_url($faculty->profile_picture); ?>" alt="Profile Picture">
 							<div class="overlay">
 								<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
 							</div>
 						</button>
 					</div>
-				<?php endif ?>
 			</div>
 
 									<!-- Edit Profile Modal -->
@@ -616,6 +614,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</select>
 										</div>
 										<div class="form-group">
+											<select id="add_certification_expiration_date" name="expiration_date">
+												<option value="" disabled selected>Expiration Date</option>
+											</select>
+										</div>
+										<div class="form-group">
 											<div class="attachment-container">
 												<label for="certification_attachment" class="attachment-button">
 													<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
@@ -654,6 +657,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</select>
 										</div>
 										<div class="form-group">
+											<select id="edit_certification_expiration_date" name="expiration_date">
+												<option value="" disabled selected>Expiration Date</option>
+											</select>
+										</div>
+										<div class="form-group">
 											<div class="attachment-container">
 												<label for="certification_attachment_edit" class="attachment-button">
 													<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
@@ -682,6 +690,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<th>Name of Organization/Company</th>
 										<th>Certification Title</th>
 										<th>Year Received</th>
+										<th>Expiration Date</th>
 										<th>Attachment File Location</th>
 										<th>Action</th>
 									</tr>
@@ -809,6 +818,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			fetchQualifications();
 			fetchExperience();
 			fetchResearch();
+			fetchCertification();
 		});
 
 	function fetchQualifications() {
@@ -945,6 +955,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$('#editExperienceModal').hide();
 		}
 
+		if (event.target === document.getElementById('editCertificationModal')) {
+			$('#editCertificationModal').hide();
+		}
+
 		if (event.target === document.getElementById('editResearchModal')) {
 			$('#editResearchModal').hide();
 		}
@@ -958,6 +972,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	$('#closeeditExperienceBtn').on('click', function () {
 		$('#editExperienceModal').hide();
+	});
+
+	$('#closeEditCertificationBtn').on('click', function () {
+		$('#editCertificationModal').hide();
 	});
 
 	$('#closeeditResearchBtn').on('click', function () {
@@ -1053,6 +1071,119 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		);
 
 		$('#editExperienceModal').show();
+	}
+
+	function fetchCertification() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/getCertification',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Certification):', result);
+				if (Array.isArray(result)) {
+					createCertificationTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching certification:', error);
+			}
+		});
+	}
+
+	function fetchCertificationById(){
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/getCertificationByID/' + certificationId,
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				if (result && !result.error) {
+					populateEditCertificationModal1(result); // Populate the modal with the fetched data
+				} else {
+					console.error('Error: ' + (result.error || 'Certification not found!'));
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching certification by ID:', error);
+			}
+		});
+	}
+
+	function createCertificationTable(){
+		sno = Number(sno);
+		$('#CertificationList tbody').empty(); // Clear existing rows
+		for (index in result) {
+			var id = result[index].id;
+			var certification_title = result[index].certification_title;
+			var organization_name = result[index].organization_name;
+			var certification_year = result[index].certification_year;
+			var expiration_date = result[index].expiration_date;
+
+			sno += 1;
+
+			var tr = "<tr>";
+			tr += "<td>" + sno + "</td>";  // Serial number
+			tr += "<td>" + organization_name + "</td>";
+			tr += "<td>" + certification_title + "</td>";
+			tr += "<td>" + certification_year + "</td>";
+			tr += "<td>" + expiration_date + "</td>";
+			tr += "<td><a href='#' onclick='fetchCertificationById(" + id + ")'>" +
+					"<div class='table-icon-container'>" +
+						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
+						"<div><a href='http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/deleteCertification/" + id + "'>" +
+							"<img class='img' src='" + "<?php echo base_url('assets/images/icon/x.svg'); ?>" + "' /></a></div>" +
+					"</div></td>";				
+			tr += "</tr>";
+
+			$('#CertificationList tbody').append(tr);  // Append the new row to the table body
+		}
+	}
+
+	function populateEditCertificationModal1(){
+		console.log("Populating modal with certification:", certification);
+
+		// Populate the year graduated dropdown
+		fetchYearsForExpirationDate('editCertificationModal', function() {
+			// Set the selected value after populating the dropdown
+			$('#edit_certification_year').val(certification.certification_year);
+			console.log(`Set selected year: ${certification.certification_year}`);
+		});
+
+		// Populate other fields
+		$('#editCertificationModal #certification_title').val(certification.certification_title);
+		$('#editCertificationModal #organization_name').val(certification.organization_name);
+
+		// Set form action URL
+		$('#editCertificationForm').attr(
+			'action',
+			'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/updateCertification/' + certification.id
+		);
+
+		$('#editCertificationModal').show();
+	}
+
+	function populateEditCertificationModal2(){
+		console.log("Populating modal with certification:", certification);
+
+		// Populate the year graduated dropdown
+		fetchYearOfCertification('editCertificationModal', function() {
+			// Set the selected value after populating the dropdown
+			$('#edit_certification_expiration_date').val(certification.certification_year);
+			console.log(`Set selected year: ${certification.certification_year}`);
+		});
+
+		// Populate other fields
+		$('#editCertificationModal #certification_title').val(certification.certification_title);
+		$('#editCertificationModal #organization_name').val(certification.organization_name);
+
+		// Set form action URL
+		$('#editCertificationForm').attr(
+			'action',
+			'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/updateCertification/' + certification.id
+		);
+
+		$('#editCertificationModal').show();
 	}
 
 	function fetchResearch() {
@@ -1280,6 +1411,58 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 	}
 
+	function fetchYearOfCertification(modalId, callback) {
+		const currentYear = new Date().getFullYear();
+		const selectElement = modalId === 'addCertificationModal'
+			? $('#add_certification_year')
+			: $('#edit_certification_year');
+
+		if (selectElement.length === 0) {
+			console.error('Dropdown element not found for modal:', modalId);
+			return;
+		}
+
+		// Clear existing options and add a default placeholder
+		selectElement.empty();
+		selectElement.append('<option value="" disabled selected>Year Received</option>');
+
+		// Populate the dropdown with years from 2000 to the current year
+		for (let i = currentYear; i >= 2000; i--) {
+			selectElement.append('<option value="' + i + '">' + i + '</option>');
+		}
+
+		// Execute the callback if provided
+		if (callback && typeof callback === 'function') {
+			callback();
+		}
+	}
+
+	function fetchYearsForExpirationDate(modalId, callback) {
+		const currentYear = new Date().getFullYear();
+		const selectElement = modalId === 'addCertificationModal'
+			? $('#add_certification_expiration_date')
+			: $('#edit_certification_expiration_date');
+
+		if (selectElement.length === 0) {
+			console.error('Dropdown element not found for modal:', modalId);
+			return;
+		}
+
+		// Clear existing options and add a default placeholder
+		selectElement.empty();
+		selectElement.append('<option value="" disabled selected>Year Received</option>');
+
+		// Populate the dropdown with years from 2000 to the current year
+		for (let i = currentYear; i >= 2000; i--) {
+			selectElement.append('<option value="' + i + '">' + i + '</option>');
+		}
+
+		// Execute the callback if provided
+		if (callback && typeof callback === 'function') {
+			callback();
+		}
+	}
+
 	function fetchYearsInYearPublished(modalId, callback) {
 		const currentYear = new Date().getFullYear();
 		const startYear = 2000; // Fixed start year
@@ -1315,6 +1498,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$('#addExperienceBtn').on('click', function() {
 			fetchYearsInExperience('addExperienceModal');
 		$('#addExperienceModal').show();
+	});
+
+	$('#addCertificationBtn').on('click', function() {
+		fetchYearOfCertification('addCertificationModal');
+		$('#addCertificationModal').show();
 	});
 
 	$('#addResearchBtn').on('click', function() {
@@ -1403,9 +1591,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	setupFileAttachment("research_attachment_edit", "research_attachment_preview_edit", false);
 
+	setFileAttachment("certification_attachment", "certification_attachment_preview", false);
+
+	setupFileAttachment("certification_attachment_edit", "certification_attachment_preview_edit", false);
+
 	// Call setupFileAttachment for 'announcement_attachment' if required
 	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
-
 
 	document.getElementById('profile_pic_change').addEventListener('change', function (event) {
 		const file = event.target.files[0]; // Get the selected file
