@@ -489,7 +489,7 @@ class Profile extends CI_Controller {
 
 	public function changeProfilePic()
 	{
-/* 		$config['upload_path'] = './assets/images/profile/';
+ 		$config['upload_path'] = './assets/images/profile/';
 		$config['allowed_types'] = 'jpg|jpeg|png';
 		$this->load->library('upload', $config);
 	
@@ -524,53 +524,7 @@ class Profile extends CI_Controller {
 			'status' => 'success',
 			'profile_picture' => base_url($attachment_path),
 			'message' => 'Profile picture updated successfully.'
-		]); */
-
-				$config['upload_path'] = './assets/images/profile/';
-				$config['allowed_types'] = 'jpg|jpeg|png';
-				$this->load->library('upload', $config);
-			
-				if ($this->upload->do_upload('profile_picture')) {
-					$uploaded_data = $this->upload->data();
-					$attachment_path = 'assets/images/profile/' . $uploaded_data['file_name'];
-				} else {
-					$error = $this->upload->display_errors();
-					echo json_encode(['status' => 'error', 'message' => $error]);
-					return;
-				}
-			
-				// Get faculty profile ID from session
-				$current_id = $this->session->userdata('current_id');
-				$logged_id = $this->session->userdata('logged_id');
-				$user_id = null;
-			
-				if ($current_id) {
-					$user_id = $this->Profile_model->getUserIdByFacultyProfileId($current_id);
-				} elseif ($logged_id) {
-					$user_id = $this->Profile_model->getUserIdByFacultyProfileId($logged_id);
-				}
-			
-				if (!$user_id) {
-					echo json_encode(['status' => 'error', 'message' => 'User not found for the provided faculty_profile_id.']);
-					return;
-				}
-			
-				// Update session data
-				$this->session->set_userdata([
-					'profile_picture' => $attachment_path,
-					'user_id' => $user_id,
-				]);
-			
-				// Optionally, update the database with the new profile picture
-				// Uncomment the following lines if necessary:
-				// $this->Profile_model->updateProfile($user_id, ['profile_picture' => $attachment_path]);
-			
-				// Respond with a JSON success message
-				echo json_encode([
-					'status' => 'success',
-					'profile_picture' => base_url($attachment_path),
-					'message' => 'Profile picture updated successfully.'
-				]);
+		]); 
 	}
 
 	public function getCoverPhoto()
@@ -590,7 +544,7 @@ class Profile extends CI_Controller {
 
 	public function changeCoverPhoto()
 	{
-		/* $config['upload_path'] = './assets/images/cover/';
+		$config['upload_path'] = './assets/images/cover/';
 		$config['allowed_types'] = 'jpg|jpeg|png';
 		$this->load->library('upload', $config);
 	
@@ -625,53 +579,8 @@ class Profile extends CI_Controller {
 			'status' => 'success',
 			'cover_photo' => base_url($attachment_path),
 			'message' => 'Cover photo updated successfully.'
-		]); */
+		]);
 
-				$config['upload_path'] = './assets/images/cover/';
-				$config['allowed_types'] = 'jpg|jpeg|png';
-				$this->load->library('upload', $config);
-			
-				if ($this->upload->do_upload('cover_photo')) {
-					$uploaded_data = $this->upload->data();
-					$attachment_path = 'assets/images/cover/' . $uploaded_data['file_name'];
-				} else {
-					$error = $this->upload->display_errors();
-					echo json_encode(['status' => 'error', 'message' => $error]);
-					return;
-				}
-			
-				// Get faculty profile ID from session
-				$current_id = $this->session->userdata('current_id');
-				$logged_id = $this->session->userdata('logged_id');
-				$user_id = null;
-			
-				if ($current_id) {
-					$user_id = $this->Profile_model->getUserIdByFacultyProfileId($current_id);
-				} elseif ($logged_id) {
-					$user_id = $this->Profile_model->getUserIdByFacultyProfileId($logged_id);
-				}
-			
-				if (!$user_id) {
-					echo json_encode(['status' => 'error', 'message' => 'User not found for the provided faculty_profile_id.']);
-					return;
-				}
-			
-				// Update session data
-				$this->session->set_userdata([
-					'cover_photo' => $attachment_path,
-					'user_id' => $user_id,
-				]);
-			
-				// Optionally, update the database with the new profile picture
-				// Uncomment the following lines if necessary:
-				// $this->Profile_model->updateProfile($user_id, ['profile_picture' => $attachment_path]);
-			
-				// Respond with a JSON success message
-				echo json_encode([
-					'status' => 'success',
-					'cover_photo' => base_url($attachment_path),
-					'message' => 'Cover photo updated successfully.'
-				]);
 	}
 
 	public function getQualificationsByID($id) 
