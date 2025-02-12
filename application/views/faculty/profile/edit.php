@@ -188,26 +188,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
     <div class="main-content">
         <div class="main-content-2 main-content-2-profile">
-			<!-- <div class="cover-photo">
-					<div class="cover-photo-real">
-						<button id="editCoverPhotoBtn">
-						<img id="coverPhoto" src="<?php echo base_url($faculty->cover_photo); ?>" alt="Cover Photo">
-							<div class="overlay">
-								<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
-							</div>
-						</button>
-					</div>
-					
-					<div class="profile-picture">
-						<button id="editProfilePictureBtn">
-						<img id="profilePicture" src="<?php echo base_url($faculty->profile_picture); ?>" alt="Profile Picture">
-							<div class="overlay">
-								<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
-							</div>
-						</button>
-					</div>
-			</div> -->
-
 			<div class="cover-photo">
 					<div class="cover-photo-real">
 						<button id="editCoverPhotoBtn">
@@ -227,7 +207,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</button>
 					</div>
 			</div>
-
 									<!-- Edit Profile Modal -->
 									<div id="editProfilePictureModal" class="modal">
 									<div class="modal-content img-modal-content">
@@ -337,7 +316,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<?php if (isset($faculty) && $faculty !== null): ?>
 				<div class="the-profile-headings">
 					<div class="profile-headings-left">
-					<?php echo $this->session->userdata('faculty_id'); ?>
 						<div class="profile-left-subheadings">
 							<div class="form-input">
 								<h6>First name</h6>
@@ -1617,101 +1595,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	// Call setupFileAttachment for 'announcement_attachment' if required
 	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
-
-/* 	document.getElementById('profile_pic_change').addEventListener('change', function (event) {
-		const file = event.target.files[0]; // Get the selected file
-		if (file) {
-			const reader = new FileReader(); // Create a FileReader to read the file
-
-			// Load the file and update the preview images
-			reader.onload = function (e) {
-				const preview184 = document.getElementById('preview_184');
-				const preview64 = document.getElementById('preview_64');
-				const preview32 = document.getElementById('preview_32');
-
-				// Update the src of preview images
-				preview184.src = e.target.result;
-				preview64.src = e.target.result;
-				preview32.src = e.target.result;
-			};
-
-			reader.readAsDataURL(file); // Read the file as a data URL
-		}
-	});
-
-	document.getElementById('cover_photo_change').addEventListener('change', function (event) {
-		const file = event.target.files[0]; // Get the selected file
-		if (file) {
-			const reader = new FileReader(); // Create a FileReader to read the file
-
-			// Load the file and update the preview images
-			reader.onload = function (e) {
-				const preview184 = document.getElementById('preview_184_cover');
-				const preview64 = document.getElementById('preview_64_cover');
-				const preview32 = document.getElementById('preview_32_cover');
-
-				// Update the src of preview images
-				preview184.src = e.target.result;
-				preview64.src = e.target.result;
-				preview32.src = e.target.result;
-			};
-
-			reader.readAsDataURL(file); // Read the file as a data URL
-		}
-	});
-
-
-	$(document).on('submit', '#editProfilePictureForm', function (e) {
-		e.preventDefault();
-
-		let formData = new FormData(this);
-
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/changeProfilePic',
-			type: 'POST',
-			data: formData,
-			contentType: false,
-			processData: false,
-			dataType: 'json',
-			success: function (response) {
-				if (response.status === 'success') {
-					$('#profilePicture').attr('src', response.profile_picture);			
-					$('#editProfilePictureModal').hide();
-				} else {
-					alert('Error: ' + response.message);
-				}
-			},
-			error: function () {
-				alert('An unexpected error occurred.');
-			},
-		});
-	});
-
-	$(document).on('submit', '#editCoverPhotoForm', function (e) {
-		e.preventDefault();
-
-		let formData = new FormData(this);
-
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/changeCoverPhoto',
-			type: 'POST',
-			data: formData,
-			contentType: false,
-			processData: false,
-			dataType: 'json',
-			success: function (response) {
-				if (response.status === 'success') {
-					$('#coverPhoto').attr('src', response.cover_photo);			
-					$('#editCoverPhotoModal').hide();
-				} else {
-					alert('Error: ' + response.message);
-				}
-			},
-			error: function () {
-				alert('An unexpected error occurred.');
-			},
-		});
-	}); */
 
 	document.getElementById('profile_pic_change').addEventListener('change', function (event) {
 		const file = event.target.files[0]; // Get the selected file
