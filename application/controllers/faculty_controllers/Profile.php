@@ -57,7 +57,7 @@ class Profile extends CI_Controller {
 
 	public function editProfile()
 	{
-		/* $faculty_id = $this->session->userdata('faculty_id');
+		$faculty_id = $this->session->userdata('faculty_id');
 
 		if ($faculty_id) {
 			// Load the faculty profile data for editing
@@ -69,28 +69,6 @@ class Profile extends CI_Controller {
 
 			$this->load->view('faculty/profile/edit', $data);
 		} else {
-			redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/index');
-		} */
-
-		$this->load->model('common_models/Faculty_model');
-		$faculty_id = $this->session->userdata('logged_id');
-		$data['logged_faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
-
-		// Get the current faculty ID
-		$current_id = $this->session->userdata('current_id') ?: $this->session->userdata('logged_id');
-
-		if ($current_id) {
-			// Load the faculty profile data for editing
-			$data['faculty'] = $this->Profile_model->getFacultyProfile($current_id);
-
-			// Update session data with the latest profile picture and cover photo
-			$this->session->set_userdata('profile_picture', $data['faculty']->profile_picture);
-			$this->session->set_userdata('cover_photo', $data['faculty']->cover_photo);
-
-			// Load the view for editing the profile
-			$this->load->view('faculty/profile/edit', $data);
-		} else {
-			// Redirect to the index page if no current ID is found
 			redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/index');
 		}
 	}
