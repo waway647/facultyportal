@@ -209,15 +209,23 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div> -->
 
 			<div class="cover-photo">
-				<?php if (isset($faculty) && $faculty !== null): ?>
 					<div class="cover-photo-real">
-						<img src="<?php echo base_url(!empty($faculty->cover_photo) ? $faculty->cover_photo : 'assets/images/cover/sbu_default_cover.png'); ?>" alt="Cover Photo">
+						<button id="editCoverPhotoBtn">
+						<img id="coverPhoto" src="<?php echo base_url($faculty->cover_photo); ?>" alt="Cover Photo">
+							<div class="overlay">
+								<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
+							</div>
+						</button>
 					</div>
 					
 					<div class="profile-picture">
-						<img src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="Profile Picture">
+						<button id="editProfilePictureBtn">
+						<img id="profilePicture" src="<?php echo base_url($faculty->profile_picture); ?>" alt="Profile Picture">
+							<div class="overlay">
+								<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
+							</div>
+						</button>
 					</div>
-				<?php endif ?>
 			</div>
 
 									<!-- Edit Profile Modal -->
