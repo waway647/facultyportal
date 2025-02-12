@@ -347,7 +347,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Certificate Title</th>
 									<th>Year</th>
 									<th>Expiration Date</th>
-									<th>Copy of Certificate</th>
+									<th>Certificate</th>
 								</tr>
 								</thead>
 

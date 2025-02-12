@@ -481,6 +481,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Academic Degree</th>
 									<th>Institution</th>
 									<th>Year Graduated</th>
+									<th>Copy of Diploma</th>
 									<th>Action</th>
 								</tr>
 								</thead>
@@ -689,7 +690,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<th>Certification Title</th>
 										<th>Year Received</th>
 										<th>Expiration Date</th>
-										<th>Attachment File Location</th>
+										<th>Copy of Certificate</th>
 										<th>Action</th>
 									</tr>
 								</thead>
@@ -791,7 +792,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>#</th>
 									<th>Title</th>
 									<th>Year Published</th>
-									<th>Attachment File Location</th>
+									<th>Copy of Research</th>
 									<th>Action</th>
 								</tr>
 								</thead>
