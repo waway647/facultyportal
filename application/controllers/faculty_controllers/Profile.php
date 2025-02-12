@@ -57,7 +57,7 @@ class Profile extends CI_Controller {
 
 	public function editProfile()
 	{
-		$faculty_id = $this->session->userdata('faculty_id');
+		/* $faculty_id = $this->session->userdata('faculty_id');
 
 		if ($faculty_id) {
 			// Load the faculty profile data for editing
@@ -69,6 +69,28 @@ class Profile extends CI_Controller {
 
 			$this->load->view('faculty/profile/edit', $data);
 		} else {
+			redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/index');
+		} */
+
+		$this->load->model('common_models/Faculty_model');
+		$faculty_id = $this->session->userdata('logged_id');
+		$data['logged_faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
+
+		// Get the current faculty ID
+		$current_id = $this->session->userdata('current_id') ?: $this->session->userdata('logged_id');
+
+		if ($current_id) {
+			// Load the faculty profile data for editing
+			$data['faculty'] = $this->Profile_model->getFacultyProfile($current_id);
+
+			// Update session data with the latest profile picture and cover photo
+			$this->session->set_userdata('profile_picture', $data['faculty']->profile_picture);
+			$this->session->set_userdata('cover_photo', $data['faculty']->cover_photo);
+
+			// Load the view for editing the profile
+			$this->load->view('faculty/profile/edit', $data);
+		} else {
+			// Redirect to the index page if no current ID is found
 			redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/index');
 		}
 	}
@@ -467,7 +489,7 @@ class Profile extends CI_Controller {
 
 	public function changeProfilePic()
 	{
-		$config['upload_path'] = './assets/images/profile/';
+/* 		$config['upload_path'] = './assets/images/profile/';
 		$config['allowed_types'] = 'jpg|jpeg|png';
 		$this->load->library('upload', $config);
 	
@@ -502,7 +524,68 @@ class Profile extends CI_Controller {
 			'status' => 'success',
 			'profile_picture' => base_url($attachment_path),
 			'message' => 'Profile picture updated successfully.'
-		]);
+		]); */
+
+				$config['upload_path'] = './assets/images/profile/';
+				$config['allowed_types'] = 'jpg|jpeg|png';
+				$this->load->library('upload', $config);
+			
+				if ($this->upload->do_upload('profile_picture')) {
+					$uploaded_data = $this->upload->data();
+					$attachment_path = 'assets/images/profile/' . $uploaded_data['file_name'];
+				} else {
+					$error = $this->upload->display_errors();
+					echo json_encode(['status' => 'error', 'message' => $error]);
+					return;
+				}
+			
+				// Get faculty profile ID from session
+				$current_id = $this->session->userdata('current_id');
+				$logged_id = $this->session->userdata('logged_id');
+				$user_id = null;
+			
+				if ($current_id) {
+					$user_id = $this->Profile_model->getUserIdByFacultyProfileId($current_id);
+				} elseif ($logged_id) {
+					$user_id = $this->Profile_model->getUserIdByFacultyProfileId($logged_id);
+				}
+			
+				if (!$user_id) {
+					echo json_encode(['status' => 'error', 'message' => 'User not found for the provided faculty_profile_id.']);
+					return;
+				}
+			
+				// Update session data
+				$this->session->set_userdata([
+					'profile_picture' => $attachment_path,
+					'user_id' => $user_id,
+				]);
+			
+				// Optionally, update the database with the new profile picture
+				// Uncomment the following lines if necessary:
+				// $this->Profile_model->updateProfile($user_id, ['profile_picture' => $attachment_path]);
+			
+				// Respond with a JSON success message
+				echo json_encode([
+					'status' => 'success',
+					'profile_picture' => base_url($attachment_path),
+					'message' => 'Profile picture updated successfully.'
+				]);
+	}
+
+	public function getCoverPhoto()
+	{
+		$current_id = $this->session->userdata('current_id');
+		$logged_id = $this->session->userdata('logged_id');
+
+		$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
+
+		if ($faculty_id) {
+			$result = $this->Profile_model->getProfilePic($faculty_id);
+			echo json_encode($result); // Return data as JSON
+		} else {
+			echo json_encode(['error' => 'No valid faculty ID found.']);
+		}
 	}
 
 	public function changeCoverPhoto()
@@ -544,7 +627,7 @@ class Profile extends CI_Controller {
 			'message' => 'Cover photo updated successfully.'
 		]); */
 
-		$config['upload_path'] = './assets/images/cover/';
+				$config['upload_path'] = './assets/images/cover/';
 				$config['allowed_types'] = 'jpg|jpeg|png';
 				$this->load->library('upload', $config);
 			

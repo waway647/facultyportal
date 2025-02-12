@@ -1598,6 +1598,101 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Call setupFileAttachment for 'announcement_attachment' if required
 	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
 
+/* 	document.getElementById('profile_pic_change').addEventListener('change', function (event) {
+		const file = event.target.files[0]; // Get the selected file
+		if (file) {
+			const reader = new FileReader(); // Create a FileReader to read the file
+
+			// Load the file and update the preview images
+			reader.onload = function (e) {
+				const preview184 = document.getElementById('preview_184');
+				const preview64 = document.getElementById('preview_64');
+				const preview32 = document.getElementById('preview_32');
+
+				// Update the src of preview images
+				preview184.src = e.target.result;
+				preview64.src = e.target.result;
+				preview32.src = e.target.result;
+			};
+
+			reader.readAsDataURL(file); // Read the file as a data URL
+		}
+	});
+
+	document.getElementById('cover_photo_change').addEventListener('change', function (event) {
+		const file = event.target.files[0]; // Get the selected file
+		if (file) {
+			const reader = new FileReader(); // Create a FileReader to read the file
+
+			// Load the file and update the preview images
+			reader.onload = function (e) {
+				const preview184 = document.getElementById('preview_184_cover');
+				const preview64 = document.getElementById('preview_64_cover');
+				const preview32 = document.getElementById('preview_32_cover');
+
+				// Update the src of preview images
+				preview184.src = e.target.result;
+				preview64.src = e.target.result;
+				preview32.src = e.target.result;
+			};
+
+			reader.readAsDataURL(file); // Read the file as a data URL
+		}
+	});
+
+
+	$(document).on('submit', '#editProfilePictureForm', function (e) {
+		e.preventDefault();
+
+		let formData = new FormData(this);
+
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/changeProfilePic',
+			type: 'POST',
+			data: formData,
+			contentType: false,
+			processData: false,
+			dataType: 'json',
+			success: function (response) {
+				if (response.status === 'success') {
+					$('#profilePicture').attr('src', response.profile_picture);			
+					$('#editProfilePictureModal').hide();
+				} else {
+					alert('Error: ' + response.message);
+				}
+			},
+			error: function () {
+				alert('An unexpected error occurred.');
+			},
+		});
+	});
+
+	$(document).on('submit', '#editCoverPhotoForm', function (e) {
+		e.preventDefault();
+
+		let formData = new FormData(this);
+
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/changeCoverPhoto',
+			type: 'POST',
+			data: formData,
+			contentType: false,
+			processData: false,
+			dataType: 'json',
+			success: function (response) {
+				if (response.status === 'success') {
+					$('#coverPhoto').attr('src', response.cover_photo);			
+					$('#editCoverPhotoModal').hide();
+				} else {
+					alert('Error: ' + response.message);
+				}
+			},
+			error: function () {
+				alert('An unexpected error occurred.');
+			},
+		});
+	}); */
+
 	document.getElementById('profile_pic_change').addEventListener('change', function (event) {
 		const file = event.target.files[0]; // Get the selected file
 		if (file) {
@@ -1692,6 +1787,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			},
 		});
 	});
+
 
 	// Notification Panel Logic
 	const notificationBtn = document.getElementById('notificationBtn');
