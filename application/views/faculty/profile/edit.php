@@ -188,28 +188,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
     <div class="main-content">
         <div class="main-content-2 main-content-2-profile">
-		<div class="cover-photo">
-			<?php if (isset($faculty) && $faculty !== null): ?>
-					<div class="cover-photo-real">
-						<button id="editCoverPhotoBtn">
-							<img src="<?php echo base_url(!empty($faculty->cover_photo) ? $faculty->cover_photo : 'assets/images/cover/sbu_default_cover.png'); ?>" alt="Cover Photo">
-								<div class="overlay">
-									<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
-								</div>
-						</button>
-					</div>
-					
-					<div class="profile-picture">
-						<button id="editProfilePictureBtn">
-						<img src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="Profile Picture">
-							<div class="overlay">
-								<img src="<?php echo base_url('assets/images/icon/edit.svg'); ?>">
-							</div>
-						</button>
-					</div>
-				<?php endif ?>
-			</div>
-			<!-- <div class="cover-photo">
+			<div class="cover-photo">
 					<div class="cover-photo-real">
 						<button id="editCoverPhotoBtn">
 						<img id="coverPhoto" src="<?php echo base_url($faculty->cover_photo); ?>" alt="Cover Photo">
@@ -227,7 +206,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							</div>
 						</button>
 					</div>
-			</div> -->
+			</div>
 									<!-- Edit Profile Modal -->
 									<div id="editProfilePictureModal" class="modal">
 									<div class="modal-content img-modal-content">
@@ -241,7 +220,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<img src="<?php echo base_url('assets/images/icon/x.svg'); ?>" alt="">
 											</div>
 										</div>
-										<form id="editProfilePictureForm" method="post" enctype="multipart/form-data" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/changeProfilePic">
+										<form id="editProfilePictureForm" method="post" enctype="multipart/form-data" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/changeProfilePic">
 											<div class="form-group img-form-group">
 												<div class="pic-preview-container">
 													<div class="preview">
@@ -293,7 +272,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<img src="<?php echo base_url('assets/images/icon/x.svg'); ?>" alt="">
 											</div>
 										</div>
-										<form id="editCoverPhotoForm" method="post" enctype="multipart/form-data" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/changeCoverPhoto">
+										<form id="editCoverPhotoForm" method="post" enctype="multipart/form-data" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/changeCoverPhoto">
 											<div class="form-group img-form-group">
 												<div class="pic-preview-container">
 													<div class="preview">
