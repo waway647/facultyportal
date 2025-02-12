@@ -220,7 +220,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<img src="<?php echo base_url('assets/images/icon/x.svg'); ?>" alt="">
 											</div>
 										</div>
-										<form id="editProfilePictureForm" method="post" enctype="multipart/form-data" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/changeProfilePic">
+										<form id="editProfilePictureForm" method="post" enctype="multipart/form-data" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/changeProfilePic">
 											<div class="form-group img-form-group">
 												<div class="pic-preview-container">
 													<div class="preview">
@@ -272,7 +272,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<img src="<?php echo base_url('assets/images/icon/x.svg'); ?>" alt="">
 											</div>
 										</div>
-										<form id="editCoverPhotoForm" method="post" enctype="multipart/form-data" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/changeCoverPhoto">
+										<form id="editCoverPhotoForm" method="post" enctype="multipart/form-data" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/changeCoverPhoto">
 											<div class="form-group img-form-group">
 												<div class="pic-preview-container">
 													<div class="preview">
