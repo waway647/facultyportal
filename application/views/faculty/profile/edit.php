@@ -225,20 +225,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<div class="pic-preview-container">
 													<div class="preview">
 														<div class="px184">
-															<img id="preview_184" src="<?php echo base_url($faculty->profile_picture); ?>" alt="">
+															<img id="preview_184" src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="">
 														</div>
 														<h6>184px</h6>
 													</div>
 													<div class="preview">
 														<div class="px64">
-															<img id="preview_64" src="<?php echo base_url($faculty->profile_picture); ?>" alt="">
+															<img id="preview_64" src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="">
 														</div>
 														<h6>64px</h6>
 													</div>
 
 													<div class="preview">
 														<div class="px32">
-															<img id="preview_32"src="<?php echo base_url($faculty->profile_picture); ?>" alt="">
+															<img id="preview_32" src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="">
 														</div>
 														<h6>32px</h6>
 													</div>
@@ -277,20 +277,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<div class="pic-preview-container">
 													<div class="preview">
 														<div class="px184">
-															<img id="preview_184_cover" src="<?php echo base_url($faculty->cover_photo); ?>" alt="">
+															<img id="preview_184_cover" src="<?php echo base_url(!empty($faculty->cover_photo) ? $faculty->cover_photo : 'assets/images/cover/sbu_default_cover.png'); ?>" alt="">
 														</div>
 														<h6>184px</h6>
 													</div>
 													<div class="preview">
 														<div class="px64">
-															<img id="preview_64_cover" src="<?php echo base_url($faculty->cover_photo); ?>" alt="">
+															<img id="preview_64_cover" src="<?php echo base_url(!empty($faculty->cover_photo) ? $faculty->cover_photo : 'assets/images/cover/sbu_default_cover.png'); ?>" alt="">
 														</div>
 														<h6>64px</h6>
 													</div>
 
 													<div class="preview">
 														<div class="px32">
-															<img id="preview_32_cover"src="<?php echo base_url($faculty->cover_photo); ?>" alt="">
+															<img id="preview_32_cover" src="<?php echo base_url(!empty($faculty->cover_photo) ? $faculty->cover_photo : 'assets/images/cover/sbu_default_cover.png'); ?>" alt="">
 														</div>
 														<h6>32px</h6>
 													</div>
@@ -1592,9 +1592,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	setupFileAttachment("research_attachment_edit", "research_attachment_preview_edit", false);
 
-	setFileAttachment("certification_attachment", "certification_attachment_preview", false);
+	//setFileAttachment("certification_attachment", "certification_attachment_preview", false);
 
-	setupFileAttachment("certification_attachment_edit", "certification_attachment_preview_edit", false);
+	//setupFileAttachment("certification_attachment_edit", "certification_attachment_preview_edit", false);
 
 	// Call setupFileAttachment for 'announcement_attachment' if required
 	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
