@@ -60,6 +60,12 @@ class Profile_model extends CI_Model {
         return $query->result_array(); // Use row() to get a single row
 	}
 
+    public function getCertifications($faculty_profile_id){
+        $this->db->where('faculty_profile_id', $faculty_profile_id);
+        $query = $this->db->get('certifications');
+        return $query->result_array(); // Use row() to get a single row
+    }
+
 	public function getUserIdByFacultyProfileId($faculty_profile_id)
     {
         $this->db->select('user_id');

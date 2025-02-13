@@ -139,6 +139,18 @@ class Profile extends CI_Controller {
 		}
 	}
 
+	public function getCertifications()
+	{
+		$faculty_id = $this->session->userdata('faculty_id');
+
+		if ($faculty_id) {
+			$result = $this->Profile_model->getCertifications($faculty_id);
+			echo json_encode($result); // Return data as JSON
+		} else {
+			echo json_encode(['error' => 'No valid faculty ID found.']);
+		}
+	}
+
 	public function createQualifications()
 	{
 		$faculty_id = $this->session->userdata('faculty_id');
@@ -213,7 +225,21 @@ class Profile extends CI_Controller {
 		} else {
 			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
 		}
-	}		
+	}
+	
+	public function createCertifications()
+	{
+		$faculty_id = $this->session->userdata('faculty_id');
+
+		if ($faculty_id) {
+			$certification_data = array(
+				"faculty_profile_id" => $faculty_id,
+				"certification_name" => $this->input->post("certification_name"),
+				"certification_title" => $this->input->post("certification_title"),
+				"year" => $this->input->post("year")
+			);
+		}
+	}
 
 	public function insertUpdatedProfile()
 	{
