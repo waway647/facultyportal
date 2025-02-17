@@ -225,39 +225,7 @@ class Profile extends CI_Controller {
 		} else {
 			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
 		}
-	}		
-
-	public function createResearch()
-	{
-		$config['upload_path'] = './assets/research_attachments/';
-		$config['allowed_types'] = 'pdf';
-		$this->load->library('upload', $config);
-		
-		if ($this->upload->do_upload('research_attachment')) {
-			$uploaded_data = $this->upload->data();
-			$attachment_path = 'assets/research_attachments/' . $uploaded_data['file_name'];
-		}
-
-		$faculty_id = $this->session->userdata('faculty_id');
-
-		// Prepare research data to insert
-		if ($faculty_id) {
-			$research_data = array(
-				"faculty_profile_id" => $faculty_id,
-				"title" => $this->input->post("title"),
-				"publication_year" => $this->input->post("publication_year"),
-				"research_attachment" => $attachment_path
-			);
-
-			// Insert research data into database
-			$result = $this->Profile_model->insertNewResearch($research_data);
-			if ($result) {
-				redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
-			}
-		} else {
-			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
-		}
-	}
+	}	
 	
 	public function createCertifications()
 	{
@@ -291,6 +259,38 @@ class Profile extends CI_Controller {
 		}
 	}
 
+	public function createResearch()
+	{
+		$config['upload_path'] = './assets/research_attachments/';
+		$config['allowed_types'] = 'pdf';
+		$this->load->library('upload', $config);
+		
+		if ($this->upload->do_upload('research_attachment')) {
+			$uploaded_data = $this->upload->data();
+			$attachment_path = 'assets/research_attachments/' . $uploaded_data['file_name'];
+		}
+
+		$faculty_id = $this->session->userdata('faculty_id');
+
+		// Prepare research data to insert
+		if ($faculty_id) {
+			$research_data = array(
+				"faculty_profile_id" => $faculty_id,
+				"title" => $this->input->post("title"),
+				"publication_year" => $this->input->post("publication_year"),
+				"research_attachment" => $attachment_path
+			);
+
+			// Insert research data into database
+			$result = $this->Profile_model->insertNewResearch($research_data);
+			if ($result) {
+				redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
+			}
+		} else {
+			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
+		}
+	}
+	
 	public function insertUpdatedProfile()
 	{
 		$faculty_id = $this->session->userdata('faculty_id');
