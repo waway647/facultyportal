@@ -405,7 +405,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="modal-header">
 										<h3>Add Qualifications</h3>
 										</div>
-										<form id="addQualificationsForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/createQualifications">
+										<form id="addQualificationsForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/createQualifications" enctype="multipart/form-data">
 											<div class="form-group">
 												<select id="academic_degree" name="academic_degree" required>
 													<option value="" disabled selected>Academic Degree</option>
@@ -635,7 +635,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</select>
 										</div>
 										<div class="form-group">
-											<input type="date" id="add_certification_expiration_date" name="expiration_date" placeholder="Organization Name" required>
+											<input type="date" id="add_certification_expiration_date" name="expiration_date" required>
 										</div>
 										<div class="form-group">
 											<div class="attachment-container">
@@ -676,9 +676,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</select>
 										</div>
 										<div class="form-group">
-											<select id="edit_certification_expiration_date" name="expiration_date">
-												<option value="" disabled selected>Expiration Date</option>
-											</select>
+											<input type="date" id="edit_certification_expiration_date" name="expiration_date" required>
 										</div>
 										<div class="form-group">
 											<div class="attachment-container">
@@ -958,7 +956,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		// Handle file preview
 		const attachmentPreview = $('#qualification_attachment_preview_edit');
 		if (qualification.diploma) {
-			attachmentPreview.html(`<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/viewQualificationPDF/${qualification.id}" target="_blank">View Existing Diploma</a>`);
+			attachmentPreview.html(`<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/ViewQualificationPDF/${qualification.id}" target="_blank">View Existing Diploma</a>`);
 		} else {
 			attachmentPreview.html("");
 		}
@@ -1156,7 +1154,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 	}
 
-	function fetchCertificationById(){
+	function fetchCertificationById(certificationId){
 		$.ajax({
 			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/getCertificationsByID/' + certificationId,
 			type: 'GET',
@@ -1184,19 +1182,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			console.log(`Set selected year: ${certification.year_received}`);
 		});
 
-		fetchExpirationDate('editCertificationModal', function() {
-			$('#edit_certification_expiration_date').val(certification.expiration_date);
-			console.log(`Set selected expiration year: ${certification.expiration_date}`);
-		});
-
 		// Populate the form fields with the certification data
-		$('#editCertificationModal #certification_title').val(certification.certification_title);
-		$('#editCertificationModal #certification_name').val(certification.certification_name);
-
+		$('#editCertificationModal #edit_certification_name').val(certification.certification_name);
+		$('#editCertificationModal #edit_certification_title').val(certification.certification_title);
+		$('#editCertificationModal #edit_certification_expiration_date').val(certification.expiration_date);
+		
 		// Handle file preview
 		const attachmentPreview = $('#certification_attachment_preview_edit');
 		if (certification.certification_attachment) {
-			attachmentPreview.html(`<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/viewCertificationPDF/${certification.id}" target="_blank">View Existing PDF</a>`);
+			attachmentPreview.html(`<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/ViewCertificationPDF/${certification.id}" target="_blank">View Existing PDF</a>`);
 		} else {
 			attachmentPreview.html("");
 		}
@@ -1483,20 +1477,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		if (callback && typeof callback === 'function') {
 			callback();
 		}
-	}
-
-	function fetchExpirationDate(modalId) {
-		const inputElement = modalId === 'addCertificationModal'
-			? $('#add_certification_expiration_date')
-			: $('#edit_certification_expiration_date');
-
-		if (inputElement.length === 0) {
-			console.error('Input element not found for modal:', modalId);
-			return;
-		}
-
-		// Initialize datepicker
-		inputElement.attr('type', 'date');
 	}
 
 	function fetchYearsInYearPublished(modalId, callback) {

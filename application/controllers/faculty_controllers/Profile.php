@@ -178,6 +178,8 @@ class Profile extends CI_Controller {
 		$config['upload_path'] = './assets/qualification_attachments/';
 		$config['allowed_types'] = 'pdf';
 		$this->load->library('upload', $config);
+
+		$attachment_path = null;
 		
 		if($this->upload->do_upload('qualification_attachment')){
 			$uploaded_data = $this->upload->data();
@@ -808,8 +810,8 @@ class Profile extends CI_Controller {
 		$config['upload_path'] = './assets/qualification_attachments/';
 		$config['allowed_types'] = 'pdf';
 		$this->load->library('upload', $config);
-
-		$attachment_path = $qualification->qualification_attachment; // Default to existing attachment
+	
+		$attachment_path = null;
 	
 		if ($this->upload->do_upload('qualification_attachment')) {
 			$uploaded_data = $this->upload->data();
@@ -875,6 +877,12 @@ class Profile extends CI_Controller {
 
 		// load the existing certification entry
 		$certification = $this->Profile_model->getCertificationsByID($id);
+
+		if(!$certification){
+			$this->session->set_flashdata('error', 'Certification not found.');
+			redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
+			return;
+		}
 	
 		$config['upload_path'] = './assets/certification_attachments/';
 		$config['allowed_types'] = 'pdf';

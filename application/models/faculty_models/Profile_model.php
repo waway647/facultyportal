@@ -118,7 +118,7 @@ class Profile_model extends CI_Model {
         return $this->db->get('certifications')->row_array();
     }
 
-    public function deleteCertifications($certification_data)
+    public function deleteCertification($certification_data)
     {
         $this->db->insert('certifications_bin', $certification_data);
         return $this->db->insert_id(); // Returns the ID of the inserted backup record
@@ -282,7 +282,7 @@ class Profile_model extends CI_Model {
 		return true;
 	}
 
-    public function updateCertifications($certifications_id, $certifications_data){
+    public function updateCertification($certifications_id, $certifications_data){
         $this->db->where('id', $certifications_id);
         $this->db->update('certifications', $certifications_data);
         return true;
