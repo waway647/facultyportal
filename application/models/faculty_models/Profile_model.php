@@ -33,6 +33,12 @@ class Profile_model extends CI_Model {
 		return true;
 	}
 
+    public function insertNewCertification($certification_data)
+    {
+        $this->db->insert("certifications", $certification_data);
+        return true;
+    }
+
 	public function insertNewResearch($research_data)
 	{
 		$this->db->insert("research_outputs", $research_data);

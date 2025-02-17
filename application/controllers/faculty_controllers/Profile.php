@@ -179,8 +179,7 @@ class Profile extends CI_Controller {
 		$config['allowed_types'] = 'pdf';
 		$this->load->library('upload', $config);
 		
-		$attachment_path = null;
-		if ($this->upload->do_upload('qualification_attachment')) {
+		if($this->upload->do_upload('qualification_attachment')){
 			$uploaded_data = $this->upload->data();
 			$attachment_path = 'assets/qualification_attachments/' . $uploaded_data['file_name'];
 		}
@@ -236,7 +235,6 @@ class Profile extends CI_Controller {
 		if($this->upload->do_upload('certification_attachment')){
 			$uploaded_data = $this->upload->data();
 			$attachment_path = 'assets/certification_attachments/' . $uploaded_data['file_name'];
-
 		}
 
 		$faculty_id = $this->session->userdata('faculty_id');
@@ -478,7 +476,7 @@ class Profile extends CI_Controller {
 			->num_rows();
 
 		if ($existsInTemp > 0) {
-			$certification_data = $this->Profile_model->fetchCertification($id);
+			$certification_data = $this->Profile_model->fetchCertifications($id);
 			if ($certification_data) {
 				// Backup to certifications_bin
 				$this->Profile_model->deleteCertification($certification_data);
@@ -493,7 +491,7 @@ class Profile extends CI_Controller {
 				->num_rows();
 
 			if ($existsInMain > 0) {
-				$certification_data = $this->Profile_model->fetchCertification($id);
+				$certification_data = $this->Profile_model->fetchCertifications($id);
 				if ($certification_data) {
 					// Backup to certifications_bin
 					$this->Profile_model->deleteCertification($certification_data);

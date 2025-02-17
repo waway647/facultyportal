@@ -520,9 +520,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#CertificationList tbody').empty(); // Clear existing rows
 		for (index in result) {
 			var id = result[index].id;
-			var organization_name = result[index].organization_name;
+			var certification_name = result[index].certification_name;
 			var certification_title = result[index].certification_title;
-			var year = result[index].year; 
+			var year_received = result[index].year_received; 
 			var expiration_date = result[index].expiration_date; 
 
 
@@ -530,9 +530,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			var tr = `<tr>
             <td>${sno}</td>
-            <td>${organization_name}</td>
+            <td>${certification_name}</td>
             <td>${certification_title}</td>
-            <td>${year}</td>
+            <td>${year_received}</td>
 			<td>${expiration_date}</td>
             <td><a href='javascript:void(0)' onclick='openPDFInNewTab(${id}, "certification")'>View Certificate</a></td>
         </tr>`;
