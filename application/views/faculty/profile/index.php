@@ -440,7 +440,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			var academic_degree = result[index].academic_degree;
 			var institution = result[index].institution;
 			var year_graduated = result[index].year_graduated;
-			var diploma = result[index].diploma; // Assuming this is the image URL
 
 			sno += 1;
 
@@ -599,12 +598,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			var baseUrl = 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/';
 			var url = '';
 
-			if (type === 'research') {
-				url = baseUrl + 'ViewResearchPDF/' + id;
+			if (type === 'qualification') {
+				url = baseUrl + 'ViewQualificationPDF/' + id;
 			} else if (type === 'certification') {
 				url = baseUrl + 'ViewCertificationPDF/' + id;  // Adjust the endpoint as needed
-			} else if(type === 'qualification') {
-				url = baseUrl + 'ViewQualificationPDF/' + id;
+			} else if(type === 'research') {
+				url = baseUrl + 'ViewResearchPDF/' + id;
 			}else {
 				console.error('Invalid document type specified.');
 				return;

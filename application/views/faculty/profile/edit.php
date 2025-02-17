@@ -847,7 +847,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			let academic_degree = result[index].academic_degree;
 			let institution = result[index].institution;
 			let year_graduated = result[index].year_graduated;
-			let diploma_attachment = result[index].diploma_attachment;
+			let qualification_attachment = result[index].qualification_attachment;
 
 			sno += 1;
 
@@ -856,7 +856,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td>" + academic_degree + "</td>";
 			tr += "<td>" + institution + "</td>";
 			tr += "<td>" + year_graduated + "</td>";
-			tr += "<td>" + diploma_attachment + "</td>";
+			tr += "<td>" + qualification_attachment + "</td>";
 			tr +=
 				"<td><a href='#' onclick='fetchQualificationsById(" +
 				id +
@@ -1627,9 +1627,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	//setupFileAttachment("certification_attachment_edit", "certification_attachment_preview_edit", false);
 
-	//setupFileAttachment("diploma_attachment", "diploma_attachment_preview", false);
+	//setupFileAttachment("qualification_attachment", "qualification_attachment_preview", false);
 
-	//setupFileAttachment("diploma_attachment_edit", "diploma_attachment_preview_edit", false);
+	//setupFileAttachment("qualification_attachment_edit", "qualification_attachment_preview_edit", false);
 
 	// Call setupFileAttachment for 'announcement_attachment' if required
 	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
