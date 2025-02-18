@@ -267,7 +267,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												</select>
 											</div>
 											<div class="form-group">
-												<input type="text" id="faculty_id" name="faculty_profile_id" placeholder="Author name" value="<?php echo $faculty->last_name?>, <?php echo $faculty->first_name?>" required>
+												<input type="text" id="faculty_id" name="faculty_profile_id" placeholder="Author name" required>
 											</div>
 											<div class="form-group">
 												<div class="attachment-container">
@@ -305,9 +305,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												</select>
 											</div>
 											<div class="form-group">
-												<select id="faculty_assigned" name="faculty_profile_id" required>
-													<option value="" disabled>Author</option>
-												</select>
+												<input type="text" id="faculty_assigned" name="faculty_profile_id" class="form-control" readonly>
 											</div>
 											<div class="form-group">
 												<div class="attachment-container">
@@ -389,54 +387,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	});
 
-	// Fetch faculty_id for the select dropdown
 	function fetchFaculty(modalId, callback, selectedFacultyId = null) {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/getFaculty',
-			type: 'GET',
-			dataType: 'json',
-			success: function (result) {
-				console.log('AJAX success:', result);
+    $.ajax({
+        url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/getFaculty',
+        type: 'GET',
+        dataType: 'json',
+        success: function (result) {
+            console.log('AJAX success:', result);
 
-				if (Array.isArray(result)) {
-					let selectElement;
+            if (Array.isArray(result)) {
+                let inputField;
 
-					// Identify the correct select element
-					if (modalId === "addResearchModal") {
-						selectElement = $('#faculty_id'); // Add Research Modal
-					} else if (modalId === "editResearchModal") {
-						selectElement = $('#faculty_assigned'); // Edit Research Modal
-					}
+                // Identify the correct input field
+                if (modalId === "addResearchModal") {
+                    inputField = $('#faculty_id'); // Add Research Modal
+                } else if (modalId === "editResearchModal") {
+                    inputField = $('#faculty_assigned'); // Edit Research Modal
+                }
 
-					if (selectElement) {
-						// Clear existing options and add a default one
-						selectElement.empty();
-						selectElement.append('<option value="" disabled selected>Select Author</option>');
+                if (inputField && inputField.length) {
+                    // Ensure the input field is not emptied incorrectly
 
-						// Populate the dropdown with faculty data
-						result.forEach(function (faculty) {
-							const isSelected = selectedFacultyId == faculty.id ? "selected" : "";
-							selectElement.append(
-								`<option value="${faculty.id}" ${isSelected}>${faculty.full_name}</option>`
-							);
-						});
+                    // Populate the input field if the selected faculty ID matches
+                    result.forEach(function (faculty) {
+                        if (selectedFacultyId == faculty.id) {
+                            inputField.val(faculty.full_name); // Correct way to assign value to an input field
+                        }
+                    });
 
-						// Execute callback if provided
-						if (callback && typeof callback === 'function') {
-							callback();
-						}
-					} else {
-						console.error('Select element not found for modal:', modalId);
-					}
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-			},
-			error: function (xhr, status, error) {
-				console.error('Error fetching faculty:', error);
-			}
-		});
-	}
+                    // Execute callback if provided
+                    if (callback && typeof callback === 'function') {
+                        callback();
+                    }
+                } else {
+                    console.error('Input element not found for modal:', modalId);
+                }
+            } else {
+                console.error('Expected an array but received:', result);
+            }
+        },
+        error: function (xhr, status, error) {
+            console.error('Error fetching faculty:', error);
+        }
+    });
+}
+
 
 	function fetchResearch(query = '') {
 		$.ajax({
@@ -485,7 +480,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// JavaScript function to open the PDF in a new tab
 	function openPDFInNewTab(id) {
 		// Construct the URL to open the PDF
-		var url = 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/ViewResearchPDF/' + id;
+		var url = 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/ViewResearchPDF/' + id;
 		// Open the URL in a new tab
 		window.open(url, '_blank');
 	}
@@ -525,7 +520,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		const attachmentPreview = $('#research_attachment_preview_edit');
 		if (research.research_attachment) {
 			attachmentPreview.html(
-				`<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/viewResearchPDF/${research.id}" target="_blank">View Existing PDF</a>`
+				`<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/ViewResearchPDF/${research.id}" target="_blank">View Existing PDF</a>`
 			);
 		} else {
 			attachmentPreview.html('');
@@ -537,7 +532,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		// Fetch and populate faculty dropdown
 		fetchFaculty('editResearchModal', function () {
 			console.log(`Faculty dropdown populated. Selected faculty: ${research.faculty_assigned}`);
-		}, research.faculty_profile_id);
+		}, research.faculty_profile_id); 
 
 		// Set form action URL for updating research
 		$('#editResearchForm').attr(
