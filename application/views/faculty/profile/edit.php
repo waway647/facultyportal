@@ -955,7 +955,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		// Handle file preview
 		const attachmentPreview = $('#qualification_attachment_preview_edit');
-		if (qualification.diploma) {
+		if (qualification.qualification_attachment) {
 			attachmentPreview.html(`<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/ViewQualificationPDF/${qualification.id}" target="_blank">View Existing Diploma</a>`);
 		} else {
 			attachmentPreview.html("");

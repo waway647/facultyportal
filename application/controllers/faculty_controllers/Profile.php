@@ -812,7 +812,7 @@ class Profile extends CI_Controller {
 		$this->load->library('upload', $config);
 	
 		$attachment_path = null;
-	
+
 		if ($this->upload->do_upload('qualification_attachment')) {
 			$uploaded_data = $this->upload->data();
 			$attachment_path = 'assets/qualification_attachments/' . $uploaded_data['file_name'];
