@@ -389,439 +389,336 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<!-- Tables -->
 				<div class="tables-profile-container">
 					<!-- Qualifications -->
-					<div class="the-content-container">
-						<div class="sub-content-container">
-							<div class="table-heading">
-								<h4>Qualifications</h4>
-							</div>
+						<div class="the-content-container">
+							<div class="sub-content-container">
+								<div class="table-heading">
+									<h4>Qualifications</h4>
+								</div>
 
-							<div class="add-button">
-								<button id="addQualificationsBtn" type="button" class="btn">+ &nbsp&nbsp Add Qualifications</button>
-							</div>
-									
-									<!-- Add Qualifications Modal -->
-									<div id="addQualificationsModal" class="modal">
-									<div class="modal-content">
-										<div class="modal-header">
-										<h3>Add Qualifications</h3>
-										</div>
-										<form id="addQualificationsForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/createQualifications" enctype="multipart/form-data">
-											<div class="form-group">
-												<select id="academic_degree" name="academic_degree" required>
-													<option value="" disabled selected>Academic Degree</option>
-													<option value="Associate Degree">Associate Degree</option>
-													<option value="Bachelor's Degree">Bachelor's Degree</option>
-													<option value="Master's Degree">Master's Degree</option>
-													<option value="Doctoral Degree">Doctoral Degree</option>
-
-												</select>
+								<div class="add-button">
+									<button id="addQualificationsBtn" type="button" class="btn">+ &nbsp&nbsp Add Qualifications</button>
+								</div>
+										
+										<!-- Add Qualifications Modal -->
+										<div id="addQualificationsModal" class="modal">
+										<div class="modal-content">
+											<div class="modal-header">
+											<h3>Add Qualifications</h3>
 											</div>
+											<form id="addQualificationsForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/createQualifications" enctype="multipart/form-data">
+												<div class="form-group">
+													<select id="academic_degree" name="academic_degree" required>
+														<option value="" disabled selected>Academic Degree</option>
+														<option value="Associate Degree">Associate Degree</option>
+														<option value="Bachelor's Degree">Bachelor's Degree</option>
+														<option value="Master's Degree">Master's Degree</option>
+														<option value="Doctoral Degree">Doctoral Degree</option>
 
-											<div class="form-group">
-												<input type="text" id="institution" name="institution" placeholder="Institution" required>
-											</div>
-
-											<div class="form-group">
-												<select id="add_year_graduated" name="year_graduated" required>
-												</select>
-											</div>
-
-											<div class="form-group">
-												<div class="attachment-container">
-													<label for="qualification_attachment" class="attachment-button">
-														<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
-														Attach PDF
-													</label>
-													<input type="file" id="qualification_attachment" name="qualification_attachment" accept=".pdf" hidden>
-													<div id="qualification_attachment_preview" class="attachment-preview"></div>
+													</select>
 												</div>
-											</div>
 
-											<button type="submit" class="btn">Save & Confirm</button>
-
-											<div class="close-text" id="closeaddQualificationsBtn">
-												<h6 class="back-step">Cancel</h6>
-											</div>
-										</form>
-									</div>
-									</div> 
-
-									<!-- Edit Qualifications Modal -->
-									<div id="editQualificationsModal" class="modal">
-									<div class="modal-content">
-										<div class="modal-header">
-										<h3>Edit Qualifications</h3>
-										</div>
-										<form id="editQualificationsForm" method="post" action="" enctype="multipart/form-data">
-											<div class="form-group">
-												<select id="academic_degree" name="academic_degree" required>
-													<option value="" disabled selected>Academic Degree</option>
-													<option value="Associate Degree">Associate Degree</option>
-													<option value="Bachelor's Degree">Bachelor's Degree</option>
-													<option value="Master's Degree">Master's Degree</option>
-													<option value="Doctoral Degree">Doctoral Degree</option>
-
-												</select>
-											</div>
-
-											<div class="form-group">
-												<input type="text" id="institution" name="institution" placeholder="Institution" required>
-											</div>
-
-											<div class="form-group">
-												<select id="edit_year_graduated" name="year_graduated" required>
-													<option value="" disabled selected>Year Graduated</option>
-												</select>
-											</div>
-
-											<div class="form-group">
-												<div class="attachment-container">
-													<label for="qualification_attachment_edit" class="attachment-button">
-														<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
-														Attach PDF
-													</label>
-													<input type="file" id="qualification_attachment_edit" name="qualification_attachment" accept=".pdf" hidden>
-													<div id="qualification_attachment_preview_edit" class="attachment-preview"></div>
+												<div class="form-group">
+													<input type="text" id="institution" name="institution" placeholder="Institution" required>
 												</div>
+
+												<div class="form-group">
+													<select id="add_year_graduated" name="year_graduated" required>
+													</select>
+												</div>
+
+												<div class="form-group">
+													<div class="attachment-container">
+														<label for="qualification_attachment" class="attachment-button">
+															<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
+															Attach PDF
+														</label>
+														<input type="file" id="qualification_attachment" name="qualification_attachment" accept=".pdf" hidden>
+														<div id="qualification_attachment_preview" class="attachment-preview"></div>
+													</div>
+												</div>
+
+												<button type="submit" class="btn">Save & Confirm</button>
+
+												<div class="close-text" id="closeaddQualificationsBtn">
+													<h6 class="back-step">Cancel</h6>
+												</div>
+											</form>
+										</div>
+										</div> 
+
+										<!-- Edit Qualifications Modal -->
+										<div id="editQualificationsModal" class="modal">
+										<div class="modal-content">
+											<div class="modal-header">
+											<h3>Edit Qualifications</h3>
 											</div>
+											<form id="editQualificationsForm" method="post" action="" enctype="multipart/form-data">
+												<div class="form-group">
+													<select id="academic_degree" name="academic_degree" required>
+														<option value="" disabled selected>Academic Degree</option>
+														<option value="Associate Degree">Associate Degree</option>
+														<option value="Bachelor's Degree">Bachelor's Degree</option>
+														<option value="Master's Degree">Master's Degree</option>
+														<option value="Doctoral Degree">Doctoral Degree</option>
 
-											<button type="submit" class="btn">Save & Confirm</button>
+													</select>
+												</div>
 
-											<div class="close-text" id="closeEditQualificationsBtn">
-												<h6 class="back-step">Cancel</h6>
-											</div>
-										</form>
-									</div>
-									</div> 
-						</div>
-						
-						<div id="container">    
-							<table class="table" id="QualificationsList" name="QualificationsList">
-								<thead>
-								<tr>
-									<th>#</th>
-									<th>Academic Degree</th>
-									<th>Institution</th>
-									<th>Year Graduated</th>
-									<th>Copy of Diploma</th>
-									<th>Action</th>
-								</tr>
-								</thead>
+												<div class="form-group">
+													<input type="text" id="institution" name="institution" placeholder="Institution" required>
+												</div>
 
-								<tbody>
-									
-								</tbody>
-							</table>
+												<div class="form-group">
+													<select id="edit_year_graduated" name="year_graduated" required>
+														<option value="" disabled selected>Year Graduated</option>
+													</select>
+												</div>
 
-						</div>
-					</div>
+												<div class="form-group">
+													<div class="attachment-container">
+														<label for="qualification_attachment_edit" class="attachment-button">
+															<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
+															Attach PDF
+														</label>
+														<input type="file" id="qualification_attachment_edit" name="qualification_attachment" accept=".pdf" hidden>
+														<div id="qualification_attachment_preview_edit" class="attachment-preview"></div>
+													</div>
+												</div>
 
-					<!-- Industry Experience -->
-					<div class="the-content-container">
-						<div class="sub-content-container">
-							<div class="table-heading">
-								<h4>Industry Experience</h4>
+												<button type="submit" class="btn">Save & Confirm</button>
+
+												<div class="close-text" id="closeEditQualificationsBtn">
+													<h6 class="back-step">Cancel</h6>
+												</div>
+											</form>
+										</div>
+										</div> 
 							</div>
 							
-							<div class="add-button">
-								<button id="addExperienceBtn" type="button" class="btn">+ &nbsp&nbsp Add Experience</button>
-							</div>
-									
-									<!-- Add Experience Modal -->
-									<div id="addExperienceModal" class="modal">
-									<div class="modal-content">
-										<div class="modal-header">
-										<h3>Add Experience</h3>
-										</div>
-										<form id="addExperienceForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/createExperience">
-											<div class="form-group">
-												<input type="text" id="company_name" name="company_name" placeholder="Name of Company" required>
-											</div>
-											<div class="form-group">
-												<input type="text" id="job_position" name="job_position" placeholder="Job Position" required>
-											</div>
-											<div class="form-group">
-												<select id="add_years_of_experience" name="years_of_experience" required>
-													<option value="" disabled selected>Years of Experience</option>
-												</select>
-											</div>
-											
-											<button type="submit" class="btn">Save & Confirm</button>
-
-											<div class="close-text" id="closeaddExperienceBtn">
-												<h6 class="back-step">Cancel</h6>
-											</div>
-										</form>
-									</div>
-									</div> 
-
-									<!-- Edit Experience Modal -->
-									<div id="editExperienceModal" class="modal">
-									<div class="modal-content">
-										<div class="modal-header">
-										<h3>Edit Experience</h3>
-										</div>
-										<form id="editExperienceForm" method="post" action="">
-											<div class="form-group">
-												<input type="text" id="company_name" name="company_name" placeholder="Name of Company" required>
-											</div>
-											<div class="form-group">
-												<input type="text" id="job_position" name="job_position" placeholder="Job Position" required>
-											</div>
-											<div class="form-group">
-												<select id="edit_years_of_experience" name="years_of_experience" required>
-													<option value="" disabled selected>Years of Experience</option>
-												</select>
-											</div>
-											
-											<button type="submit" class="btn">Save & Confirm</button>
-
-											<div class="close-text" id="closeEditExperienceBtn">
-												<h6 class="back-step">Cancel</h6>
-											</div>
-										</form>
-									</div>
-									</div> 
-									
-						</div>
-
-						<div id="container">    
-							<table class="table" id="ExperienceList" name="ExperienceList">
-								<thead>
-								<tr>
-									<th>#</th>
-									<th>Name of Company</th>
-									<th>Job Position</th>
-									<th>Years of Experience</th>
-									<th>Action</th>
-								</tr>
-								</thead>
-
-								<tbody>
-									
-								</tbody>
-							</table>
-
-						</div>
-					</div>
-
-					<!-- Certifications -->
-					<div class="the-content-container">
-						<div class="sub-content-container">
-							<div class="table-heading">
-								<h4>Certifications</h4>
-							</div>
-
-							<div class="add-button">
-								<button id="addCertificationBtn" type="button" class="btn">+ &nbsp&nbsp Add Certification</button>
-							</div>
-
-							<!-- Add Certification Modal -->
-							<div id="addCertificationModal" class="modal">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h3>Add Certification</h3>
-									</div>
-									<form id="addCertificationForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/createCertifications" enctype="multipart/form-data">
-										<div class="form-group">
-											<input type="text" id="certification_name" name="certification_name" placeholder="Certification Name" required>
-										</div>
-										<div class="form-group">
-											<input type="text" id="certification_title" name="certification_title" placeholder="Certification Title" required>
-										</div>
-										<div class="form-group">
-											<select id="add_year_received" name="year_received">
-												<option value="" disabled selected>Year Received</option>
-											</select>
-										</div>
-										<div class="form-group">
-											<input type="date" id="add_certification_expiration_date" name="expiration_date" required>
-										</div>
-										<div class="form-group">
-											<div class="attachment-container">
-												<label for="certification_attachment" class="attachment-button">
-													<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
-													Attach PDF
-												</label>
-												<input type="file" id="certification_attachment" name="certification_attachment" accept=".pdf" hidden>
-												<div id="certification_attachment_preview" class="attachment-preview"></div>
-											</div>
-										</div>
-
-										<button type="submit" class="btn">Save & Confirm</button>
-
-										<div class="close-text" id="closeAddCertificationBtn">
-											<h6 class="back-step">Cancel</h6>
-										</div>
-									</form>
-								</div>
-							</div>
-
-							<!-- Edit Certification Modal -->
-							<div id="editCertificationModal" class="modal">
-								<div class="modal-content">
-									<div class="modal-header">
-										<h3>Edit Certification</h3>
-									</div>
-									<form id="editCertificationForm" method="post" action="" enctype="multipart/form-data">
-										<div class="form-group">
-											<input type="text" id="edit_certification_name" name="certification_name" placeholder="Certification Name" required>
-										</div>
-										<div class="form-group">
-											<input type="text" id="edit_certification_title" name="certification_title" placeholder="Certification Title" required>
-										</div>
-										<div class="form-group">
-											<select id="edit_year_received" name="year_received">
-												<option value="" disabled selected>Year Received</option>
-											</select>
-										</div>
-										<div class="form-group">
-											<input type="date" id="edit_certification_expiration_date" name="expiration_date" required>
-										</div>
-										<div class="form-group">
-											<div class="attachment-container">
-												<label for="certification_attachment_edit" class="attachment-button">
-													<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
-													Attach PDF
-												</label>
-												<input type="file" id="certification_attachment_edit" name="certification_attachment" accept=".pdf" hidden>
-												<div id="certification_attachment_preview_edit" class="attachment-preview"></div>
-											</div>
-										</div>
-
-										<button type="submit" class="btn">Save & Confirm</button>
-
-										<div class="close-text" id="closeEditCertificationBtn">
-											<h6 class="back-step">Cancel</h6>
-										</div>
-									</form>
-								</div>
-							</div>
-						</div>
-
-						<div id="container">    
-							<table class="table" id="CertificationList" name="CertificationList">
-								<thead>
+							<div id="container">    
+								<table class="table" id="QualificationsList" name="QualificationsList">
+									<thead>
 									<tr>
 										<th>#</th>
-										<th>Name of Organization/Company</th>
-										<th>Certification Title</th>
-										<th>Year Received</th>
-										<th>Expiration Date</th>
-										<th>Copy of Certificate</th>
+										<th>Academic Degree</th>
+										<th>Institution</th>
+										<th>Year Graduated</th>
+										<th>Copy of Diploma</th>
 										<th>Action</th>
 									</tr>
-								</thead>
+									</thead>
 
-								<tbody>
-									
-								</tbody>
-							</table>
+									<tbody>
+										
+									</tbody>
+								</table>
+
+							</div>
 						</div>
-					</div>
 
+					<!-- Industry Experience -->
+						<div class="the-content-container">
+							<div class="sub-content-container">
+								<div class="table-heading">
+									<h4>Industry Experience</h4>
+								</div>
+								
+								<div class="add-button">
+									<button id="addExperienceBtn" type="button" class="btn">+ &nbsp&nbsp Add Experience</button>
+								</div>
+										
+										<!-- Add Experience Modal -->
+										<div id="addExperienceModal" class="modal">
+										<div class="modal-content">
+											<div class="modal-header">
+											<h3>Add Experience</h3>
+											</div>
+											<form id="addExperienceForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/createExperience">
+												<div class="form-group">
+													<input type="text" id="company_name" name="company_name" placeholder="Name of Company" required>
+												</div>
+												<div class="form-group">
+													<input type="text" id="job_position" name="job_position" placeholder="Job Position" required>
+												</div>
+												<div class="form-group">
+													<select id="add_years_of_experience" name="years_of_experience" required>
+														<option value="" disabled selected>Years of Experience</option>
+													</select>
+												</div>
+												
+												<button type="submit" class="btn">Save & Confirm</button>
 
-					<!-- Research Outputs -->
-					<div class="the-content-container">
-						<div class="sub-content-container">
-							<div class="table-heading">
-								<h4>Research Outputs</h4>
+												<div class="close-text" id="closeaddExperienceBtn">
+													<h6 class="back-step">Cancel</h6>
+												</div>
+											</form>
+										</div>
+										</div> 
+
+										<!-- Edit Experience Modal -->
+										<div id="editExperienceModal" class="modal">
+										<div class="modal-content">
+											<div class="modal-header">
+											<h3>Edit Experience</h3>
+											</div>
+											<form id="editExperienceForm" method="post" action="">
+												<div class="form-group">
+													<input type="text" id="company_name" name="company_name" placeholder="Name of Company" required>
+												</div>
+												<div class="form-group">
+													<input type="text" id="job_position" name="job_position" placeholder="Job Position" required>
+												</div>
+												<div class="form-group">
+													<select id="edit_years_of_experience" name="years_of_experience" required>
+														<option value="" disabled selected>Years of Experience</option>
+													</select>
+												</div>
+												
+												<button type="submit" class="btn">Save & Confirm</button>
+
+												<div class="close-text" id="closeEditExperienceBtn">
+													<h6 class="back-step">Cancel</h6>
+												</div>
+											</form>
+										</div>
+										</div> 
+										
 							</div>
-							
-							<div class="add-button">
-								<button id="addResearchBtn" type="button" class="btn">+ &nbsp&nbsp Add Research</button>
+
+							<div id="container">    
+								<table class="table" id="ExperienceList" name="ExperienceList">
+									<thead>
+									<tr>
+										<th>#</th>
+										<th>Name of Company</th>
+										<th>Job Position</th>
+										<th>Years of Experience</th>
+										<th>Action</th>
+									</tr>
+									</thead>
+
+									<tbody>
+										
+									</tbody>
+								</table>
+
 							</div>
-									
-									<!-- Add Research Modal -->
-									<div id="addResearchModal" class="modal">
+						</div>
+
+					<!-- Certifications -->
+						<div class="the-content-container">
+							<div class="sub-content-container">
+								<div class="table-heading">
+									<h4>Certifications</h4>
+								</div>
+
+								<div class="add-button">
+									<button id="addCertificationBtn" type="button" class="btn">+ &nbsp&nbsp Add Certification</button>
+								</div>
+
+								<!-- Add Certification Modal -->
+								<div id="addCertificationModal" class="modal">
 									<div class="modal-content">
 										<div class="modal-header">
-										<h3>Add Research</h3>
+											<h3>Add Certification</h3>
 										</div>
-										<form id="addResearchForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/createResearch" enctype="multipart/form-data">
+										<form id="addCertificationForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/createCertifications" enctype="multipart/form-data">
 											<div class="form-group">
-												<input type="text" id="title" name="title" placeholder="Research Title" required>
+												<input type="text" id="certification_name" name="certification_name" placeholder="Certification Name" required>
 											</div>
 											<div class="form-group">
-												<select id="add_publication_year" name="publication_year">
-													<option value="" disabled selected>Year Published</option>
+												<input type="text" id="certification_title" name="certification_title" placeholder="Certification Title" required>
+											</div>
+											<div class="form-group">
+												<select id="add_year_received" name="year_received">
+													<option value="" disabled selected>Year Received</option>
 												</select>
 											</div>
 											<div class="form-group">
+												<input type="date" id="add_certification_expiration_date" name="expiration_date" required>
+											</div>
+											<div class="form-group">
 												<div class="attachment-container">
-													<label for="research_attachment" class="attachment-button">
+													<label for="certification_attachment" class="attachment-button">
 														<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
 														Attach PDF
 													</label>
-													<input type="file" id="research_attachment" name="research_attachment" accept=".pdf" hidden>
-													<div id="research_attachment_preview" class="attachment-preview"></div>
+													<input type="file" id="certification_attachment" name="certification_attachment" accept=".pdf" hidden>
+													<div id="certification_attachment_preview" class="attachment-preview"></div>
 												</div>
 											</div>
-										
+
 											<button type="submit" class="btn">Save & Confirm</button>
 
-											<div class="close-text" id="closeaddResearchBtn">
+											<div class="close-text" id="closeAddCertificationBtn">
 												<h6 class="back-step">Cancel</h6>
 											</div>
 										</form>
 									</div>
-									</div> 
+								</div>
 
-									<!-- Edit Research Modal -->
-									<div id="editResearchModal" class="modal">
+								<!-- Edit Certification Modal -->
+								<div id="editCertificationModal" class="modal">
 									<div class="modal-content">
 										<div class="modal-header">
-										<h3>Edit Research</h3>
+											<h3>Edit Certification</h3>
 										</div>
-										<form id="editResearchForm" method="post" action="" enctype="multipart/form-data">
+										<form id="editCertificationForm" method="post" action="" enctype="multipart/form-data">
 											<div class="form-group">
-												<input type="text" id="title" name="title" placeholder="Research Title" required>
+												<input type="text" id="edit_certification_name" name="certification_name" placeholder="Certification Name" required>
 											</div>
 											<div class="form-group">
-												<select id="edit_publication_year" name="publication_year">
-													<option value="" disabled selected>Year Published</option>
+												<input type="text" id="edit_certification_title" name="certification_title" placeholder="Certification Title" required>
+											</div>
+											<div class="form-group">
+												<select id="edit_year_received" name="year_received">
+													<option value="" disabled selected>Year Received</option>
 												</select>
 											</div>
 											<div class="form-group">
+												<input type="date" id="edit_certification_expiration_date" name="expiration_date" required>
+											</div>
+											<div class="form-group">
 												<div class="attachment-container">
-													<label for="research_attachment_edit" class="attachment-button">
+													<label for="certification_attachment_edit" class="attachment-button">
 														<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
 														Attach PDF
 													</label>
-													<input type="file" id="research_attachment_edit" name="research_attachment" accept=".pdf" hidden>
-													<div id="research_attachment_preview_edit" class="attachment-preview"></div>
+													<input type="file" id="certification_attachment_edit" name="certification_attachment" accept=".pdf" hidden>
+													<div id="certification_attachment_preview_edit" class="attachment-preview"></div>
 												</div>
 											</div>
-										
+
 											<button type="submit" class="btn">Save & Confirm</button>
 
-											<div class="close-text" id="closeEditResearchBtn">
+											<div class="close-text" id="closeEditCertificationBtn">
 												<h6 class="back-step">Cancel</h6>
 											</div>
 										</form>
 									</div>
-									</div> 
+								</div>
+							</div>
+
+							<div id="container">    
+								<table class="table" id="CertificationList" name="CertificationList">
+									<thead>
+										<tr>
+											<th>#</th>
+											<th>Name of Organization/Company</th>
+											<th>Certification Title</th>
+											<th>Year Received</th>
+											<th>Expiration Date</th>
+											<th>Copy of Certificate</th>
+											<th>Action</th>
+										</tr>
+									</thead>
+
+									<tbody>
+										
+									</tbody>
+								</table>
+							</div>
 						</div>
-
-						<div id="container">    
-							<table class="table" id="ResearchList" name="ResearchList">
-								<thead>
-								<tr>
-									<th>#</th>
-									<th>Title</th>
-									<th>Year Published</th>
-									<th>Copy of Research</th>
-									<th>Action</th>
-								</tr>
-								</thead>
-
-								<tbody>
-									
-								</tbody>
-							</table>
-
-						</div>
-					</div>
 						
 					</div>
 				</div>
@@ -834,7 +731,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(document).ready(function() {
 			fetchQualifications();
 			fetchExperience();
-			fetchResearch();
 			fetchCertification();
 		});
 
@@ -988,10 +884,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		if (event.target === document.getElementById('editCertificationModal')) {
 			$('#editCertificationModal').hide();
 		}
-
-		if (event.target === document.getElementById('editResearchModal')) {
-			$('#editResearchModal').hide();
-		}
 	});
 
 	// Attach event listener to "Cancel" button inside the Edit Course Modal
@@ -1006,10 +898,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	$('#closeEditCertificationBtn').on('click', function () {
 		$('#editCertificationModal').hide();
-	});
-
-	$('#closeEditResearchBtn').on('click', function () {
-		$('#editResearchModal').hide();
 	});
 
 
@@ -1208,128 +1096,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#editCertificationModal').modal('show');
 	}
 
-	function fetchResearch() {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/getResearch',  // Update the URL as necessary
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('AJAX success (Research):', result);
-				if (Array.isArray(result)) {
-					createResearchTable(result, 0);  // Call the function to create the table and pass the result
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching research:', error);
-			}
-		});
-	}
-
-	function createResearchTable(result, sno) {
-		sno = Number(sno);
-		$('#ResearchList tbody').empty(); // Clear existing rows
-		for (index in result) {
-			var id = result[index].id;
-			var title = result[index].title;
-			var publication_year = result[index].publication_year;
-			var research_attachment = result[index].research_attachment;
-
-			sno += 1;
-
-			var tr = "<tr>";
-			tr += "<td>" + sno + "</td>";  // Serial number
-			tr += "<td>" + title + "</td>";
-			tr += "<td>" + publication_year + "</td>";
-			tr += "<td>" + research_attachment + "</td>";
-			tr += "<td><a href='#' onclick='fetchResearchById(" + id + ")'>" +
-					"<div class='table-icon-container'>" +
-						"<div><img class='img' src='" + "<?php echo base_url('assets/images/icon/edit.svg'); ?>" + "' /></div>" +
-						"<div><a href='http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/deleteResearch/" + id + "'>" +
-							"<img class='img' src='" + "<?php echo base_url('assets/images/icon/x.svg'); ?>" + "' /></a></div>" +
-					"</div></td>";				
-			tr += "</tr>";
-
-			$('#ResearchList tbody').append(tr);  // Append the new row to the table body
-		}
-	}
-
-	// Function to fetch course data via AJAX
-	function fetchResearchById(researchId) {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/getResearchByID/' + researchId,
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				if (result && !result.error) {
-					populateEditResearchModal(result); // Populate the modal with the fetched data
-				} else {
-					console.error('Error: ' + (result.error || 'Research not found!'));
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching research by ID:', error);
-			}
-		});
-	}
-	
-	function populateEditResearchModal(research) {
-		console.log("Populating modal with research:", research);
-
-		// Populate the year published dropdown
-		fetchYearsInYearPublished('editResearchModal', function() {
-			// Set the selected value for the publication year after populating the dropdown
-			$('#edit_publication_year').val(research.publication_year);
-			console.log(`Set selected year: ${research.publication_year}`);
-		});
-
-		// Populate the form fields with the research data
-		$('#editResearchModal #title').val(research.title); // Correctly populate the title field
-
-		// Handle file preview
-		const attachmentPreview = $('#research_attachment_preview_edit');
-		if (research.research_attachment) {
-			// If there is a previously uploaded attachment
-			attachmentPreview.html(`<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/viewResearchPDF/${research.id}" target="_blank">View Existing PDF</a>`);
-		} else {
-			attachmentPreview.html(""); // Clear the preview if no attachment
-		}
-
-		// Leave the attachment input field empty for new uploads
-		$('#editResearchModal #research_attachment_edit').val('');
-
-		// Set form action URL for updating research
-		$('#editResearchForm').attr(
-			'action',
-			'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/updateResearch/' + research.id
-		);
-
-		// Show the modal
-		$('#editResearchModal').modal('show');
-	}
-
-	// Function to handle the modal visibility and reset it properly
-	function closeModal(modalId) {
-		const modal = $('#' + modalId);
-		const attachmentPreview = $('#' + modalId + ' #research_attachment_preview_edit');
-		
-		// Clear attachment preview when closing modal
-		attachmentPreview.html('');
-		
-		// Clear form inputs (to prevent stale data)
-		modal.find('form')[0].reset();
-
-		modal.modal('hide');  // Use Bootstrap modal hide method
-	}
-
-	// Close modal when clicking outside of it (on the backdrop)
-	$(window).on('click', function (event) {
-		if ($(event.target).is('#editResearchModal')) {
-			closeModal('editResearchModal');
-		}
-	});
-
 	$(window).on('click', function (event) {
 		if ($(event.target).is('#editQualificationsModal')) {
 			closeModal('editQualificationsModal');
@@ -1340,11 +1106,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		if ($(event.target).is('#editCertificationModal')) {
 			closeModal('editCertificationModal');
 		}
-	});
-
-	// Attach event listeners to "Cancel" buttons inside the modals
-	$(document).on('click', '#closeEditResearchBtn', function () {
-		closeModal('editResearchModal');
 	});
 
 	$(document).on('click', '#closeEditQualificationsBtn', function () {
@@ -1391,9 +1152,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	// Initialize "Add Certifications" modal
     setupModal("addCertificationModal", "addCertificationBtn", "closeAddCertificationBtn");
-
-	// Initialize "Add Research" modal
-    setupModal("addResearchModal", "addResearchBtn", "closeaddResearchBtn");
 
 	// Initialize "Add Profile" modal
     setupModal("editProfilePictureModal", "editProfilePictureBtn", "closeeditProfilePictureBtn");
@@ -1479,33 +1237,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 	}
 
-	function fetchYearsInYearPublished(modalId, callback) {
-		const currentYear = new Date().getFullYear();
-		const startYear = 2000; // Fixed start year
-		const selectElement = modalId === 'addResearchModal'
-			? $('#add_publication_year')
-			: $('#edit_publication_year');
-
-		if (selectElement.length === 0) {
-			console.error('Dropdown element not found for modal:', modalId);
-			return;
-		}
-
-		// Clear existing options and add a default placeholder
-		selectElement.empty();
-		selectElement.append('<option value="" disabled selected>Year Published</option>');
-
-		// Populate the dropdown with years from 2000 to the current year
-		for (let i = currentYear; i >= startYear; i--) {
-			selectElement.append('<option value="' + i + '">' + i + '</option>');
-		}
-
-		// Execute the callback if provided
-		if (callback && typeof callback === 'function') {
-			callback();
-		}
-	}
-
 	$('#addQualificationsBtn').on('click', function() {
 			fetchYearsInYearGraduated('addQualificationsModal');
 		$('#addQualificationsModal').show();
@@ -1524,13 +1255,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$('#addCertificationBtn').on('click', function() {
 		fetchExpirationDate('addCertificationModal');
 		$('#addCertificationModal').show();
-	});
-
-	$('#addResearchBtn').on('click', function() {
-		fetchYearsInYearPublished('addResearchModal');
-		$('#addResearchModal').show();
-	});
-			
+	});		
 
 	// File attachment handling
 	function setupFileAttachment(attachmentInputId, attachmentPreviewId, allowMultiple = true) {
@@ -1606,11 +1331,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 	}
-
-	// Call setupFileAttachment for 'research_attachment'
-	setupFileAttachment("research_attachment", "research_attachment_preview", false);
-
-	setupFileAttachment("research_attachment_edit", "research_attachment_preview_edit", false);
 
 	setupFileAttachment("certification_attachment", "certification_attachment_preview", false);
 

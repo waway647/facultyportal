@@ -273,131 +273,92 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 				<?php endif ?>
 
-				<!-- Tables -->
-				<div class="tables-profile-container">
-					<!-- Qualifications -->
-					<div class="the-content-container">
-						<div class="sub-content-container">
-							<div class="table-heading">
-								<h4>Qualifications</h4>
+					<!-- Tables -->
+					<div class="tables-profile-container">
+						<!-- Qualifications -->
+						<div class="the-content-container">
+							<div class="sub-content-container">
+								<div class="table-heading">
+									<h4>Qualifications</h4>
+								</div>
 							</div>
-						</div>
-						
-						<div id="container">    
-							<table class="table" id="QualificationsList" name="QualificationsList">
-								<thead>
-								<tr>
-									<th>#</th>
-									<th>Academic Degree</th>
-									<th>Institution</th>
-									<th>Year Graduated</th>
-									<th>Diploma</th>
-								</tr>
-								</thead>
+							
+							<div id="container">    
+								<table class="table" id="QualificationsList" name="QualificationsList">
+									<thead>
+									<tr>
+										<th>#</th>
+										<th>Academic Degree</th>
+										<th>Institution</th>
+										<th>Year Graduated</th>
+										<th>Diploma</th>
+									</tr>
+									</thead>
 
-								<tbody>
-									
-								</tbody>
-							</table>
+									<tbody>
+										
+									</tbody>
+								</table>
 
-						</div>
-					</div>
-
-					<!-- Industry Experience -->
-					<div class="the-content-container">
-						<div class="sub-content-container">
-							<div class="table-heading">
-								<h4>Industry Experience</h4>
-							</div>
-						</div>
-						
-						<div id="container">    
-							<table class="table" id="ExperienceList" name="ExperienceList">
-								<thead>
-								<tr>
-									<th>#</th>
-									<th>Name of Company</th>
-									<th>Job Position</th>
-									<th>Years of Experience</th>
-								</tr>
-								</thead>
-
-								<tbody>
-									
-								</tbody>
-							</table>
-
-						</div>
-					</div>
-
-					<!-- Certifications -->
-					<div class="the-content-container">
-						<div class="sub-content-container">
-							<div class="table-heading">
-								<h4>Certifications</h4>
-							</div>
-						</div>
-						
-						<div id="container">    
-							<table class="table" id="CertificationList" name="CertificationList">
-								<thead>
-								<tr>
-									<th>#</th>
-									<th>Name of Organization/Company</th>
-									<th>Certificate Title</th>
-									<th>Year</th>
-									<th>Expiration Date</th>
-									<th>Certificate</th>
-								</tr>
-								</thead>
-
-								<tbody>
-									
-								</tbody>
-							</table>
-
-						</div>
-					</div>
-
-					<!-- Research Outputs -->
-					<div class="the-content-container">
-						<div class="sub-content-container">
-							<div class="table-heading">
-								<h4>Research Outputs</h4>
 							</div>
 						</div>
 
-						<!-- Flash Message for Error -->
-						<?php if ($this->session->flashdata('error')): ?>
-						<script type="text/javascript">
-							Swal.fire({
-								icon: 'error',
-								title: 'Oops...',
-								text: "<?php echo $this->session->flashdata('error'); ?>"
-							});
-						</script>
-						<?php endif; ?>
-											
-						<div id="container">    
-							<table class="table" id="ResearchList" name="ResearchList">
-								<thead>
-								<tr>
-									<th>#</th>
-									<th>Title</th>
-									<th>Year Published</th>
-									<th>Research PDF</th>
-								</tr>
-								</thead>
+						<!-- Industry Experience -->
+						<div class="the-content-container">
+							<div class="sub-content-container">
+								<div class="table-heading">
+									<h4>Industry Experience</h4>
+								</div>
+							</div>
+							
+							<div id="container">    
+								<table class="table" id="ExperienceList" name="ExperienceList">
+									<thead>
+									<tr>
+										<th>#</th>
+										<th>Name of Company</th>
+										<th>Job Position</th>
+										<th>Years of Experience</th>
+									</tr>
+									</thead>
 
-								<tbody>
-									
-								</tbody>
-							</table>
+									<tbody>
+										
+									</tbody>
+								</table>
 
+							</div>
 						</div>
+
+						<!-- Certifications -->
+						<div class="the-content-container">
+							<div class="sub-content-container">
+								<div class="table-heading">
+									<h4>Certifications</h4>
+								</div>
+							</div>
+							
+							<div id="container">    
+								<table class="table" id="CertificationList" name="CertificationList">
+									<thead>
+									<tr>
+										<th>#</th>
+										<th>Name of Organization/Company</th>
+										<th>Certificate Title</th>
+										<th>Year</th>
+										<th>Expiration Date</th>
+										<th>Certificate</th>
+									</tr>
+									</thead>
+
+									<tbody>
+										
+									</tbody>
+								</table>
+
+							</div>
+						</div>					
 					</div>
-					
-				</div>
 				</div>
 			</div>
         </div>
@@ -410,7 +371,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			fetchQualifications();
 			fetchExperience();
 			fetchCertifications();
-			fetchResearch();
 		});
 
 	function fetchQualifications() {
@@ -540,57 +500,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			$('#CertificationList tbody').append(tr);  // Append the new row to the table body
 		}
 	}
-
-
-
-	function fetchResearch() {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/getResearch',  // Update the URL as necessary
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('AJAX success (Research):', result);
-				if (Array.isArray(result)) {
-					createResearchTable(result, 0);  // Call the function to create the table and pass the result
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching research:', error);
-			}
-		});
-	}
-
-	function createResearchTable(result, sno) {
-		sno = Number(sno);
-		$('#ResearchList tbody').empty(); // Clear existing rows
-		for (index in result) {
-			var id = result[index].id;
-			var title = result[index].title;
-			var publication_year = result[index].publication_year;
-
-			sno += 1;
-
-			var tr = `<tr>
-            <td>${sno}</td>
-            <td>${title}</td>
-            <td>${publication_year}</td>
-            <td><a href='javascript:void(0)' onclick='openPDFInNewTab(${id}, "research")'>View Research</a></td>
-        </tr>`;
-
-			$('#ResearchList tbody').append(tr);  // Append the new row to the table body
-		}
-	}
-
-			/* // JavaScript function to open the PDF in a new tab
-			function openPDFInNewTab(id) {
-				// Construct the URL to open the PDF
-				var url = 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/ViewResearchPDF/' + id;
-				// Open the URL in a new tab
-				window.open(url, '_blank');
-			}
-		*/
 		
 		// JavaScript function to open the PDF in a new tab (Reusable for different types of PDFs)
 		function openPDFInNewTab(id, type) {
@@ -602,9 +511,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				url = baseUrl + 'ViewQualificationPDF/' + id;
 			} else if (type === 'certification') {
 				url = baseUrl + 'ViewCertificationPDF/' + id;  // Adjust the endpoint as needed
-			} else if(type === 'research') {
-				url = baseUrl + 'ViewResearchPDF/' + id;
-			}else {
+			} else {
 				console.error('Invalid document type specified.');
 				return;
 			}
@@ -753,7 +660,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
 
 	// Call setupFileAttachment for 'addCourseModal'
-	setupFileAttachment("research_attachment", "research_attachment_preview", false);
 	setupFileAttachment("qualification_diploma", "qualification_diploma_preview", false);
 	setupFileAttachment("certification_certificate", "certification_certificate_preview", false);
 

@@ -127,18 +127,6 @@ class Profile extends CI_Controller {
 		}
 	}
 
-	public function getResearch()
-	{
-		$faculty_id = $this->session->userdata('faculty_id');
-
-		if ($faculty_id) {
-			$result = $this->Profile_model->getResearch($faculty_id);
-			echo json_encode($result); // Return data as JSON
-		} else {
-			echo json_encode(['error' => 'No valid faculty ID found.']);
-		}
-	}
-
 	public function getCertifications()
 	{
 		$faculty_id = $this->session->userdata('faculty_id');
@@ -150,28 +138,6 @@ class Profile extends CI_Controller {
 			echo json_encode(['error' => 'No valid faculty ID found.']);
 		}
 	}
-
-	/* public function createQualifications()
-	{
-		$faculty_id = $this->session->userdata('faculty_id');
-
-		if ($faculty_id) {
-			$qualification_data = array(
-				"faculty_profile_id" => $faculty_id,
-				"academic_degree" => $this->input->post("academic_degree"),
-				"institution" => $this->input->post("institution"),
-				"year_graduated" => $this->input->post("year_graduated")
-			);
-
-			$result = $this->Profile_model->insertNewQualification($qualification_data);
-			if($result)
-			{
-				redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
-			}
-		} else {
-			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
-		}
-	} */
 
 	public function createQualifications()
 	{
@@ -259,38 +225,6 @@ class Profile extends CI_Controller {
 		}
 	}
 
-	public function createResearch()
-	{
-		$config['upload_path'] = './assets/research_attachments/';
-		$config['allowed_types'] = 'pdf';
-		$this->load->library('upload', $config);
-		
-		if ($this->upload->do_upload('research_attachment')) {
-			$uploaded_data = $this->upload->data();
-			$attachment_path = 'assets/research_attachments/' . $uploaded_data['file_name'];
-		}
-
-		$faculty_id = $this->session->userdata('faculty_id');
-
-		// Prepare research data to insert
-		if ($faculty_id) {
-			$research_data = array(
-				"faculty_profile_id" => $faculty_id,
-				"title" => $this->input->post("title"),
-				"publication_year" => $this->input->post("publication_year"),
-				"research_attachment" => $attachment_path
-			);
-
-			// Insert research data into database
-			$result = $this->Profile_model->insertNewResearch($research_data);
-			if ($result) {
-				redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
-			}
-		} else {
-			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
-		}
-	}
-	
 	public function insertUpdatedProfile()
 	{
 		$faculty_id = $this->session->userdata('faculty_id');
@@ -374,9 +308,9 @@ class Profile extends CI_Controller {
 
 
 
-			// Permanently delete research_outputs_bin data for the current faculty_id
+			// Permanently delete certifications_bin data for the current faculty_id
 			$this->db->query("
-				DELETE FROM research_outputs_bin
+				DELETE FROM certifications_bin
 				WHERE faculty_profile_id = ?
 			", array($faculty_id));
 
@@ -509,46 +443,6 @@ class Profile extends CI_Controller {
 
 	}
 
-	public function deleteResearch($id)
-	{
-		// Check if the research_outputs exists in the temporary table
-		$existsInTemp = $this->db
-			->where('id', $id)
-			->get('research_outputs')
-			->num_rows();
-
-		if ($existsInTemp > 0) {
-			$research_data = $this->Profile_model->fetchResearch($id);
-			if ($research_data) {
-				// Backup to research_outputs_bin
-				$this->Profile_model->deleteResearch($research_data);
-
-				// Delete from research_outputs_temp
-				$this->db->where('id', $id)->delete('research_outputs');
-			}
-		} else {
-			// Check if the research exists in the main table
-			$existsInMain = $this->db
-				->where('id', $id)
-				->get('research_outputs')
-				->num_rows();
-
-			if ($existsInMain > 0) {
-				$research_data = $this->Profile_model->fetchResearch($id);
-				if ($research_data) {
-					// Backup to research_outputs_bin
-					$this->Profile_model->deleteResearch($research_data);
-
-					// Delete from research_outputs
-					$this->db->where('id', $id)->delete('research_outputs');
-				}
-			}
-		}
-
-		// Redirect after deletion or failure
-		redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
-	}
-
 	public function ViewQualificationPDF($id)
 	{
 		// Fetch the PDF file path from the database
@@ -608,37 +502,6 @@ class Profile extends CI_Controller {
 		} else {
 			// Handle the case where the database query does not return any result
 			echo "Error: No certification found with the given ID.";
-		}
-	}
-
-	public function ViewResearchPDF($id)
-	{
-		// Fetch the PDF file path from the database
-		$result = $this->Profile_model->ViewResearchPDF($id);
-
-		if ($result) {
-			$file_path = $result->research_attachment; // Assuming this column stores the file path
-
-			// Check if the file exists
-			if (file_exists($file_path)) {
-				// Serve the file with proper headers for PDF preview
-				header('Content-Type: application/pdf');
-				header('Content-Disposition: inline; filename="' . basename($file_path) . '"');
-				header('Content-Length: ' . filesize($file_path));
-
-				// Output the file
-				readfile($file_path);
-			} else {
-				$faculty_id = $this->session->userdata('faculty_id');
-				if($faculty_id)
-				{
-					$this->session->set_flashdata('error', 'Sorry, this document doesn\'t have a downloadable PDF.');
-					redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/index');
-				}
-			}
-		} else {
-			// Handle the case where the database query does not return any result
-			echo "Error: No research found with the given ID.";
 		}
 	}
 
@@ -775,18 +638,6 @@ class Profile extends CI_Controller {
 		}
 	}
 
-	public function getResearchByID($id) 
-	{
-		// Validate the ID and fetch the qualification row
-		$research_data = $this->Profile_model->getResearchByID($id);
-
-		if ($research_data) {
-			echo json_encode($research_data); // Return the data as JSON for AJAX
-		} else {
-			echo json_encode(['error' => 'Research not found.']);
-		}
-	}
-
 	public function updateQualifications($id)
 	{
 		$faculty_id = $this->session->userdata('faculty_id');
@@ -910,53 +761,6 @@ class Profile extends CI_Controller {
 			redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
 		} else {
 			$this->session->set_flashdata('error', 'Failed to update certification.');
-			redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
-		}
-	}
-
-	public function updateResearch($id)
-	{
-		$faculty_id = $this->session->userdata('faculty_id');
-	
-		if (!$faculty_id) {
-			// Redirect if faculty_id is unavailable
-			redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
-			return;
-		}
-	
-		// Load the existing research entry
-		$research = $this->Profile_model->getResearchByID($id);
-	
-		if (!$research) {
-			$this->session->set_flashdata('error', 'Research not found.');
-			redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
-			return;
-		}
-	
-		$config['upload_path'] = './assets/research_attachments/';
-		$config['allowed_types'] = 'pdf';
-		$this->load->library('upload', $config);
-	
-		$attachment_path = $research->research_attachment; // Default to existing attachment
-	
-		if ($this->upload->do_upload('research_attachment')) {
-			$uploaded_data = $this->upload->data();
-			$attachment_path = 'assets/research_attachments/' . $uploaded_data['file_name'];
-		}
-	
-		$research_data = array(
-			"faculty_profile_id" => $faculty_id,
-			"title" => $this->input->post("title"),
-			"publication_year" => $this->input->post("publication_year"),
-			"research_attachment" => $attachment_path
-		);
-
-		$result = $this->Profile_model->updateResearch($id, $research_data);
-	
-		if ($result) {
-			redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
-		} else {
-			$this->session->set_flashdata('error', 'Failed to update research.');
 			redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
 		}
 	}
