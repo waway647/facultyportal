@@ -452,7 +452,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<div class="modal-header">
 										<h3>Edit Qualifications</h3>
 										</div>
-										<form id="editQualificationsForm" method="post" action="">
+										<form id="editQualificationsForm" method="post" action="" enctype="multipart/form-data">
 											<div class="form-group">
 												<select id="academic_degree" name="academic_degree" required>
 													<option value="" disabled selected>Academic Degree</option>
