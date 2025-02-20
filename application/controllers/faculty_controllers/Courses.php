@@ -22,7 +22,7 @@ class Courses extends CI_Controller {
 		$logged_user_id = $this->session->userdata('logged_id');
 
 		// Get faculty ID using the logged-in user's ID
-		$faculty_id = $this->Courses_model->getFacultyID($logged_user_id);
+		$faculty_id = $this->Faculty_model->getFacultyID($logged_user_id);
 
 		if ($faculty_id) { // Check if a faculty ID was retrieved
 			// Set faculty ID in the session

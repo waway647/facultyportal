@@ -10,19 +10,19 @@ class Consultations extends CI_Controller {
 		$this->load->library('session');
 		$this->load->database();
 		$this->load->model('faculty_models/Consultations_model');
+		$this->load->model('common_models/Faculty_model');
 		$this->load->helper('url');
 	}
 
 	public function index() // http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/index
 	{
-		$this->load->model('common_models/Faculty_model');
 		$faculty_id = $this->session->userdata('logged_id');
 		$data['faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
 
 		$logged_user_id = $this->session->userdata('logged_id');
 
 		// Get faculty ID using the logged-in user's ID
-		$faculty_id = $this->Consultations_model->getFacultyID($logged_user_id);
+		$faculty_id = $this->Faculty_model->getFacultyID($logged_user_id);
 
 		if ($faculty_id) { // Check if a faculty ID was retrieved
 			// Set faculty ID in the session

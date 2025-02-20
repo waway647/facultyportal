@@ -19,12 +19,6 @@ class ResearchOutputs_model extends CI_Model {
         return $query->result_array(); // Use row() to get a single row
 	}
 
-	public function getFaculty() 
-	{
-		$query = $this->db->get('faculty_full_name_vw');
-		return $query->result_array();
-	}
-
 	public function insertNewResearch($research_data)
 	{
 		$this->db->insert("research_outputs", $research_data);
@@ -60,14 +54,4 @@ class ResearchOutputs_model extends CI_Model {
         }
         return false;
     }    
-
-	public function getFacultyID($logged_user_id)
-	{
-		$query = $this->db->select('id')
-						->where('user_id', $logged_user_id)
-						->get('faculty_profiles');
-
-		$result = $query->row_array(); // Fetch the first row as an associative array
-		return $result ? $result['id'] : null; // Return the ID if found, otherwise return null
-	}
 }

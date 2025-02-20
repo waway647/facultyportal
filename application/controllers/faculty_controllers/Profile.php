@@ -10,6 +10,7 @@ class Profile extends CI_Controller {
 		$this->load->library('session');
 		$this->load->database();
 		$this->load->model('faculty_models/Profile_model');
+		$this->load->model('common_models/Faculty_model');
 		$this->load->helper('url');
 	}
 
@@ -17,12 +18,12 @@ class Profile extends CI_Controller {
 	{
 		$logged_user_id = $this->session->userdata('logged_id');
 
-		$faculty_id = $this->Profile_model->getFacultyID($logged_user_id);
+		$faculty_id = $this->Faculty_model->getFacultyID($logged_user_id);
 		$this->session->set_userdata('faculty_id', $faculty_id);
 
 		if($faculty_id)
 		{
-			$data['faculty'] = $this->Profile_model->getFacultyProfile($faculty_id);
+			$data['faculty'] = $this->Faculty_model->getFacultyProfileUsers($faculty_id);
 			
 			$this->load->view('faculty/profile/index', $data);
 		} else {
@@ -41,7 +42,7 @@ class Profile extends CI_Controller {
 			$this->Profile_model->backupTable($faculty_id);
 
 			// Now load the profile edit page
-			$data['faculty'] = $this->Profile_model->getFacultyProfile($faculty_id);
+			$data['faculty'] = $this->Faculty_model->getFacultyProfileUsers($faculty_id);
 			
 			// Update session data with the latest profile picture and cover photo
 			$this->session->set_userdata('profile_picture', $data['faculty']->profile_picture);
@@ -61,7 +62,7 @@ class Profile extends CI_Controller {
 
 		if ($faculty_id) {
 			// Load the faculty profile data for editing
-			$data['faculty'] = $this->Profile_model->getFacultyProfile($faculty_id);
+			$data['faculty'] = $this->Faculty_model->getFacultyProfileUsers($faculty_id);
 
 			// Update session data with the latest profile picture and cover photo
 			$this->session->set_userdata('profile_picture', $data['faculty']->profile_picture);
@@ -84,7 +85,7 @@ class Profile extends CI_Controller {
 			$this->Profile_model->deleteAllDataByFacultyId($faculty_id);
 
 			// Get the original profile picture and cover photo from the database
-			$faculty = $this->Profile_model->getFacultyProfile($faculty_id);
+			$faculty = $this->Faculty_model->getFacultyProfileUsers($faculty_id);
 			$original_profile_pic = $faculty->profile_picture;
 			$original_cover_photo = $faculty->cover_photo;
 	

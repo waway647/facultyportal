@@ -396,12 +396,16 @@ input {
   position: relative;
   align-self: stretch;
   width: 100%;
-  border-radius: 10px;
 }
 
 .dashboard-faculty .nav-link:hover {
+  border-radius: 10px;
   background-color: #e53b43;
 } 
+
+.active{
+  border-bottom: 2px solid #ffffff;
+}
 
 .dashboard-faculty .image-wrapper {
   width: 50px;

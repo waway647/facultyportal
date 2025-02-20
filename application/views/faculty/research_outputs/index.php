@@ -172,7 +172,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 					
 					<div class="frame-3">
-						<div class="text-wrapper-5"><?php echo $faculty->first_name?> <?php echo $faculty->last_name?></div>
+						<div class="text-wrapper-5" id="full_name"></div>
+						<input type="hidden" id="logged_in_user" value="<?php echo $this->session->userdata('faculty_id'); ?>">
 						<div class="text-wrapper-6"><?php echo $faculty->email?></div>
 					</div>
 					<?php endif ?>
@@ -268,7 +269,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>
 											<div class="form-group">
 												<input type="text" id="faculty_id" name="faculty_profile_id" placeholder="Author name" required>
-												<input type="hidden" id="logged_in_user_id" value="<?= $_SESSION['faculty_id']; ?>">
+												<input type="hidden" id="logged_in_user_id" value="<?php echo $this->session->userdata('faculty_id'); ?>">
 											</div>
 											<div class="form-group">
 												<div class="attachment-container">
@@ -365,6 +366,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(document).ready(function() {
 		fetchResearch();
 		fetchFaculty();
+		fetchFacultyFullName();
 
 		$('#searchInput').on('keypress', function(event) {
 			if (event.which == 13) {  // Enter key is pressed
@@ -390,7 +392,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	function fetchFaculty(modalId, callback, selectedFacultyId = null) {
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/getFaculty',
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty',
 			type: 'GET',
 			dataType: 'json',
 			success: function (result) {
@@ -415,7 +417,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                    		 result.forEach(function (faculty) {
                         // Auto-fill if faculty matches the logged-in user or selected ID
-                        if (selectedFacultyId == faculty.id || loggedUserId == faculty.id) {
+                        if (selectedFacultyId === faculty.id || loggedUserId === faculty.id) {
                             inputField.val(faculty.full_name);
                         }
 					});
@@ -505,6 +507,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			},
 			error: function(xhr, status, error) {
 				console.error('Error fetching research by ID:', error);
+			}
+		});
+	}
+
+	function fetchFacultyFullName() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Faculty Data):', result);
+
+				if (Array.isArray(result)) {
+					let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
+					let facultyFullName = $('#full_name'); // Default text if no match is found
+
+					result.forEach(function(faculty) {
+						if (faculty.id == loggedUserId) {
+							facultyFullName.text(faculty.full_name); // Get the logged-in faculty's full name
+						}
+					});
+
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching faculty:', error);
 			}
 		});
 	}

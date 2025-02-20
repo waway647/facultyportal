@@ -168,7 +168,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 					
 					<div class="frame-3">
-						<div class="text-wrapper-5"><?php echo $faculty->first_name?> <?php echo $faculty->last_name?></div>
+						<div class="text-wrapper-5" id="full_name"></div>
+						<input type="hidden" id="logged_in_user" value="<?php echo $this->session->userdata('faculty_id'); ?>">
 						<div class="text-wrapper-6"><?php echo $faculty->email?></div>
 					</div>
 					<?php endif ?>
@@ -277,6 +278,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Call the function to fetch faculty when the page loads
 	$(document).ready(function() {
 		fetchCourses();
+		fetchFacultyFullName();
 
 		$('#searchInput').on('keypress', function(event) {
 			if (event.which == 13) {  // Enter key is pressed
@@ -299,6 +301,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 	});
+
+	function fetchFacultyFullName() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Faculty Data):', result);
+
+				if (Array.isArray(result)) {
+					let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
+					let facultyFullName = $('#full_name'); // Default text if no match is found
+
+					result.forEach(function(faculty) {
+						if (faculty.id == loggedUserId) {
+							facultyFullName.text(faculty.full_name); // Get the logged-in faculty's full name
+						}
+					});
+
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching faculty:', error);
+			}
+		});
+	}
 
 	// Function to fetch course data via AJAX
 	function fetchCourses(query = '') {

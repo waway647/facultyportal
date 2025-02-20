@@ -4,23 +4,6 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 
 class Profile_model extends CI_Model {
 
-	public function getFacultyID($logged_user_id)
-	{
-		$query = $this->db->select('id')
-						->where('user_id', $logged_user_id)
-						->get('faculty_profiles');
-
-		$result = $query->row_array(); // Fetch the first row as an associative array
-		return $result ? $result['id'] : null; // Return the ID if found, otherwise return null
-	}
-
-	public function getFacultyProfile($faculty_id) 
-	{
-		$this->db->where('id', $faculty_id);
-        $query = $this->db->get('faculty_profiles_vw');
-        return $query->row(); // Use row() to get a single row
-	}
-
 	public function insertNewQualification($qualification_data)
 	{
 		$this->db->insert("qualifications", $qualification_data);

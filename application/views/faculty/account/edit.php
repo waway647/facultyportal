@@ -161,7 +161,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
           
 			<!-- Your profile link and other content here -->
-			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/index">
+			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index">
 				<div class="nav-link-3">
 					<?php if (isset($faculty) && $faculty !== null): ?>
 					<div class="img-wrapper">
@@ -170,7 +170,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 					
 					<div class="frame-3">
-						<div class="text-wrapper-5"><?php echo $faculty->first_name?> <?php echo $faculty->last_name?></div>
+						<div class="text-wrapper-5" id="full_name"></div>
+						<input type="hidden" id="logged_in_user" value="<?php echo $this->session->userdata('faculty_id'); ?>">
 						<div class="text-wrapper-6"><?php echo $faculty->email?></div>
 					</div>
 					<?php endif ?>
@@ -217,7 +218,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<img src="<?php echo base_url('assets/images/icon/x.svg'); ?>" alt="">
 											</div>
 										</div>
-										<form id="editProfilePictureForm" method="post" enctype="multipart/form-data" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/changeProfilePic">
+										<form id="editProfilePictureForm" method="post" enctype="multipart/form-data" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/changeProfilePic">
 											<div class="form-group img-form-group">
 												<div class="pic-preview-container">
 													<div class="preview">
@@ -325,6 +326,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
 
 	<script>
+	$(document).ready(function() {
+		fetchFacultyFullName();
+	});
+
+	function fetchFacultyFullName() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Faculty Data):', result);
+
+				if (Array.isArray(result)) {
+					let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
+					let facultyFullName = $('#full_name'); // Default text if no match is found
+
+					result.forEach(function(faculty) {
+						if (faculty.id == loggedUserId) {
+							facultyFullName.text(faculty.full_name); // Get the logged-in faculty's full name
+						}
+					});
+
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching faculty:', error);
+			}
+		});
+	}
+
 	// Function to initialize a modal
 	function setupModal(modalId, openButtonId, closeButtonId) {
 		const modal = document.getElementById(modalId);
@@ -439,7 +472,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		let formData = new FormData(this);
 
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/changeProfilePic',
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/changeProfilePic',
 			type: 'POST',
 			data: formData,
 			contentType: false,

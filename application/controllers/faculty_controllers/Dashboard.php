@@ -9,16 +9,24 @@ class Dashboard extends CI_Controller {
 		parent::__construct();
 		$this->load->library('session');
 		$this->load->database();
-		$this->load->model('');
+		//$this->load->model('faculty_models/Dashboard_model');
+		$this->load->model('common_models/Faculty_model');
 		$this->load->helper('url');
 	}
-
+	
 	public function index() // http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Dashboard/index
 	{
-		$this->load->model('common_models/Faculty_model');
 		$user_id = $this->session->userdata('logged_id');
 		$data['faculty'] = $this->Faculty_model->getFacultyProfile($user_id);
 
-		$this->load->view('faculty/dashboard/index', $data);
+		$logged_user_id = $this->session->userdata('logged_id');
+
+		$faculty_id = $this->Faculty_model->getFacultyID($logged_user_id);
+		if($faculty_id)
+		{
+			$this->session->set_userdata('faculty_id', $faculty_id);
+
+			$this->load->view('faculty/dashboard/index', $data);
+		}
 	}
 }

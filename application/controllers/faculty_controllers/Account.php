@@ -15,11 +15,18 @@ class Account extends CI_Controller {
 
 	public function index() // http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index
 	{
-		$this->load->model('common_models/Faculty_model');
-		$faculty_id = $this->session->userdata('logged_id');
-		$data['faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
+		$user_id = $this->session->userdata('logged_id');
+		$data['faculty'] = $this->Faculty_model->getFacultyProfile($user_id);
 
-		$this->load->view('faculty/account/index', $data);
+		$logged_user_id = $this->session->userdata('logged_id');
+
+		$faculty_id = $this->Faculty_model->getFacultyID($logged_user_id);
+		if($faculty_id)
+		{
+			$this->session->set_userdata('faculty_id', $faculty_id);
+
+			$this->load->view('faculty/account/index', $data);
+		}
 	}
 
 	public function edit() // http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/edit

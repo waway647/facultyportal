@@ -21,7 +21,7 @@ class ResearchOutputs extends CI_Controller {
 
 		$logged_user_id = $this->session->userdata('logged_id');
 
-		$faculty_id = $this->ResearchOutputs_model->getFacultyID($logged_user_id);
+		$faculty_id = $this->Faculty_model->getFacultyID($logged_user_id);
 		if($faculty_id)
 		{
 			$this->session->set_userdata('faculty_id', $faculty_id);
@@ -40,11 +40,6 @@ class ResearchOutputs extends CI_Controller {
 			$result = $this->ResearchOutputs_model->getResearch($faculty_id, $search);
 			echo json_encode($result); // Return data as JSON
 		}
-	}
-
-	public function getFaculty() {
-		$result = $this->ResearchOutputs_model->getFaculty();  // Fetch data from SQL view
-		echo json_encode($result);  // Return data as JSON
 	}
 
 	public function createResearch()
