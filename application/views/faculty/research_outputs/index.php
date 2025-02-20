@@ -268,6 +268,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>
 											<div class="form-group">
 												<input type="text" id="faculty_id" name="faculty_profile_id" placeholder="Author name" required>
+												<input type="hidden" id="logged_in_user_id" value="<?= $_SESSION['faculty_id']; ?>">
 											</div>
 											<div class="form-group">
 												<div class="attachment-container">
@@ -305,7 +306,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												</select>
 											</div>
 											<div class="form-group">
-												<input type="text" id="faculty_assigned" name="faculty_profile_id" class="form-control" readonly>
+												<input type="text" id="faculty_assigned" name="faculty_profile_id" class="form-control" required>
 											</div>
 											<div class="form-group">
 												<div class="attachment-container">
@@ -388,50 +389,53 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	});
 
 	function fetchFaculty(modalId, callback, selectedFacultyId = null) {
-    $.ajax({
-        url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/getFaculty',
-        type: 'GET',
-        dataType: 'json',
-        success: function (result) {
-            console.log('AJAX success:', result);
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/getFaculty',
+			type: 'GET',
+			dataType: 'json',
+			success: function (result) {
+				console.log('AJAX success:', result);
 
-            if (Array.isArray(result)) {
-                let inputField;
+				if (Array.isArray(result)) {
+					let inputField;
 
-                // Identify the correct input field
-                if (modalId === "addResearchModal") {
-                    inputField = $('#faculty_id'); // Add Research Modal
-                } else if (modalId === "editResearchModal") {
-                    inputField = $('#faculty_assigned'); // Edit Research Modal
-                }
+					// Identify the correct input field
+					if (modalId === "addResearchModal") {
+						inputField = $('#faculty_id'); // Add Research Modal
+					} else if (modalId === "editResearchModal") {
+						inputField = $('#faculty_assigned'); // Edit Research Modal
+					}
 
-                if (inputField && inputField.length) {
-                    // Ensure the input field is not emptied incorrectly
+					if (inputField && inputField.length) {
+						// Ensure the input field is not emptied incorrectly
 
-                    // Populate the input field if the selected faculty ID matches
-                    result.forEach(function (faculty) {
-                        if (selectedFacultyId == faculty.id) {
-                            inputField.val(faculty.full_name); // Correct way to assign value to an input field
+						// Populate the input field if the selected faculty ID matches
+
+						let loggedUserId = $('#logged_in_user_id').val(); // Hidden field storing logged user ID
+
+                   		 result.forEach(function (faculty) {
+                        // Auto-fill if faculty matches the logged-in user or selected ID
+                        if (selectedFacultyId == faculty.id || loggedUserId == faculty.id) {
+                            inputField.val(faculty.full_name);
                         }
-                    });
+					});
 
-                    // Execute callback if provided
-                    if (callback && typeof callback === 'function') {
-                        callback();
-                    }
-                } else {
-                    console.error('Input element not found for modal:', modalId);
-                }
-            } else {
-                console.error('Expected an array but received:', result);
-            }
-        },
-        error: function (xhr, status, error) {
-            console.error('Error fetching faculty:', error);
-        }
-    });
-}
-
+						// Execute callback if provided
+						if (callback && typeof callback === 'function') {
+							callback();
+						}
+					} else {
+						console.error('Input element not found for modal:', modalId);
+					}
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function (xhr, status, error) {
+				console.error('Error fetching faculty:', error);
+			}
+		});
+	}
 
 	function fetchResearch(query = '') {
 		$.ajax({
@@ -494,6 +498,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			success: function(result) {
 				if (result && !result.error) {
 					populateEditResearchModal(result); // Populate the modal with the fetched data
+					populateAddResearchModal(result); // Populate the add research modal with the fetched data
 				} else {
 					console.error('Error: ' + (result.error || 'Research not found!'));
 				}
@@ -502,6 +507,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				console.error('Error fetching research by ID:', error);
 			}
 		});
+	}
+
+	function populateAddResearchModal(research) {
+		// Fetch and populate faculty dropdown
+		fetchFaculty('addResearchModal', function () {
+			console.log(`Faculty dropdown populated. Selected faculty: ${research.faculty_assigned}`);
+		}, research.faculty_profile_id);
 	}
 	
 	function populateEditResearchModal(research) {
