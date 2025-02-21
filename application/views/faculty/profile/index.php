@@ -689,10 +689,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Call setupFileAttachment for 'addCourseModal'
 	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
 
-	// Call setupFileAttachment for 'addCourseModal'
-	setupFileAttachment("qualification_diploma", "qualification_diploma_preview", false);
-	setupFileAttachment("certification_certificate", "certification_certificate_preview", false);
-
 	// Notification Panel Logic
 	const notificationBtn = document.getElementById('notificationBtn');
 	const notificationPanel = document.getElementById('notificationPanel');
@@ -721,8 +717,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	});
 	
 	</script>
-
-
+	<script src="<?php echo base_url('assets/js/script.js'); ?>"></script>
 
   </body>
 </html>

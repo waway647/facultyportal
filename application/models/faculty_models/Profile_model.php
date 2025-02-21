@@ -25,7 +25,7 @@ class Profile_model extends CI_Model {
 	public function getQualifications($faculty_profile_id)
 	{
 		$this->db->where('faculty_profile_id', $faculty_profile_id);
-        $query = $this->db->get('Qualifications');
+        $query = $this->db->get('qualifications');
         return $query->result_array(); // Use row() to get a single row
 	}
 

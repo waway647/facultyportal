@@ -328,7 +328,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 	});
 	</script>
-
+	<script src="<?php echo base_url('assets/js/script.js'); ?>"></script>
 
 
   </body>
