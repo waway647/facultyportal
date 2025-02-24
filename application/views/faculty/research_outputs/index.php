@@ -130,37 +130,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
         </div>
         	<div class="nav-links-container-2">
-				<!-- Notification Button -->
-				<a href="javascript:void(0);" id="notificationBtn">
-					<div class="nav-link">
-						<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/notif.svg'); ?>" /></div>
-						<div class="frame-2"><div class="text-wrapper-4">Notifications</div></div>
-					</div>
-				</a>
-			
-			<!-- Slide-in Notification Panel -->
-			<div id="notificationPanel" class="notification-panel">
-				<div class="notification-header">
-					<h3>Notifications</h3>
-					<button id="closePanel" class="close-btn">&times;</button>
-				</div>
-				<div class="notification-content">
-					<!-- Notification Items -->
-					<div class="notification-item">
-						<div class="notification-item-details">
-							<p>Rose M. Perreras posted an announcement</p>
-							<small>12/21/2024 11:17</small>
-							
-							<a href="#">
-								 <button class="action-btn">View</button>
-							</a>
-						</div>	
-						<span class="status-dot new"></span>
-					</div>
-					
-					<!-- Add more notification items here -->
-				</div>
-			</div>
+				
           
 			<!-- Your profile link and other content here -->
 			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index">

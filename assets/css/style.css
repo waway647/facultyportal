@@ -405,7 +405,7 @@ input {
 } 
 
 .active{
-  background-color: #e53b43;
+  background-color: #e53b43 !important;
 }
 
 .highlight{
@@ -455,21 +455,19 @@ input {
 .dashboard-faculty .nav-links-container-2 {
   justify-content: space-between;
   padding: 15px 0px;
-  flex: 1;
-  flex-grow: 1;
   border-bottom-width: 1px;
   border-bottom-style: solid;
   border-color: #dcdbdb33;
   display: flex;
-  flex-direction: column;
+/*   flex-direction: column;
   align-items: flex-start;
   position: relative;
-  align-self: stretch;
-  width: 100%;
+  align-self: stretch; */
+  width: 100%; 
 }
 
 .dashboard-faculty .nav-link-3 {
-  padding: 5px 10px;
+  padding: 10px 10px;
   align-items: center;
   gap: 5px;
   display: flex;
