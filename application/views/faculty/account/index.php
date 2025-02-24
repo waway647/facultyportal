@@ -237,6 +237,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="right-account-container">
 					<?php if (isset($faculty) && $faculty !== null): ?>
 					<div class="form-container">
+						<h4>Personal Information</h4>
+
 						<div class="input-container index">
 							<h6>Email</h6>
 							<input type="text" id="email" name="email" value="<?php echo $faculty->email; ?>" placeholder="Email" disabled>
@@ -277,6 +279,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<h6>Edit</h6>
 							</a>
 						</div>
+					</div>
+
+					<div class="form-container">
+						<h4>Additional Information</h4>
+
+					</div>
+
+					<div class="form-container">
+						<h4>Present Address</h4>
+
 					</div>
 
 					<div class="form-container">
