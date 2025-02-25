@@ -224,10 +224,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="role-heading-container role-row">
 								<h5>Current Role</h5>
 								<img src="<?php echo base_url('assets/images/icon/rolebag.svg'); ?>" alt="">
-							</div>
-
+						</div>
 							
-							<div class="role-item-container role-row">
+						<div class="role-item-container role-row">
 								<div class="role-item-profile">
 									<h5><?php echo $faculty->role_name; ?></h5>
 								</div>
@@ -522,7 +521,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Function to fetch faculty data via AJAX
 	function fetchFaculty() {
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/getFacultyProfile',  // Update the URL as necessary
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFacultyProfile',  // Update the URL as necessary
 			type: 'GET',
 			dataType: 'json',
 			success: function(result) {
@@ -600,8 +599,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	attachmentInput.addEventListener("change", function () {
 		// Clear previous files if only one file is allowed (for research_attachment)
 		if (!allowMultiple) {
-		attachedFiles = []; // Clear the previous files list if only one file is allowed
-		attachmentPreview.innerHTML = ""; // Clear the preview area
+			attachedFiles = []; // Clear the previous files list if only one file is allowed
+			attachmentPreview.innerHTML = ""; // Clear the preview area
 		}
 
 		// Loop through selected files
