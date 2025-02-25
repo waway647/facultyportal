@@ -114,6 +114,11 @@ input {
   outline: 1px solid #A4A4A4;
 }
 
+.line{
+  margin-top: 20px;
+  border-bottom: 1px solid #DCDBDB;
+}
+
 .button-container {
   display: flex;
   flex-direction: column;

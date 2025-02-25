@@ -274,20 +274,66 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday; ?>" placeholder="Birthday" disabled>
 						</div>
 
-						<div class="input-container edit">
+						<div class="input-container index">
+							<h6>Gender</h6>
+							<input type="text" id="gender" name="gender" value="<?php echo $faculty->gender; ?>" placeholder="Gender" disabled>
+						</div>
+
+						<!-- <div class="input-container edit">
 							<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/edit">
 								<h6>Edit</h6>
 							</a>
-						</div>
+						</div> -->
 					</div>
 
 					<div class="form-container">
 						<h4>Additional Information</h4>
 
+						<div class="input-container index">
+							<h6>Civil Status</h6>
+							<input type="text" id="civil_status" name="civil_status" value="" placeholder="Civil Status" disabled>
+						</div>
+
+						<div class="input-container index">
+							<h6>Religion</h6>
+							<input type="text" id="religion" name="religion" value="" placeholder="Religion" disabled>
+						</div>
+
+						<div class="input-container index">
+							<h6>Citizenship</h6>
+							<input type="text" id="citizenship" name="citizenship" value="" placeholder="Citizenship" disabled>
+						</div>
+
 					</div>
 
 					<div class="form-container">
 						<h4>Present Address</h4>
+
+						<div class="input-container index">
+							<h6>House Address</h6>
+							<input type="text" id="house_address" name="house_address" value="" placeholder="House Address" disabled>
+						</div>
+
+						<div class="input-container index">
+							<h6>Barangay</h6>
+							<input type="text" id="barangay" name="barangay" value="" placeholder="Barangay" disabled>
+						</div>
+
+						<div class="input-container index">
+							<h6>City</h6>
+							<input type="text" id="city" name="city" value="" placeholder="City" disabled>
+						</div>
+
+						<div class="input-container index">
+							<h6>Province</h6>
+							<input type="text" id="province" name="province" value="" placeholder="Province" disabled>	
+						</div>
+
+						<div class="input-container edit">
+							<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/edit">
+								<h6>Edit</h6>
+							</a>
+						</div>
 
 					</div>
 

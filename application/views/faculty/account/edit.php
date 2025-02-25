@@ -238,7 +238,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<form method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/updateProfile">
 					<?php if (isset($faculty) && $faculty !== null): ?>
 					<div class="form-container">
-					
+						<h4>Personal Information</h4>
+
 						<div class="input-container">
 							<h6>Email</h6>
 							<input type="text" id="email" name="email" value="<?php echo $faculty->email; ?>" placeholder="Email">
@@ -273,6 +274,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<h6>Birthday</h6>
 							<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday; ?>" max="<?php echo date('Y') - 1 . '-12-31'; ?>" placeholder="Last Name">
 						</div>
+
+						<div class="line"></div>
+						<h4>Additional Information</h4>
+
+						<div class="input-container index">
+							<h6>Civil Status</h6>
+							<input type="text" id="civil_status" name="civil_status" value="" placeholder="Civil Status" disabled>
+						</div>
+
+						<div class="input-container index">
+							<h6>Religion</h6>
+							<input type="text" id="religion" name="religion" value="" placeholder="Religion" disabled>
+						</div>
+
+						<div class="input-container index">
+							<h6>Citizenship</h6>
+							<input type="text" id="citizenship" name="citizenship" value="" placeholder="Citizenship" disabled>
+						</div>
+
+						<div class="line"></div>
+						<h4>Present Address</h4>
+
+						<div class="input-container index">
+							<h6>House Address</h6>
+							<input type="text" id="house_address" name="house_address" value="" placeholder="House Address" disabled>
+						</div>
+
+						<div class="input-container index">
+							<h6>Barangay</h6>
+							<input type="text" id="barangay" name="barangay" value="" placeholder="Barangay" disabled>
+						</div>
+
+						<div class="input-container index">
+							<h6>City</h6>
+							<input type="text" id="city" name="city" value="" placeholder="City" disabled>
+						</div>
+
+						<div class="input-container index">
+							<h6>Province</h6>
+							<input type="text" id="province" name="province" value="" placeholder="Province" disabled>	
+						</div>
+
 
 						<div class="input-container edit">
 							<button type="submit">
