@@ -59,6 +59,7 @@ class Account extends CI_Controller {
 	public function updateProfile()
 	{
 		$user_id = $this->session->userdata('logged_id');
+		$faculty_id = $this->session->userdata('faculty_id');
 
 		$user_data = array(
 			"id" => $user_id,
@@ -75,8 +76,18 @@ class Account extends CI_Controller {
 			"citizenship" => $this->input->post("citizenship")
 		);
 
+		$user_data2 = array(
+			"faculty_profile_id"=>$faculty_id,
+			"house_address" => $this->input->post("house_address"),
+			"barangay" => $this->input->post("barangay"),
+			"city" => $this->input->post("city"),
+			"region" => $this->input->post("region"),
+			"zip_code" => $this->input->post("zip_code")
+		); 
+
 		$result = $this->Faculty_model->updateProfile($user_id, $user_data);
-		if($result)
+		$result2 = $this->Faculty_model->updateAddress($faculty_id, $user_data2);
+		if($result && $result2)
 		{
 			redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index');
 		}

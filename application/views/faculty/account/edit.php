@@ -245,10 +245,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<input type="text" id="email" name="email" value="<?php echo $faculty->email; ?>" placeholder="Email">
 						</div>
 
-						<div class="input-container">
+						<!-- <div class="input-container">
 							<h6>Password</h6>
-							<input type="hidden" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Pass">
-						</div>
+							<input type="hidden" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Password">
+						</div> -->
+						<input type="hidden" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Pass" disabled>
 
 						<div class="input-container">
 							<h6>Mobile number</h6>
@@ -272,7 +273,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<div class="input-container">
 							<h6>Birthday</h6>
-							<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday; ?>" max="<?php echo date('Y') - 1 . '-12-31'; ?>" placeholder="Last Name">
+							<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday; ?>" max="<?php echo date('Y') - 1 . '-12-31'; ?>">
 						</div>
 
 						<div class="input-container">
@@ -295,7 +296,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<option value="Single" <?php echo ($faculty->civil_status === 'Single') ? 'selected' : ''; ?>>Single</option>
 								<option value="Married" <?php echo ($faculty->civil_status === 'Married' ? 'Selected' : '')?>>Married</option>
 								<option value="Divorced" <?php echo ($faculty->civil_status === 'Divorced' ? 'Selected' : '')?>>Divorced</option>
-								<option value="Divorced" <?php echo ($faculty->civil_status === 'Divorced' ? 'Selected' : '')?>>Divorced</option>
+								<option value="Widowed" <?php echo ($faculty->civil_status === 'Widowed' ? 'Selected' : '')?>>Divorced</option>
 							</select>
 						</div>
 

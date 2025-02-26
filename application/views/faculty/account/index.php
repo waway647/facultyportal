@@ -246,8 +246,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<!-- <div class="input-container index">
 							<h6>Password</h6>
-							<input type="text" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Pass" disabled>
+							<input type="hidden" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Pass" disabled>
 						</div> -->
+						<input type="hidden" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Pass" disabled>
 
 						<div class="input-container index">
 							<h6>Mobile number</h6>

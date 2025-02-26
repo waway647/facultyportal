@@ -38,6 +38,12 @@ class Faculty_model extends CI_Model {
 		return $query;
 	}
 
+	public function updateAddress($faculty_id, $user_data){
+		$this->db->where('faculty_profile_id', $faculty_id);
+		$query = $this->db->update('address', $user_data);
+		return $query;
+	}
+
 	public function getFaculty() 
 	{
 		$query = $this->db->get('faculty_full_name_vw');
