@@ -17,6 +17,11 @@ class Faculty_model extends CI_Model {
         return $query->row(); // Use row() to get a single row
 	}
 
+	public function getUserAddress($faculty_id) {
+    $this->db->where('faculty_profile_id', $faculty_id);
+    $query = $this->db->get('address');
+    return $query->row(); // Return a single row as an object, or null if no row is found
+	}
 
 	public function changeProfilePic($logged_id, $data)
 	{

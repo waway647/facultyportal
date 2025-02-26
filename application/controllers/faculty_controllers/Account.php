@@ -16,6 +16,7 @@ class Account extends CI_Controller {
 	public function index() // http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index
 	{
 		$user_id = $this->session->userdata('logged_id');
+
 		$data['faculty'] = $this->Faculty_model->getFacultyProfile($user_id);
 
 		$logged_user_id = $this->session->userdata('logged_id');
@@ -24,18 +25,35 @@ class Account extends CI_Controller {
 		if($faculty_id)
 		{
 			$this->session->set_userdata('faculty_id', $faculty_id);
+			$data['user_address'] = $this->Faculty_model->getUserAddress($faculty_id);
 
 			$this->load->view('faculty/account/index', $data);
 		}
 	}
 
-	public function edit() // http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/edit
-	{
-		$this->load->model('common_models/Faculty_model');
-		$faculty_id = $this->session->userdata('logged_id');
-		$data['faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
+	public function edit(){
+		$user_id = $this->session->userdata('logged_id');
 
-		$this->load->view('faculty/account/edit', $data);
+		// Fetch faculty profile
+		$data['faculty'] = $this->Faculty_model->getFacultyProfile($user_id);
+
+		// Fetch faculty ID for the logged-in user
+		$logged_user_id = $this->session->userdata('logged_id');
+		$faculty_id = $this->Faculty_model->getFacultyID($logged_user_id);
+
+		if ($faculty_id) {
+			// Set faculty_id in session
+			$this->session->set_userdata('faculty_id', $faculty_id);
+
+			// Fetch the address for this faculty using faculty_profile_id
+			$data['user_address'] = $this->Faculty_model->getUserAddress($faculty_id);
+
+			// Load the edit view with all data
+			$this->load->view('faculty/account/edit', $data);
+		} else {
+			// Handle case where faculty_id is not found
+			show_error('Faculty ID not found for the logged-in user.', 404);
+		}
 	}
 
 	public function updateProfile()
@@ -50,7 +68,11 @@ class Account extends CI_Controller {
 			"first_name" => $this->input->post("first_name"),
 			"last_name" => $this->input->post("last_name"),
 			"middle_name" => $this->input->post("middle_name"),
-			"birthday" => $this->input->post("birthday")
+			"birthday" => $this->input->post("birthday"),
+			"gender" => $this->input->post("gender"),
+			"civil_status" => $this->input->post("civil_status"),
+			"religion" => $this->input->post("religion"),
+			"citizenship" => $this->input->post("citizenship")
 		);
 
 		$result = $this->Faculty_model->updateProfile($user_id, $user_data);

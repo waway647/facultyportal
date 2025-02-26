@@ -279,54 +279,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<input type="text" id="gender" name="gender" value="<?php echo $faculty->gender; ?>" placeholder="Gender" disabled>
 						</div>
 
-						<!-- <div class="input-container edit">
-							<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/edit">
-								<h6>Edit</h6>
-							</a>
-						</div> -->
-					</div>
-
-					<div class="form-container">
+						<div class="line"></div>
 						<h4>Additional Information</h4>
 
 						<div class="input-container index">
 							<h6>Civil Status</h6>
-							<input type="text" id="civil_status" name="civil_status" value="" placeholder="Civil Status" disabled>
+							<input type="text" id="civil_status" name="civil_status" value="<?php echo $faculty->civil_status; ?>" placeholder="Civil Status" disabled>
 						</div>
 
 						<div class="input-container index">
 							<h6>Religion</h6>
-							<input type="text" id="religion" name="religion" value="" placeholder="Religion" disabled>
+							<input type="text" id="religion" name="religion" value="<?php echo $faculty->religion; ?>" placeholder="Religion" disabled>
 						</div>
 
 						<div class="input-container index">
 							<h6>Citizenship</h6>
-							<input type="text" id="citizenship" name="citizenship" value="" placeholder="Citizenship" disabled>
+							<input type="text" id="citizenship" name="citizenship" value="<?php echo $faculty->citizenship; ?>" placeholder="Citizenship" disabled>
 						</div>
 
-					</div>
-
-					<div class="form-container">
+						<div class="line"></div>
 						<h4>Present Address</h4>
 
 						<div class="input-container index">
 							<h6>House Address</h6>
-							<input type="text" id="house_address" name="house_address" value="" placeholder="House Address" disabled>
+							<input type="text" id="house_address" name="house_address" value="<?php echo $user_address->house_address; ?>" placeholder="House Address" disabled>
 						</div>
 
 						<div class="input-container index">
 							<h6>Barangay</h6>
-							<input type="text" id="barangay" name="barangay" value="" placeholder="Barangay" disabled>
+							<input type="text" id="barangay" name="barangay" value="<?php echo $user_address->barangay; ?>" placeholder="Barangay" disabled>
 						</div>
 
 						<div class="input-container index">
 							<h6>City</h6>
-							<input type="text" id="city" name="city" value="" placeholder="City" disabled>
+							<input type="text" id="city" name="city" value="<?php echo $user_address->city; ?>" placeholder="City" disabled>
 						</div>
 
 						<div class="input-container index">
-							<h6>Province</h6>
-							<input type="text" id="province" name="province" value="" placeholder="Province" disabled>	
+							<h6>Region</h6>
+							<input type="text" id="region" name="region" value="<?php echo $user_address->region; ?>" placeholder="Region" disabled>	
+						</div>
+
+						<div class="input-container index">
+							<h6>Zip Code</h6>
+							<input type="text" id="zip_code" name="zip_code" value="<?php echo $user_address->zip_code; ?>" placeholder="Zip Code" disabled>
 						</div>
 
 						<div class="input-container edit">
@@ -334,7 +330,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<h6>Edit</h6>
 							</a>
 						</div>
-
 					</div>
 
 					<div class="form-container">

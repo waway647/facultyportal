@@ -245,10 +245,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<input type="text" id="email" name="email" value="<?php echo $faculty->email; ?>" placeholder="Email">
 						</div>
 
-						<!-- <div class="input-container">
+						<div class="input-container">
 							<h6>Password</h6>
-							<input type="text" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Pass">
-						</div> -->
+							<input type="hidden" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Pass">
+						</div>
 
 						<div class="input-container">
 							<h6>Mobile number</h6>
@@ -275,22 +275,38 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday; ?>" max="<?php echo date('Y') - 1 . '-12-31'; ?>" placeholder="Last Name">
 						</div>
 
+						<div class="input-container">
+							<h6>Gender</h6>
+							<select id="gender" name="gender" placeholder="Gender">
+								<option selected>Choose Gender</option>
+								<option value="Male" <?php echo ($faculty->gender === 'Male') ? 'selected' : ''; ?>>Male</option>
+								<option value="Female" <?php echo ($faculty->gender === 'Female' ? 'Selected' : '')?>>Female</option>
+								<option value="Other" <?php echo ($faculty->gender === 'Other' ? 'Selected' : '')?>>Other</option>
+							</select>
+						</div>
+
 						<div class="line"></div>
 						<h4>Additional Information</h4>
 
 						<div class="input-container index">
 							<h6>Civil Status</h6>
-							<input type="text" id="civil_status" name="civil_status" value="" placeholder="Civil Status" disabled>
+							<select id="civil_status" name="civil_status" placeholder="Civil Status">
+								<option selected>Choose status</option>
+								<option value="Single" <?php echo ($faculty->civil_status === 'Single') ? 'selected' : ''; ?>>Single</option>
+								<option value="Married" <?php echo ($faculty->civil_status === 'Married' ? 'Selected' : '')?>>Married</option>
+								<option value="Divorced" <?php echo ($faculty->civil_status === 'Divorced' ? 'Selected' : '')?>>Divorced</option>
+								<option value="Divorced" <?php echo ($faculty->civil_status === 'Divorced' ? 'Selected' : '')?>>Divorced</option>
+							</select>
 						</div>
 
 						<div class="input-container index">
 							<h6>Religion</h6>
-							<input type="text" id="religion" name="religion" value="" placeholder="Religion" disabled>
+							<input type="text" id="religion" name="religion" value="<?php echo $faculty->religion; ?>" placeholder="Religion">
 						</div>
 
 						<div class="input-container index">
 							<h6>Citizenship</h6>
-							<input type="text" id="citizenship" name="citizenship" value="" placeholder="Citizenship" disabled>
+							<input type="text" id="citizenship" name="citizenship" value="<?php echo $faculty->citizenship; ?>" placeholder="Citizenship">
 						</div>
 
 						<div class="line"></div>
@@ -298,24 +314,28 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<div class="input-container index">
 							<h6>House Address</h6>
-							<input type="text" id="house_address" name="house_address" value="" placeholder="House Address" disabled>
+							<input type="text" id="house_address" name="house_address" value="<?php echo $user_address->house_address; ?>" placeholder="House Address">
 						</div>
 
 						<div class="input-container index">
 							<h6>Barangay</h6>
-							<input type="text" id="barangay" name="barangay" value="" placeholder="Barangay" disabled>
+							<input type="text" id="barangay" name="barangay" value="<?php echo $user_address->barangay; ?>" placeholder="Barangay">
 						</div>
 
 						<div class="input-container index">
 							<h6>City</h6>
-							<input type="text" id="city" name="city" value="" placeholder="City" disabled>
+							<input type="text" id="city" name="city" value="<?php echo $user_address->city; ?>" placeholder="City">
 						</div>
 
 						<div class="input-container index">
-							<h6>Province</h6>
-							<input type="text" id="province" name="province" value="" placeholder="Province" disabled>	
+							<h6>Region</h6>
+							<input type="text" id="region" name="region" value="<?php echo $user_address->region; ?>" placeholder="Region">	
 						</div>
 
+						<div class="input-container index">
+							<h6>Zip Code</h6>
+							<input type="text" id="zip_code" name="zip_code" value="<?php echo $user_address->zip_code; ?>" placeholder="Zip Code">
+						</div>
 
 						<div class="input-container edit">
 							<button type="submit">

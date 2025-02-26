@@ -105,12 +105,31 @@ input {
   box-sizing: border-box;
 }
 
+select{
+  font-family: 'TT Hoves Medium';
+  padding: 10px;
+  border: 1px solid #DCDBDB;
+  border-radius: 10px;
+  height: 45px;
+  width: 100%;
+  box-sizing: border-box;
+}
+
 .input-container input::placeholder {
   color: #DCDBDB;
   opacity: 1;
 }
 
 .input-container input:focus {
+  outline: 1px solid #A4A4A4;
+}
+
+.input-container select::placeholder {
+  color: #DCDBDB;
+  opacity: 1;
+}
+
+.input-container select:focus {
   outline: 1px solid #A4A4A4;
 }
 
