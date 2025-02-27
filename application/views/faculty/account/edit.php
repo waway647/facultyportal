@@ -166,15 +166,15 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 						<?php endif ?>
 
-						<div class="profile-details-container">
-						<div class="profile-details">
-							<a href="#" id="editProfilePictureBtn">
-								<h6>Edit</h6>
-							</a>
+						<!-- <div class="profile-details-container">
+							<div class="profile-details">
+								<a href="#" id="editProfilePictureBtn">
+									<h6>Edit</h6>
+								</a>
 							</div>
 						</div>
 
-									<!-- Edit Profile Modal -->
+									 Edit Profile Modal
 									<div id="editProfilePictureModal" class="modal">
 									<div class="modal-content img-modal-content">
 										<div class="modal-header">
@@ -224,7 +224,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>					
 										</form>
 									</div>
-									</div> 
+									</div>  -->
 					</div>
 
 					<a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/logout">
@@ -249,7 +249,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<h6>Password</h6>
 							<input type="hidden" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Password">
 						</div> -->
-						<input type="hidden" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Pass" disabled>
+						<!-- <input type="hidden" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Pass" disabled> -->
 
 						<div class="input-container">
 							<h6>Mobile number</h6>

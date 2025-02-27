@@ -483,10 +483,10 @@ select{
   border-bottom-style: solid;
   border-color: #dcdbdb33;
   display: flex;
-/*   flex-direction: column;
+  flex-direction: column;
   align-items: flex-start;
   position: relative;
-  align-self: stretch; */
+  align-self: stretch;
   width: 100%; 
 }
 
