@@ -430,6 +430,7 @@ select{
 
 .active{
   background-color: #e53b43 !important;
+  box-shadow: 4px 6px 10px rgba(134, 18, 18, 0.359);
 }
 
 .highlight{
@@ -477,7 +478,8 @@ select{
 }
 
 .dashboard-faculty .nav-links-container-2 {
-  justify-content: space-between;
+  justify-content: space-evenly;
+  gap: 5px 0;
   padding: 15px 0px;
   border-bottom-width: 1px;
   border-bottom-style: solid;

@@ -125,7 +125,18 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</a>
         </div>
-        <div class="nav-links-container-2">
+        <div class="nav-links-container-2">	
+			
+			<!-- Notification Button -->
+			<a href="javascript:void(0);" id="notificationBtn">
+				<div class="nav-link">
+					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/notif.svg'); ?>" /></div>
+					<div class="frame-2"><div class="text-wrapper-4">Notifications</div></div>
+				</div>
+			</a>
+			
+			<!-- Slide-in Notification Panel -->
+			<div id="notificationPanel" class="notification-panel"></div>
           
 			<!-- Your profile link and other content here -->
 			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index">
@@ -161,7 +172,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="item-box">
 							<div class="left-summary-container">
 								<div class="summary-img-container">
-									<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+									<img src="<?php echo base_url('assets/images/profile/sample.png'); ?>" alt="">
 								</div>
 
 								<h4>Total</h4>
@@ -172,7 +183,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<div class="item-box">
 							<div class="summary-img-container">
-								<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+								<img src="<?php echo base_url('assets/images/profile/sample.png'); ?>" alt="">
 							</div>
 
 							<h4>Total</h4>
@@ -182,7 +193,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<div class="item-box">
 							<div class="summary-img-container">
-								<img src="<?php echo base_url('assets/images/profile/sample.svg'); ?>" alt="">
+								<img src="<?php echo base_url('assets/images/profile/sample.png'); ?>" alt="">
 							</div>
 
 							<h4>Total</h4>
@@ -436,33 +447,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Call setupFileAttachment for 'addCourseModal'
 	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", false);
 
-	// Notification Panel Logic
-	const notificationBtn = document.getElementById('notificationBtn');
-	const notificationPanel = document.getElementById('notificationPanel');
-	const closePanel = document.getElementById('closePanel');
-
-	// Open the notification panel
-	notificationBtn.addEventListener('click', (e) => {
-	  e.preventDefault();  // Prevent default anchor behavior
-	  notificationPanel.classList.add('open');
-	});
-
-	// Close the notification panel
-	closePanel.addEventListener('click', () => {
-	  notificationPanel.classList.remove('open');
-	});
-
-	// Close the notification panel when clicking outside of it
-	window.addEventListener('click', function (event) {
-	// Check if the click target is outside both the panel and the button
-	if (
-		!notificationPanel.contains(event.target) &&
-		!notificationBtn.contains(event.target)
-	) {
-		notificationPanel.classList.remove('open');
-	}
-	});
 	</script>
+	<script src="<?php echo base_url('assets/js/notification.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/js/script.js'); ?>"></script>
 
   </body>

@@ -128,6 +128,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</a>
         </div>
         <div class="nav-links-container-2">
+
+				<!-- Notification Button -->
+			<a href="javascript:void(0);" id="notificationBtn">
+				<div class="nav-link">
+					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/notif.svg'); ?>" /></div>
+					<div class="frame-2"><div class="text-wrapper-4">Notifications</div></div>
+				</div>
+			</a>
+			
+			<!-- Slide-in Notification Panel -->
+			<div id="notificationPanel" class="notification-panel"></div>
 			
 			<!-- Your profile link and other content here -->
 			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index">
@@ -526,33 +537,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	});
 
-	// Notification Panel Logic
-	const notificationBtn = document.getElementById('notificationBtn');
-	const notificationPanel = document.getElementById('notificationPanel');
-	const closePanel = document.getElementById('closePanel');
-
-	// Open the notification panel
-	notificationBtn.addEventListener('click', (e) => {
-	  e.preventDefault();  // Prevent default anchor behavior
-	  notificationPanel.classList.add('open');
-	});
-
-	// Close the notification panel
-	closePanel.addEventListener('click', () => {
-	  notificationPanel.classList.remove('open');
-	});
-
-	// Close the notification panel when clicking outside of it
-	window.addEventListener('click', function (event) {
-	// Check if the click target is outside both the panel and the button
-	if (
-		!notificationPanel.contains(event.target) &&
-		!notificationBtn.contains(event.target)
-	) {
-		notificationPanel.classList.remove('open');
-	}
-	});
 	</script>
+	<script src="<?php echo base_url('assets/js/notification.js'); ?>"></script>
 	<script src="<?php echo base_url('assets/js/script.js'); ?>"></script>
 
   </body>
