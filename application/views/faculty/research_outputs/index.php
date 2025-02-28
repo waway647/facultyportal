@@ -176,7 +176,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="item-box">
 							<div class="left-summary-container">
 								<div class="summary-img-container">
-									<img src="<?php echo base_url('assets/images/profile/sample.png'); ?>" alt="">
+									<img src="<?php echo base_url('assets/images/profile/user.png'); ?>" alt="">
 								</div>
 
 								<h4>Total</h4>
@@ -187,7 +187,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<div class="item-box">
 							<div class="summary-img-container">
-								<img src="<?php echo base_url('assets/images/profile/sample.png'); ?>" alt="">
+								<img src="<?php echo base_url('assets/images/profile/user.png'); ?>" alt="">
 							</div>
 
 							<h4>Total</h4>
@@ -197,7 +197,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<div class="item-box">
 							<div class="summary-img-container">
-								<img src="<?php echo base_url('assets/images/profile/sample.png'); ?>" alt="">
+								<img src="<?php echo base_url('assets/images/profile/user.png'); ?>" alt="">
 							</div>
 
 							<h4>Total</h4>

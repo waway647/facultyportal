@@ -1118,7 +1118,46 @@ select{
   border-radius: 20px;
   padding: 20px;
   align-items: center;
+  box-shadow: 0px 3px 8px rgba(47, 47, 47, 0.3);
 }
+
+.item-box img{
+  width: 60px;
+  height: 60px;
+}
+
+.item-box .text-heading-container {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+
+.item-box p {
+  font-family: 'TT Hoves Medium';
+  font-weight: 900;
+  font-size: 20px;
+}
+
+.item-box h4 {
+  font-family: 'TT Hoves Medium';
+  color: #a3a3a3;
+}
+
+.item-box .add-button button {
+  font-family: 'TT Hoves Medium';
+  font-weight: 900;
+  padding: 10px 20px;
+  border: 1px solid #DCDBDB;
+  color: #ffffff;
+  border-radius: 10px;
+  background-color: #0D66B3;
+  height: 100%;
+}
+
+.item-box .add-button button:hover {
+  cursor: pointer;
+  background-color: #0D66B3;
+  }
 
 .container-management .left-summary-container {
   display: flex;
@@ -1131,8 +1170,8 @@ select{
   justify-content: space-between;
   align-items: center;
   padding: 35px 0;
-  border-top: 1px solid #DCDBDB;
-  border-bottom: 1px solid #DCDBDB;
+  border-top: 2px solid #DCDBDB;
+  border-bottom: 2px solid #DCDBDB;
 }
 
 .sub-content-container .left-sub {
