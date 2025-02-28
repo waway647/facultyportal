@@ -1,49 +1,83 @@
-document.addEventListener("DOMContentLoaded", function () {
-    // Notification Panel Logic
-	const notificationBtn = document.getElementById('notificationBtn');
-	const notificationPanel = document.getElementById('notificationPanel');
-	const notificationPanelClass = document.querySelector('.notification-panel');
+// Fetch notifications from the server
+function fetchNotifications() {
+    $.ajax({
+        url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/Notifications/getNotifications',
+        type: 'GET',
+        dataType: 'json',
+        success: function(result) {
+            console.log('AJAX success (Notification Data):', result);
+            if (Array.isArray(result)) {
+                slideNotificationPanel(result); // Pass the fetched data
+            } else {
+                console.error('Expected an array but received:', result);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching notifications:', error);
+        }
+    });
+}
 
-	// Open the notification panel
-	notificationBtn.addEventListener('click', (e) => {
-	  e.preventDefault();  // Prevent default anchor behavior
-	  notificationPanelClass.classList.add('open');
-	  notificationPanel.innerHTML = `
-	  <div class="notification-header">
-					<h3>Notifications</h3>
-					<button id="closePanel" class="close-btn">&times;</button>
-				</div>
-				<div class="notification-content">
-					<div class="notification-item">
-						<div class="notification-item-details">
-							<p>Rose M. Perreras posted an announcement</p>
-							<small>12/21/2024 11:17</small>
-							
-							<a href="#">
-								 <button class="action-btn">View</button>
-							</a>
-						</div>	
-						<span class="status-dot new"></span>
-					</div>
-				</div>`;
+// Render notifications dynamically
+function slideNotificationPanel(notifications) {
+    const notificationPanel = $("#notificationPanel");
 
-				const closePanel = document.getElementById('closePanel');
-				if(closePanel){
-					// Close the notification panel
-					closePanel.addEventListener('click', () => {
-					notificationPanelClass.classList.remove('open');
-				});
-				}
-	});
+    // Build notification HTML using the fetched data
+    let html = `
+        <div class="notification-header">
+            <h3>Notifications</h3>
+            <button id="closePanel" class="close-btn">×</button>
+        </div>
+        <div class="notification-content">`;
 
-	// Close the notification panel when clicking outside of it
-	window.addEventListener('click', function (event) {
-	// Check if the click target is outside both the panel and the button
-	if (
-		!notificationPanelClass.contains(event.target) &&
-		!notificationBtn.contains(event.target)
-	) {
-		notificationPanelClass.classList.remove('open');
-	}
-	}); 
+    notifications.forEach(notif => {
+        html += `
+            <div class="notification-item">
+                <div class="notification-item-details">
+                    <h4>${notif.title || 'No message'}</h4>
+					<small>${notif.posted_by || 'Posted by Unknown'}</small>
+                    <small>${notif.created_at || 'Unknown date'}</small>
+                    <a href="${notif.link || '#'}">
+                        <button class="action-btn">View</button>
+                    </a>
+                </div>
+                <span class="status-dot ${notif.status === 'unread' ? 'new' : ''}"></span>
+            </div>`;
+    });
+
+    html += `</div>`;
+    notificationPanel.html(html);
+
+    // Event listeners for panel interaction
+    const notificationBtn = document.getElementById('notificationBtn');
+    const notificationPanelClass = document.querySelector('.notification-panel');
+
+    // Open panel on button click
+    notificationBtn.addEventListener('click', (e) => {
+        e.preventDefault();
+        notificationPanelClass.classList.add('open');
+    });
+
+    // Close panel on close button click
+    const closePanel = document.getElementById('closePanel');
+    if (closePanel) {
+        closePanel.addEventListener('click', () => {
+            notificationPanelClass.classList.remove('open');
+        });
+    }
+
+    // Close panel when clicking outside
+    window.addEventListener('click', (event) => {
+        if (
+            !notificationPanelClass.contains(event.target) &&
+            !notificationBtn.contains(event.target)
+        ) {
+            notificationPanelClass.classList.remove('open');
+        }
+    });
+}
+
+// Call fetchNotifications when the page loads
+$(document).ready(function() {
+    fetchNotifications();
 });
