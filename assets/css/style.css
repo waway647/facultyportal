@@ -1140,7 +1140,7 @@ select{
 
 .item-box h4 {
   font-family: 'TT Hoves Medium';
-  color: #a3a3a3;
+  color: #6a6969;
 }
 
 .item-box .add-button button {
@@ -1167,9 +1167,10 @@ select{
 
 .container-management .sub-content-container {
   display: flex;
-  justify-content: space-between;
+ /*  justify-content: space-between; */
   align-items: center;
-  padding: 35px 0;
+  gap: 0 10px;
+  padding: 30px 0;
   border-top: 2px solid #DCDBDB;
   border-bottom: 2px solid #DCDBDB;
 }
@@ -1178,6 +1179,37 @@ select{
   display: flex;
   font-family: 'TT Hoves Medium';
   font-weight: 900;
+  flex-grow: 1;
+}
+
+.sub-content-container .right-sub-ann{
+  display: flex;
+  flex-direction: column;
+  gap: 6px 0;
+}
+
+.sub-content-container .right-sub-ann p{
+  margin: 0 3px;
+  font-family: 'TT Hoves Medium';
+  font-weight: 900;
+}
+
+.sub-content-container .right-sub-ann .sub-container input[type="date"]{
+  text-transform: uppercase;
+  color: #A4A4A4;
+}
+
+.sub-content-container .right-sub-ann .sub-container input[type="date"]::-webkit-calendar-picker-indicator {
+  font-size: 18px; 
+}
+
+.sub-content-container .right-sub-ann .sub-container select{
+  color: #A4A4A4;
+}
+
+#sortSelect{
+  outline: none; /* Remove the default outline */
+  border: none;
 }
 
 .sub-content-container .left-sub-numbers {

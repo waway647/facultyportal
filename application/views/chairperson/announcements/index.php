@@ -8,10 +8,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel="icon" href="<?php echo base_url('assets/images/logo/sbu_logo.svg'); ?>" type="image/x-icon">
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/globals.css?<?php echo time(); ?>"> 
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/style.css?<?php echo time(); ?>"> 
+	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/table.css?<?php echo time(); ?>"> 
+	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/profile.css?<?php echo time(); ?>"> 
 
 	<!-- jQuery library -->
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
-	
+
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
   </head>
   <body>
   <div class="dashboard-faculty">
@@ -198,7 +201,178 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       <div class="main-content">
         <div class="main-content-2">
           <div class="heading-container"><div class="text-wrapper-8">Announcements, Department Chair</div></div>
-          <div class="faculties-container-wrapper"><div class="faculties-container"></div></div>
+          <div class="container-management">
+				<div class="item-summary-container">
+					<div class="boxes-container">
+						<div class="item-box">
+							<div class="left-summary-container">
+								<div class="summary-img-container">
+									<img src="<?php echo base_url('assets/images/icon/announcement.png'); ?>" alt="">
+								</div>
+								<div class="text-heading-container">
+									<h4>Create Announcement</h4>
+									<p>Notify all faculty members</p>
+								</div>
+							</div>
+							
+							<div class="add-button">
+								<button id="addConsultationBtn" type="button" class="btn">+ &nbsp&nbsp Add Announcement</button>
+							</div>
+						</div>
+					</div>
+				</div>
+
+				<div class="sub-content-container">
+					<div class="left-sub">
+						<h4>Consultation Timeslot List&nbsp</h4>
+						<h4 class="left-sub-numbers">(3)</h4>
+					</div>
+
+					<div class="right-sub">
+						<div class="searchDisplay">
+							<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
+							<h6 id="searchDisplay"></h6>
+						</div>
+						
+						<div class="search-container">
+							<button class="button">
+								<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
+								<div class="div-wrapper">
+									<input type="search" name="search" id="searchInput" placeholder="Search">
+								</div>
+							</button>
+						</div>								
+								<!-- Add Consultation Modal -->
+								<div id="addConsultationModal" class="modal">
+								<div class="modal-content">
+									<div class="modal-header">
+									<h3>Add Timeslot</h3>
+									</div>
+									<form id="addConsultationForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/createConsultation">	
+										<div class="form-group">
+											<div class="form-input">
+												<h6>Day</h6>
+												<select id="day" name="day" required>
+													<option value="" disabled selected>Day</option>
+													<option value="Monday">Monday</option>
+													<option value="Tuesday">Tuesday</option>
+													<option value="Wednesday">Wednesday</option>
+													<option value="Thursday">Thursday</option>
+													<option value="Friday">Friday</option>
+													<option value="Saturday">Saturday</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="form-input">
+												<h6>Start Time</h6>
+												<input type="time" id="start_time" name="start_time" placeholder="Start Time" required>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="form-input">
+												<h6>End Time</h6>
+												<input type="time" id="end_time" name="end_time" placeholder="End Time" required>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="form-input">
+												<h6>Mode of Consultation</h6>
+												<select id="mode_of_consultation" name="mode_of_consultation" required>
+													<option value="" disabled selected>Mode of Consultation</option>
+													<option value="Online">Online</option>
+													<option value="In-Person">In-Person</option>
+												</select>
+											</div>
+										</div>
+
+										<button type="submit" class="btn">Save & Confirm</button>
+
+										<div>
+											<h6 class="back-step" id="closeaddConsultationBtn">Cancel</h6>
+										</div>
+									</form>
+								</div>
+								</div> 
+								
+								<!-- Edit Consultation Modal -->
+								<div id="editConsultationModal" class="modal">
+								<div class="modal-content">
+									<div class="modal-header">
+									<h3>Edit Timeslot</h3>
+									</div>
+									<form id="editConsultationForm" method="post" action="">
+										<div class="form-group">
+											<div class="form-input">
+												<h6>Day</h6>
+												<select id="day" name="day" required>
+													<option value="" disabled selected>Day</option>
+													<option value="Monday">Monday</option>
+													<option value="Tuesday">Tuesday</option>
+													<option value="Wednesday">Wednesday</option>
+													<option value="Thursday">Thursday</option>
+													<option value="Friday">Friday</option>
+													<option value="Saturday">Saturday</option>
+												</select>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="form-input">
+												<h6>Start Time</h6>
+												<input type="time" id="start_time" name="start_time" placeholder="Start Time" required>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="form-input">
+												<h6>End Time</h6>
+												<input type="time" id="end_time" name="end_time" placeholder="End Time" required>
+											</div>
+										</div>
+										<div class="form-group">
+											<div class="form-input">
+												<h6>Mode of Consultation</h6>
+												<select id="mode_of_consultation" name="mode_of_consultation" required>
+													<option value="" disabled selected>Mode of Consultation</option>
+													<option value="Online">Online</option>
+													<option value="In-Person">In-Person</option>
+												</select>
+											</div>
+										</div>
+
+										<button type="submit" class="btn">Save & Confirm</button>
+
+										<div>
+											<h6 class="back-step" id="closeeditConsultationBtn">Cancel</h6>
+										</div>
+									</form>
+								</div>
+								</div> 
+								
+					</div>
+				</div>
+
+				<div class="the-content-container">
+					<div id="container">    
+						<table class="table" id="consultationList" name="consultationList">
+							<thead>
+							<tr>
+								<th>#</th>
+								<th>Day</th>
+								<th>Start Time</th>
+								<th>End Time</th>
+								<th>Mode of Consultation</th>
+								<th>Action</th>
+							</tr>
+							</thead>
+
+							<tbody>
+								
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+			</div>
         </div>
       </div>
     </div>
@@ -283,8 +457,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	});
 
+	// Notification Panel Logic
+	const notificationBtn = document.getElementById('notificationBtn');
+	const notificationPanel = document.getElementById('notificationPanel');
+	const closePanel = document.getElementById('closePanel');
+
+	// Open the notification panel
+	notificationBtn.addEventListener('click', (e) => {
+	  e.preventDefault();  // Prevent default anchor behavior
+	  notificationPanel.classList.add('open');
+	});
+
+	// Close the notification panel
+	closePanel.addEventListener('click', () => {
+	  notificationPanel.classList.remove('open');
+	});
+
+	// Close the notification panel when clicking outside of it
+	window.addEventListener('click', function (event) {
+	// Check if the click target is outside both the panel and the button
+	if (
+		!notificationPanel.contains(event.target) &&
+		!notificationBtn.contains(event.target)
+	) {
+		notificationPanel.classList.remove('open');
+	}
+	});
 	</script>
-	<script src="<?php echo base_url('assets/js/notification.js?v=' . time()); ?>"></script>
+
 
 
   </body>

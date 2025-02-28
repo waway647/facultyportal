@@ -56,8 +56,10 @@ class Consultations extends CI_Controller {
 
 	public function createConsultation()
 	{
+		$faculty_id = $this->session->userdata('faculty_id');
+
 		$consultation_data = array(
-			"faculty_profile_id" => $this->input->post("faculty_profile_id"),
+			"faculty_profile_id" => $faculty_id,
 			"day" => $this->input->post("day"),
 			"start_time" => $this->input->post("start_time"),
 			"end_time" => $this->input->post("end_time"),
@@ -83,8 +85,10 @@ class Consultations extends CI_Controller {
 
 	public function updateConsultation($consultation_id)
 	{
+		$faculty_id = $this->session->userdata('faculty_id');
+
 		$consultation_data = array(
-			"faculty_profile_id" => $this->input->post("faculty_profile_id"),
+			"faculty_profile_id" => $faculty_id,
 			"day" => $this->input->post("day"),
 			"start_time" => $this->input->post("start_time"),
 			"end_time" => $this->input->post("end_time"),

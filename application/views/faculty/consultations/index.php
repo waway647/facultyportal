@@ -422,39 +422,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 
 	// Fetch faculty_id for the select dropdown
-	function fetchFaculty(modalId, callback) {
+	function fetchFaculty() {
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getFaculty',
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFacultyProfile',  // Update the URL as necessary
 			type: 'GET',
 			dataType: 'json',
-			success: function (result) {
-				console.log('AJAX success:', result);
+			success: function(result) {
+				console.log('AJAX success (Courses):', result);
 				if (Array.isArray(result)) {
-					let selectElement;
-					if (modalId === "addConsultationModal") {
-						selectElement = $('#faculty_id');
-					} else if (modalId === "editConsultationModal") {
-						selectElement = $('#faculty_assigned');
-					}
-
-					if (selectElement) {
-						selectElement.empty();
-						selectElement.append('<option value="" disabled selected>Faculty</option>');
-						result.forEach(function (faculty) {
-							selectElement.append('<option value="' + faculty.id + '">' + faculty.full_name + '</option>');
-						});
-
-						// Execute the callback if provided
-						if (callback && typeof callback === 'function') {
-							callback();
-						}
-					}
+					createCourseTable(result, 0);  // Call the function to create the table and pass the result
 				} else {
 					console.error('Expected an array but received:', result);
 				}
 			},
-			error: function (xhr, status, error) {
-				console.error('Error fetching faculty:', error);
+			error: function(xhr, status, error) {
+				console.error('Error fetching courses:', error);
 			}
 		});
 	}

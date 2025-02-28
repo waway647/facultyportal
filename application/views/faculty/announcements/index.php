@@ -172,37 +172,92 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		  <div class="container-management">
 				<div class="item-summary-container">
 					<div class="boxes-container">
-						<div class="item-box">
+					<div class="item-box">
 							<div class="left-summary-container">
 								<div class="summary-img-container">
-									<img src="<?php echo base_url('assets/images/icon/announcement.png'); ?>" alt="">
+									<img src="<?php echo base_url('assets/images/profile/user.png'); ?>" alt="">
 								</div>
-								<div class="text-heading-container">
-									<h4>Create Announcement</h4>
-									<p>Notify all faculty members</p>
-								</div>
+
+								<h4>Total</h4>
 							</div>
 							
-							<div class="add-button">
-								<button id="addConsultationBtn" type="button" class="btn">+ &nbsp&nbsp Add Announcement</button>
+							<h2>3</h2>
+						</div>
+
+						<div class="item-box">
+							<div class="summary-img-container">
+								<img src="<?php echo base_url('assets/images/profile/user.png'); ?>" alt="">
 							</div>
+
+							<h4>Total</h4>
+
+							<h2>3</h2>
+						</div>
+
+						<div class="item-box">
+							<div class="summary-img-container">
+								<img src="<?php echo base_url('assets/images/profile/user.png'); ?>" alt="">
+							</div>
+
+							<h4>Total</h4>
+
+							<h2>3</h2>
 						</div>
 					</div>
 				</div>
 
 				<div class="sub-content-container">
 					<div class="left-sub">
-						<h4>Consultation Timeslot List&nbsp</h4>
+						<h4>Announcement List&nbsp</h4>
 						<h4 class="left-sub-numbers">(3)</h4>
 					</div>
 
-					<div class="right-sub">
+					<!-- //Sort By -->
+					<div class="right-sub-ann">
+						<!-- <div class="searchDisplay">
+							<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
+							<h6 id="searchDisplay"></h6>
+						</div> -->
+						<p>Sort By</p>
+						<div class="sub-container">
+							<button class="button">
+								<div class="div-wrapper">
+									<select name="sort" id="sortSelect">
+										<option value="" disabled selected>Choose sort order</option>
+										<option value="desc">Newest First</option>
+										<option value="asc">Oldest First</option>
+										<option value="title_asc">Title (A-Z)</option>
+										<option value="title_desc">Title (Z-A)</option>
+									</select>
+								</div>
+							</button>
+						</div>								
+					</div>
+
+					<!-- //Sort Date -->
+					<div class="right-sub-ann">
+						<!-- <div class="searchDisplay">
+							<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
+							<h6 id="searchDisplay"></h6>
+						</div> -->
+						<p>Date</p>
+						<div class="sub-container">
+							<button class="button">
+								<div class="div-wrapper">
+									<input type="date" name="date" id="sortDate">
+								</div>
+							</button>
+						</div>								
+					</div>
+
+					<!-- //Search -->
+					<div class="right-sub-ann">
 						<div class="searchDisplay">
 							<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
 							<h6 id="searchDisplay"></h6>
 						</div>
-						
-						<div class="search-container">
+						<p>Search</p>
+						<div class="sub-container">
 							<button class="button">
 								<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
 								<div class="div-wrapper">
@@ -210,112 +265,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								</div>
 							</button>
 						</div>								
-								<!-- Add Consultation Modal -->
-								<div id="addConsultationModal" class="modal">
-								<div class="modal-content">
-									<div class="modal-header">
-									<h3>Add Timeslot</h3>
-									</div>
-									<form id="addConsultationForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/createConsultation">	
-										<div class="form-group">
-											<div class="form-input">
-												<h6>Day</h6>
-												<select id="day" name="day" required>
-													<option value="" disabled selected>Day</option>
-													<option value="Monday">Monday</option>
-													<option value="Tuesday">Tuesday</option>
-													<option value="Wednesday">Wednesday</option>
-													<option value="Thursday">Thursday</option>
-													<option value="Friday">Friday</option>
-													<option value="Saturday">Saturday</option>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="form-input">
-												<h6>Start Time</h6>
-												<input type="time" id="start_time" name="start_time" placeholder="Start Time" required>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="form-input">
-												<h6>End Time</h6>
-												<input type="time" id="end_time" name="end_time" placeholder="End Time" required>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="form-input">
-												<h6>Mode of Consultation</h6>
-												<select id="mode_of_consultation" name="mode_of_consultation" required>
-													<option value="" disabled selected>Mode of Consultation</option>
-													<option value="Online">Online</option>
-													<option value="In-Person">In-Person</option>
-												</select>
-											</div>
-										</div>
-
-										<button type="submit" class="btn">Save & Confirm</button>
-
-										<div>
-											<h6 class="back-step" id="closeaddConsultationBtn">Cancel</h6>
-										</div>
-									</form>
-								</div>
-								</div> 
-								
-								<!-- Edit Consultation Modal -->
-								<div id="editConsultationModal" class="modal">
-								<div class="modal-content">
-									<div class="modal-header">
-									<h3>Edit Timeslot</h3>
-									</div>
-									<form id="editConsultationForm" method="post" action="">
-										<div class="form-group">
-											<div class="form-input">
-												<h6>Day</h6>
-												<select id="day" name="day" required>
-													<option value="" disabled selected>Day</option>
-													<option value="Monday">Monday</option>
-													<option value="Tuesday">Tuesday</option>
-													<option value="Wednesday">Wednesday</option>
-													<option value="Thursday">Thursday</option>
-													<option value="Friday">Friday</option>
-													<option value="Saturday">Saturday</option>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="form-input">
-												<h6>Start Time</h6>
-												<input type="time" id="start_time" name="start_time" placeholder="Start Time" required>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="form-input">
-												<h6>End Time</h6>
-												<input type="time" id="end_time" name="end_time" placeholder="End Time" required>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="form-input">
-												<h6>Mode of Consultation</h6>
-												<select id="mode_of_consultation" name="mode_of_consultation" required>
-													<option value="" disabled selected>Mode of Consultation</option>
-													<option value="Online">Online</option>
-													<option value="In-Person">In-Person</option>
-												</select>
-											</div>
-										</div>
-
-										<button type="submit" class="btn">Save & Confirm</button>
-
-										<div>
-											<h6 class="back-step" id="closeeditConsultationBtn">Cancel</h6>
-										</div>
-									</form>
-								</div>
-								</div> 
-								
 					</div>
 				</div>
 
@@ -382,40 +331,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	}
 
-	// Fetch faculty_id for the select dropdown
-	function fetchFaculty(modalId, callback) {
+	function fetchFaculty() {
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getFaculty',
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFacultyProfile',  // Update the URL as necessary
 			type: 'GET',
 			dataType: 'json',
-			success: function (result) {
-				console.log('AJAX success:', result);
+			success: function(result) {
+				console.log('AJAX success (Courses):', result);
 				if (Array.isArray(result)) {
-					let selectElement;
-					if (modalId === "addConsultationModal") {
-						selectElement = $('#faculty_id');
-					} else if (modalId === "editConsultationModal") {
-						selectElement = $('#faculty_assigned');
-					}
-
-					if (selectElement) {
-						selectElement.empty();
-						selectElement.append('<option value="" disabled selected>Faculty</option>');
-						result.forEach(function (faculty) {
-							selectElement.append('<option value="' + faculty.id + '">' + faculty.full_name + '</option>');
-						});
-
-						// Execute the callback if provided
-						if (callback && typeof callback === 'function') {
-							callback();
-						}
-					}
+					createCourseTable(result, 0);  // Call the function to create the table and pass the result
 				} else {
 					console.error('Expected an array but received:', result);
 				}
 			},
-			error: function (xhr, status, error) {
-				console.error('Error fetching faculty:', error);
+			error: function(xhr, status, error) {
+				console.error('Error fetching courses:', error);
 			}
 		});
 	}
