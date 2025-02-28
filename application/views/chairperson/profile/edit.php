@@ -1402,34 +1402,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	});
 
-	// Notification Panel Logic
-	const notificationBtn = document.getElementById('notificationBtn');
-	const notificationPanel = document.getElementById('notificationPanel');
-	const closePanel = document.getElementById('closePanel');
-
-	// Open the notification panel
-	notificationBtn.addEventListener('click', (e) => {
-	  e.preventDefault();  // Prevent default anchor behavior
-	  notificationPanel.classList.add('open');
-	});
-
-	// Close the notification panel
-	closePanel.addEventListener('click', () => {
-	  notificationPanel.classList.remove('open');
-	});
-
-	// Close the notification panel when clicking outside of it
-	window.addEventListener('click', function (event) {
-	// Check if the click target is outside both the panel and the button
-	if (
-		!notificationPanel.contains(event.target) &&
-		!notificationBtn.contains(event.target)
-	) {
-		notificationPanel.classList.remove('open');
-	}
-	});
 	</script>
-
+	<script src="<?php echo base_url('assets/js/notification.js?v=' . time()); ?>"></script>
 
 
   </body>

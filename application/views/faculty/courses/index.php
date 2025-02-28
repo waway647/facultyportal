@@ -448,7 +448,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", false);
 
 	</script>
-	<script src="<?php echo base_url('assets/js/notification.js'); ?>"></script>
+	<script src="<?php echo base_url('assets/js/notification.js?v=' . time()); ?>"></script>
 	<script src="<?php echo base_url('assets/js/script.js'); ?>"></script>
 
   </body>

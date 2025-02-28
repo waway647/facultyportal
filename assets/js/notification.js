@@ -55,7 +55,11 @@ function slideNotificationPanel(notifications) {
     // Open panel on button click
     notificationBtn.addEventListener('click', (e) => {
         e.preventDefault();
-        notificationPanelClass.classList.add('open');
+        if (notificationPanelClass.classList.contains('open')) {
+            notificationPanelClass.classList.remove('open'); // Close if open
+        } else {
+            notificationPanelClass.classList.add('open'); // Open if closed
+        }
     });
 
     // Close panel on close button click
