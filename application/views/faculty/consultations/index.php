@@ -367,9 +367,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<script>
 	$(document).ready(function() {
-		fetchFaculty(); // Fetch faculty when Add Course modal opens
 		fetchConsultations();
-		fetchFacultyFullName();
+		fetchFaculty();
 
 		$('#searchInput').on('keypress', function(event) {
 			if (event.which == 13) {  // Enter key is pressed
@@ -393,7 +392,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	});
 
-	function fetchFacultyFullName() {
+	function fetchFaculty() {
 		$.ajax({
 			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
 			type: 'GET',
@@ -411,6 +410,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						}
 					});
 
+					createCourseTable(result, 0);  // Call the function to create the table and pass the result
+
 				} else {
 					console.error('Expected an array but received:', result);
 				}
@@ -420,27 +421,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 	}
-
-	// Fetch faculty_id for the select dropdown
-	function fetchFaculty() {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFacultyProfile',  // Update the URL as necessary
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('AJAX success (Courses):', result);
-				if (Array.isArray(result)) {
-					createCourseTable(result, 0);  // Call the function to create the table and pass the result
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching courses:', error);
-			}
-		});
-	}
-
 
 	// Function to fetch course data via AJAX
 	function fetchConsultations(query = '') {
@@ -538,9 +518,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         // Open modal
         openButton.onclick = function () {
             modal.style.display = "block";
-            if (modalId === "addCourseModal" || modalId === "editCourseModal" || modalId === "addConsultationModal") {
-                fetchFaculty(modalId);
-            }
         };
 
         // Close modal

@@ -28,4 +28,11 @@ class Announcements extends CI_Controller {
 			$this->load->view('faculty/announcements/index', $data);
 		}
 	}
+
+	public function getAnnouncements(){
+		/* $search = $this->input->get('search'); */
+
+			$result = $this->Announcement_model->getAnnouncements();
+			echo json_encode($result);  // Return data as JSON
+		} 
 }

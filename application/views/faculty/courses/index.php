@@ -258,7 +258,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Call the function to fetch faculty when the page loads
 	$(document).ready(function() {
 		fetchCourses();
-		fetchFacultyFullName();
+		fetchFaculty();
 
 		$('#searchInput').on('keypress', function(event) {
 			if (event.which == 13) {  // Enter key is pressed
@@ -282,7 +282,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	});
 
-	function fetchFacultyFullName() {
+	function fetchFaculty() {
 		$.ajax({
 			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
 			type: 'GET',

@@ -346,7 +346,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(document).ready(function() {
 		fetchResearch();
 		fetchFaculty();
-		fetchFacultyFullName();
 
 		$('#searchInput').on('keypress', function(event) {
 			if (event.which == 13) {  // Enter key is pressed
@@ -409,6 +408,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					} else {
 						console.error('Input element not found for modal:', modalId);
 					}
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+
+				if (Array.isArray(result)) {
+					let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
+					let facultyFullName = $('#full_name'); // Default text if no match is found
+
+					result.forEach(function(faculty) {
+						if (faculty.id == loggedUserId) {
+							facultyFullName.text(faculty.full_name); // Get the logged-in faculty's full name
+						}
+					});
+
 				} else {
 					console.error('Expected an array but received:', result);
 				}
@@ -491,7 +504,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	}
 
-	function fetchFacultyFullName() {
+	/* function fetchFacultyFullName() {
 		$.ajax({
 			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
 			type: 'GET',
@@ -517,7 +530,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				console.error('Error fetching faculty:', error);
 			}
 		});
-	}
+	} */
 
 	function populateAddResearchModal(research) {
 		// Fetch and populate faculty dropdown

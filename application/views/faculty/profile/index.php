@@ -351,36 +351,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			fetchQualifications();
 			fetchExperience();
 			fetchCertifications();
-			fetchFacultyFullName();
 		});
-
-	function fetchFacultyFullName() {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('AJAX success (Faculty Data):', result);
-
-				if (Array.isArray(result)) {
-					let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
-					let facultyFullName = $('#full_name'); // Default text if no match is found
-
-					result.forEach(function(faculty) {
-						if (faculty.id == loggedUserId) {
-							facultyFullName.text(faculty.full_name); // Get the logged-in faculty's full name
-						}
-					});
-
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching faculty:', error);
-			}
-		});
-	}
 
 	function fetchQualifications() {
 		$.ajax({
@@ -532,16 +503,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Function to fetch faculty data via AJAX
 	function fetchFaculty() {
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFacultyProfile',  // Update the URL as necessary
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty',  // Update the URL as necessary
 			type: 'GET',
 			dataType: 'json',
 			success: function(result) {
 				console.log('AJAX success (Courses):', result);
+
 				if (Array.isArray(result)) {
-					createCourseTable(result, 0);  // Call the function to create the table and pass the result
+					let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
+					let facultyFullName = $('#full_name'); // Default text if no match is found
+
+					result.forEach(function(faculty) {
+						if (faculty.id == loggedUserId) {
+							facultyFullName.text(faculty.full_name); // Get the logged-in faculty's full name
+						}
+					});
+
 				} else {
 					console.error('Expected an array but received:', result);
 				}
+
 			},
 			error: function(xhr, status, error) {
 				console.error('Error fetching courses:', error);
@@ -580,9 +561,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		// Open modal
 		openButton.onclick = function () {
 			modal.style.display = "block";
-			if (modalId === "addCourseModal" || modalId === "editCourseModal") {
-				fetchFaculty(modalId);
-			}
 		};
 
 		// Close modal

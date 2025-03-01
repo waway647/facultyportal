@@ -270,14 +270,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				<div class="the-content-container">
 					<div id="container">    
-						<table class="table" id="consultationList" name="consultationList">
+						<table class="table" id="announcementList" name="announcementList">
 							<thead>
 							<tr>
 								<th>#</th>
-								<th>Day</th>
-								<th>Start Time</th>
-								<th>End Time</th>
-								<th>Mode of Consultation</th>
+								<th>Title</th>
+								<th>Content</th>
+								<th>Date & Time</th>
 								<th>Action</th>
 							</tr>
 							</thead>
@@ -298,12 +297,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<script>
 	$(document).ready(function() {
-		fetchFaculty(); // Fetch faculty for the select dropdown
-		fetchConsultations(); // Fetch all consultations on page load
-		fetchFacultyFullName();
+		/* fetchAnnouncements(); */ // Fetch all Announcements on page load
+		fetchFaculty();
+		fetchAnnouncements();
 	});
 
-	function fetchFacultyFullName() {
+	function fetchFaculty() {
 		$.ajax({
 			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
 			type: 'GET',
@@ -331,112 +330,67 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	}
 
-	function fetchFaculty() {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFacultyProfile',  // Update the URL as necessary
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('AJAX success (Courses):', result);
-				if (Array.isArray(result)) {
-					createCourseTable(result, 0);  // Call the function to create the table and pass the result
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching courses:', error);
-			}
-		});
-	}
-
-
 	// Function to fetch course data via AJAX
-	function fetchConsultations(query = '') {
+	/* function fetchAnnouncements() {
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/getConsultations',  // Update the URL as necessary
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Announcements/getAnnouncements',  // Update the URL as necessary
 			type: 'GET',
 			data: { search: query },
 			dataType: 'json',
 			success: function(result) {
-				console.log('AJAX success (Consultations):', result);
+				console.log('AJAX success (Announcements):', result);
 				if (Array.isArray(result)) {
-					createConsultationTable(result, 0);  // Call the function to create the table and pass the result
+					if (result.length === 0) {
+						$('#announcementList tbody').html('<tr><td colspan="4">No announcements found.</td></tr>');
+					} else {
+						createAnnouncementsTable(result); // Populate the table
+					}
 				} else {
 					console.error('Expected an array but received:', result);
 				}
 			},
 			error: function(xhr, status, error) {
-				console.error('Error fetching consultations:', error);
+				console.error('Error fetching Announcements:', error);
+			}
+		});
+	} */
+
+	function fetchAnnouncements() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Announcements/getAnnouncements',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Qualifications):', result);
+				if (Array.isArray(result)) {
+					createAnnouncementsTable(result, 0);  // Call the function to create the table and pass the result
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching qualifications:', error);
 			}
 		});
 	}
 
 	// Function to create the table with course data
-	function createConsultationTable(result) {
-		$('#consultationList tbody').empty();  // Clear existing rows
+	function createAnnouncementsTable(result) {
+		$('#announcementList tbody').empty();  // Clear existing rows
 		var sno = 0;  // Initialize serial number
 		result.forEach(function(item) {
 			sno += 1;
 
 			var tr = "<tr>";
 			tr += "<td>" + sno + "</td>";  // Serial number
-			tr += "<td>" + item.day + "</td>";
-			tr += "<td>" + item.start_time + "</td>";
-			tr += "<td>" + item.end_time + "</td>";
-			tr += "<td>" + item.mode_of_consultation + "</td>";
-			tr += "<td><a href='#' onclick='fetchConsultationById(" + item.id + ")'>" +
-					"<div class='table-icon-container'>" +
-						"<div><img class='img' src='<?php echo base_url('assets/images/icon/edit.svg'); ?>' /></div>" +
-						"<div><a href='http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/deleteConsultation/" + item.id + "'>" +
-							"<img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a></div>" +
-					"</div></td>";
+			tr += "<td>" + item.title + "</td>";
+			tr += "<td>" + item.content + "</td>";
+			tr += "<td>" + item.created_at + "</td>";
 			tr += "</tr>";
 
-			$('#consultationList tbody').append(tr);  // Append the new row to the table body
+			$('#announcementList tbody').append(tr);  // Append the new row to the table body
 		});
 	}
-
-	function fetchConsultationById(consultationId) {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/getConsultationByID/' + consultationId,
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('Fetched Consultation:', result);
-				if (result && result.id) {
-					populateEditModal(result); // Populate the modal with fetched data
-				} else {
-					console.error('Error: Consultation not found!');
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching consultation by ID:', error);
-			}
-		});
-	}
-	
-	function populateEditModal(consultation) {
-		$('#editConsultationModal #day').val(consultation.day);
-		$('#editConsultationModal #start_time').val(consultation.start_time);
-		$('#editConsultationModal #end_time').val(consultation.end_time);
-		$('#editConsultationModal #mode_of_consultation').val(consultation.mode_of_consultation);
-
-		$('#editConsultationForm').attr('action', 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/updateConsultation/' + consultation.id);
-		$('#editConsultationModal').show(); // Display the modal
-	}
-
-	// Close modal when clicking outside of it (on the backdrop)
-	window.addEventListener("click", function (event) {
-		if (event.target === document.getElementById('editConsultationModal')) {
-			$('#editConsultationModal').hide(); // Use fadeOut for smoother hiding
-		}
-	});
-
-	// Attach event listener to "Cancel" button inside the Edit Course Modal
-	$('#closeeditConsultationBtn').on('click', function () {
-		$('#editConsultationModal').hide(); // Hide the modal when clicked
-	});
 
 	// Function to initialize a modal
     function setupModal(modalId, openButtonId, closeButtonId) {
@@ -447,9 +401,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         // Open modal
         openButton.onclick = function () {
             modal.style.display = "block";
-            if (modalId === "addCourseModal" || modalId === "editCourseModal" || modalId === "addConsultationModal") {
-                fetchFaculty(modalId);
-            }
         };
 
         // Close modal
@@ -468,8 +419,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Initialize "Post Announcement" modal
 	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
 
-	// Initialize "Add Course" modal
-    setupModal("addConsultationModal", "addConsultationBtn", "closeaddConsultationBtn");
+	/* // Initialize "Add Course" modal
+    setupModal("addConsultationModal", "addConsultationBtn", "closeaddConsultationBtn"); */
 
 	// Get elements
 	const modal = document.getElementById("postAnnouncementModal");
@@ -493,7 +444,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  }
 	};
 
-	// File attachment handling
+	/* // File attachment handling
 	const attachmentInput = document.getElementById("announcement_attachment");
 	const attachmentPreview = document.getElementById("attachment_preview");
 	let attachedFiles = []; // Store uploaded files dynamically
@@ -548,7 +499,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	  // Reset file input to allow re-uploading the same file if removed
 	  attachmentInput.value = "";
 
-	});
+	}); */
 
 	</script>
 	<script src="<?php echo base_url('assets/js/notification.js?v=' . time()); ?>"></script>

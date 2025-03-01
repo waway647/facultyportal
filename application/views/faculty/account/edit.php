@@ -371,10 +371,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<script>
 	$(document).ready(function() {
-		fetchFacultyFullName();
+		fetchFaculty();
 	});
 
-	function fetchFacultyFullName() {
+	function fetchFaculty() {
 		$.ajax({
 			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
 			type: 'GET',
