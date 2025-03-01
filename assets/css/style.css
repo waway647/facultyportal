@@ -1144,6 +1144,7 @@ select{
 }
 
 .item-box .add-button button {
+  display: flex;
   font-family: 'TT Hoves Medium';
   font-weight: 900;
   padding: 10px 20px;
@@ -1239,6 +1240,9 @@ select{
 }
 
 .sub-content-container .add-button button {
+  display: flex;
+  align-items: center;
+  gap: 10px;
   font-family: 'TT Hoves Medium';
   font-weight: 900;
   padding: 10px 20px;
