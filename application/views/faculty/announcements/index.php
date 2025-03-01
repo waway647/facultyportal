@@ -275,7 +275,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<tr>
 								<th>#</th>
 								<th>Title</th>
-								<th>Content</th>
+								<!-- <th>Content</th> -->
 								<th>Date & Time</th>
 								<th>Action</th>
 							</tr>
@@ -297,9 +297,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<script>
 	$(document).ready(function() {
-		/* fetchAnnouncements(); */ // Fetch all Announcements on page load
+		fetchAnnouncements(); // Fetch all Announcements on page load
 		fetchFaculty();
-		fetchAnnouncements();
 	});
 
 	function fetchFaculty() {
@@ -331,7 +330,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 
 	// Function to fetch course data via AJAX
-	/* function fetchAnnouncements() {
+	function fetchAnnouncements(query = '') {
 		$.ajax({
 			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Announcements/getAnnouncements',  // Update the URL as necessary
 			type: 'GET',
@@ -353,25 +352,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				console.error('Error fetching Announcements:', error);
 			}
 		});
-	} */
-
-	function fetchAnnouncements() {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Announcements/getAnnouncements',  // Update the URL as necessary
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('AJAX success (Qualifications):', result);
-				if (Array.isArray(result)) {
-					createAnnouncementsTable(result, 0);  // Call the function to create the table and pass the result
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching qualifications:', error);
-			}
-		});
 	}
 
 	// Function to create the table with course data
@@ -384,13 +364,22 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			var tr = "<tr>";
 			tr += "<td>" + sno + "</td>";  // Serial number
 			tr += "<td>" + item.title + "</td>";
-			tr += "<td>" + item.content + "</td>";
+			/* tr += "<td>" + item.content + "</td>"; */
+			/* tr += "<td>" + item.end_time + "</td>"; */
 			tr += "<td>" + item.created_at + "</td>";
+			tr += "<td>" + "Details" + "</td>";
+			/* tr += "<td><a href='#' onclick='fetchConsultationById(" + item.id + ")'>" +
+					"<div class='table-icon-container'>" +
+						"<div><img class='img' src='<?php echo base_url('assets/images/icon/edit.svg'); ?>' /></div>" +
+						"<div><a href='http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Announcements/deleteConsultation/" + item.id + "'>" +
+							"<img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a></div>" +
+					"</div></td>"; */
 			tr += "</tr>";
 
 			$('#announcementList tbody').append(tr);  // Append the new row to the table body
 		});
 	}
+
 
 	// Function to initialize a modal
     function setupModal(modalId, openButtonId, closeButtonId) {

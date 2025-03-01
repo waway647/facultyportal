@@ -10,6 +10,7 @@ class Announcements extends CI_Controller {
 		$this->load->library('session');
 		$this->load->database();
 		$this->load->model('common_models/Faculty_model');
+		$this->load->model('faculty_models/Announcement_model');
 		$this->load->helper('url');
 	}
 
