@@ -9,6 +9,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/globals.css?<?php echo time(); ?>"> 
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/style.css?<?php echo time(); ?>"> 
 	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/profile.css?<?php echo time(); ?>"> 
+	<link rel = "stylesheet" type = "text/css" href = "<?php echo base_url(); ?>assets/css/table.css?<?php echo time(); ?>"> 
 
 	<!-- jQuery library -->
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
@@ -263,6 +264,61 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 
 						<div class="add-button">
+							<button id="exportFacultyBtn" type="button" class="btn">
+							<img class="img" src="<?php echo base_url('assets/images/icon/export.svg'); ?>" />
+								Export&nbspall
+							</button>
+						</div>
+
+								<!-- Add Faculty Modal -->
+								<div id="exportFacultyModal" class="modal">
+								<div class="modal-content">
+									
+									<div class="modal-header">
+									<h3>All Faculty Profiles</h3>
+									</div>
+
+									<div class="the-content-container">
+										<div id="container">    
+											<table class="table" id="exportFacultyTable" name="exportFacultyTable">
+												<thead>
+												<tr>
+													<th>ID</th>
+													<th>Name</th>
+													<th>Email</th>
+													<th>Department</th>
+													<th>Position</th>
+													<th>Employment Status</th>
+													<th>Date Hired</th>
+													<th>Courses Assigned</th>
+													<th>Teaching Loads (Units)</th>
+													<th>Research Outputs</th>
+													<th>Qualifications</th>
+													<th>Industry Experience</th>
+													<th>Certifications</th>
+													<th>Contact Number</th>
+												</tr>
+												</thead>
+
+												<tbody>
+													
+												</tbody>
+											</table>
+
+										</div>
+									</div>
+
+									<form id="exportFacultyForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/exportFacultyTable">
+										<button type="submit" class="btn">Export</button>
+
+										<div>
+											<h6 id="closeExportFacultyBtn" class="back-step">Cancel</h6>
+										</div>
+									</form>
+								</div>
+								</div> 
+
+						<div class="add-button">
 							<button id="addFacultyBtn" type="button" class="btn">+ &nbsp&nbsp Add Faculty</button>
 						</div>
 								
@@ -366,6 +422,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>
 										</div>
 
+										<div class="form-group">
+											<div class="form-input">
+												<h6>Position</h6>
+												<select id="position" name="position" required>
+													<option value="" disabled selected>Choose Position</option>
+													<option value="Professor">Professor</option>
+												</select>
+											</div>
+										</div>
+
 										<button type="submit" class="btn">Save & Confirm</button>
 
 										<div>
@@ -388,7 +454,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script>
 	// Call the function to fetch user profiles when the page loads
 	$(document).ready(function() {
-		fetchUserProfiles(); // Fetch data and create grid
+		updateFacultyTable();
 		countAllFaculty();
 
 		$('#searchInput').on('keypress', function(event) {
@@ -413,44 +479,386 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	});
 
+	// Combined function to update the table
+	function updateFacultyTable(query = '') {
+		let facultyList = [];
+		let facultyCourses = {};
+		let facultyResearchOutputs = {};
+		let facultyQualifications = {};
+		let facultyIndustryExperience = {};
+		let facultyCertifications = {};
+
+		$.when(
+			$.ajax({
+				url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchUserProfiles',
+				type: 'GET',
+				data: { search: query },
+				dataType: 'json'
+			}),
+			$.ajax({
+				url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchCoursesAssigned',
+				type: 'GET',
+				dataType: 'json'
+			}),
+			$.ajax({
+				url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchResearchOutputs',
+				type: 'GET',
+				dataType: 'json'
+			}),
+			$.ajax({
+				url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchQualifications',
+				type: 'GET',
+				dataType: 'json'
+			}),
+			$.ajax({
+				url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchIndustryExperience',
+				type: 'GET',
+				dataType: 'json'
+			}),
+			$.ajax({
+				url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchCertifications',
+				type: 'GET',
+				dataType: 'json'
+			})
+		).done(function(profilesResponse, coursesResponse, researchResponse, qualificationsResponse, industryExperienceResponse, certificationsResponse) {
+			facultyList = profilesResponse[0];
+			facultyCourses = assignAndCalculateTeachingLoads(coursesResponse[0]);
+			facultyResearchOutputs = assignResearchOutputs(researchResponse[0]);
+			facultyQualifications = assignQualifications(qualificationsResponse[0]);
+			facultyIndustryExperience = assignIndustryExperience(industryExperienceResponse[0]);
+			facultyCertifications = assignCertifications(certificationsResponse[0]);
+			createGrid(facultyList); // Update the grid with profiles
+			createExportPreviewTable(facultyList, facultyCourses, facultyResearchOutputs, facultyQualifications, facultyIndustryExperience, facultyCertifications); // Update the table with combined data
+		}).fail(function(xhr, status, error) {
+			console.error('Error fetching data:', error);
+		});
+	}
+
 	// Function to fetch user profiles and create the grid
 	function fetchUserProfiles(query = '') {
-				$.ajax({
-					url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchUserProfiles', // URL to fetch data
-					type: 'GET',
-					data: { search: query },
-					dataType: 'json',
-					success: function(result) {
-						console.log(result); // Debugging statement to check the structure of result
-						createGrid(result, 0);  // Call the function to create the grid with the fetched data
-					},
-					error: function(xhr, status, error) {
-						console.error('Error fetching user profiles:', error);
-					}
-				});
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchUserProfiles', // URL to fetch data
+			type: 'GET',
+			data: { search: query },
+			dataType: 'json',
+			success: function(result) {
+				console.log('fetchUserProfiles: ', result); // Debugging statement to check the structure of result
+				createGrid(result);  // Call the function to create the grid with the fetched data
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching user profiles:', error);
+			}
+		});
+	}
+
+	function fetchCoursesAssigned() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchCoursesAssigned',
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('fetchCoursesAssigned: ', result);
+				const facultyData = assignAndCalculateTeachingLoads(result); // Get grouped data
+				console.log('Calculated faculty data:', facultyData);
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching courses:', error);
+			}
+		});
+	}
+
+	function fetchResearchOutputs() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchResearchOutputs', // URL to fetch data
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('fetchResearchOutputs: ', result); // Debugging statement to check the structure of result
+				const facultyResearchData = assignResearchOutputs(result); // Get grouped data
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching user profiles:', error);
+			}
+		});
+	}
+
+	function fetchQualifications() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchQualifications', // URL to fetch data
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('fetchQualifications: ', result); // Debugging statement to check the structure of result
+				const facultyQualificationsData = assignQualifications(result); // Get grouped data
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching user profiles:', error);
+			}
+		});
+	}
+
+	function fetchIndustryExperience() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchIndustryExperience', // URL to fetch data
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('fetchIndustryExperience: ', result); // Debugging statement to check the structure of result
+				const facultyIndustryExperienceData = assignIndustryExperience(result); // Get grouped data
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching user profiles:', error);
+			}
+		});
+	}
+
+	function fetchCertifications() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/fetchCertifications', // URL to fetch data
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('fetchCertifications: ', result); // Debugging statement to check the structure of result
+				const facultyCertificationsData = assignCertifications(result); // Get grouped data
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching user profiles:', error);
+			}
+		});
+	}
+
+	function assignAndCalculateTeachingLoads(result) {
+		if (!Array.isArray(result)) {
+			console.error('Invalid result format:', result);
+			return {};
+		}
+
+		// Object to store courses and loads per facultyID
+		const facultyData = {};
+
+		result.forEach(function(course) {
+			const facultyID = course.faculty_profile_id || ''; // Adjust based on your actual field name
+			if (!facultyID) {
+				console.warn('Course missing facultyID:', course);
+				return;
 			}
 
-			// Function to fetch user profiles and create the grid
-			function countAllFaculty() {
-				$.ajax({
-					url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/countAllFaculty', // URL to fetch data
-					type: 'GET',
-					dataType: 'json',
-					success: function(result) {
-						console.log(result); // Debugging statement to check the structure of result
-						if (result && !result.error) {
-							// Update the total faculty count in the UI
-							document.getElementById("totalFaculty").textContent = result || "0";
-						} else {
-							console.error("Error: ", result.error || "Unexpected response format");
-							document.getElementById("totalFaculty").textContent = "Error";
-						}
-					},
-					error: function(xhr, status, error) {
-						console.error('Error fetching user profiles:', error);
-					}
-				});
+			// Initialize faculty entry if it doesn't exist
+			if (!facultyData[facultyID]) {
+				facultyData[facultyID] = {
+					coursesAssigned: "",
+					teachingLoads: 0
+				};
+			} else {
+				facultyData[facultyID].coursesAssigned += ' | ';
 			}
+
+			// Append course code and add units
+			facultyData[facultyID].coursesAssigned += course.course_code || '';
+			facultyData[facultyID].teachingLoads += parseInt(course.number_of_units || 0) || 0;
+		});
+
+		// Trim trailing spaces from coursesAssigned
+		for (const id in facultyData) {
+			facultyData[id].coursesAssigned = facultyData[id].coursesAssigned.trim();
+		}
+
+		return facultyData; // Returns an object with facultyID keys
+	}
+
+	function assignResearchOutputs(result) {
+		if (!Array.isArray(result)) {
+			console.error('Invalid result format:', result);
+			return {};
+		}
+
+		// Object to store courses and loads per facultyID
+		const facultyResearchData = {};
+
+		result.forEach(function(research) {
+			const facultyID = research.faculty_profile_id || ''; // Adjust based on your actual field name
+			if (!facultyID) {
+				console.warn('Course missing facultyID:', research);
+				return;
+			}
+
+			// Initialize faculty entry if it doesn't exist
+			if (!facultyResearchData[facultyID]) {
+				facultyResearchData[facultyID] = {
+					researchOutputs: "",
+				};
+			} else {
+				// Add semicolon separator only if this isn't the first research output
+				facultyResearchData[facultyID].researchOutputs += ' | ';
+			}
+
+			// Append course code and add units
+			facultyResearchData[facultyID].researchOutputs += research.title || '';
+		});
+
+		return facultyResearchData; // Returns an object with facultyID keys
+	}
+
+	function assignQualifications(result) {
+		if (!Array.isArray(result)) {
+			console.error('Invalid result format:', result);
+			return {};
+		}
+
+		// Object to store courses and loads per facultyID
+		const facultyQualificationsData = {};
+
+		result.forEach(function(qualification) {
+			const facultyID = qualification.faculty_profile_id || ''; // Adjust based on your actual field name
+			if (!facultyID) {
+				console.warn('Course missing facultyID:', qualification);
+				return;
+			} 
+
+			// Initialize faculty entry if it doesn't exist
+			if (!facultyQualificationsData[facultyID]) {
+				facultyQualificationsData[facultyID] = {
+					qualifications: "",
+				};
+			} else {
+				facultyQualificationsData[facultyID].qualifications += ' | ';
+			}
+
+			// Append course code and add units
+			facultyQualificationsData[facultyID].qualifications += (qualification.academic_degree || '') + " " + (qualification.institution || '') + ' ' + (qualification.year_graduated || '');
+		});
+		return facultyQualificationsData; // Returns an object with facultyID keys
+	}
+
+	function assignIndustryExperience(result) {
+		if (!Array.isArray(result)) {
+			console.error('Invalid result format:', result);
+			return {};
+		}
+
+		// Object to store courses and loads per facultyID
+		const facultyIndustryExperienceData = {};
+
+		result.forEach(function(industry_experience) {
+			const facultyID = industry_experience.faculty_profile_id || ''; // Adjust based on your actual field name
+			if (!facultyID) {
+				console.warn('Course missing facultyID:', industry_experience);
+				return;
+			}
+
+			// Initialize faculty entry if it doesn't exist
+			if (!facultyIndustryExperienceData[facultyID]) {
+				facultyIndustryExperienceData[facultyID] = {
+					industryExperience: "",
+				};
+			} else {
+				facultyIndustryExperienceData[facultyID].industry_experience += ' | ';
+			}
+
+			// Append course code and add units
+			facultyIndustryExperienceData[facultyID].industryExperience += (industry_experience.company_name || '') + " " + (industry_experience.job_position || '') + ' ' + (industry_experience.years_of_experience || '');
+		});
+
+		return facultyIndustryExperienceData; // Returns an object with facultyID keys
+	}
+
+	function assignCertifications(result) {
+		if (!Array.isArray(result)) {
+			console.error('Invalid result format:', result);
+			return {};
+		}
+
+		// Object to store courses and loads per facultyID
+		const facultyCertificationsData = {};
+
+		result.forEach(function(certification) {
+			const facultyID = certification.faculty_profile_id || ''; // Adjust based on your actual field name
+			if (!facultyID) {
+				console.warn('Course missing facultyID:', certification);
+				return;
+			}
+
+			// Initialize faculty entry if it doesn't exist
+			if (!facultyCertificationsData[facultyID]) {
+				facultyCertificationsData[facultyID] = {
+					certifications: "",
+				};
+			} else {
+				facultyCertificationsData[facultyID].certifications += ' | ';
+			}
+
+			// Append course code and add units
+			facultyCertificationsData[facultyID].certifications += (certification.certification_name || '') + " " + (certification.certification_title || '') + ' ' + (certification.year_received || '');
+		});
+
+		return facultyCertificationsData; // Returns an object with facultyID keys
+	}
+
+	function createExportPreviewTable(facultyList, facultyData = {}, facultyResearchData = {}, facultyQualificationsData = {}, facultyIndustryExperienceData = {}, facultyCertificationsData = {}) {
+		$('#exportFacultyTable tbody').empty(); // Clear previous content
+		let sno = 0;
+
+		if (!Array.isArray(facultyList)) {
+			console.error('Invalid faculty list format:', facultyList);
+			return;
+		}
+
+		facultyList.forEach(function(faculty) {
+			sno += 1;
+
+			// Faculty details from fetchUserProfiles
+			const id = faculty.id || '';
+			const facultyID = faculty.id; // Assuming faculty.id matches faculty_profile_id from courses
+			const firstName = faculty.first_name || '';
+			const lastName = faculty.last_name || '';
+			const middleName = faculty.middle_name || '';
+			const email = faculty.email || '';
+			const position = faculty.position || '';
+			const department = faculty.department || '';
+			const employmentType = faculty.employment_type || '';
+			const dateHired = faculty.date_hired || '';
+			const contactNumber = faculty.mobile_number || '';
+
+			// Get calculated courses and loads from facultyData
+			const coursesAssigned = facultyData[facultyID]?.coursesAssigned || '';
+			const teachingLoads = facultyData[facultyID]?.teachingLoads || 0;
+
+			// Get research outputs from facultyResearchData
+			const researchOutputs = facultyResearchData[facultyID]?.researchOutputs || '';
+
+			// Get qualifications from facultyQualificationsData
+			const qualifications = facultyQualificationsData[facultyID]?.qualifications || '';
+
+			// Get industry experience from facultyIndustryExperienceData
+			const industryExperience = facultyIndustryExperienceData[facultyID]?.industryExperience || '';
+
+			// Get certifications from facultyCertificationsData
+			const certifications = facultyCertificationsData[facultyID]?.certifications || '';
+
+			const name = [lastName, firstName, middleName].filter(Boolean).join(', ').replace(/, $/, '');
+
+			const row = `
+				<tr>
+					<th>${id}</th>
+					<th>${name}</th>
+					<th>${email}</th>
+					<th>${department}</th>
+					<th>${position}</th>
+					<th>${employmentType}</th>
+					<th>${dateHired}</th>
+					<th>${coursesAssigned}</th>
+					<th>${teachingLoads}</th>
+					<th>${researchOutputs}</th>
+					<th>${qualifications}</th>
+					<th>${industryExperience}</th>
+					<th>${certifications}</th>
+					<th>${contactNumber}</th>
+				</tr>
+			`;
+
+			$('#exportFacultyTable tbody').append(row);
+		});
+	}
 
 	function createGrid(result) {
 		$('#profileCardContainer').empty(); // Clear previous content
@@ -528,6 +936,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	}
 
+	// Function to fetch user profiles and create the grid
+	function countAllFaculty() {
+				$.ajax({
+					url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/countAllFaculty', // URL to fetch data
+					type: 'GET',
+					dataType: 'json',
+					success: function(result) {
+						console.log(result); // Debugging statement to check the structure of result
+						if (result && !result.error) {
+							// Update the total faculty count in the UI
+							document.getElementById("totalFaculty").textContent = result || "0";
+						} else {
+							console.error("Error: ", result.error || "Unexpected response format");
+							document.getElementById("totalFaculty").textContent = "Error";
+						}
+					},
+					error: function(xhr, status, error) {
+						console.error('Error fetching user profiles:', error);
+					}
+				});
+			}
 
 			
 
@@ -569,6 +998,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	// Initialize "Post Announcement" modal
 	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
+
+	// Initialize "Export" modal
+	setupModal("exportFacultyModal", "exportFacultyBtn", "closeExportFacultyBtn");
 
 	// Initialize "Add Faculty" modal
 	setupModal("addFacultyModal", "addFacultyBtn", "closeAddFacultyBtn");

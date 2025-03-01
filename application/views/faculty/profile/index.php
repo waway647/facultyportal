@@ -241,6 +241,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<div class="role-item-profile">
 									<h5><?php echo $faculty->role_name; ?></h5>
 								</div>
+
+								<div class="role-item-profile">
+									<h5><?php echo $faculty->position; ?></h5>
+								</div>
 							</div>
 						</div>
 
