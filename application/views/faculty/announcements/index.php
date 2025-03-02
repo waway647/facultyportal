@@ -172,127 +172,125 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		  <div class="container-management">
 				<div class="item-summary-container">
 					<div class="boxes-container">
-					<div class="item-box">
-							<div class="left-summary-container">
+							<div class="item-box">
+								<div class="left-summary-container">
+									<div class="summary-img-container">
+										<img src="<?php echo base_url('assets/images/profile/user.png'); ?>" alt="">
+									</div>
+
+									<h4>Total</h4>
+								</div>
+								
+								<h2>3</h2>
+							</div>
+
+							<div class="item-box">
 								<div class="summary-img-container">
 									<img src="<?php echo base_url('assets/images/profile/user.png'); ?>" alt="">
 								</div>
 
 								<h4>Total</h4>
+
+								<h2>3</h2>
 							</div>
-							
-							<h2>3</h2>
+
+							<div class="item-box">
+								<div class="summary-img-container">
+									<img src="<?php echo base_url('assets/images/profile/user.png'); ?>" alt="">
+								</div>
+
+								<h4>Total</h4>
+
+								<h2>3</h2>
+							</div>
+						</div>
+					</div>
+
+					<div class="sub-content-container ann">
+						<div class="left-sub">
+							<h4>Announcement List&nbsp</h4>
+							<h4 class="left-sub-numbers">(3)</h4>
 						</div>
 
-						<div class="item-box">
-							<div class="summary-img-container">
-								<img src="<?php echo base_url('assets/images/profile/user.png'); ?>" alt="">
-							</div>
-
-							<h4>Total</h4>
-
-							<h2>3</h2>
+						<!-- //Sort By -->
+						<div class="right-sub-ann">
+							<!-- <div class="searchDisplay">
+								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
+								<h6 id="searchDisplay"></h6>
+							</div> -->
+							<p>Sort By</p>
+							<div class="sub-container">
+								<button class="button">
+									<div class="div-wrapper">
+										<select name="sort" id="sortSelect">
+											<option value="" disabled selected>Choose sort order</option>
+											<option value="desc">Newest First</option>
+											<option value="asc">Oldest First</option>
+											<option value="title_asc">Title (A-Z)</option>
+											<option value="title_desc">Title (Z-A)</option>
+										</select>
+									</div>
+								</button>
+							</div>								
 						</div>
 
-						<div class="item-box">
-							<div class="summary-img-container">
-								<img src="<?php echo base_url('assets/images/profile/user.png'); ?>" alt="">
+						<!-- //Sort Date -->
+						<div class="right-sub-ann">
+							<!-- <div class="searchDisplay">
+								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
+								<h6 id="searchDisplay"></h6>
+							</div> -->
+							<p>Date</p>
+							<div class="sub-container">
+								<button class="button">
+									<div class="div-wrapper">
+										<input type="date" name="date" id="sortDate">
+									</div>
+								</button>
+							</div>								
+						</div>
+
+						<!-- //Search -->
+						<div class="right-sub-ann">
+							<div class="searchDisplay">
+								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
+								<h6 id="searchDisplay"></h6>
 							</div>
+							<p>Search</p>
+							<div class="sub-container">
+								<button class="button">
+									<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
+									<div class="div-wrapper">
+										<input type="search" name="search" id="searchInput" placeholder="Search">
+									</div>
+								</button>
+							</div>								
+						</div>
+					</div>
 
-							<h4>Total</h4>
+					<div class="the-content-container-2">
+						<div id="container">    
+							<table class="table table-2" id="announcementList" name="announcementList">
+								<thead>
+								<tr>
+									<th>#</th>
+									<th>Title</th>
+									<!-- <th>Content</th> -->
+									<th>Date & Time</th>
+									<th>Action</th>
+								</tr>
+								</thead>
 
-							<h2>3</h2>
+								<tbody>
+									
+								</tbody>
+							</table>
+
 						</div>
 					</div>
 				</div>
-
-				<div class="sub-content-container">
-					<div class="left-sub">
-						<h4>Announcement List&nbsp</h4>
-						<h4 class="left-sub-numbers">(3)</h4>
-					</div>
-
-					<!-- //Sort By -->
-					<div class="right-sub-ann">
-						<!-- <div class="searchDisplay">
-							<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
-							<h6 id="searchDisplay"></h6>
-						</div> -->
-						<p>Sort By</p>
-						<div class="sub-container">
-							<button class="button">
-								<div class="div-wrapper">
-									<select name="sort" id="sortSelect">
-										<option value="" disabled selected>Choose sort order</option>
-										<option value="desc">Newest First</option>
-										<option value="asc">Oldest First</option>
-										<option value="title_asc">Title (A-Z)</option>
-										<option value="title_desc">Title (Z-A)</option>
-									</select>
-								</div>
-							</button>
-						</div>								
-					</div>
-
-					<!-- //Sort Date -->
-					<div class="right-sub-ann">
-						<!-- <div class="searchDisplay">
-							<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
-							<h6 id="searchDisplay"></h6>
-						</div> -->
-						<p>Date</p>
-						<div class="sub-container">
-							<button class="button">
-								<div class="div-wrapper">
-									<input type="date" name="date" id="sortDate">
-								</div>
-							</button>
-						</div>								
-					</div>
-
-					<!-- //Search -->
-					<div class="right-sub-ann">
-						<div class="searchDisplay">
-							<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
-							<h6 id="searchDisplay"></h6>
-						</div>
-						<p>Search</p>
-						<div class="sub-container">
-							<button class="button">
-								<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
-								<div class="div-wrapper">
-									<input type="search" name="search" id="searchInput" placeholder="Search">
-								</div>
-							</button>
-						</div>								
-					</div>
-				</div>
-
-				<div class="the-content-container">
-					<div id="container">    
-						<table class="table" id="announcementList" name="announcementList">
-							<thead>
-							<tr>
-								<th>#</th>
-								<th>Title</th>
-								<!-- <th>Content</th> -->
-								<th>Date & Time</th>
-								<th>Action</th>
-							</tr>
-							</thead>
-
-							<tbody>
-								
-							</tbody>
-						</table>
-
-					</div>
-				</div>
-
-				
-			</div>
-        </div>
-      </div>
+       		</div>
+     	</div>
     </div>
 
 	<script>

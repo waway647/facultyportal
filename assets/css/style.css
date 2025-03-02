@@ -1176,6 +1176,10 @@ select{
   border-bottom: 2px solid #DCDBDB;
 }
 
+.container-management .ann{
+  border-bottom: none;
+}
+
 .sub-content-container .left-sub {
   display: flex;
   font-family: 'TT Hoves Medium';

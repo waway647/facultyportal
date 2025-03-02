@@ -65,11 +65,7 @@
 }
 
 table {
-    border-collapse: collapse;
-}
-
-table {
-    border-collapse: collapse;
+    border-collapse: separate;
     border-spacing: 0;
     text-indent: initial;
 }
@@ -84,7 +80,7 @@ table {
     vertical-align: top;
 }
 .table td {
-  border-bottom: 1px solid #f1f1f1;
+  border-bottom: 2px solid #f1f1f1;
   opacity: 85%;
 }
 
@@ -107,4 +103,46 @@ th {
   align-items: center; /* Aligns items vertically in the center */
   justify-content: baseline; /* Centers items horizontally within the container */
   gap: 20px; /* Adds space between the icons */
+}
+
+/* Table for Announcements */
+/* .table-2{
+  border: 2px solid black;
+  border-radius: 5px !important;
+} */
+/* 
+.table-2 thead th:first-child{
+  border-radius: 10px 0 0 0;
+}
+
+.table-2 thead th:last-child{
+  border-radius: 0 10px 0 0;
+} */
+
+/* .table-2 thead th {
+  height: 40px;
+  border-bottom: 2px solid black; 
+}
+
+.table-2 td{
+  height: 50px;
+  border-bottom: 2px solid black;
+} */
+
+.table-2 {
+  width: 100%;
+  border-spacing: 0; /* Remove gaps between cells */
+  border: 2px solid black; /* Your table border */
+  border-radius: 5px; /* Your desired border radius */
+  margin-top: 20px;
+  overflow: hidden; /* Clip content to the rounded border */
+}
+
+.table-2 thead th {
+  height: 40px;
+}
+
+.table-2 td{
+  height: 50px;
+  border-top: 2px solid black; 
 }

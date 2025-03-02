@@ -323,8 +323,7 @@ body {
 
 .tables-profile-container .the-content-container {
   padding: 35px 0;
-  border-top: 1px solid #DCDBDB;
-  border-bottom: 1px solid #DCDBDB;
+  border-top: 2px solid #DCDBDB;
   height: auto;
 }
 
