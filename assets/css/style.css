@@ -1208,6 +1208,12 @@ select{
   font-size: 18px; 
 }
 
+.sub-content-container .right-sub-ann .sub-container input[type="date"]::-webkit-calendar-picker-indicator {
+  font-size: 18px; /* Your existing font size */
+  filter: invert(66%) sepia(0%) saturate(0%) hue-rotate(150deg) brightness(93%) contrast(92%); /* Grey color (#A4A4A4) */
+  cursor: pointer; /* Add a pointer cursor for better UX */
+}
+
 .sub-content-container .right-sub-ann .sub-container select{
   color: #A4A4A4;
 }

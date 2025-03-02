@@ -132,9 +132,9 @@ th {
 .table-2 {
   width: 100%;
   border-spacing: 0; /* Remove gaps between cells */
-  border: 2px solid black; /* Your table border */
+  border: 2px solid #DCDBDB; /* Your table border */
   border-radius: 5px; /* Your desired border radius */
-  margin-top: 20px;
+  margin-top: 10px;
   overflow: hidden; /* Clip content to the rounded border */
 }
 
@@ -144,5 +144,6 @@ th {
 
 .table-2 td{
   height: 50px;
-  border-top: 2px solid black; 
+  border-top: 2px solid #DCDBDB; 
+  border-bottom: none;
 }
