@@ -133,6 +133,10 @@ select{
   outline: 1px solid #A4A4A4;
 }
 
+.address-section .input-container{
+  margin: 10px;
+}
+
 .line{
   margin-top: 20px;
   border-bottom: 1px solid #DCDBDB;

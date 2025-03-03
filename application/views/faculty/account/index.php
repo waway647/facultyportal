@@ -311,7 +311,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<h4>Present Address</h4>
 
 						<!-- Address Section with Dynamic Display -->
-						<div id="address-section">
+						<div class="address-section">
 								<div class="input-container index address-field" style="<?php echo ($user_address !== null) ? '' : 'display: none;'; ?>">
 									<h6>House Address</h6>
 									<input type="text" id="house_address" name="house_address" 
