@@ -730,8 +730,8 @@ select{
       font-family: 'TT Hoves Medium';
     }
 
-    .right-account-container input {
-      height: 35px;
+    .right-account-container input, .right-account-container select{
+      height: 45px;
       width: 100%;
     }
 
@@ -1292,6 +1292,11 @@ select{
   height: 7px;
 }
 
+#exportFacultyModal .the-content-container {
+  height: 400px !important;
+  margin: 20px 0 !important;
+}
+
 .the-content-container {
   display: flex;
   flex-direction: column;
@@ -1403,6 +1408,10 @@ select{
   background-color: #DCDBDB;
 }
 
+#exportFacultyModal .modal-content {
+  width: 80%
+}
+
 #addFacultyModal .modal-content, 
 
 #addCourseModal .modal-content, 
@@ -1444,12 +1453,15 @@ select{
 #editCertificationModal form,
 
 #addConsultationModal form,
-#editConsultationModal form {
+#editConsultationModal form,
+
+#exportFacultyForm {
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 10px;
 }
+
 
 #addFacultyModal .modal-for-step, 
 
@@ -1491,7 +1503,9 @@ select{
 #editCertificationModal .modal-header,
 
 #addConsultationModal .modal-header,
-#editConsultationModal .modal-header {
+#editConsultationModal .modal-header,
+
+#exportFacultyModal .modal-header {
   padding: 10px;
   font-family: 'TT Hoves Medium';
   font-weight: 900;
@@ -1591,3 +1605,21 @@ form .back-step {
   padding: 5px 0 0 10px;
 }
 
+#add-address-btn:hover {
+  background-color: #DCDBDB;
+  cursor: pointer;
+}
+
+
+#add-address-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'TT Hoves Medium';
+  font-weight: 900;
+  padding: 10px 20px;
+  border: 1px solid #DCDBDB;
+  border-radius: 10px;
+  background-color: #ffffff;
+  height: 100%;
+}

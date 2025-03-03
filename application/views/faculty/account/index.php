@@ -177,16 +177,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 						<?php endif ?>
 
-						<!-- <div class="profile-details-container">
+						<div class="profile-details-container">
 							<div class="profile-details">
 								<a href="#" id="editProfilePictureBtn">
 									<h6>Edit</h6>
 								</a>
 							</div>
 						</div>
- -->
+
 									<!-- Edit Profile Modal -->
-									<!-- <div id="editProfilePictureModal" class="modal">
+									<div id="editProfilePictureModal" class="modal">
 									<div class="modal-content img-modal-content">
 										<div class="modal-header">
 											<div class="modal-header-text">
@@ -198,7 +198,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												<img src="<?php echo base_url('assets/images/icon/x.svg'); ?>" alt="">
 											</div>
 										</div>
-										<form id="editProfilePictureForm" method="post" enctype="multipart/form-data" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/changeProfilePic">
+										<form id="editProfilePictureForm" method="post" enctype="multipart/form-data" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/changeProfilePic">
 											<div class="form-group img-form-group">
 												<div class="pic-preview-container">
 													<div class="preview">
@@ -235,7 +235,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>					
 										</form>
 									</div>
-									</div>  -->
+									</div>
 				</div>
 						<a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/logout">
 							<div class="logout-button">
@@ -245,7 +245,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 
 				<div class="right-account-container">
-					<?php if (isset($faculty) && $faculty !== null): ?>
+					<?php if (isset($faculty) && $faculty !== NULL) { ?>
 					<div class="form-container">
 						<h4>Personal Information</h4>
 
@@ -310,30 +310,48 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="line"></div>
 						<h4>Present Address</h4>
 
-						<div class="input-container index">
-							<h6>House Address</h6>
-							<input type="text" id="house_address" name="house_address" value="<?php echo $user_address->house_address; ?>" placeholder="House Address" disabled>
-						</div>
+						<!-- Address Section with Dynamic Display -->
+						<div id="address-section">
+								<div class="input-container index address-field" style="<?php echo ($user_address !== null) ? '' : 'display: none;'; ?>">
+									<h6>House Address</h6>
+									<input type="text" id="house_address" name="house_address" 
+										value="<?php echo ($user_address !== null) ? ($user_address->house_address ?? '') : ''; ?>" 
+										placeholder="" disabled>
+								</div>
 
-						<div class="input-container index">
-							<h6>Barangay</h6>
-							<input type="text" id="barangay" name="barangay" value="<?php echo $user_address->barangay; ?>" placeholder="Barangay" disabled>
-						</div>
+								<div class="input-container index address-field" style="<?php echo ($user_address !== null) ? '' : 'display: none;'; ?>">
+									<h6>Barangay</h6>
+									<input type="text" id="barangay" name="barangay" 
+										value="<?php echo ($user_address !== null) ? ($user_address->barangay ?? '') : ''; ?>" 
+										placeholder="" disabled>
+								</div>
 
-						<div class="input-container index">
-							<h6>City</h6>
-							<input type="text" id="city" name="city" value="<?php echo $user_address->city; ?>" placeholder="City" disabled>
-						</div>
+								<div class="input-container index address-field" style="<?php echo ($user_address !== null) ? '' : 'display: none;'; ?>">
+									<h6>City</h6>
+									<input type="text" id="city" name="city" 
+										value="<?php echo ($user_address !== null) ? ($user_address->city ?? '') : ''; ?>" 
+										placeholder="" disabled>
+								</div>
 
-						<div class="input-container index">
-							<h6>Region</h6>
-							<input type="text" id="region" name="region" value="<?php echo $user_address->region; ?>" placeholder="Region" disabled>	
-						</div>
+								<div class="input-container index address-field" style="<?php echo ($user_address !== null) ? '' : 'display: none;'; ?>">
+									<h6>Region</h6>
+									<input type="text" id="region" name="region" 
+										value="<?php echo ($user_address !== null) ? ($user_address->region ?? '') : ''; ?>" 
+										placeholder="" disabled>
+								</div>
 
-						<div class="input-container index">
-							<h6>Zip Code</h6>
-							<input type="text" id="zip_code" name="zip_code" value="<?php echo $user_address->zip_code; ?>" placeholder="Zip Code" disabled>
-						</div>
+								<div class="input-container index address-field" style="<?php echo ($user_address !== null) ? '' : 'display: none;'; ?>">
+									<h6>Zip Code</h6>
+									<input type="text" id="zip_code" name="zip_code" 
+										value="<?php echo ($user_address !== null) ? ($user_address->zip_code ?? '') : ''; ?>" 
+										placeholder="" disabled>
+								</div>
+
+								<!-- Add Address Button (Visible only if no address exists) -->
+								<div class="input-container index" id="address-button-container" style="<?php echo ($user_address === null) ? '' : 'display: none;'; ?>">
+									<button type="button" id="add-address-btn" onclick="window.location.href='http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/edit'">+ &nbsp&nbsp Add an Address</button>
+								</div>
+							</div>
 
 						<div class="input-container edit">
 							<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/edit">
@@ -342,7 +360,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 					</div>
 
-					<?php endif ?>
+					<?php } ?>
 				</div>
 			</div>
         </div>
@@ -408,7 +426,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Initialize "Post Announcement" modal
 	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
 
-	/* // Initialize "Add Research" modal
+	// Initialize "Add Research" modal
     setupModal("editProfilePictureModal", "editProfilePictureBtn", "closeeditProfilePictureBtn");
 
 	// File attachment handling
@@ -495,7 +513,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		let formData = new FormData(this);
 
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/changeProfilePic',
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/changeProfilePic',
 			type: 'POST',
 			data: formData,
 			contentType: false,
@@ -514,7 +532,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				alert('An unexpected error occurred.');
 			},
 		});
-	}); */
+	});
 
 	</script>
 	<script src="<?php echo base_url('assets/js/notification.js?v=' . time()); ?>"></script>

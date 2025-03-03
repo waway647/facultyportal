@@ -211,10 +211,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<?php endif ?>
 
 						<div class="profile-details-container">
-						<div class="profile-details">
-							<a href="#" id="editProfilePictureBtn">
-								<h6>Edit</h6>
-							</a>
+							<div class="profile-details">
+								<a href="#" id="editProfilePictureBtn">
+									<h6>Edit</h6>
+								</a>
 							</div>
 						</div>
 
@@ -279,69 +279,118 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 
 				<div class="right-account-container">
-					<?php if (isset($faculty) && $faculty !== null): ?>
-					<div class="form-container">
-						<h4>Account Details</h4>
+				<?php if (isset($faculty)) { ?>
+				<div class="form-container">
+					<h4>Personal Information</h4>
 
-						<div class="input-container index">
-							<h6>Email</h6>
-							<input type="text" id="email" name="email" value="<?php echo $faculty->email; ?>" placeholder="Email" disabled>
-						</div>
-
-						<div class="input-container index">
-							<h6>Password</h6>
-							<input type="text" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Pass" disabled>
-						</div>
-
-						<div class="input-container index">
-							<h6>Mobile number</h6>
-							<input type="text" id="mobile_number" name="mobile_number" value="<?php echo $faculty->mobile_number; ?>" placeholder="Mobile number" disabled>
-						</div>
-
-						<div class="input-container index">
-							<h6>First name</h6>
-							<input type="text" id="first_name" name="first_name" value="<?php echo $faculty->first_name; ?>" placeholder="First name" disabled>
-						</div>
-
-						<div class="input-container index">
-							<h6>Last name</h6>
-							<input type="text" id="last_name" name="last_name" value="<?php echo $faculty->last_name; ?>" placeholder="Last name" disabled>
-						</div>
-
-						<div class="input-container index">
-							<h6>Middle name</h6>
-							<input type="text" id="middle_name" name="middle_name" value="<?php echo $faculty->middle_name; ?>" placeholder="Middle name" disabled>
-						</div>
-
-						<div class="input-container index">
-							<h6>Birthday</h6>
-							<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday; ?>" placeholder="Birthday" disabled>
-						</div>
-
-						<div class="input-container edit">
-							<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/edit">
-								<h6>Edit</h6>
-							</a>
-						</div>
+					<div class="input-container index">
+						<h6>Email</h6>
+						<input type="text" id="email" name="email" value="<?php echo $faculty->email ?? ''; ?>" placeholder="" disabled>
 					</div>
 
-					<div class="form-container">
-						<h4>Privacy</h4>
+					<div class="input-container index">
+						<h6>Mobile number</h6>
+						<input type="text" id="mobile_number" name="mobile_number" value="<?php echo $faculty->mobile_number ?? ''; ?>" placeholder="" disabled>
+					</div>
 
-						<div class="privacy-row">
-							<div class="title"><h5>Show Birthday on Profile</h5></div>
-							<div class="status">
-								<h6>Visibility: Only me</h6>
+					<div class="input-container index">
+						<h6>First name</h6>
+						<input type="text" id="first_name" name="first_name" value="<?php echo $faculty->first_name ?? ''; ?>" placeholder="" disabled>
+					</div>
+
+					<div class="input-container index">
+						<h6>Last name</h6>
+						<input type="text" id="last_name" name="last_name" value="<?php echo $faculty->last_name ?? ''; ?>" placeholder="" disabled>
+					</div>
+
+					<div class="input-container index">
+						<h6>Middle name</h6>
+						<input type="text" id="middle_name" name="middle_name" value="<?php echo $faculty->middle_name ?? ''; ?>" placeholder="" disabled>
+					</div>
+
+					<div class="input-container index">
+						<h6>Birthday</h6>
+						<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday ?? ''; ?>" placeholder="" disabled>
+					</div>
+
+					<div class="input-container index">
+						<h6>Gender</h6>
+						<input type="text" id="gender" name="gender" value="<?php echo $faculty->gender ?? ''; ?>" placeholder="" disabled>
+					</div>
+
+					<div class="line"></div>
+					<h4>Additional Information</h4>
+
+					<div class="input-container index">
+						<h6>Civil Status</h6>
+						<input type="text" id="civil_status" name="civil_status" value="<?php echo $faculty->civil_status ?? ''; ?>" placeholder="" disabled>
+					</div>
+
+					<div class="input-container index">
+						<h6>Religion</h6>
+						<input type="text" id="religion" name="religion" value="<?php echo $faculty->religion ?? ''; ?>" placeholder="" disabled>
+					</div>
+
+					<div class="input-container index">
+						<h6>Citizenship</h6>
+						<input type="text" id="citizenship" name="citizenship" value="<?php echo $faculty->citizenship ?? ''; ?>" placeholder="" disabled>
+					</div>
+
+					
+
+					<div class="line"></div>
+					<h4>Present Address</h4>
+					<!-- Address Section with Dynamic Display -->
+					<div id="address-section">
+								<div class="input-container index address-field" style="<?php echo ($user_address !== null) ? '' : 'display: none;'; ?>">
+									<h6>House Address</h6>
+									<input type="text" id="house_address" name="house_address" 
+										value="<?php echo ($user_address !== null) ? ($user_address->house_address ?? '') : ''; ?>" 
+										placeholder="" disabled>
+								</div>
+
+								<div class="input-container index address-field" style="<?php echo ($user_address !== null) ? '' : 'display: none;'; ?>">
+									<h6>Barangay</h6>
+									<input type="text" id="barangay" name="barangay" 
+										value="<?php echo ($user_address !== null) ? ($user_address->barangay ?? '') : ''; ?>" 
+										placeholder="" disabled>
+								</div>
+
+								<div class="input-container index address-field" style="<?php echo ($user_address !== null) ? '' : 'display: none;'; ?>">
+									<h6>City</h6>
+									<input type="text" id="city" name="city" 
+										value="<?php echo ($user_address !== null) ? ($user_address->city ?? '') : ''; ?>" 
+										placeholder="" disabled>
+								</div>
+
+								<div class="input-container index address-field" style="<?php echo ($user_address !== null) ? '' : 'display: none;'; ?>">
+									<h6>Region</h6>
+									<input type="text" id="region" name="region" 
+										value="<?php echo ($user_address !== null) ? ($user_address->region ?? '') : ''; ?>" 
+										placeholder="" disabled>
+								</div>
+
+								<div class="input-container index address-field" style="<?php echo ($user_address !== null) ? '' : 'display: none;'; ?>">
+									<h6>Zip Code</h6>
+									<input type="text" id="zip_code" name="zip_code" 
+										value="<?php echo ($user_address !== null) ? ($user_address->zip_code ?? '') : ''; ?>" 
+										placeholder="" disabled>
+								</div>
+
+								<!-- Add Address Button (Visible only if no address exists) -->
+								<div class="input-container index" id="address-button-container" style="<?php echo ($user_address === null) ? '' : 'display: none;'; ?>">
+									<button type="button" id="add-address-btn" onclick="window.location.href='http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/edit'">+ &nbsp&nbsp Add an Address</button>
+								</div>
 							</div>
-						</div>
-
-						<div class="input-container edit">
-							<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/editPrivacy">
-								<h6>Edit</h6>
-							</a>
-						</div>
+					
+							<div class="input-container edit">
+						<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/edit">
+							<h6>Edit</h6>
+						</a>
 					</div>
-					<?php endif ?>
+					
+				</div>
+			<?php } ?>
 				</div>
 			</div>
         </div>
@@ -349,6 +398,39 @@ defined('BASEPATH') OR exit('No direct script access allowed');
     </div>
 
 	<script>
+	$(document).ready(function() {
+		fetchFaculty();
+		toggleAddressDisplay();
+	});
+
+	function fetchFaculty() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Faculty Data):', result);
+
+				if (Array.isArray(result)) {
+					let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
+					let facultyFullName = $('#full_name'); // Default text if no match is found
+
+					result.forEach(function(faculty) {
+						if (faculty.id == loggedUserId) {
+							facultyFullName.text(faculty.full_name); // Get the logged-in faculty's full name
+						}
+					});
+
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching faculty:', error);
+			}
+		});
+	}
+
 	// Function to initialize a modal
 	function setupModal(modalId, openButtonId, closeButtonId) {
 		const modal = document.getElementById(modalId);
@@ -484,8 +566,26 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	});
 
+	// Pass PHP variable to JavaScript
+	const hasAddress = <?php echo json_encode($user_address !== null); ?>;
+
+	// Function to toggle address fields and button
+	function toggleAddressDisplay() {
+		const addressFields = document.querySelectorAll('.address-field');
+		const addAddressBtn = document.getElementById('add-address-btn');
+
+		if (hasAddress) {
+			addressFields.forEach(field => field.style.display = 'block');
+			addAddressBtn.style.display = 'none';
+		} else {
+			addressFields.forEach(field => field.style.display = 'none');
+			addAddressBtn.style.display = 'block';
+		}
+	}
+
 	</script>
 	<script src="<?php echo base_url('assets/js/notification.js?v=' . time()); ?>"></script>
+	<script src="<?php echo base_url('assets/js/script.js'); ?>"></script>
 
 
 

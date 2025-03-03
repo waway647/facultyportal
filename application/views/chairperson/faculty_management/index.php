@@ -269,13 +269,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								Export&nbspall
 							</button>
 						</div>
-
+						
 								<!-- Add Faculty Modal -->
 								<div id="exportFacultyModal" class="modal">
 								<div class="modal-content">
 									
-									<div class="modal-header">
-									<h3>All Faculty Profiles</h3>
+									<div class="modal-header export-header">
+									<h4>All Faculty Profiles</h4>
 									</div>
 
 									<div class="the-content-container">
@@ -839,20 +839,20 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			const row = `
 				<tr>
-					<th>${id}</th>
-					<th>${name}</th>
-					<th>${email}</th>
-					<th>${department}</th>
-					<th>${position}</th>
-					<th>${employmentType}</th>
-					<th>${dateHired}</th>
-					<th>${coursesAssigned}</th>
-					<th>${teachingLoads}</th>
-					<th>${researchOutputs}</th>
-					<th>${qualifications}</th>
-					<th>${industryExperience}</th>
-					<th>${certifications}</th>
-					<th>${contactNumber}</th>
+					<td>${id}</td>
+					<td>${name}</td>
+					<td>${email}</td>
+					<td>${department}</td>
+					<td>${position}</td>
+					<td>${employmentType}</td>
+					<td>${dateHired}</td>
+					<td>${coursesAssigned}</td>
+					<td>${teachingLoads}</td>
+					<td>${researchOutputs}</td>
+					<td>${qualifications}</td>
+					<td>${industryExperience}</td>
+					<td>${certifications}</td>
+					<td>${contactNumber}</td>
 				</tr>
 			`;
 
