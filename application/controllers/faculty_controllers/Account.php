@@ -64,7 +64,6 @@ class Account extends CI_Controller {
 		$user_data = array(
 			"id" => $user_id,
 			"email" => $this->input->post("email"),
-			/* "pass" => $this->input->post("pass"), */
 			"mobile_number" => $this->input->post("mobile_number"),
 			"first_name" => $this->input->post("first_name"),
 			"last_name" => $this->input->post("last_name"),
@@ -76,20 +75,26 @@ class Account extends CI_Controller {
 			"citizenship" => $this->input->post("citizenship")
 		);
 
-		$user_data2 = array(
-			"faculty_profile_id"=>$faculty_id,
+		$user_address = array(
+			"faculty_profile_id" => $faculty_id,
 			"house_address" => $this->input->post("house_address"),
 			"barangay" => $this->input->post("barangay"),
 			"city" => $this->input->post("city"),
 			"region" => $this->input->post("region"),
 			"zip_code" => $this->input->post("zip_code")
-		); 
+		);
 
 		$result = $this->Faculty_model->updateProfile($user_id, $user_data);
-		$result2 = $this->Faculty_model->updateAddress($faculty_id, $user_data2);
-		if($result && $result2)
+		if($result)
 		{
-			redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index');
+			$address_exist = $this->Faculty_model->checkAddressIfExisting($faculty_id);
+			if($address_exist == $faculty_id) {
+				$this->Faculty_model->updateAddress($faculty_id, $user_address);
+				redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index');
+			} else {
+				$this->Faculty_model->createAddress($user_address);
+				redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index');
+			}
 		}
 	}
 }

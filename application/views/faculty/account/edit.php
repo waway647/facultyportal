@@ -247,7 +247,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				<div class="right-account-container">
 					<form method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/updateProfile">
-					<?php if (isset($faculty) && $faculty !== null): ?>
+					<?php if (isset($faculty) && $faculty !== null) { ?>
 					<div class="form-container">
 						<h4>Personal Information</h4>
 
@@ -318,7 +318,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<div class="input-container index">
 							<h6>Citizenship</h6>
-							<input type="text" id="citizenship" name="citizenship" value="<?php echo $faculty->citizenship; ?>" placeholder="Citizenship">
+							<input type="text" id="citizenship" name="citizenship" value="<?php echo ($user_address !== null) ? ($user_address->house_address ?? '') : ''; ?>" placeholder="Citizenship">
 						</div>
 
 						<div class="line"></div>
@@ -326,27 +326,37 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<div class="input-container index">
 							<h6>House Address</h6>
-							<input type="text" id="house_address" name="house_address" value="<?php echo $user_address->house_address; ?>" placeholder="House Address">
+							<input type="text" id="house_address" name="house_address" 
+								value="<?php echo ($user_address !== null) ? ($user_address->house_address ?? '') : ''; ?>" 
+								placeholder="House Address">
 						</div>
 
 						<div class="input-container index">
 							<h6>Barangay</h6>
-							<input type="text" id="barangay" name="barangay" value="<?php echo $user_address->barangay; ?>" placeholder="Barangay">
+							<input type="text" id="barangay" name="barangay" 
+								value="<?php echo ($user_address !== null) ? ($user_address->barangay ?? '') : ''; ?>" 
+								placeholder="Barangay">
 						</div>
 
 						<div class="input-container index">
 							<h6>City</h6>
-							<input type="text" id="city" name="city" value="<?php echo $user_address->city; ?>" placeholder="City">
+							<input type="text" id="city" name="city" 
+								value="<?php echo ($user_address !== null) ? ($user_address->city ?? '') : ''; ?>" 
+								placeholder="City">
 						</div>
 
 						<div class="input-container index">
 							<h6>Region</h6>
-							<input type="text" id="region" name="region" value="<?php echo $user_address->region; ?>" placeholder="Region">	
+							<input type="text" id="region" name="region" 
+								value="<?php echo ($user_address !== null) ? ($user_address->region ?? '') : ''; ?>" 
+								placeholder="Region">
 						</div>
 
 						<div class="input-container index">
 							<h6>Zip Code</h6>
-							<input type="text" id="zip_code" name="zip_code" value="<?php echo $user_address->zip_code; ?>" placeholder="Zip Code">
+							<input type="text" id="zip_code" name="zip_code" 
+								value="<?php echo ($user_address !== null) ? ($user_address->zip_code ?? '') : ''; ?>" 
+								placeholder="Zip Code">
 						</div>
 
 						<div class="input-container edit">
@@ -360,7 +370,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 					
 					</div>
-					<?php endif ?>
+					<?php } ?>
 					</form>
 				</div>
 				

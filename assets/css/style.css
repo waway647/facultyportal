@@ -730,8 +730,8 @@ select{
       font-family: 'TT Hoves Medium';
     }
 
-    .right-account-container input {
-      height: 35px;
+    .right-account-container input, .right-account-container select{
+      height: 45px;
       width: 100%;
     }
 
@@ -1304,12 +1304,6 @@ select{
   height: 7px;
 }
 
-.sub-content-container .search-container button:hover{
-  cursor: pointer;
-  border-color: #cecece; 
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
-}
-
 .the-content-container {
   display: flex;
   flex-direction: column;
@@ -1421,6 +1415,10 @@ select{
   background-color: #DCDBDB;
 }
 
+#exportFacultyModal .modal-content {
+  width: 80%
+}
+
 #addFacultyModal .modal-content, 
 
 #addCourseModal .modal-content, 
@@ -1462,12 +1460,15 @@ select{
 #editCertificationModal form,
 
 #addConsultationModal form,
-#editConsultationModal form {
+#editConsultationModal form,
+
+#exportFacultyForm {
   display: flex;
   flex-direction: column;
   gap: 10px;
   padding: 10px;
 }
+
 
 #addFacultyModal .modal-for-step, 
 
@@ -1509,7 +1510,9 @@ select{
 #editCertificationModal .modal-header,
 
 #addConsultationModal .modal-header,
-#editConsultationModal .modal-header {
+#editConsultationModal .modal-header,
+
+#exportFacultyModal .modal-header {
   padding: 10px;
   font-family: 'TT Hoves Medium';
   font-weight: 900;
@@ -1609,61 +1612,3 @@ form .back-step {
   padding: 5px 0 0 10px;
 }
 
-.announcementBtn{
-  padding: 5px 10px;
-  color: #ffffff;
-  border: 2px solid #0056b3;
-  border-radius: 5px;
-  background-color: #0056b3;
-  width: 80px;
-  height: 40px;
-  letter-spacing: 0.8px;
-}
-
-.announcementBtn:hover{
-  background-color: #007bff;
-  border: 2px solid #007bff;
-  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
-}
-
-.announcement-container,
-.date-time-container
-{
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-  letter-spacing: 0.2px;
-}
-
-.announcement-container p:first-child,
-.date-time-container p:first-child
-{
-  font-weight: 700;
-  font-size: 18px;
-}
-
-.announcement-container p:last-child,
-.date-time-container p:last-child
-{
-  font-weight: 500;
-  font-size: 16px;
-  color: #A4A4A4;
-}
-
-
-
-.action-container img{
-  vertical-align: middle;
-  margin-left: 10px;
-  width: 20px;
-  height: 20px;
-}
-
-.action-container img:hover{
-  transform: scale(1.1);
-}
-
-.checkbox {
-  width: 25px;
-  height: 16px;
-}

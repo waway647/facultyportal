@@ -38,6 +38,17 @@ class Faculty_model extends CI_Model {
 		return $query;
 	}
 
+	public function checkAddressIfExisting($user_id) {
+		$this->db->where('faculty_profile_id', $user_id);
+		$query = $this->db->get('address');
+		return $query->num_rows() > 0;
+	}
+
+	public function createAddress($user_data){
+		$query = $this->db->insert('address', $user_data);
+		return $query;
+	}
+
 	public function updateAddress($faculty_id, $user_data){
 		$this->db->where('faculty_profile_id', $faculty_id);
 		$query = $this->db->update('address', $user_data);
