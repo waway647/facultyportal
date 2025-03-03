@@ -64,7 +64,6 @@ class Account extends CI_Controller {
 		$user_data = array(
 			"id" => $user_id,
 			"email" => $this->input->post("email"),
-			"pass" => $this->input->post("pass"),
 			"mobile_number" => $this->input->post("mobile_number"),
 			"first_name" => $this->input->post("first_name"),
 			"last_name" => $this->input->post("last_name"),
