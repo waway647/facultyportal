@@ -1324,8 +1324,7 @@ select{
   grid-template-columns: repeat(3, 1fr); /* Create 3 equal columns */
   gap: 30px; /* Add some space between the grid items */
   padding: 30px 100px;
-  border-top: 1px solid #DCDBDB;
-  border-bottom: 1px solid #DCDBDB;
+  border-bottom: 2px solid #DCDBDB;
 }
 
 /* Left section for the profile card */
@@ -1618,6 +1617,25 @@ form .back-step {
   padding: 5px 0 0 10px;
 }
 
+#add-address-btn:hover {
+  background-color: #DCDBDB;
+  cursor: pointer;
+}
+
+
+#add-address-btn {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-family: 'TT Hoves Medium';
+  font-weight: 900;
+  padding: 10px 20px;
+  border: 1px solid #DCDBDB;
+  border-radius: 10px;
+  background-color: #ffffff;
+  height: 100%;
+}
+
 .announcementBtn{
   padding: 5px 10px;
   color: #ffffff;
@@ -1658,8 +1676,6 @@ form .back-step {
   font-size: 16px;
   color: #A4A4A4;
 }
-
-
 
 .action-container img{
   vertical-align: middle;
