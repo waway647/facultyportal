@@ -486,7 +486,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			tr += "<td>" + item.title + "</td>";
 			tr += "<td>" + item.publication_year + "</td>";
 			tr += "<td>" + item.author + "</td>";
-			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + item.id + ")'>View PDF</a></td>";
+			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + item.id + ")'>View Research</a></td>";
 			tr += "<td><a href='#' onclick='fetchResearchById(" + item.id + ")'>" +
 					"<div class='table-icon-container'>" +
 						"<div><img class='img' src='<?php echo base_url('assets/images/icon/edit.svg'); ?>' /></div>" +

@@ -1692,3 +1692,7 @@ form .back-step {
   width: 25px;
   height: 16px;
 }
+
+.table-icon-container div img:hover{
+  transform: scale(1.1);
+}
