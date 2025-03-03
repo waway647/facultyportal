@@ -273,11 +273,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<table class="table table-2" id="announcementList" name="announcementList">
 								<thead>
 								<tr>
-									<th>#</th>
-									<th>Title</th>
-									<!-- <th>Content</th> -->
+									<th><input type="checkbox" class="checkbox"></th>
 									<th>Date & Time</th>
-									<th>Action</th>
+									<th>Announcements</th>
+									<th></th>
 								</tr>
 								</thead>
 
@@ -355,24 +354,51 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Function to create the table with course data
 	function createAnnouncementsTable(result) {
 		$('#announcementList tbody').empty();  // Clear existing rows
-		var sno = 0;  // Initialize serial number
+		var sno = `<input type="checkbox" class="checkbox">`;  // Initialize serial number
 		result.forEach(function(item) {
-			sno += 1;
+			/* sno += 1; */
 
-			var tr = "<tr>";
-			tr += "<td>" + sno + "</td>";  // Serial number
-			tr += "<td>" + item.title + "</td>";
-			/* tr += "<td>" + item.content + "</td>"; */
-			/* tr += "<td>" + item.end_time + "</td>"; */
-			tr += "<td>" + item.created_at + "</td>";
-			tr += "<td>" + "Details" + "</td>";
-			/* tr += "<td><a href='#' onclick='fetchConsultationById(" + item.id + ")'>" +
-					"<div class='table-icon-container'>" +
-						"<div><img class='img' src='<?php echo base_url('assets/images/icon/edit.svg'); ?>' /></div>" +
-						"<div><a href='http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Announcements/deleteConsultation/" + item.id + "'>" +
-							"<img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a></div>" +
-					"</div></td>"; */
-			tr += "</tr>";
+			// Split created_at into date and time
+			var dateTime = new Date(item.created_at);
+			
+			// Format the date with alphabetical month
+			var date = dateTime.toLocaleDateString('en-US', {
+				year: 'numeric',
+				month: 'long', // 'short' for abbreviated month (e.g., "Feb"), use 'long' for full month (e.g., "February")
+				day: '2-digit'
+			}).replace(/,/, ','); // e.g., "Feb 28 2025"
+
+			// Format the time
+			var time = dateTime.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true, // Use 12-hour format with AM/PM
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone // User's local time zone
+        	});
+
+			var tr = `<tr>
+			<td>${sno}</td>
+			<td>
+				<div class="date-time-container">
+					<p>${date}</p>
+					<p>${time}</p>
+				</div>
+			</td>
+			<td>
+				<div class="announcement-container">
+					<p>${item.from}</p>
+					<p>${item.title}</p>
+				</div>
+			</td>
+			<td>
+				<div class="action-container">
+					<a href="" class="announcementBtn">Details</a>
+					<a href="" class="">
+						<img src="<?php echo base_url('assets/images/icon/more.png'); ?>" alt="">
+					</a>				
+				</div>
+			</td>
+			`;
 
 			$('#announcementList tbody').append(tr);  // Append the new row to the table body
 		});

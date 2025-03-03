@@ -71,6 +71,7 @@ table {
 }
 
 .table thead th {
+    font-size: larger;
     vertical-align: bottom;
     background-color: #f1f1f1;
 }
@@ -80,6 +81,7 @@ table {
     vertical-align: top;
 }
 .table td {
+  font-size: 16px;
   border-bottom: 2px solid #f1f1f1;
   opacity: 85%;
 }
@@ -106,29 +108,6 @@ th {
 }
 
 /* Table for Announcements */
-/* .table-2{
-  border: 2px solid black;
-  border-radius: 5px !important;
-} */
-/* 
-.table-2 thead th:first-child{
-  border-radius: 10px 0 0 0;
-}
-
-.table-2 thead th:last-child{
-  border-radius: 0 10px 0 0;
-} */
-
-/* .table-2 thead th {
-  height: 40px;
-  border-bottom: 2px solid black; 
-}
-
-.table-2 td{
-  height: 50px;
-  border-bottom: 2px solid black;
-} */
-
 .table-2 {
   width: 100%;
   border-spacing: 0; /* Remove gaps between cells */
@@ -142,8 +121,13 @@ th {
   height: 40px;
 }
 
+.table-2 td:nth-child(4) {
+  text-align: right;
+}
+
 .table-2 td{
-  height: 50px;
+  height: 80px;
   border-top: 2px solid #DCDBDB; 
+  vertical-align: middle;
   border-bottom: none;
 }

@@ -1118,7 +1118,7 @@ select{
   border-radius: 20px;
   padding: 20px;
   align-items: center;
-  box-shadow: 0px 3px 8px rgba(47, 47, 47, 0.3);
+  box-shadow: 0px 4px 8px rgba(47, 47, 47, 0.3);
 }
 
 .item-box img{
@@ -1204,6 +1204,16 @@ select{
   color: #A4A4A4;
 }
 
+.sub-content-container .right-sub-ann .sub-container .button:hover{
+  color: #0056b3;
+}
+
+.sub-content-container.ann .right-sub-ann .sub-container .button:hover {
+  border-color: #cecece; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+
+}
+
 .sub-content-container .right-sub-ann .sub-container input[type="date"]::-webkit-calendar-picker-indicator {
   font-size: 18px; 
 }
@@ -1265,6 +1275,8 @@ select{
 .sub-content-container .add-button button:hover {
   cursor: pointer;
   background-color: #DCDBDB;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
+
 }
 
 .sub-content-container .searchDisplay {
@@ -1290,6 +1302,12 @@ select{
 .sub-content-container .searchDisplay.show img {
   width: 7px;
   height: 7px;
+}
+
+.sub-content-container .search-container button:hover{
+  cursor: pointer;
+  border-color: #cecece; 
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); 
 }
 
 .the-content-container {
@@ -1591,3 +1609,61 @@ form .back-step {
   padding: 5px 0 0 10px;
 }
 
+.announcementBtn{
+  padding: 5px 10px;
+  color: #ffffff;
+  border: 2px solid #0056b3;
+  border-radius: 5px;
+  background-color: #0056b3;
+  width: 80px;
+  height: 40px;
+  letter-spacing: 0.8px;
+}
+
+.announcementBtn:hover{
+  background-color: #007bff;
+  border: 2px solid #007bff;
+  box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.announcement-container,
+.date-time-container
+{
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  letter-spacing: 0.2px;
+}
+
+.announcement-container p:first-child,
+.date-time-container p:first-child
+{
+  font-weight: 700;
+  font-size: 18px;
+}
+
+.announcement-container p:last-child,
+.date-time-container p:last-child
+{
+  font-weight: 500;
+  font-size: 16px;
+  color: #A4A4A4;
+}
+
+
+
+.action-container img{
+  vertical-align: middle;
+  margin-left: 10px;
+  width: 20px;
+  height: 20px;
+}
+
+.action-container img:hover{
+  transform: scale(1.1);
+}
+
+.checkbox {
+  width: 25px;
+  height: 16px;
+}
