@@ -287,13 +287,13 @@ select{
   flex: 1; /* Ensure it takes up available space in the flex container */
   width: 100%; /* Make sure the width fills the parent container */
   height: 100%;
-  background-color: #ffe49b;
-  border-radius: 10px;
+  background-color: #0D66B3;
+  border-radius: 6px;
   overflow: hidden;
 }
 
 .dashboard-faculty .post-button:hover {
-  background-color: #e6cb84;
+  background-color: #007bff;
 }
 
 .dashboard-faculty .post-container a {
@@ -307,7 +307,7 @@ select{
   width: fit-content;
   font-family: "TT Hoves Medium";
   font-weight: 700;
-  color: #000000;
+  color: #ffffff;
   font-size: 16px;
   letter-spacing: 0;
   line-height: Truepx;
@@ -408,13 +408,13 @@ select{
   flex-direction: column;
   align-items: stretch;
   justify-content: center;
-  padding: 5px 0px 15px;
+  margin-top: 15px;
+  padding: 15px 0px 15px;
   position: relative;
   width: 100%;
   flex: 0 0 auto;
-  border-bottom-width: 1px;
-  border-bottom-style: solid;
-  border-color: #dcdbdb33;
+  border-bottom: 1px solid #dcdbdb33;
+  border-top: 1px solid  #dcdbdb33;
 }
 
 .dashboard-faculty .nav-link {
@@ -1643,9 +1643,9 @@ form .back-step {
 .announcementBtn{
   padding: 5px 10px;
   color: #ffffff;
-  border: 2px solid #0056b3;
+  border: 2px solid #0D66B3;
   border-radius: 5px;
-  background-color: #0056b3;
+  background-color: #0D66B3;
   width: 80px;
   height: 40px;
   letter-spacing: 0.8px;
@@ -1692,9 +1692,30 @@ form .back-step {
   transform: scale(1.1);
 }
 
-.checkbox {
-  width: 25px;
-  height: 16px;
+input[type="checkbox"] {
+  margin-left: 10px;
+  -webkit-appearance: none;
+  -moz-appearance: none;   
+  appearance: none;         
+  width: 20px;             
+  height: 20px;
+  border: 2px solid #A4A4A4;  
+  border-radius: 5px;      
+  cursor: pointer;
+  position: relative;      
+}
+
+/* Style when checked */
+input[type="checkbox"]:checked::after {
+  content: "";            
+  position: absolute;
+  top: 2px;               
+  left: 7px;              
+  width: 6px;             
+  height: 12px;           
+  border: solid #0D66B3;  
+  border-width: 0 2px 2px 0; 
+  transform: rotate(45deg); 
 }
 
 .table-icon-container div img:hover{

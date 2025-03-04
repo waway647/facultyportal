@@ -28,62 +28,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
           </div>
         </div>
-        <div class="post-container">
-          <!-- Post Announcement button -->
-          <a href="javascript:void(0);" id="postAnnouncementBtn">
-            <div class="post-button">
-              <div class="text-wrapper-2">Post Announcement</div>
-            </div>
-          </a>
-        </div>
-		<!-- Modal -->
-		<div id="postAnnouncementModal" class="modal">
-			<div class="modal-content">
-				<div class="postAnnouncement-container">
-					<div class="postmodal-heading">
-						<div class="div">Post New Announcement</div>
-					</div>
-					<div class="postmodal-form-container">
-						<!-- Title Input -->
-						<div class="postmodal-form-input">
-							<input type="text" id="announement_title" name="announement_title" placeholder="Title">
-						</div>
-						<!-- Custom Textarea for Announcement Body -->
-						<div class="postmodal-form-input">
-							<div id="announcement_body" class="custom-textarea" contenteditable="true" placeholder="Write your announcement here..."></div>
-							<div class="attachment-container">
-								<label for="announcement_attachment" class="attachment-button">
-									<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
-									Attach Files
-								</label>
-								<input type="file" id="announcement_attachment" name="announcement_attachment" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" hidden>
-								<div id="attachment_preview" class="attachment-preview"></div>
-							</div>
-						</div>
-					</div>
-					<!-- Buttons -->
-					<div class="button-container">
-						<input type="submit" value="Post">
-						<a href="javascript:void(0);" id="closeModalBtn">
-							<div class="cancel-button">
-								<h6>Cancel</h6>
-							</div>
-						</a>
-					</div>
-				</div>
-			</div>
-		</div>
-
-
-
-        <div class="post-button-wrapper">
-          <button class="button">
-            <div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
-				<div class="div-wrapper">
-					<input type="search" name="" id="" placeholder="Search">
-				</div>
-          </button>
-        </div>
         <div class="nav-links-container">
 			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Dashboard/index">
 				<div class="nav-link">
@@ -134,6 +78,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</a>
 
+<<<<<<< Updated upstream
+=======
+			
+>>>>>>> Stashed changes
         </div>
         <div class="nav-links-container-2">
 			<!-- Notification Button -->
@@ -178,7 +126,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 					
 					<div class="frame-3">
-						<div class="text-wrapper-5"><?php echo $faculty->first_name?> <?php echo $faculty->last_name?></div>
+						<div class="text-wrapper-5" id="full_name"></div>
+						<input type="hidden" id="logged_in_user" value="<?php echo $this->session->userdata('faculty_id'); ?>">
 						<div class="text-wrapper-6"><?php echo $faculty->email?></div>
 					</div>
 					<?php endif ?>
@@ -194,7 +143,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
       <div class="main-content">
         <div class="main-content-2">
-          <div class="heading-container"><div class="text-wrapper-8">Announcements, Department Chair</div></div>
+          <div class="heading-container"><div class="text-wrapper-8">Announcements, Department Chair <?php echo $this->session->userdata('faculty_id'); ?></div></div>
           <div class="container-management">
 				<div class="item-summary-container">
 					<div class="boxes-container">
@@ -208,170 +157,225 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<p>Notify all faculty members</p>
 								</div>
 							</div>
-							
 							<div class="add-button">
-								<button id="addConsultationBtn" type="button" class="btn">+ &nbsp&nbsp Add Announcement</button>
+								<!-- Post Announcement button -->
+								<a href="javascript:void(0);" id="postAnnouncementBtn">
+									<div class="post-button">
+										<div class="text-wrapper-2">+ &nbsp&nbsp Add Announcement</div>
+									</div>
+								</a>
 							</div>
 						</div>
 					</div>
 				</div>
 
-				<div class="sub-content-container">
-					<div class="left-sub">
-						<h4>Consultation Timeslot List&nbsp</h4>
-						<h4 class="left-sub-numbers">(3)</h4>
-					</div>
-
-					<div class="right-sub">
-						<div class="searchDisplay">
-							<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
-							<h6 id="searchDisplay"></h6>
+				<div class="sub-content-container ann">
+						<div class="left-sub">
+							<h4>Announcement List&nbsp</h4>
+							<h4 class="left-sub-numbers">(3)</h4>
 						</div>
-						
-						<div class="search-container">
-							<button class="button">
-								<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
-								<div class="div-wrapper">
-									<input type="search" name="search" id="searchInput" placeholder="Search">
-								</div>
-							</button>
-						</div>								
-								<!-- Add Consultation Modal -->
-								<div id="addConsultationModal" class="modal">
-								<div class="modal-content">
-									<div class="modal-header">
-									<h3>Add Timeslot</h3>
+
+						<!-- //Sort By -->
+						<div class="right-sub-ann">
+							<!-- <div class="searchDisplay">
+								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
+								<h6 id="searchDisplay"></h6>
+							</div> -->
+							<p>Sort By</p>
+							<div class="sub-container">
+								<button class="button">
+									<div class="div-wrapper">
+										<select name="sort" id="sortSelect">
+											<option value="" disabled selected>Choose sort order</option>
+											<option value="desc">Newest First</option>
+											<option value="asc">Oldest First</option>
+											<option value="title_asc">Title (A-Z)</option>
+											<option value="title_desc">Title (Z-A)</option>
+										</select>
 									</div>
-									<form id="addConsultationForm" method="post" action="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/createConsultation">	
-										<div class="form-group">
-											<div class="form-input">
-												<h6>Day</h6>
-												<select id="day" name="day" required>
-													<option value="" disabled selected>Day</option>
-													<option value="Monday">Monday</option>
-													<option value="Tuesday">Tuesday</option>
-													<option value="Wednesday">Wednesday</option>
-													<option value="Thursday">Thursday</option>
-													<option value="Friday">Friday</option>
-													<option value="Saturday">Saturday</option>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="form-input">
-												<h6>Start Time</h6>
-												<input type="time" id="start_time" name="start_time" placeholder="Start Time" required>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="form-input">
-												<h6>End Time</h6>
-												<input type="time" id="end_time" name="end_time" placeholder="End Time" required>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="form-input">
-												<h6>Mode of Consultation</h6>
-												<select id="mode_of_consultation" name="mode_of_consultation" required>
-													<option value="" disabled selected>Mode of Consultation</option>
-													<option value="Online">Online</option>
-													<option value="In-Person">In-Person</option>
-												</select>
-											</div>
-										</div>
+								</button>
+							</div>								
+						</div>
 
-										<button type="submit" class="btn">Save & Confirm</button>
-
-										<div>
-											<h6 class="back-step" id="closeaddConsultationBtn">Cancel</h6>
-										</div>
-									</form>
-								</div>
-								</div> 
-								
-								<!-- Edit Consultation Modal -->
-								<div id="editConsultationModal" class="modal">
-								<div class="modal-content">
-									<div class="modal-header">
-									<h3>Edit Timeslot</h3>
+						<!-- //Sort Date -->
+						<div class="right-sub-ann">
+							<!-- <div class="searchDisplay">
+								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
+								<h6 id="searchDisplay"></h6>
+							</div> -->
+							<p>Date</p>
+							<div class="sub-container">
+								<button class="button">
+									<div class="div-wrapper">
+										<input type="date" name="date" id="sortDate">
 									</div>
-									<form id="editConsultationForm" method="post" action="">
-										<div class="form-group">
-											<div class="form-input">
-												<h6>Day</h6>
-												<select id="day" name="day" required>
-													<option value="" disabled selected>Day</option>
-													<option value="Monday">Monday</option>
-													<option value="Tuesday">Tuesday</option>
-													<option value="Wednesday">Wednesday</option>
-													<option value="Thursday">Thursday</option>
-													<option value="Friday">Friday</option>
-													<option value="Saturday">Saturday</option>
-												</select>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="form-input">
-												<h6>Start Time</h6>
-												<input type="time" id="start_time" name="start_time" placeholder="Start Time" required>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="form-input">
-												<h6>End Time</h6>
-												<input type="time" id="end_time" name="end_time" placeholder="End Time" required>
-											</div>
-										</div>
-										<div class="form-group">
-											<div class="form-input">
-												<h6>Mode of Consultation</h6>
-												<select id="mode_of_consultation" name="mode_of_consultation" required>
-													<option value="" disabled selected>Mode of Consultation</option>
-													<option value="Online">Online</option>
-													<option value="In-Person">In-Person</option>
-												</select>
-											</div>
-										</div>
+								</button>
+							</div>								
+						</div>
 
-										<button type="submit" class="btn">Save & Confirm</button>
-
-										<div>
-											<h6 class="back-step" id="closeeditConsultationBtn">Cancel</h6>
-										</div>
-									</form>
-								</div>
-								</div> 
-								
+						<!-- //Search -->
+						<div class="right-sub-ann">
+							<div class="searchDisplay">
+								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
+								<h6 id="searchDisplay"></h6>
+							</div>
+							<p>Search</p>
+							<div class="sub-container">
+								<button class="button">
+									<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
+									<div class="div-wrapper">
+										<input type="search" name="search" id="searchInput" placeholder="Search">
+									</div>
+								</button>
+							</div>								
+						</div>
 					</div>
-				</div>
 
-				<div class="the-content-container">
-					<div id="container">    
-						<table class="table" id="consultationList" name="consultationList">
-							<thead>
-							<tr>
-								<th>#</th>
-								<th>Day</th>
-								<th>Start Time</th>
-								<th>End Time</th>
-								<th>Mode of Consultation</th>
-								<th>Action</th>
-							</tr>
-							</thead>
+					<div class="the-content-container-2">
+						<div id="postAnnouncementModal" class="modal">
+							<div class="modal-content">
+								<form id="addAnnouncement" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/createAnnouncement" enctype="multipart/form-data">
+									<div class="postAnnouncement-container">
+										<div class="postmodal-heading">
+											<div class="div">Post New Announcement</div>
+										</div>
+										<div class="postmodal-form-container">
+											<!-- Title Input -->
+											<!-- <div class="postmodal-form-input">
+												<input type="text" id="title" name="title" placeholder="Title">
+											</div> -->
+											<!-- Custom Textarea for Announcement Body -->
+											<div class="postmodal-form-input">
+												<!-- <div id="announcement_body" class="custom-textarea" contenteditable="true" name="content" placeholder="Write your announcement here..."></div> -->
+												<div class="attachment-container">
+													<label for="announcement_attachment" class="attachment-button">
+														<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
+														Attach Files
+													</label>
+													<input type="file" id="announcement_attachment" name="announcement_file_path" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" hidden>
+													<div id="attachment_preview" class="attachment-preview"></div>
+												</div>
+											</div>
+										</div>
+										<!-- Buttons -->
+										<div class="button-container">
+											<input type="submit" value="Post">
+											<a href="javascript:void(0);" id="closeModalBtn">
+												<div class="cancel-button">
+													<h6>Cancel</h6>
+												</div>
+											</a>
+										</div>
+									</div>
+								</form>
+							</div>
+						</div>
+						<div id="container">    
+							<table class="table table-2" id="announcementList" name="announcementList">
+								<thead>
+								<tr>
+									<th><input type="checkbox" class="checkbox"></th>
+									<th>Date & Time</th>
+									<th>Announcements</th>
+									<th></th>
+								</tr>
+								</thead>
 
-							<tbody>
-								
-							</tbody>
-						</table>
+								<tbody>
+									
+								</tbody>
+							</table>
 
+						</div>
 					</div>
-				</div>
 			</div>
         </div>
       </div>
     </div>
-
+	<script src="<?php echo base_url('assets/js/faculty.js?v=' . time()); ?>"></script>					
 	<script>
+	$(document).ready(function() {
+		fetchAnnouncements(); // Fetch all Announcements on page load
+	});
+
+	// Function to fetch course data via AJAX
+	function fetchAnnouncements(query = '') {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Announcements/getAnnouncements',  // Update the URL as necessary
+			type: 'GET',
+			data: { search: query },
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Announcements):', result);
+				if (Array.isArray(result)) {
+					if (result.length === 0) {
+						$('#announcementList tbody').html('<tr><td colspan="4">No announcements found.</td></tr>');
+					} else {
+						createAnnouncementsTable(result); // Populate the table
+					}
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching Announcements:', error);
+			}
+		});
+	}
+
+	// Function to create the table with course data
+	function createAnnouncementsTable(result) {
+		$('#announcementList tbody').empty();  // Clear existing rows
+		var sno = `<input type="checkbox" class="checkbox">`;  // Initialize serial number
+		result.forEach(function(item) {
+			/* sno += 1; */
+
+			// Split created_at into date and time
+			var dateTime = new Date(item.created_at);
+			
+			// Format the date with alphabetical month
+			var date = dateTime.toLocaleDateString('en-US', {
+				year: 'numeric',
+				month: 'long', // 'short' for abbreviated month (e.g., "Feb"), use 'long' for full month (e.g., "February")
+				day: '2-digit'
+			}).replace(/,/, ','); // e.g., "Feb 28 2025"
+
+			// Format the time
+			var time = dateTime.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true, // Use 12-hour format with AM/PM
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone // User's local time zone
+        	});
+
+			var tr = `<tr>
+			<td>${sno}</td>
+			<td>
+				<div class="date-time-container">
+					<p>${date}</p>
+					<p>${time}</p>
+				</div>
+			</td>
+			<td>
+				<div class="announcement-container">
+					<p>${item.from}</p>
+					<p>${item.title}</p>
+				</div>
+			</td>
+			<td>
+				<div class="action-container">
+					<a href="" class="announcementBtn">Details</a>
+					<a href="" class="">
+						<img src="<?php echo base_url('assets/images/icon/more.png'); ?>" alt="">
+					</a>				
+				</div>
+			</td>
+			`;
+
+			$('#announcementList tbody').append(tr);  // Append the new row to the table body
+		});
+	}
+
 	// Get elements
 	const modal = document.getElementById("postAnnouncementModal");
 	const btn = document.getElementById("postAnnouncementBtn");

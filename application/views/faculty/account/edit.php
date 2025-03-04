@@ -28,14 +28,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
           </div>
         </div>
-        <div class="post-container">
-          <!-- Post Announcement button -->
-          <a href="javascript:void(0);" id="postAnnouncementBtn">
-            <div class="post-button">
-              <div class="text-wrapper-2">Post Announcement</div>
-            </div>
-          </a>
-        </div>
 		<!-- Modal -->
 		<div id="postAnnouncementModal" class="modal">
 			<div class="modal-content">
@@ -73,17 +65,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</div>
 		</div>
-
-
-
-        <div class="post-button-wrapper">
-          <button class="button">
-            <div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
-				<div class="div-wrapper">
-					<input type="search" name="" id="" placeholder="Search">
-				</div>
-          </button>
-        </div>
         <div class="nav-links-container">
 			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Dashboard/index">
 				<div class="nav-link">

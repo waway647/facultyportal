@@ -29,14 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             </div>
           </div>
         </div>
-        <div class="post-container">
-          <!-- Post Announcement button -->
-          <a href="javascript:void(0);" id="postAnnouncementBtn">
-            <div class="post-button">
-              <div class="text-wrapper-2">Post Announcement</div>
-            </div>
-          </a>
-        </div>
+       
 		<!-- Modal -->
 		<div id="postAnnouncementModal" class="modal">
 			<div class="modal-content">
@@ -75,16 +68,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</div>
 		</div>
 
-
-
-        <div class="post-button-wrapper">
-          <button class="button">
-            <div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
-				<div class="div-wrapper">
-					<input type="search" name="" id="" placeholder="Search">
-				</div>
-          </button>
-        </div>
         <div class="nav-links-container">
 			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Dashboard/index">
 				<div class="nav-link">
@@ -340,7 +323,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
       </div>
     </div>
-
+	<script src="<?php echo base_url('assets/js/faculty.js?v=' . time()); ?>"></script>					
 	<script>
 	// Call the function to fetch faculty when the page loads
 	$(document).ready(function() {
@@ -412,7 +395,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					console.error('Expected an array but received:', result);
 				}
 
-				if (Array.isArray(result)) {
+				/* if (Array.isArray(result)) {
 					let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
 					let facultyFullName = $('#full_name'); // Default text if no match is found
 
@@ -424,7 +407,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 				} else {
 					console.error('Expected an array but received:', result);
-				}
+				} */
 			},
 			error: function (xhr, status, error) {
 				console.error('Error fetching faculty:', error);
@@ -503,34 +486,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 	}
-
-	/* function fetchFacultyFullName() {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('AJAX success (Faculty Data):', result);
-
-				if (Array.isArray(result)) {
-					let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
-					let facultyFullName = $('#full_name'); // Default text if no match is found
-
-					result.forEach(function(faculty) {
-						if (faculty.id == loggedUserId) {
-							facultyFullName.text(faculty.full_name); // Get the logged-in faculty's full name
-						}
-					});
-
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching faculty:', error);
-			}
-		});
-	} */
 
 	function populateAddResearchModal(research) {
 		// Fetch and populate faculty dropdown
@@ -632,9 +587,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             }
         });
     }
-
-	// Initialize "Post Announcement" modal
-	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
 
 	// Initialize "Add Course" modal
     setupModal("addResearchModal", "addResearchBtn", "closeaddResearchBtn");
