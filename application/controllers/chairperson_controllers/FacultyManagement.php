@@ -27,7 +27,9 @@ class FacultyManagement extends CI_Controller {
 	{
 		$search = $this->input->get('search');
 
-		$result = $this->FacultyManagement_model->getUserProfiles($search);  // Fetch data from SQL view
+		$faculty_role_name = 'Faculty';
+
+		$result = $this->FacultyManagement_model->getUserProfiles($search, $faculty_role_name);  // Fetch data from SQL view
 		echo json_encode($result);  // Return data as JSON
 	}
 

@@ -134,12 +134,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</a>
 
-			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Reports/index">
-				<div class="nav-link">
-					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/reports.svg'); ?>" /></div>
-					<div class="frame-2"><div class="text-wrapper-4">Reports</div></div>
-				</div>
-			</a>
         </div>
         <div class="nav-links-container-2">
 			<!-- Notification Button -->
@@ -176,7 +170,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           
 			<!-- Your profile link and other content here -->
 			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/index">
-				<div class="nav-link-3">
+				<div class="nav-link-3 active">
 					<?php if (isset($faculty) && $faculty !== null): ?>
 					<div class="img-wrapper">
 						<img class="img-account" src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="Profile Picture">
@@ -185,7 +179,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 					<div class="frame-3">
 						<div class="text-wrapper-5"><?php echo $faculty->first_name?> <?php echo $faculty->last_name?></div>
-						<div class="text-wrapper-6"><?php echo $faculty->email?></div>
+						<div class="text-wrapper-6 highlight"><?php echo $faculty->email?></div>
 					</div>
 					<?php endif ?>
 				</div>
@@ -283,60 +277,62 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="form-container">
 					<h4>Personal Information</h4>
 
-					<div class="input-container index">
-						<h6>Email</h6>
-						<input type="text" id="email" name="email" value="<?php echo $faculty->email ?? ''; ?>" placeholder="" disabled>
-					</div>
+					<div class="personal-info-section">
+						<div class="input-container index address-field">
+							<h6>Email</h6>
+							<input type="text" id="email" name="email" value="<?php echo $faculty->email ?? ''; ?>" placeholder="" disabled>
+						</div>
 
-					<div class="input-container index">
-						<h6>Mobile number</h6>
-						<input type="text" id="mobile_number" name="mobile_number" value="<?php echo $faculty->mobile_number ?? ''; ?>" placeholder="" disabled>
-					</div>
+						<div class="input-container index address-field">
+							<h6>Mobile number</h6>
+							<input type="text" id="mobile_number" name="mobile_number" value="<?php echo $faculty->mobile_number ?? ''; ?>" placeholder="" disabled>
+						</div>
 
-					<div class="input-container index">
-						<h6>First name</h6>
-						<input type="text" id="first_name" name="first_name" value="<?php echo $faculty->first_name ?? ''; ?>" placeholder="" disabled>
-					</div>
+						<div class="input-container index address-field">
+							<h6>First name</h6>
+							<input type="text" id="first_name" name="first_name" value="<?php echo $faculty->first_name ?? ''; ?>" placeholder="" disabled>
+						</div>
 
-					<div class="input-container index">
-						<h6>Last name</h6>
-						<input type="text" id="last_name" name="last_name" value="<?php echo $faculty->last_name ?? ''; ?>" placeholder="" disabled>
-					</div>
+						<div class="input-container index address-field">
+							<h6>Last name</h6>
+							<input type="text" id="last_name" name="last_name" value="<?php echo $faculty->last_name ?? ''; ?>" placeholder="" disabled>
+						</div>
 
-					<div class="input-container index">
-						<h6>Middle name</h6>
-						<input type="text" id="middle_name" name="middle_name" value="<?php echo $faculty->middle_name ?? ''; ?>" placeholder="" disabled>
-					</div>
+						<div class="input-container index address-field">
+							<h6>Middle name</h6>
+							<input type="text" id="middle_name" name="middle_name" value="<?php echo $faculty->middle_name ?? ''; ?>" placeholder="" disabled>
+						</div>
 
-					<div class="input-container index">
-						<h6>Birthday</h6>
-						<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday ?? ''; ?>" placeholder="" disabled>
-					</div>
+						<div class="input-container index address-field">
+							<h6>Birthday</h6>
+							<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday ?? ''; ?>" placeholder="" disabled>
+						</div>
 
-					<div class="input-container index">
-						<h6>Gender</h6>
-						<input type="text" id="gender" name="gender" value="<?php echo $faculty->gender ?? ''; ?>" placeholder="" disabled>
+						<div class="input-container index address-field">
+							<h6>Gender</h6>
+							<input type="text" id="gender" name="gender" value="<?php echo $faculty->gender ?? ''; ?>" placeholder="" disabled>
+						</div>
 					</div>
 
 					<div class="line"></div>
 					<h4>Additional Information</h4>
 
-					<div class="input-container index">
-						<h6>Civil Status</h6>
-						<input type="text" id="civil_status" name="civil_status" value="<?php echo $faculty->civil_status ?? ''; ?>" placeholder="" disabled>
-					</div>
+					<div class="additional-information-section">
+						<div class="input-container index address-field">
+							<h6>Civil Status</h6>
+							<input type="text" id="civil_status" name="civil_status" value="<?php echo $faculty->civil_status ?? ''; ?>" placeholder="" disabled>
+						</div>
 
-					<div class="input-container index">
-						<h6>Religion</h6>
-						<input type="text" id="religion" name="religion" value="<?php echo $faculty->religion ?? ''; ?>" placeholder="" disabled>
-					</div>
+						<div class="input-container index address-field">
+							<h6>Religion</h6>
+							<input type="text" id="religion" name="religion" value="<?php echo $faculty->religion ?? ''; ?>" placeholder="" disabled>
+						</div>
 
-					<div class="input-container index">
-						<h6>Citizenship</h6>
-						<input type="text" id="citizenship" name="citizenship" value="<?php echo $faculty->citizenship ?? ''; ?>" placeholder="" disabled>
+						<div class="input-container index address-field">
+							<h6>Citizenship</h6>
+							<input type="text" id="citizenship" name="citizenship" value="<?php echo $faculty->citizenship ?? ''; ?>" placeholder="" disabled>
+						</div>
 					</div>
-
-					
 
 					<div class="line"></div>
 					<h4>Present Address</h4>

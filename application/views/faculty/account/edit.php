@@ -251,114 +251,114 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="form-container">
 						<h4>Personal Information</h4>
 
-						<div class="input-container">
-							<h6>Email</h6>
-							<input type="text" id="email" name="email" value="<?php echo $faculty->email; ?>" placeholder="Email">
+						<div class="personal-information-section">
+							<div class="input-container address-field">
+								<h6>Email</h6>
+								<input type="text" id="email" name="email" value="<?php echo $faculty->email; ?>" placeholder="Email">
+							</div>
+
+							<div class="input-container address-field">
+								<h6>Mobile number</h6>
+								<input type="text" id="mobile_number" name="mobile_number" value="<?php echo $faculty->mobile_number; ?>" placeholder="Mobile number">
+							</div>
+
+							<div class="input-container address-field">
+								<h6>First name</h6>
+								<input type="text" id="first_name" name="first_name" value="<?php echo $faculty->first_name; ?>" placeholder="First name">
+							</div>
+
+							<div class="input-container address-field">
+								<h6>Last name</h6>
+								<input type="text" id="last_name" name="last_name" value="<?php echo $faculty->last_name; ?>" placeholder="Last name">
+							</div>
+
+							<div class="input-container address-field">
+								<h6>Middle name</h6>
+								<input type="text" id="middle_name" name="middle_name" value="<?php echo $faculty->middle_name; ?>" placeholder="Middle name">
+							</div>
+
+							<div class="input-container address-field">
+								<h6>Birthday</h6>
+								<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday; ?>" max="<?php echo date('Y') - 1 . '-12-31'; ?>">
+							</div>
+
+							<div class="input-container address-field">
+								<h6>Gender</h6>
+								<select id="gender" name="gender" placeholder="Gender">
+									<option selected>Choose Gender</option>
+									<option value="Male" <?php echo ($faculty->gender === 'Male') ? 'selected' : ''; ?>>Male</option>
+									<option value="Female" <?php echo ($faculty->gender === 'Female' ? 'Selected' : '')?>>Female</option>
+									<option value="Other" <?php echo ($faculty->gender === 'Other' ? 'Selected' : '')?>>Other</option>
+								</select>
+							</div>
 						</div>
-
-						<!-- <div class="input-container">
-							<h6>Password</h6>
-							<input type="hidden" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Password">
-						</div> -->
-						<!-- <input type="hidden" id="pass" name="pass" value="<?php echo $faculty->pass; ?>" placeholder="Pass" disabled> -->
-
-						<div class="input-container">
-							<h6>Mobile number</h6>
-							<input type="text" id="mobile_number" name="mobile_number" value="<?php echo $faculty->mobile_number; ?>" placeholder="Mobile number">
-						</div>
-
-						<div class="input-container">
-							<h6>First name</h6>
-							<input type="text" id="first_name" name="first_name" value="<?php echo $faculty->first_name; ?>" placeholder="First name">
-						</div>
-
-						<div class="input-container">
-							<h6>Last name</h6>
-							<input type="text" id="last_name" name="last_name" value="<?php echo $faculty->last_name; ?>" placeholder="Last name">
-						</div>
-
-						<div class="input-container">
-							<h6>Middle name</h6>
-							<input type="text" id="middle_name" name="middle_name" value="<?php echo $faculty->middle_name; ?>" placeholder="Middle name">
-						</div>
-
-						<div class="input-container">
-							<h6>Birthday</h6>
-							<input type="date" id="birthday" name="birthday" value="<?php echo $faculty->birthday; ?>" max="<?php echo date('Y') - 1 . '-12-31'; ?>">
-						</div>
-
-						<div class="input-container">
-							<h6>Gender</h6>
-							<select id="gender" name="gender" placeholder="Gender">
-								<option selected>Choose Gender</option>
-								<option value="Male" <?php echo ($faculty->gender === 'Male') ? 'selected' : ''; ?>>Male</option>
-								<option value="Female" <?php echo ($faculty->gender === 'Female' ? 'Selected' : '')?>>Female</option>
-								<option value="Other" <?php echo ($faculty->gender === 'Other' ? 'Selected' : '')?>>Other</option>
-							</select>
-						</div>
-
+						
 						<div class="line"></div>
 						<h4>Additional Information</h4>
 
-						<div class="input-container index">
-							<h6>Civil Status</h6>
-							<select id="civil_status" name="civil_status" placeholder="Civil Status">
-								<option selected>Choose status</option>
-								<option value="Single" <?php echo ($faculty->civil_status === 'Single') ? 'selected' : ''; ?>>Single</option>
-								<option value="Married" <?php echo ($faculty->civil_status === 'Married' ? 'Selected' : '')?>>Married</option>
-								<option value="Divorced" <?php echo ($faculty->civil_status === 'Divorced' ? 'Selected' : '')?>>Divorced</option>
-								<option value="Widowed" <?php echo ($faculty->civil_status === 'Widowed' ? 'Selected' : '')?>>Divorced</option>
-							</select>
-						</div>
+						<div class="additional-information-section">
+							<div class="input-container index address-field">
+								<h6>Civil Status</h6>
+								<select id="civil_status" name="civil_status" placeholder="Civil Status">
+									<option selected>Choose status</option>
+									<option value="Single" <?php echo ($faculty->civil_status === 'Single') ? 'selected' : ''; ?>>Single</option>
+									<option value="Married" <?php echo ($faculty->civil_status === 'Married' ? 'Selected' : '')?>>Married</option>
+									<option value="Divorced" <?php echo ($faculty->civil_status === 'Divorced' ? 'Selected' : '')?>>Divorced</option>
+									<option value="Widowed" <?php echo ($faculty->civil_status === 'Widowed' ? 'Selected' : '')?>>Divorced</option>
+								</select>
+							</div>
 
-						<div class="input-container index">
-							<h6>Religion</h6>
-							<input type="text" id="religion" name="religion" value="<?php echo $faculty->religion; ?>" placeholder="Religion">
-						</div>
+							<div class="input-container index address-field">
+								<h6>Religion</h6>
+								<input type="text" id="religion" name="religion" value="<?php echo $faculty->religion; ?>" placeholder="Religion">
+							</div>
 
-						<div class="input-container index">
-							<h6>Citizenship</h6>
-							<input type="text" id="citizenship" name="citizenship" value="<?php echo ($user_address !== null) ? ($user_address->house_address ?? '') : ''; ?>" placeholder="Citizenship">
+							<div class="input-container index address-field">
+								<h6>Citizenship</h6>
+								<input type="text" id="citizenship" name="citizenship" value="<?php echo ($user_address !== null) ? ($user_address->house_address ?? '') : ''; ?>" placeholder="Citizenship">
+							</div>
 						</div>
-
+						
 						<div class="line"></div>
 						<h4>Present Address</h4>
 
-						<div class="input-container index">
-							<h6>House Address</h6>
-							<input type="text" id="house_address" name="house_address" 
-								value="<?php echo ($user_address !== null) ? ($user_address->house_address ?? '') : ''; ?>" 
-								placeholder="House Address">
-						</div>
+						<div class="address-section">
+							<div class="input-container index address-field">
+								<h6>House Address</h6>
+								<input type="text" id="house_address" name="house_address" 
+									value="<?php echo ($user_address !== null) ? ($user_address->house_address ?? '') : ''; ?>" 
+									placeholder="House Address">
+							</div>
 
-						<div class="input-container index">
-							<h6>Barangay</h6>
-							<input type="text" id="barangay" name="barangay" 
-								value="<?php echo ($user_address !== null) ? ($user_address->barangay ?? '') : ''; ?>" 
-								placeholder="Barangay">
-						</div>
+							<div class="input-container index address-field">
+								<h6>Barangay</h6>
+								<input type="text" id="barangay" name="barangay" 
+									value="<?php echo ($user_address !== null) ? ($user_address->barangay ?? '') : ''; ?>" 
+									placeholder="Barangay">
+							</div>
 
-						<div class="input-container index">
-							<h6>City</h6>
-							<input type="text" id="city" name="city" 
-								value="<?php echo ($user_address !== null) ? ($user_address->city ?? '') : ''; ?>" 
-								placeholder="City">
-						</div>
+							<div class="input-container index address-field">
+								<h6>City</h6>
+								<input type="text" id="city" name="city" 
+									value="<?php echo ($user_address !== null) ? ($user_address->city ?? '') : ''; ?>" 
+									placeholder="City">
+							</div>
 
-						<div class="input-container index">
-							<h6>Region</h6>
-							<input type="text" id="region" name="region" 
-								value="<?php echo ($user_address !== null) ? ($user_address->region ?? '') : ''; ?>" 
-								placeholder="Region">
-						</div>
+							<div class="input-container index address-field">
+								<h6>Region</h6>
+								<input type="text" id="region" name="region" 
+									value="<?php echo ($user_address !== null) ? ($user_address->region ?? '') : ''; ?>" 
+									placeholder="Region">
+							</div>
 
-						<div class="input-container index">
-							<h6>Zip Code</h6>
-							<input type="text" id="zip_code" name="zip_code" 
-								value="<?php echo ($user_address !== null) ? ($user_address->zip_code ?? '') : ''; ?>" 
-								placeholder="Zip Code">
+							<div class="input-container index address-field">
+								<h6>Zip Code</h6>
+								<input type="text" id="zip_code" name="zip_code" 
+									value="<?php echo ($user_address !== null) ? ($user_address->zip_code ?? '') : ''; ?>" 
+									placeholder="Zip Code">
+							</div>
 						</div>
-
+				
 						<div class="input-container edit">
 							<button type="submit">
 								<h6>Save changes</h6>

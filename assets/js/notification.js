@@ -21,6 +21,10 @@ function fetchNotifications() {
 // Render notifications dynamically
 function slideNotificationPanel(notifications) {
     const notificationPanel = $("#notificationPanel");
+    const notificationBtn = document.getElementById('notificationBtn');
+    const notificationPanelClass = document.querySelector('.notification-panel');
+    const navLink = notificationBtn.querySelector('.nav-link'); // Target the nav-link inside the button
+    const textWrapper = notificationBtn.querySelector('.text-wrapper-4');
 
     // Build notification HTML using the fetched data
     let html = `
@@ -35,7 +39,7 @@ function slideNotificationPanel(notifications) {
             <div class="notification-item">
                 <div class="notification-item-details">
                     <h4>${notif.title || 'No message'}</h4>
-					<small>${notif.posted_by || 'Posted by Unknown'}</small>
+                    <small>${notif.posted_by || 'Posted by Unknown'}</small>
                     <small>${notif.created_at || 'Unknown date'}</small>
                     <a href="${notif.link || '#'}">
                         <button class="action-btn">View</button>
@@ -48,35 +52,39 @@ function slideNotificationPanel(notifications) {
     html += `</div>`;
     notificationPanel.html(html);
 
-    // Event listeners for panel interaction
-    const notificationBtn = document.getElementById('notificationBtn');
-    const notificationPanelClass = document.querySelector('.notification-panel');
-
-    // Open panel on button click
+    // Open panel on button click and toggle active class
     notificationBtn.addEventListener('click', (e) => {
         e.preventDefault();
         if (notificationPanelClass.classList.contains('open')) {
-            notificationPanelClass.classList.remove('open'); // Close if open
+            notificationPanelClass.classList.remove('open');
+            navLink.classList.remove('active'); // Remove active when closing
+            textWrapper.classList.remove('highlight');
         } else {
-            notificationPanelClass.classList.add('open'); // Open if closed
+            notificationPanelClass.classList.add('open');
+            navLink.classList.add('active'); // Add active when opening
+            textWrapper.classList.add('highlight');
         }
     });
 
-    // Close panel on close button click
+    // Close panel on close button click and revert class
     const closePanel = document.getElementById('closePanel');
     if (closePanel) {
         closePanel.addEventListener('click', () => {
             notificationPanelClass.classList.remove('open');
+            navLink.classList.remove('active'); // Revert to nav-link
+            textWrapper.classList.remove('highlight');
         });
     }
 
-    // Close panel when clicking outside
+    // Close panel when clicking outside and revert class
     window.addEventListener('click', (event) => {
         if (
             !notificationPanelClass.contains(event.target) &&
             !notificationBtn.contains(event.target)
         ) {
             notificationPanelClass.classList.remove('open');
+            navLink.classList.remove('active'); // Revert to nav-link
+            textWrapper.classList.remove('highlight');
         }
     });
 }

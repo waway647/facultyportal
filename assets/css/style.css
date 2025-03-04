@@ -133,7 +133,7 @@ select{
   outline: 1px solid #A4A4A4;
 }
 
-.address-section .input-container{
+.address-field {
   margin: 10px;
 }
 

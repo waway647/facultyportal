@@ -13,19 +13,19 @@ class Profile extends CI_Controller {
 		$this->load->helper('url');
 	}
 
-	public function index($logged_id = null) // http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index
+	public function index() // http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index
 	{
 		$this->load->model('common_models/Faculty_model');
-		$faculty_id = $this->session->userdata('logged_id');
-		$data['logged_faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
-			
-		$logged_id = $this->session->userdata('logged_id');
+		$user_id = $this->session->userdata('logged_id');
+		$data['logged_faculty'] = $this->Faculty_model->getFacultyProfile($user_id);
+		$faculty_id = $this->Faculty_model->getFacultyID($user_id);
+		$this->session->set_userdata('faculty_id', $faculty_id);
 
-		if ($logged_id) {
+		if ($faculty_id) {
 			// Clear current_id to prevent interference when viewing own profile
 			$this->session->unset_userdata('current_id');
 			
-			$data['faculty'] = $this->Profile_model->getFacultyProfile($logged_id);
+			$data['faculty'] = $this->Profile_model->getFacultyProfile($faculty_id);
 			$this->load->view('chairperson/profile/index', $data);
 		} else {
 			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
@@ -58,7 +58,7 @@ class Profile extends CI_Controller {
 	public function deleteProfile()
 	{
 		// Get the current faculty ID
-		$faculty_id = $this->session->userdata('current_id') ?: $this->session->userdata('logged_id');
+		$faculty_id = $this->session->userdata('current_id') ?: $this->session->userdata('faculty_id');
 
 		if ($faculty_id) {
 			$user_id = $this->Profile_model->getUserIdByFacultyProfileId($faculty_id);
@@ -86,7 +86,7 @@ class Profile extends CI_Controller {
 	public function prepareForEditProfile()
 	{
 		// Get the current faculty ID
-		$current_id = $this->session->userdata('current_id') ?: $this->session->userdata('logged_id');
+		$current_id = $this->session->userdata('current_id') ?: $this->session->userdata('faculty_id');
 
 		if ($current_id) {
 			// Backup qualifications before loading the edit profile page
@@ -114,7 +114,7 @@ class Profile extends CI_Controller {
 		$data['logged_faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
 
 		// Get the current faculty ID
-		$current_id = $this->session->userdata('current_id') ?: $this->session->userdata('logged_id');
+		$current_id = $this->session->userdata('current_id') ?: $this->session->userdata('faculty_id');
 
 		if ($current_id) {
 			// Load the faculty profile data for editing
@@ -187,7 +187,7 @@ class Profile extends CI_Controller {
 			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/viewProfile/' . $current_id);
 		}
 
-		$logged_id = $this->session->userdata('logged_id');
+		$logged_id = $this->session->userdata('faculty_id');
 
 		if ($logged_id) {
 			$this->db->trans_start();
@@ -244,7 +244,7 @@ class Profile extends CI_Controller {
 	public function getQualifications()
 	{
 		$current_id = $this->session->userdata('current_id');
-		$logged_id = $this->session->userdata('logged_id');
+		$logged_id = $this->session->userdata('faculty_id');
 
 		$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
 
@@ -275,7 +275,7 @@ class Profile extends CI_Controller {
 					}
 				} 
 
-				$logged_id = $this->session->userdata('logged_id');
+				$logged_id = $this->session->userdata('faculty_id');
 
 				if($logged_id) {
 					$qualification_data = array(
@@ -299,7 +299,7 @@ class Profile extends CI_Controller {
 	public function getExperience()
 	{
 		$current_id = $this->session->userdata('current_id');
-		$logged_id = $this->session->userdata('logged_id');
+		$logged_id = $this->session->userdata('faculty_id');
 
 		$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
 
@@ -330,7 +330,7 @@ class Profile extends CI_Controller {
 					}
 				} 
 
-				$logged_id = $this->session->userdata('logged_id');
+				$logged_id = $this->session->userdata('faculty_id');
 
 				if($logged_id) {
 					$experience_data = array(
@@ -353,7 +353,7 @@ class Profile extends CI_Controller {
 	public function getResearch()
 	{
 		$current_id = $this->session->userdata('current_id');
-		$logged_id = $this->session->userdata('logged_id');
+		$logged_id = $this->session->userdata('faculty_id');
 
 		$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
 
@@ -396,7 +396,7 @@ class Profile extends CI_Controller {
 				}
 
 				// Check if logged in by logged_id
-				$logged_id = $this->session->userdata('logged_id');
+				$logged_id = $this->session->userdata('faculty_id');
 
 				if ($logged_id) {
 					$research_data = array(
@@ -512,7 +512,7 @@ class Profile extends CI_Controller {
 			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/viewProfile/' . $current_id);
 		}
 
-		$logged_id = $this->session->userdata('logged_id');
+		$logged_id = $this->session->userdata('faculty_id');
 
 		if ($logged_id) {
 			$this->db->trans_start();
@@ -763,7 +763,7 @@ class Profile extends CI_Controller {
 	public function getProfilePic()
 	{
 		$current_id = $this->session->userdata('current_id');
-		$logged_id = $this->session->userdata('logged_id');
+		$logged_id = $this->session->userdata('faculty_id');
 
 		$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
 
@@ -792,7 +792,7 @@ class Profile extends CI_Controller {
 			
 				// Get faculty profile ID from session
 				$current_id = $this->session->userdata('current_id');
-				$logged_id = $this->session->userdata('logged_id');
+				$logged_id = $this->session->userdata('faculty_id');
 				$user_id = null;
 			
 				if ($current_id) {
@@ -827,7 +827,7 @@ class Profile extends CI_Controller {
 	public function getCoverPhoto()
 	{
 		$current_id = $this->session->userdata('current_id');
-		$logged_id = $this->session->userdata('logged_id');
+		$logged_id = $this->session->userdata('faculty_id');
 
 		$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
 
@@ -856,7 +856,7 @@ class Profile extends CI_Controller {
 			
 				// Get faculty profile ID from session
 				$current_id = $this->session->userdata('current_id');
-				$logged_id = $this->session->userdata('logged_id');
+				$logged_id = $this->session->userdata('faculty_id');
 				$user_id = null;
 			
 				if ($current_id) {
@@ -915,7 +915,7 @@ class Profile extends CI_Controller {
 			public function updateQualifications($id)
 			{
 				$current_id = $this->session->userdata('current_id');
-				$logged_id = $this->session->userdata('logged_id');
+				$logged_id = $this->session->userdata('faculty_id');
 				$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
 			
 				if (!$faculty_id) {
@@ -986,7 +986,7 @@ class Profile extends CI_Controller {
 			public function updateExperience($id)
 			{
 				$current_id = $this->session->userdata('current_id');
-				$logged_id = $this->session->userdata('logged_id');
+				$logged_id = $this->session->userdata('faculty_id');
 				$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
 			
 				if (!$faculty_id) {
@@ -1055,7 +1055,7 @@ class Profile extends CI_Controller {
 			{
 				// Load the current faculty ID
 				$current_id = $this->session->userdata('current_id');
-				$logged_id = $this->session->userdata('logged_id');
+				$logged_id = $this->session->userdata('faculty_id');
 				$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
 			
 				if (!$faculty_id) {

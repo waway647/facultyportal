@@ -133,13 +133,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="frame-2"><div class="text-wrapper-4">Consultations</div></div>
 				</div>
 			</a>
-
-			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Reports/index">
-				<div class="nav-link">
-					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/reports.svg'); ?>" /></div>
-					<div class="frame-2"><div class="text-wrapper-4">Reports</div></div>
-				</div>
-			</a>
+	
         </div>
         <div class="nav-links-container-2">
 			<!-- Notification Button -->

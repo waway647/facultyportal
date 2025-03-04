@@ -122,9 +122,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</a>
           
 		  	<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/ResearchOutputs/index">
-				<div class="nav-link">
+				<div class="nav-link active">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/research.svg'); ?>" /></div>
-					<div class="frame-2"><div class="text-wrapper-4">Research Outputs</div></div>
+					<div class="frame-2"><div class="text-wrapper-4 highlight">Research Outputs</div></div>
 				</div>
 			</a>
     
@@ -135,12 +135,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</a>
 
-			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Reports/index">
-				<div class="nav-link">
-					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/reports.svg'); ?>" /></div>
-					<div class="frame-2"><div class="text-wrapper-4">Reports</div></div>
-				</div>
-			</a>
         </div>
         <div class="nav-links-container-2">
 			<!-- Notification Button -->

@@ -4,9 +4,11 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 
 class FacultyManagement_model extends CI_Model {
 
-    public function getUserProfiles($search) 
+    public function getUserProfiles($search, $faculty_role_name) 
     {
+        $this->db->where('role_name', $faculty_role_name);
         if (!empty($search)) {
+            $this->db->group_start();
             $this->db->like('first_name', $search);
             $this->db->or_like('last_name', $search); 
             $this->db->or_like('middle_name', $search);
@@ -14,8 +16,8 @@ class FacultyManagement_model extends CI_Model {
             $this->db->or_like('email', $search);
             $this->db->or_like('mobile_number', $search);
             $this->db->or_like('age', $search);
+            $this->db->group_end();
         }
-
         $query = $this->db->get('faculty_profiles_vw');
         return $query->result_array(); // Fixed to return array
     }
