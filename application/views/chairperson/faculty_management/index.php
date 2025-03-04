@@ -117,11 +117,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="frame-2"><div class="text-wrapper-4">Consultations</div></div>
 				</div>
 			</a>
-
-<<<<<<< Updated upstream
-=======
-			
->>>>>>> Stashed changes
         </div>
         <div class="nav-links-container-2">
 			<!-- Notification Button -->

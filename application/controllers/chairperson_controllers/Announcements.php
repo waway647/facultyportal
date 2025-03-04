@@ -30,29 +30,46 @@ class Announcements extends CI_Controller {
 		}
 	}
 
-	public function createAnnouncement() {
+	/* public function createAnnouncement() {
 		$config['upload_path'] = './assets/announcement_attachments/';
 		$config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx';
 		$this->load->library('upload', $config);
 
-		if($this->upload->do_upload('announcement_file_path')){
-			$uploaded_data = $this->upload->data();
-			$attachment_path = 'assets/announcement_attachments/' . $uploaded_data['file_name'];
-			
-		}
-		/* $faculty_id = $this->session->userdata('faculty_id'); */
+		$files = $_FILES;
+		$file_count = isset($_FILES['announcement_file_path']['name']) && is_array($_FILES['announcement_file_path']['name']) ? count($_FILES['announcement_file_path']['name']) : 0;
+		$attachment_paths = array();
 
-		$attachment_data = array(
-			"announcement_id" => '1',
-			"announcement_file_path" => $attachment_path
+		for($i = 0; $i < $file_count; $i++) {
+			$_FILES['announcement_file_path']['name'] = $files['announcement_file_path']['name'][$i];
+			$_FILES['announcement_file_path']['type'] = $files['announcement_file_path']['type'][$i];
+			$_FILES['announcement_file_path']['tmp_name'] = $files['announcement_file_path']['tmp_name'][$i];
+			$_FILES['announcement_file_path']['error'] = $files['announcement_file_path']['error'][$i];
+			$_FILES['announcement_file_path']['size'] = $files['announcement_file_path']['size'][$i];
+
+			if($this->upload->do_upload('announcement_file_path')){
+				$uploaded_data = $this->upload->data();
+				$attachment_paths[] = 'assets/announcement_attachments/' . $uploaded_data['file_name'];
+			}
+		}
+
+		$announcement_data = array(
+			// Add other announcement data here
 		);
-		$result = $this->Announcement_model->insertAnnouncement($attachment_data);
-		if ($result) {
+		$announcement_id = $this->Announcement_model->insertAnnouncement($announcement_data);
+
+		if ($announcement_id) {
+			foreach ($attachment_paths as $attachment_path) {
+				$attachment_data = array(
+					"announcement_id" => $announcement_id,
+					"announcement_file_path" => $attachment_path
+				);
+				$this->Announcement_model->insertAttachment($attachment_data);
+			}
 			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
 		}
-
-
-		/* if ($faculty_id) {
+	} */
+	/* $faculty_id = $this->session->userdata('faculty_id'); */
+	/* if ($faculty_id) {
 			$announcement_data = array(
 				
 				"announcement_file_path" => $this->input->post();
@@ -74,5 +91,4 @@ class Announcements extends CI_Controller {
 				redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
 			}
 		} */
-	}
 }
