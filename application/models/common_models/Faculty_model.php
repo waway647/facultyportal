@@ -55,10 +55,14 @@ class Faculty_model extends CI_Model {
 		return $query;
 	}
 
-	public function getFaculty() 
-	{
+	public function getFaculty($faculty_id) {
+		$this->db->where('id', $faculty_id);
 		$query = $this->db->get('faculty_full_name_vw');
-		return $query->result_array();
+		$data = $query->row_array(); // Single row as array
+		return [
+			'full_name' => $data['full_name'], // Adjust key based on your DB
+			'email' => $data['email']          // Ensure email is in the view/table
+		];
 	}
 
 	public function getFacultyID($logged_user_id)

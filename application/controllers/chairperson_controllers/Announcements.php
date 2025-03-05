@@ -22,6 +22,7 @@ class Announcements extends CI_Controller {
 		$logged_user_id = $this->session->userdata('logged_id');
 
 		$faculty_id = $this->Faculty_model->getFacultyID($logged_user_id);
+		$data['full_name'] = $this->Faculty_model->getFaculty($faculty_id);
 		if($faculty_id)
 		{
 			$this->session->set_userdata('faculty_id', $faculty_id);

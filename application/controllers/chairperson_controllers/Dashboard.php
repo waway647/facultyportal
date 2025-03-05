@@ -16,8 +16,11 @@ class Dashboard extends CI_Controller {
 	public function index() // http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Dashboard/index
 	{
 		$this->load->model('common_models/Faculty_model');
-		$faculty_id = $this->session->userdata('logged_id');
-		$data['faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
+		$logged_id = $this->session->userdata('logged_id');
+		$data['faculty'] = $this->Faculty_model->getFacultyProfile($logged_id);
+
+		$faculty_id = $this->Faculty_model->getFacultyID($logged_id);
+		$data['full_name'] = $this->Faculty_model->getFaculty($faculty_id);
 
 		$this->load->view('chairperson/dashboard/index', $data);
 	}

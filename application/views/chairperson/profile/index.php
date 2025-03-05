@@ -159,8 +159,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 					
 					<div class="frame-3">
-						<div class="text-wrapper-5"><?php echo $logged_faculty->first_name?> <?php echo $logged_faculty->last_name?></div>
-						<div class="text-wrapper-6"><?php echo $logged_faculty->email?></div>
+						<div class="text-wrapper-5" id="full_name"></div>
+						<div class="text-wrapper-6"></div>
 					</div>
 					<?php endif ?>
 				</div>
@@ -310,6 +310,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 									<th>Academic Degree</th>
 									<th>Institution</th>
 									<th>Year Graduated</th>
+									<th>Copy of Diploma</th>
 								</tr>
 								</thead>
 
@@ -348,44 +349,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						</div>
 					</div>
 
-					<!-- Research Outputs -->
+					<!-- Certifications -->
 					<div class="the-content-container">
-						<div class="sub-content-container">
-							<div class="table-heading">
-								<h4>Research Outputs</h4>
+							<div class="sub-content-container">
+								<div class="table-heading">
+									<h4>Certifications</h4>
+								</div>
 							</div>
-						</div>
+							
+							<div id="container">    
+								<table class="table" id="CertificationList" name="CertificationList">
+									<thead>
+									<tr>
+										<th>#</th>
+										<th>Name of Organization/Company</th>
+										<th>Certificate Title</th>
+										<th>Year</th>
+										<th>Expiration Date</th>
+										<th>Certificate</th>
+									</tr>
+									</thead>
 
-						<!-- Flash Message for Error -->
-						<?php if ($this->session->flashdata('error')): ?>
-						<script type="text/javascript">
-							Swal.fire({
-								icon: 'error',
-								title: 'Oops...',
-								text: "<?php echo $this->session->flashdata('error'); ?>"
-							});
-						</script>
-						<?php endif; ?>
-											
-						<div id="container">    
-							<table class="table" id="ResearchList" name="ResearchList">
-								<thead>
-								<tr>
-									<th>#</th>
-									<th>Title</th>
-									<th>Year Published</th>
-									<th>Research PDF</th>
+									<tbody>
+										
+									</tbody>
+								</table>
 
-								</tr>
-								</thead>
-
-								<tbody>
-									
-								</tbody>
-							</table>
-
-						</div>
-					</div>
+							</div>
+						</div>	
 					
 				</div>
 				</div>
@@ -396,10 +387,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<script>
 	$(document).ready(function() {
-			fetchFaculty();
 			fetchQualifications();
 			fetchExperience();
-			fetchResearch();
+			fetchCertifications();
 		});
 
 	function fetchQualifications() {
@@ -432,12 +422,13 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 			sno += 1;
 
-			var tr = "<tr>";
-			tr += "<td>" + sno + "</td>";  // Serial number
-			tr += "<td>" + academic_degree + "</td>";
-			tr += "<td>" + institution + "</td>";
-			tr += "<td>" + year_graduated + "</td>";
-			tr += "</tr>";
+			var tr = `<tr>
+            <td>${sno}</td>
+            <td>${academic_degree}</td>
+            <td>${institution}</td>
+            <td>${year_graduated}</td>
+            <td><a href='javascript:void(0)' onclick='openPDFInNewTab(${id}, "qualification")'>View Diploma</a></td>
+        </tr>`;
 
 			$('#QualificationsList tbody').append(tr);  // Append the new row to the table body
 		}
@@ -484,95 +475,71 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		}
 	}
 
-	function fetchResearch() {
+	function fetchCertifications() {
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/getResearch',  // Update the URL as necessary
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/getCertifications',  // Update the URL as necessary
 			type: 'GET',
 			dataType: 'json',
 			success: function(result) {
-				console.log('AJAX success (Research):', result);
+				console.log('AJAX success (Certifications):', result);
 				if (Array.isArray(result)) {
-					createResearchTable(result, 0);  // Call the function to create the table and pass the result
+					createCertificationTable(result, 0);  // Call the function to create the table and pass the result
 				} else {
 					console.error('Expected an array but received:', result);
 				}
 			},
 			error: function(xhr, status, error) {
-				console.error('Error fetching research:', error);
+				console.error('Error fetching certifications:', error);
 			}
 		});
 	}
 
-	function createResearchTable(result, sno) {
+	function createCertificationTable(result, sno) {
 		sno = Number(sno);
-		$('#ResearchList tbody').empty(); // Clear existing rows
+		$('#CertificationList tbody').empty(); // Clear existing rows
 		for (index in result) {
 			var id = result[index].id;
-			var title = result[index].title;
-			var publication_year = result[index].publication_year;
+			var certification_name = result[index].certification_name;
+			var certification_title = result[index].certification_title;
+			var year_received = result[index].year_received; 
+			var expiration_date = result[index].expiration_date; 
+
 
 			sno += 1;
 
-			var tr = "<tr>";
-			tr += "<td>" + sno + "</td>";  // Serial number
-			tr += "<td>" + title + "</td>";
-			tr += "<td>" + publication_year + "</td>";			
-			tr += "<td><a href='javascript:void(0)' onclick='openPDFInNewTab(" + id + ")'>View PDF</a></td>";
-			tr += "</tr>";
+			var tr = `<tr>
+            <td>${sno}</td>
+            <td>${certification_name}</td>
+            <td>${certification_title}</td>
+            <td>${year_received}</td>
+			<td>${expiration_date}</td>
+            <td><a href='javascript:void(0)' onclick='openPDFInNewTab(${id}, "certification")'>View Certificate</a></td>
+        </tr>`;
 
-			$('#ResearchList tbody').append(tr);  // Append the new row to the table body
+			$('#CertificationList tbody').append(tr);  // Append the new row to the table body
 		}
 	}
 
-	// JavaScript function to open the PDF in a new tab
-	function openPDFInNewTab(id) {
-		// Construct the URL to open the PDF
-		var url = 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/ViewResearchPDF/' + id;
-		// Open the URL in a new tab
-		window.open(url, '_blank');
-	}
 
-	// Function to fetch faculty data via AJAX
-	function fetchFaculty() {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/getFacultyProfile',  // Update the URL as necessary
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('AJAX success (Courses):', result);
-				if (Array.isArray(result)) {
-					createCourseTable(result, 0);  // Call the function to create the table and pass the result
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching courses:', error);
+	// JavaScript function to open the PDF in a new tab (Reusable for different types of PDFs)
+	function openPDFInNewTab(id, type) {
+			// Determine the URL based on the type of document
+			var baseUrl = 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/';
+			var url = '';
+
+			if (type === 'qualification') {
+				url = baseUrl + 'ViewQualificationPDF/' + id;
+			} else if (type === 'certification') {
+				url = baseUrl + 'ViewCertificationPDF/' + id;  // Adjust the endpoint as needed
+			} else {
+				console.error('Invalid document type specified.');
+				return;
 			}
-		});
-	}
+
+			// Open the URL in a new tab
+			window.open(url, '_blank');
+		}
 	
-	// Get elements
-	const modal = document.getElementById("postAnnouncementModal");
-	const btn = document.getElementById("postAnnouncementBtn");
-	const closeModal = document.getElementById("closeModalBtn");
-
-	// Open modal
-	btn.onclick = function () {
-	  modal.style.display = "block";
-	};
-
-	// Close modal
-	closeModal.onclick = function () {
-	  modal.style.display = "none";
-	};
-
-	// Close modal when clicking outside of it
-	window.onclick = function (event) {
-	  if (event.target == modal) {
-	    modal.style.display = "none";
-	  }
-	};
 
 	// Function to initialize a modal
 	function setupModal(modalId, openButtonId, closeButtonId) {
@@ -602,82 +569,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 
 	// Initialize "Post Announcement" modal
-	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
-
-	// Initialize "Post Announcement" modal
 	setupModal("confirmDeleteModal", "removeFacultyBtn", "cancelDeleteBtn");
 
-	// File attachment handling
-	function setupFileAttachment(attachmentInputId, attachmentPreviewId, allowMultiple = true) {
-	const attachmentInput = document.getElementById(attachmentInputId);
-	const attachmentPreview = document.getElementById(attachmentPreviewId);
-	let attachedFiles = []; // Store uploaded files dynamically
-
-	attachmentInput.addEventListener("change", function () {
-		// Clear previous files if only one file is allowed (for research_attachment)
-		if (!allowMultiple) {
-		attachedFiles = []; // Clear the previous files list if only one file is allowed
-		attachmentPreview.innerHTML = ""; // Clear the preview area
-		}
-
-		// Loop through selected files
-		Array.from(attachmentInput.files).forEach((file) => {
-		// Check if file is already attached
-		if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
-			alert(`File "${file.name}" is already attached.`);
-			return;
-		}
-
-		// Add file to the list of attached files
-		attachedFiles.push(file);
-
-		// Create preview item
-		const previewItem = document.createElement("div");
-		previewItem.className = "attachment-preview-item";
-
-		if (file.type.startsWith("image/")) {
-			// Display image preview
-			const img = document.createElement("img");
-			img.src = URL.createObjectURL(file);
-			img.alt = file.name;
-			img.onload = function () {
-			URL.revokeObjectURL(img.src); // Free memory
-			};
-			previewItem.appendChild(img);
-		}
-
-		// Display file name
-		const fileName = document.createElement("span");
-		fileName.textContent = file.name;
-		previewItem.appendChild(fileName);
-
-		// Add a remove button for each file
-		const removeButton = document.createElement("button");
-		removeButton.textContent = "Remove";
-		removeButton.className = "remove-file-btn";
-		removeButton.onclick = function () {
-			// Remove file from the list of attached files
-			attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
-			previewItem.remove();
-		};
-		previewItem.appendChild(removeButton);
-
-		// Add preview item to the container
-		attachmentPreview.appendChild(previewItem);
-		});
-
-		// Reset file input to allow re-uploading the same file if removed
-		attachmentInput.value = "";
-	});
-	}
-
-	// Call setupFileAttachment for 'addCourseModal'
-	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
-
-	// Call setupFileAttachment for 'addCourseModal'
-	setupFileAttachment("research_attachment", "research_attachment_preview", false);
 	
 	</script>
+	<script src="<?php echo base_url('assets/js/faculty.js?v=' . time()); ?>"></script>
 	<script src="<?php echo base_url('assets/js/notification.js?v=' . time()); ?>"></script>
 
 

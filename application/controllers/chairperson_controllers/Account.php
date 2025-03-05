@@ -20,8 +20,9 @@ class Account extends CI_Controller {
 		$data['faculty'] = $this->Faculty_model->getFacultyProfile($user_id);
 
 		$logged_user_id = $this->session->userdata('logged_id');
-
 		$faculty_id = $this->Faculty_model->getFacultyID($logged_user_id);
+		$data['full_name'] = $this->Faculty_model->getFaculty($faculty_id);
+
 		if($faculty_id)
 		{
 			$this->session->set_userdata('faculty_id', $faculty_id);
@@ -111,7 +112,10 @@ class Account extends CI_Controller {
 				$this->Faculty_model->updateAddress($faculty_id, $user_address);
 				redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/index');
 			} else {
-				$this->Faculty_model->createAddress($user_address);
+				if($user_address['house_address'] !== '' || $user_address['barangay'] !== '' || $user_address['city'] !== '' || $user_address['region'] !== '' || $user_address['zip_code'] !== '') {
+					$this->Faculty_model->createAddress($user_address);
+				} 
+				
 				redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/index');
 			}
 		}

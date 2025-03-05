@@ -92,7 +92,10 @@ class Account extends CI_Controller {
 				$this->Faculty_model->updateAddress($faculty_id, $user_address);
 				redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index');
 			} else {
-				$this->Faculty_model->createAddress($user_address);
+				if($user_address['house_address'] !== '' || $user_address['barangay'] !== '' || $user_address['city'] !== '' || $user_address['region'] !== '' || $user_address['zip_code'] !== '') {
+					$this->Faculty_model->createAddress($user_address);
+				}
+
 				redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Account/index');
 			}
 		}

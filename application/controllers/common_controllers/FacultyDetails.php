@@ -14,7 +14,9 @@ class FacultyDetails extends CI_Controller {
 	}
 
     public function getFaculty() {
-		$result = $this->Faculty_model->getFaculty();  // Fetch data from SQL view
+		$logged_id = $this->session->userdata('logged_id');
+		$faculty_id = $this->Faculty_model->getFacultyID($logged_id);
+		$result = $this->Faculty_model->getFaculty($faculty_id);  // Fetch data from SQL view
 		echo json_encode($result);  // Return data as JSON
 	}
 }

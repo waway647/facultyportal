@@ -258,6 +258,17 @@ class Profile extends CI_Controller {
 
 			public function createQualifications()
 			{
+				$config['upload_path'] = './assets/qualification_attachments/';
+				$config['allowed_types'] = 'pdf';
+				$this->load->library('upload', $config);
+
+				$attachment_path = null;
+				
+				if($this->upload->do_upload('qualification_attachment')){
+					$uploaded_data = $this->upload->data();
+					$attachment_path = 'assets/qualification_attachments/' . $uploaded_data['file_name'];
+				}
+
 				$current_id = $this->session->userdata('current_id');
 
 				if ($current_id) {
@@ -265,7 +276,8 @@ class Profile extends CI_Controller {
 						"faculty_profile_id" => $current_id,
 						"academic_degree" => $this->input->post("academic_degree"),
 						"institution" => $this->input->post("institution"),
-						"year_graduated" => $this->input->post("year_graduated")
+						"year_graduated" => $this->input->post("year_graduated"),
+						"qualification_attachment" => $attachment_path
 					);
 
 					$result = $this->Profile_model->insertNewQualification($qualification_data);
@@ -282,7 +294,8 @@ class Profile extends CI_Controller {
 						"faculty_profile_id" => $logged_id,
 						"academic_degree" => $this->input->post("academic_degree"),
 						"institution" => $this->input->post("institution"),
-						"year_graduated" => $this->input->post("year_graduated")
+						"year_graduated" => $this->input->post("year_graduated"),
+						"qualification_attachment" => $attachment_path
 					);
 
 					$result = $this->Profile_model->insertNewQualification($qualification_data);
@@ -350,7 +363,7 @@ class Profile extends CI_Controller {
 				}
 			}
 
-	public function getResearch()
+	public function getCertifications()
 	{
 		$current_id = $this->session->userdata('current_id');
 		$logged_id = $this->session->userdata('faculty_id');
@@ -358,63 +371,43 @@ class Profile extends CI_Controller {
 		$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
 
 		if ($faculty_id) {
-			$result = $this->Profile_model->getResearch($faculty_id);
+			$result = $this->Profile_model->getCertifications($faculty_id);
 			echo json_encode($result); // Return data as JSON
 		} else {
 			echo json_encode(['error' => 'No valid faculty ID found.']);
 		}
 	}
 
-			public function createResearch()
+	public function createCertifications()
+	{
+		$config['upload_path'] = './assets/certification_attachments/';
+		$config['allowed_types'] = 'pdf';
+		$this->load->library('upload', $config);
+
+		if($this->upload->do_upload('certification_attachment')){
+			$uploaded_data = $this->upload->data();
+			$attachment_path = 'assets/certification_attachments/' . $uploaded_data['file_name'];
+		}
+
+		$faculty_id = $this->session->userdata('faculty_id');
+
+		if ($faculty_id) {
+			$certification_data = array(
+				"faculty_profile_id" => $faculty_id,
+				"certification_name" => $this->input->post("certification_name"),
+				"certification_title" => $this->input->post("certification_title"),
+				"year_received" => $this->input->post("year_received"),
+				"expiration_date" => $this->input->post("expiration_date"),
+				"certification_attachment" => $attachment_path
+			);
+			if($this->Profile_model->insertNewCertification($certification_data))
 			{
-				$config['upload_path'] = './assets/research_attachments/';
-				$config['allowed_types'] = 'pdf';
-				$this->load->library('upload', $config);
-				
-				if ($this->upload->do_upload('research_attachment')) {
-					$uploaded_data = $this->upload->data();
-					$attachment_path = 'assets/research_attachments/' . $uploaded_data['file_name'];
-				}
-
-				// Get faculty profile ID
-				$current_id = $this->session->userdata('current_id');
-
-				// Prepare research data to insert
-				if ($current_id) {
-					$research_data = array(
-						"faculty_profile_id" => $current_id,
-						"title" => $this->input->post("title"),
-						"publication_year" => $this->input->post("publication_year"),
-						"research_attachment" => $attachment_path
-					);
-
-					// Insert research data into database
-					$result = $this->Profile_model->insertNewResearch($research_data);
-					if ($result) {
-						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
-					}
-				}
-
-				// Check if logged in by logged_id
-				$logged_id = $this->session->userdata('faculty_id');
-
-				if ($logged_id) {
-					$research_data = array(
-						"faculty_profile_id" => $logged_id,
-						"title" => $this->input->post("title"),
-						"publication_year" => $this->input->post("publication_year"),
-						"research_attachment" => $attachment_path
-					);
-
-					// Insert research data into database
-					$result = $this->Profile_model->insertNewResearch($research_data);
-					if ($result) {
-						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
-					}
-				} else {
-					redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
-				}
+				redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
+			}else{
+				redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
 			}
+		}
+	}
 
 	public function insertUpdatedProfile()
 	{
@@ -682,44 +675,105 @@ class Profile extends CI_Controller {
 		redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 	}
 
-	public function deleteResearch($id)
+	public function deleteCertification($id)
 	{
-		// Check if the research_outputs exists in the temporary table
 		$existsInTemp = $this->db
 			->where('id', $id)
-			->get('research_outputs')
+			->get('certifications')
 			->num_rows();
 
 		if ($existsInTemp > 0) {
-			$research_data = $this->Profile_model->fetchResearch($id);
-			if ($research_data) {
-				// Backup to research_outputs_bin
-				$this->Profile_model->deleteResearch($research_data);
+			$certification_data = $this->Profile_model->fetchCertifications($id);
+			if ($certification_data) {
+				// Backup to certifications_bin
+				$this->Profile_model->deleteCertification($certification_data);
 
-				// Delete from research_outputs_temp
-				$this->db->where('id', $id)->delete('research_outputs');
+				// Delete from certifications
+				$this->db->where('id', $id)->delete('certifications');
 			}
-		} else {
-			// Check if the research exists in the main table
+		}else{
 			$existsInMain = $this->db
 				->where('id', $id)
-				->get('research_outputs')
+				->get('certifications')
 				->num_rows();
 
 			if ($existsInMain > 0) {
-				$research_data = $this->Profile_model->fetchResearch($id);
-				if ($research_data) {
-					// Backup to research_outputs_bin
-					$this->Profile_model->deleteResearch($research_data);
+				$certification_data = $this->Profile_model->fetchCertifications($id);
+				if ($certification_data) {
+					// Backup to certifications_bin
+					$this->Profile_model->deleteCertification($certification_data);
 
-					// Delete from research_outputs
-					$this->db->where('id', $id)->delete('research_outputs');
+					// Delete from certifications
+					$this->db->where('id', $id)->delete('certifications');
 				}
 			}
 		}
 
 		// Redirect after deletion or failure
 		redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+
+	}
+
+	public function ViewQualificationPDF($id)
+	{
+		// Fetch the PDF file path from the database
+		$result = $this->Profile_model->ViewQualificationPDF($id);
+
+		if ($result) {
+			$file_path = $result->qualification_attachment; // Assuming this column stores the file path
+
+			// Check if the file exists
+			if (file_exists($file_path)) {
+				// Serve the file with proper headers for PDF preview
+				header('Content-Type: application/pdf');
+				header('Content-Disposition: inline; filename="' . basename($file_path) . '"');
+				header('Content-Length: ' . filesize($file_path));
+
+				// Output the file
+				readfile($file_path);
+			} else {
+				$faculty_id = $this->session->userdata('faculty_id');
+				if($faculty_id)
+				{
+					$this->session->set_flashdata('error', 'Sorry, this document doesn\'t have a downloadable PDF.');
+					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index');
+				}
+			}
+		} else {
+			// Handle the case where the database query does not return any result
+			echo "Error: No qualification found with the given ID.";
+		}
+	}
+
+	public function ViewCertificationPDF($id)
+	{
+		// Fetch the PDF file path from the database
+		$result = $this->Profile_model->ViewCertificationPDF($id);
+
+		if ($result) {
+			$file_path = $result->certification_attachment; // Assuming this column stores the file path
+
+			// Check if the file exists
+			if (file_exists($file_path)) {
+				// Serve the file with proper headers for PDF preview
+				header('Content-Type: application/pdf');
+				header('Content-Disposition: inline; filename="' . basename($file_path) . '"');
+				header('Content-Length: ' . filesize($file_path));
+
+				// Output the file
+				readfile($file_path);
+			} else {
+				$faculty_id = $this->session->userdata('faculty_id');
+				if($faculty_id)
+				{
+					$this->session->set_flashdata('error', 'Sorry, this document doesn\'t have a downloadable PDF.');
+					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index');
+				}
+			}
+		} else {
+			// Handle the case where the database query does not return any result
+			echo "Error: No certification found with the given ID.";
+		}
 	}
 
 	public function ViewResearchPDF($id)
@@ -924,50 +978,43 @@ class Profile extends CI_Controller {
 					return;
 				}
 			
+				// Load the existing qualification entry
+				$qualification = $this->Profile_model->getQualificationsByID($id);
+
+				if(!$qualification)
+				{
+					$this->session->set_flashdata('error', 'Qualification not found.');
+					redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
+					return;
+				}
+
+				$config['upload_path'] = './assets/qualification_attachments/';
+				$config['allowed_types'] = 'pdf';
+				$this->load->library('upload', $config);
+			
+				$attachment_path = null;
+
+				if ($this->upload->do_upload('qualification_attachment')) {
+					$uploaded_data = $this->upload->data();
+					$attachment_path = 'assets/qualification_attachments/' . $uploaded_data['file_name'];
+				}
+
 				$qualifications_data = array(
 					"faculty_profile_id" => $faculty_id,
 					"academic_degree" => $this->input->post("academic_degree"),
 					"institution" => $this->input->post("institution"),
-					"year_graduated" => $this->input->post("year_graduated")
+					"year_graduated" => $this->input->post("year_graduated"),
+					"qualification_attachment" => $attachment_path
 				);
 			
-				// Check if the qualification exists in the temporary table
-				$existsInTemp = $this->db->where('id', $id)->get('qualifications')->num_rows();
-			
-				if ($existsInTemp > 0) {
-					// Update the temporary table
-					$result = $this->Profile_model->updateQualifications($id, $qualifications_data);
-			
-					if ($result) {	
-						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
-					} else {
-						// Handle update failure
-						$this->session->set_flashdata('error', 'Failed to update qualification in temporary table.');
-						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
-					}
+				$result = $this->Profile_model->updateQualifications($id, $qualifications_data);
+	
+				if($result) {	
+					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 				} else {
-					// Check if the qualification exists in the main table
-					$existsInMain = $this->db->where('id', $id)->get('qualifications')->num_rows();
-			
-					if ($existsInMain > 0) {
-						// Update the main table
-						$result = $this->Profile_model->updateQualifications($id, $qualifications_data);
-			
-						if ($result) {		
-							// Delete from qualifications
-							$this->db->where('id', $id)->delete('qualifications');
-
-							redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
-						} else {
-							// Handle update failure
-							$this->session->set_flashdata('error', 'Failed to update qualification in main table.');
-							redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
-						}
-					} else {
-						// Qualification does not exist in either table
-						$this->session->set_flashdata('error', 'Qualification not found.');
-						redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
-					}
+					// Handle update failure
+					$this->session->set_flashdata('error', 'Failed to update qualification.');
+					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 				}
 			}
 
@@ -1039,65 +1086,63 @@ class Profile extends CI_Controller {
 				}
 			}
 
-	public function getResearchByID($id) 
+	public function getCertificationsByID($id) 
 	{
 		// Validate the ID and fetch the qualification row
-		$research_data = $this->Profile_model->getResearchByID($id);
-
-		if ($research_data) {
-			echo json_encode($research_data); // Return the data as JSON for AJAX
+		$certification_data = $this->Profile_model->getCertificationsByID($id);
+		
+		if ($certification_data) {
+			echo json_encode($certification_data); // Return the data as JSON for AJAX
 		} else {
-			echo json_encode(['error' => 'Research not found.']);
+			echo json_encode(['error' => 'Certification not found.']);
 		}
 	}
 
-			public function updateResearch($id)
+			public function updateCertification($id)
 			{
-				// Load the current faculty ID
-				$current_id = $this->session->userdata('current_id');
-				$logged_id = $this->session->userdata('faculty_id');
-				$faculty_id = $current_id ?: $logged_id; // Use current_id if set, otherwise fallback to logged_id
+				$faculty_id = $this->session->userdata('faculty_id');
 			
 				if (!$faculty_id) {
 					// Redirect if faculty_id is unavailable
 					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 					return;
 				}
-			
-				// Load the existing research entry
-				$research = $this->Profile_model->getResearchByID($id);
-			
-				if (!$research) {
-					$this->session->set_flashdata('error', 'Research not found.');
+
+				// load the existing certification entry
+				$certification = $this->Profile_model->getCertificationsByID($id);
+
+				if(!$certification){
+					$this->session->set_flashdata('error', 'Certification not found.');
 					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 					return;
 				}
 			
-				$config['upload_path'] = './assets/research_attachments/';
+				$config['upload_path'] = './assets/certification_attachments/';
 				$config['allowed_types'] = 'pdf';
 				$this->load->library('upload', $config);
 			
-				$attachment_path = $research->research_attachment; // Default to existing attachment
+				$attachment_path = null;
 			
-				if ($this->upload->do_upload('research_attachment')) {
+				if ($this->upload->do_upload('certification_attachment')) {
 					$uploaded_data = $this->upload->data();
-					$attachment_path = 'assets/research_attachments/' . $uploaded_data['file_name'];
+					$attachment_path = 'assets/certification_attachments/' . $uploaded_data['file_name'];
 				}
 			
-				$research_data = array(
+				$certification_data = array(
 					"faculty_profile_id" => $faculty_id,
-					"title" => $this->input->post("title"),
-					"publication_year" => $this->input->post("publication_year"),
-					"research_attachment" => $attachment_path
+					"certification_name" => $this->input->post("certification_name"),
+					"certification_title" => $this->input->post("certification_title"),
+					"year_received" => $this->input->post("year_received"),
+					"expiration_date" => $this->input->post("expiration_date"),
+					"certification_attachment" => $attachment_path
 				);
 			
-				// Update research data
-				$result = $this->Profile_model->updateResearch($id, $research_data);
+				$result = $this->Profile_model->updateCertification($id, $certification_data);
 			
 				if ($result) {
 					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 				} else {
-					$this->session->set_flashdata('error', 'Failed to update research.');
+					$this->session->set_flashdata('error', 'Failed to update certification.');
 					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 				}
 			}

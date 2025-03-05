@@ -161,8 +161,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 					
 					<div class="frame-3">
-						<div class="text-wrapper-5"><?php echo $faculty->first_name?> <?php echo $faculty->last_name?></div>
-						<div class="text-wrapper-6"><?php echo $faculty->email?></div>
+						<div class="text-wrapper-5" id="full_name"></div>
+						<div class="text-wrapper-6"></div>
 					</div>
 					<?php endif ?>
 				</div>
@@ -969,9 +969,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	}
 
-	// Initialize "Post Announcement" modal
-	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
-
 	// Initialize "Export" modal
 	setupModal("exportFacultyModal", "exportFacultyBtn", "closeExportFacultyBtn");
 
@@ -981,109 +978,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Step 2 modal (no open button)
     setupModal("addFacultyModalStep2", null, "closeAddFacultyBtnStep2");
 
-	// File attachment handling
-	function setupFileAttachment(attachmentInputId, attachmentPreviewId, allowMultiple = true) {
-	const attachmentInput = document.getElementById(attachmentInputId);
-	const attachmentPreview = document.getElementById(attachmentPreviewId);
-	let attachedFiles = []; // Store uploaded files dynamically
-
-	attachmentInput.addEventListener("change", function () {
-		// Clear previous files if only one file is allowed (for research_attachment)
-		if (!allowMultiple) {
-		attachedFiles = []; // Clear the previous files list if only one file is allowed
-		attachmentPreview.innerHTML = ""; // Clear the preview area
-		}
-
-		// Loop through selected files
-		Array.from(attachmentInput.files).forEach((file) => {
-		// Check if file is already attached
-		if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
-			alert(`File "${file.name}" is already attached.`);
-			return;
-		}
-
-		// Add file to the list of attached files
-		attachedFiles.push(file);
-
-		// Create preview item
-		const previewItem = document.createElement("div");
-		previewItem.className = "attachment-preview-item";
-
-		if (file.type.startsWith("image/")) {
-			// Display image preview
-			const img = document.createElement("img");
-			img.src = URL.createObjectURL(file);
-			img.alt = file.name;
-			img.onload = function () {
-			URL.revokeObjectURL(img.src); // Free memory
-			};
-			previewItem.appendChild(img);
-		}
-
-		// Display file name
-		const fileName = document.createElement("span");
-		fileName.textContent = file.name;
-		previewItem.appendChild(fileName);
-
-		// Add a remove button for each file
-		const removeButton = document.createElement("button");
-		removeButton.textContent = "Remove";
-		removeButton.className = "remove-file-btn";
-		removeButton.onclick = function () {
-			// Remove file from the list of attached files
-			attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
-			previewItem.remove();
-		};
-		previewItem.appendChild(removeButton);
-
-		// Add preview item to the container
-		attachmentPreview.appendChild(previewItem);
-		});
-
-		// Reset file input to allow re-uploading the same file if removed
-		attachmentInput.value = "";
-	});
-	}
-
-	// Call setupFileAttachment for 'addCourseModal'
-	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
-
-	document.getElementById('email').addEventListener('input', function () {
-		let email = this.value;
-		let statusMessage = document.getElementById('email-status');
-		let submitButton = document.querySelector('#addFacultyForm button[type="submit"]');
-
-		if (email.length > 0) {
-			// Make an AJAX request to check if the email already exists
-			fetch('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/checkEmailExists', {
-				method: 'POST',
-				body: new URLSearchParams({ email: email }),
-				headers: {
-					'Content-Type': 'application/x-www-form-urlencoded',
-				},
-			})
-				.then(response => response.text())
-				.then(result => {
-					if (result === 'Email already in use') {
-						statusMessage.textContent = 'This email is already in use.';
-						statusMessage.style.color = 'maroon';
-						submitButton.disabled = true; // Disable the submit button
-					} else {
-						statusMessage.textContent = '';
-						submitButton.disabled = false; // Enable the submit button
-					}
-				})
-				.catch(error => {
-					console.error('Error:', error);
-					// If there's an error, ensure the button remains disabled
-					submitButton.disabled = true;
-				});
-		} else {
-			statusMessage.textContent = '';
-			submitButton.disabled = false; // Reset the button state if the email field is empty
-		}
-	});
 	</script>
+	<script src="<?php echo base_url('assets/js/faculty.js?v=' . time()); ?>"></script>
 	<script src="<?php echo base_url('assets/js/notification.js?v=' . time()); ?>"></script>
 
 

@@ -157,8 +157,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 					
 					<div class="frame-3">
-						<div class="text-wrapper-5"><?php echo $faculty->first_name?> <?php echo $faculty->last_name?></div>
-						<div class="text-wrapper-6"><?php echo $faculty->email?></div>
+						<div class="text-wrapper-5" id="full_name"></div>
+						<div class="text-wrapper-6"></div>
 					</div>
 					<?php endif ?>
 				</div>
@@ -576,70 +576,11 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         });
     }
 
-	// Initialize "Post Announcement" modal
-	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
-
 	// Initialize "Add Course" modal
     setupModal("addConsultationModal", "addConsultationBtn", "closeaddConsultationBtn");
 
-	// File attachment handling
-	const attachmentInput = document.getElementById("announcement_attachment");
-	const attachmentPreview = document.getElementById("attachment_preview");
-	let attachedFiles = []; // Store uploaded files dynamically
-
-	attachmentInput.addEventListener("change", function () {
-	  // Loop through selected files
-	  Array.from(attachmentInput.files).forEach((file) => {
-	    // Check if file is already attached
-	    if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
-	      alert(`File "${file.name}" is already attached.`);
-	      return;
-	    }
-
-	    // Add file to the list of attached files
-	    attachedFiles.push(file);
-
-	    // Create preview item
-	    const previewItem = document.createElement("div");
-	    previewItem.className = "attachment-preview-item";
-
-	    if (file.type.startsWith("image/")) {
-	      // Display image preview
-	      const img = document.createElement("img");
-	      img.src = URL.createObjectURL(file);
-	      img.alt = file.name;
-	      img.onload = function () {
-	        URL.revokeObjectURL(img.src); // Free memory
-	      };
-	      previewItem.appendChild(img);
-	    }
-
-	    // Display file name
-	    const fileName = document.createElement("span");
-	    fileName.textContent = file.name;
-	    previewItem.appendChild(fileName);
-
-	    // Add a remove button for each file
-	    const removeButton = document.createElement("button");
-	    removeButton.textContent = "Remove";
-	    removeButton.className = "remove-file-btn";
-	    removeButton.onclick = function () {
-	      // Remove file from the list of attached files
-	      attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
-	      previewItem.remove();
-	    };
-	    previewItem.appendChild(removeButton);
-
-	    // Add preview item to the container
-	    attachmentPreview.appendChild(previewItem);
-	  });
-
-	  // Reset file input to allow re-uploading the same file if removed
-	  attachmentInput.value = "";
-
-	});
-
 	</script>
+	<script src="<?php echo base_url('assets/js/faculty.js?v=' . time()); ?>"></script>
 	<script src="<?php echo base_url('assets/js/notification.js?v=' . time()); ?>"></script>
 
 

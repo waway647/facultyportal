@@ -4,24 +4,17 @@ $(document).ready(function() {
 
 function loadFaculty() {
     $.ajax({
-        url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
+        url: '/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty',
         type: 'GET',
         dataType: 'json',
         success: function(result) {
             console.log('AJAX success (Faculty Data):', result);
-
-            if (Array.isArray(result)) {
-                let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
-                let facultyFullName = $('#full_name'); // Default text if no match is found
-
-                result.forEach(function(faculty) {
-                    if (faculty.id == loggedUserId) {
-                        facultyFullName.text(faculty.full_name); // Get the logged-in faculty's full name
-                    }
-                });
-
+            if (result) {
+                // Directly assign full_name and email to the respective divs
+                $('#full_name').text(result.full_name);
+                $('.text-wrapper-6').text(result.email); // Assuming the response includes an 'email' field
             } else {
-                console.error('Expected an array but received:', result);
+                console.error('Invalid data received:', result);
             }
         },
         error: function(xhr, status, error) {

@@ -131,8 +131,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 					<div class="frame-3">
 						<div class="text-wrapper-5" id="full_name"></div>
-						<input type="hidden" id="logged_in_user" value="<?php echo $this->session->userdata('faculty_id'); ?>">
-						<div class="text-wrapper-6"><?php echo $faculty->email?></div>
+						<div class="text-wrapper-6"></div>
 					</div>
 					<?php endif ?>
 				</div>
@@ -426,6 +425,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	// Call setupFileAttachment for 'addCourseModal'
 	</script>
+	<script src="<?php echo base_url('assets/js/faculty.js?v=' . time()); ?>"></script>
 	<script src="<?php echo base_url('assets/js/notification.js?v=' . time()); ?>"></script>
 	<script src="<?php echo base_url('assets/js/script.js'); ?>"></script>
 

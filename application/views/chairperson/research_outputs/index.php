@@ -159,8 +159,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 					
 					<div class="frame-3">
-						<div class="text-wrapper-5"><?php echo $faculty->first_name?> <?php echo $faculty->last_name?></div>
-						<div class="text-wrapper-6"><?php echo $faculty->email?></div>
+						<div class="text-wrapper-5" id="full_name"></div>
+						<div class="text-wrapper-6"></div>
 					</div>
 					<?php endif ?>
 				</div>
@@ -593,10 +593,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
             }
         });
     }
-
-	// Initialize "Post Announcement" modal
-	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
-
+	
 	// Initialize "Add Course" modal
     setupModal("addResearchModal", "addResearchBtn", "closeaddResearchBtn");
 
@@ -708,10 +705,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	setupFileAttachment("research_attachment_edit", "research_attachment_preview_edit", false);
 
-	// Call setupFileAttachment for 'announcement_attachment' if required
-	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
-
 	</script>
+	<script src="<?php echo base_url('assets/js/faculty.js?v=' . time()); ?>"></script>
 	<script src="<?php echo base_url('assets/js/notification.js?v=' . time()); ?>"></script>
 
 

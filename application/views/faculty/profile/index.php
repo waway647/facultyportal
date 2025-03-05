@@ -134,8 +134,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 					<div class="frame-3">
 						<div class="text-wrapper-5" id="full_name"></div>
-						<input type="hidden" id="logged_in_user" value="<?php echo $this->session->userdata('faculty_id'); ?>">
-						<div class="text-wrapper-6"><?php echo $faculty->email?></div>
+						<div class="text-wrapper-6"></div>
 					</div>
 					<?php endif ?>
 				</div>
@@ -486,35 +485,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			window.open(url, '_blank');
 		}
 
-	// Function to fetch faculty data via AJAX
-	function fetchFaculty() {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty',  // Update the URL as necessary
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('AJAX success (Courses):', result);
-
-				if (Array.isArray(result)) {
-					let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
-					let facultyFullName = $('#full_name'); // Default text if no match is found
-
-					result.forEach(function(faculty) {
-						if (faculty.id == loggedUserId) {
-							facultyFullName.text(faculty.full_name); // Get the logged-in faculty's full name
-						}
-					});
-
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching courses:', error);
-			}
-		});
-	}
 	
 	// Get elements
 	const modal = document.getElementById("postAnnouncementModal");
@@ -633,6 +603,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	setupFileAttachment("announcement_attachment", "announcement_attachment_preview", true);
 
 	</script>
+	<script src="<?php echo base_url('assets/js/faculty.js?v=' . time()); ?>"></script>
 	<script src="<?php echo base_url('assets/js/notification.js?v=' . time()); ?>"></script>
 	<script src="<?php echo base_url('assets/js/script.js'); ?>"></script>
 

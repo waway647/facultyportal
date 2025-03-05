@@ -158,8 +158,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					
 					
 					<div class="frame-3">
-						<div class="text-wrapper-5"><?php echo $faculty->first_name?> <?php echo $faculty->last_name?></div>
-						<div class="text-wrapper-6 highlight"><?php echo $faculty->email?></div>
+						<div class="text-wrapper-5" id="full_name"></div>
+						<div class="text-wrapper-6"></div>
 					</div>
 					<?php endif ?>
 				</div>
@@ -431,9 +431,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	}
 
-	// Initialize "Post Announcement" modal
-	setupModal("postAnnouncementModal", "postAnnouncementBtn", "closeModalBtn");
-
 	// Initialize "Add Research" modal
     setupModal("editProfilePictureModal", "editProfilePictureBtn", "closeeditProfilePictureBtn");
 
@@ -560,8 +557,9 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	}
 
 	</script>
+	<script src="<?php echo base_url('assets/js/faculty.js?v=' . time()); ?>"></script>
 	<script src="<?php echo base_url('assets/js/notification.js?v=' . time()); ?>"></script>
-	<script src="<?php echo base_url('assets/js/script.js'); ?>"></script>
+	<script src="<?php echo base_url('assets/js/script.js?v=' . time()); ?>"></script>
 
 
 

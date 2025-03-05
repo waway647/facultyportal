@@ -104,7 +104,6 @@ class Profile_model extends CI_Model {
 
         // Delete certifications
         $this->db->where('faculty_profile_id', $faculty_id)->delete('certifications_bin');
-
     }
 
     public function ViewQualificationPDF($id)
@@ -218,24 +217,24 @@ class Profile_model extends CI_Model {
 
         // Backup existing qualifications
         $this->db->query("
-            INSERT INTO qualifications_backup (faculty_profile_id, academic_degree, institution, year_graduated)
-            SELECT faculty_profile_id, academic_degree, institution, year_graduated
+            INSERT INTO qualifications_backup (id, faculty_profile_id, academic_degree, institution, year_graduated)
+            SELECT id, faculty_profile_id, academic_degree, institution, year_graduated
             FROM qualifications
             WHERE faculty_profile_id = ?
         ", array($faculty_id));
 
         // Backup existing experience
         $this->db->query("
-            INSERT INTO industry_experience_backup (faculty_profile_id, company_name, job_position, years_of_experience)
-            SELECT faculty_profile_id, company_name, job_position, years_of_experience
+            INSERT INTO industry_experience_backup (id, faculty_profile_id, company_name, job_position, years_of_experience)
+            SELECT id, faculty_profile_id, company_name, job_position, years_of_experience
             FROM industry_experience
             WHERE faculty_profile_id = ?
         ", array($faculty_id));
 
         // Backup existing certifications
         $this->db->query("
-            INSERT INTO certifications_backup (faculty_profile_id, certification_name, certification_title, year_received, expiration_date, certification_attachment)
-            SELECT faculty_profile_id, certification_name, certification_title, year_received, expiration_date, certification_attachment
+            INSERT INTO certifications_backup (id, faculty_profile_id, certification_name, certification_title, year_received, expiration_date, certification_attachment)
+            SELECT id, faculty_profile_id, certification_name, certification_title, year_received, expiration_date, certification_attachment
             FROM certifications
             WHERE faculty_profile_id = ?
         ", array($faculty_id));
@@ -251,22 +250,22 @@ class Profile_model extends CI_Model {
 
         // Restore from backup
         $this->db->query("
-            INSERT INTO qualifications (faculty_profile_id, academic_degree, institution, year_graduated)
-            SELECT faculty_profile_id, academic_degree, institution, year_graduated
+            INSERT INTO qualifications (id, faculty_profile_id, academic_degree, institution, year_graduated)
+            SELECT id, faculty_profile_id, academic_degree, institution, year_graduated
             FROM qualifications_backup
             WHERE faculty_profile_id = ?
         ", array($faculty_id));
 
         $this->db->query("
-            INSERT INTO industry_experience (faculty_profile_id, company_name, job_position, years_of_experience)
-            SELECT faculty_profile_id, company_name, job_position, years_of_experience
+            INSERT INTO industry_experience (id, faculty_profile_id, company_name, job_position, years_of_experience)
+            SELECT id, faculty_profile_id, company_name, job_position, years_of_experience
             FROM industry_experience_backup
             WHERE faculty_profile_id = ?
         ", array($faculty_id));
 
         $this->db->query("
-            INSERT INTO certifications (faculty_profile_id, certification_name, certification_title, year_received, expiration_date,certification_attachment)
-            SELECT faculty_profile_id, certification_name, certification_title, year_received, expiration_date,certification_attachment
+            INSERT INTO certifications (id, faculty_profile_id, certification_name, certification_title, year_received, expiration_date,certification_attachment)
+            SELECT id, faculty_profile_id, certification_name, certification_title, year_received, expiration_date,certification_attachment
             FROM certifications_backup
             WHERE faculty_profile_id = ?
         ", array($faculty_id));

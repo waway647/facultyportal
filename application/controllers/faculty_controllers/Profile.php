@@ -257,7 +257,6 @@ class Profile extends CI_Controller {
 			);
 
 			$this->Profile_model->updateProfile($user_id, $basic_data);
-
             $this->Profile_model->insertUpdatedTable($faculty_id);
             $this->Profile_model->deleteBackup($faculty_id);
 
