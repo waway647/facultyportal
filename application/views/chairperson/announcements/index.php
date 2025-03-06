@@ -235,19 +235,19 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										</div>
 										<div class="postmodal-form-container">
 											<!-- Title Input -->
-											<!-- <div class="postmodal-form-input">
+											<div class="postmodal-form-input">
 												<input type="text" id="title" name="title" placeholder="Title">
-											</div> -->
+											</div>
 											<!-- Custom Textarea for Announcement Body -->
 											<div class="postmodal-form-input">
-												<!-- <div id="announcement_body" class="custom-textarea" contenteditable="true" name="content" placeholder="Write your announcement here..."></div> -->
+												<textarea type="textarea" id="announcement_body" class="custom-textarea" contenteditable="true" name="content" placeholder="Write your announcement here..."></textarea>
 												<div class="attachment-container">
 													<label for="announcement_attachment" class="attachment-button">
 														<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
 														Attach Files
 													</label>
-													<input type="file" id="announcement_attachment" name="announcement_file_path" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" hidden>
-													<div id="attachment_preview" class="attachment-preview"></div>
+													<input type="file" id="announcement_attachment" name="announcement_file_path" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" multiple hidden>
+													<div id="announcement_attachment_preview" class="attachment-preview"></div>
 												</div>
 											</div>
 										</div>
@@ -393,7 +393,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	// File attachment handling
 	const attachmentInput = document.getElementById("announcement_attachment");
-	const attachmentPreview = document.getElementById("attachment_preview");
+	const attachmentPreview = document.getElementById("announcement_attachment_preview");
 	let attachedFiles = []; // Store uploaded files dynamically
 
 	attachmentInput.addEventListener("change", function () {
@@ -448,35 +448,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	});
 
-	// Notification Panel Logic
-	const notificationBtn = document.getElementById('notificationBtn');
-	const notificationPanel = document.getElementById('notificationPanel');
-	const closePanel = document.getElementById('closePanel');
+	const form = document.querySelector("form"); // Ensure you are selecting the right form
+		form.addEventListener("submit", function (event) {
+			// Only proceed if there are attached files
+			if (attachedFiles.length > 0) {
+				const dataTransfer = new DataTransfer(); // Necessary for adding files programmatically
+				attachedFiles.forEach((file) => {
+					dataTransfer.items.add(file);
+				});
+				attachmentInput.files = dataTransfer.files; // Set the file input to include attached files
+			}
+		});
 
-	// Open the notification panel
-	notificationBtn.addEventListener('click', (e) => {
-	  e.preventDefault();  // Prevent default anchor behavior
-	  notificationPanel.classList.add('open');
-	});
-
-	// Close the notification panel
-	closePanel.addEventListener('click', () => {
-	  notificationPanel.classList.remove('open');
-	});
-
-	// Close the notification panel when clicking outside of it
-	window.addEventListener('click', function (event) {
-	// Check if the click target is outside both the panel and the button
-	if (
-		!notificationPanel.contains(event.target) &&
-		!notificationBtn.contains(event.target)
-	) {
-		notificationPanel.classList.remove('open');
-	}
-	});
 	</script>
 	<script src="<?php echo base_url('assets/js/faculty.js?v=' . time()); ?>"></script>
-
+	<script src="<?php echo base_url('assets/js/notification.js?v=' . time()); ?>"></script>
 
   </body>
 </html>

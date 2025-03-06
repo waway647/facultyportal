@@ -116,7 +116,6 @@ th {
   border-spacing: 0; /* Remove gaps between cells */
   border: 2px solid #DCDBDB; /* Your table border */
   border-radius: 5px; /* Your desired border radius */
-  margin-top: 10px;
   overflow: hidden; /* Clip content to the rounded border */
 }
 
@@ -133,4 +132,62 @@ th {
   border-top: 2px solid #DCDBDB; 
   vertical-align: middle;
   border-bottom: none;
+}
+
+#announcementList thead {
+  display: table;
+  width: 100%;
+  position: sticky;
+  top: 0; 
+  z-index: 1; 
+}
+
+#announcementList tbody {
+  display: block;
+  max-height: 320px; 
+  overflow-y: auto; 
+  overflow-x: hidden; 
+}
+
+#announcementList tbody tr {
+  display: table;
+  width: 100%;
+  table-layout: fixed; 
+}
+
+#announcementList th:nth-child(1),
+#announcementList td:nth-child(1) {
+  width: 5%; 
+}
+
+#announcementList th:nth-child(2),
+#announcementList td:nth-child(2) {
+  width: 30%; 
+}
+
+#announcementList th:nth-child(3),
+#announcementList td:nth-child(3) {
+  width: 50%; 
+}
+
+#announcementList th:nth-child(4),
+#announcementList td:nth-child(4) {
+  width: 15%;
+}
+
+#announcementList tbody::-webkit-scrollbar {
+  width: 8px;
+}
+
+#announcementList tbody::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+#announcementList tbody::-webkit-scrollbar-thumb {
+  background: #888;
+  border-radius: 4px;
+}
+
+#announcementList tbody::-webkit-scrollbar-thumb:hover {
+  background: #555;
 }
