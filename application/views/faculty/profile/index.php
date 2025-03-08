@@ -332,7 +332,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	<script>
 	$(document).ready(function() {
-			fetchFaculty();
 			fetchQualifications();
 			fetchExperience();
 			fetchCertifications();

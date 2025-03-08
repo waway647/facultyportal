@@ -217,8 +217,8 @@ class Profile_model extends CI_Model {
 
         // Backup existing qualifications
         $this->db->query("
-            INSERT INTO qualifications_backup (id, faculty_profile_id, academic_degree, institution, year_graduated)
-            SELECT id, faculty_profile_id, academic_degree, institution, year_graduated
+            INSERT INTO qualifications_backup (id, faculty_profile_id, academic_degree, institution, year_graduated, qualification_attachment)
+            SELECT id, faculty_profile_id, academic_degree, institution, year_graduated, qualification_attachment
             FROM qualifications
             WHERE faculty_profile_id = ?
         ", array($faculty_id));
@@ -250,8 +250,8 @@ class Profile_model extends CI_Model {
 
         // Restore from backup
         $this->db->query("
-            INSERT INTO qualifications (id, faculty_profile_id, academic_degree, institution, year_graduated)
-            SELECT id, faculty_profile_id, academic_degree, institution, year_graduated
+            INSERT INTO qualifications (id, faculty_profile_id, academic_degree, institution, year_graduated, qualification_attachment)
+            SELECT id, faculty_profile_id, academic_degree, institution, year_graduated, qualification_attachment
             FROM qualifications_backup
             WHERE faculty_profile_id = ?
         ", array($faculty_id));

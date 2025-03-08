@@ -389,11 +389,11 @@ class Profile extends CI_Controller {
 			$attachment_path = 'assets/certification_attachments/' . $uploaded_data['file_name'];
 		}
 
-		$faculty_id = $this->session->userdata('faculty_id');
+		$current_id = $this->session->userdata('current_id');
 
-		if ($faculty_id) {
+		if ($current_id) {
 			$certification_data = array(
-				"faculty_profile_id" => $faculty_id,
+				"faculty_profile_id" => $current_id,
 				"certification_name" => $this->input->post("certification_name"),
 				"certification_title" => $this->input->post("certification_title"),
 				"year_received" => $this->input->post("year_received"),
@@ -402,10 +402,31 @@ class Profile extends CI_Controller {
 			);
 			if($this->Profile_model->insertNewCertification($certification_data))
 			{
-				redirect('http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/editProfile');
+				redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
 			}else{
 				redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
 			}
+		
+		}
+
+		$logged_id = $this->session->userdata('logged_id');
+
+		if ($logged_id) {
+			$certification_data = array(
+				"faculty_profile_id" => $logged_id,
+				"certification_name" => $this->input->post("certification_name"),
+				"certification_title" => $this->input->post("certification_title"),
+				"year_received" => $this->input->post("year_received"),
+				"expiration_date" => $this->input->post("expiration_date"),
+				"certification_attachment" => $attachment_path
+			);
+			if($this->Profile_model->insertNewCertification($certification_data))
+			{
+				redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/editProfile');
+			}else{
+				redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Auth/index');
+			}
+		
 		}
 	}
 
