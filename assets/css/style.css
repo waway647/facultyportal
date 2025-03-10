@@ -808,17 +808,18 @@ select{
   top: 0;
   width: 100%;
   height: 100%;
-  overflow: auto;
-  background-color: rgba(0, 0, 0, 0.5); /* Black with opacity */
+  overflow: hidden;
+  background-color: rgba(0, 0, 0, 0.693); /* Black with opacity */
   padding-top: 20px;
 }
 
 .modal-content {
   background-color: #ffffff;
-  margin: 5% auto;
+  margin: 30px auto;
   padding: 30px;
   border-radius: 10px;
-  width: 40%;
+  width: 60%;
+  height: 90%;
   box-shadow: 0px 6px 10px rgba(0, 0, 0, 0.3);
 }
 
@@ -920,11 +921,15 @@ select{
   display: flex;
   flex-direction: column;
   gap: 10px;
-  margin-top: 10px;
+  max-height: 90px; /* Set a maximum height */
+  overflow: hidden;
+  overflow-y: auto; /* Enable vertical scrolling */
 }
 
 .attachment-preview-item {
   display: flex;
+  flex-direction: row;
+  justify-content: space-between;
   align-items: center;
   gap: 10px;
   border: 1px solid #ccc;
@@ -944,6 +949,8 @@ select{
   border: none;
   padding: 5px 10px;
   border-radius: 3px;
+  width: 90px;
+  margin: 0;
   cursor: pointer;
 }
 
@@ -958,7 +965,7 @@ select{
   gap: 20px;
 }
 
-.postAnnouncement-container .continue-button {
+.the-content-container-2 .continue-button {
   background-color: #C21F27;
   color: #ffffff;
   padding: 10px 20px;
@@ -1725,3 +1732,37 @@ input[type="checkbox"]:checked::after {
 .table-icon-container div img:hover{
   transform: scale(1.1);
 }
+
+/* 
+.attachment-preview {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.attachment-preview-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+  background-color: #f9f9f9;
+  max-width: 150px;
+}
+
+.remove-file-btn {
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 3px;
+  padding: 5px 10px;
+  cursor: pointer;
+  font-size: 12px;
+}
+
+.remove-file-btn:hover {
+  background-color: #e60000;
+} */

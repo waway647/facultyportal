@@ -228,40 +228,40 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="the-content-container-2">
 						<div id="postAnnouncementModal" class="modal">
 							<div class="modal-content">
-								<form id="addAnnouncement" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/createAnnouncement" enctype="multipart/form-data">
-									<div class="postAnnouncement-container">
-										<div class="postmodal-heading">
-											<div class="div">Post New Announcement</div>
+							<form id="addAnnouncement" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/createAnnouncement" enctype="multipart/form-data">
+								<div class="postAnnouncement-container">
+									<div class="postmodal-heading">
+										<div class="div">Post New Announcement</div>
+									</div>
+									<div class="postmodal-form-container">
+										<!-- Title Input -->
+										<div class="postmodal-form-input">
+											<input type="text" id="title" name="title" placeholder="Title">
 										</div>
-										<div class="postmodal-form-container">
-											<!-- Title Input -->
-											<div class="postmodal-form-input">
-												<input type="text" id="title" name="title" placeholder="Title">
+										<!-- Custom Textarea for Announcement Body -->
+										<div class="postmodal-form-input">
+											<textarea type="textarea" id="announcement_body" class="custom-textarea" contenteditable="true" name="content" placeholder="Write your announcement here..."></textarea>
+											<div class="attachment-container">
+												<label for="announcement_attachment" class="attachment-button">
+													<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
+													Attach Files
+												</label>
+												<input type="file" id="announcement_attachment" name="announcement_file_path[]" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" multiple hidden>
+												<div id="announcement_attachment_preview" class="attachment-preview"></div>
 											</div>
-											<!-- Custom Textarea for Announcement Body -->
-											<div class="postmodal-form-input">
-												<textarea type="textarea" id="announcement_body" class="custom-textarea" contenteditable="true" name="content" placeholder="Write your announcement here..."></textarea>
-												<div class="attachment-container">
-													<label for="announcement_attachment" class="attachment-button">
-														<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
-														Attach Files
-													</label>
-													<input type="file" id="announcement_attachment" name="announcement_file_path" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" multiple hidden>
-													<div id="announcement_attachment_preview" class="attachment-preview"></div>
-												</div>
-											</div>
-										</div>
-										<!-- Buttons -->
-										<div class="button-container">
-											<input type="submit" value="Post">
-											<a href="javascript:void(0);" id="closeModalBtn">
-												<div class="cancel-button">
-													<h6>Cancel</h6>
-												</div>
-											</a>
 										</div>
 									</div>
-								</form>
+									<!-- Buttons -->
+									<div class="button-container">
+										<input type="submit" value="Post">
+										<a href="javascript:void(0);" id="closeModalBtn">
+											<div class="cancel-button">
+												<h6>Cancel</h6>
+											</div>
+										</a>
+									</div>
+								</div>
+							</form>
 							</div>
 						</div>
 						<div id="container">    
@@ -396,69 +396,130 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	const attachmentPreview = document.getElementById("announcement_attachment_preview");
 	let attachedFiles = []; // Store uploaded files dynamically
 
+	// Configuration for file validation (matching backend constraints)
+	const MAX_FILE_SIZE = 32 * 1024 * 1024; // 32MB in bytes
+	const ALLOWED_TYPES = [
+		"image/jpeg",
+		"image/jpg",
+		"image/png",
+		"application/pdf",
+		"application/msword",
+		"application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+	];
+	const MAX_FILES = 10; // Maximum number of files allowed (adjust as needed)
+
 	attachmentInput.addEventListener("change", function () {
-	  // Loop through selected files
-	  Array.from(attachmentInput.files).forEach((file) => {
-	    // Check if file is already attached
-	    if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
-	      alert(`File "${file.name}" is already attached.`);
-	      return;
-	    }
+		const newFiles = Array.from(attachmentInput.files);
 
-	    // Add file to the list of attached files
-	    attachedFiles.push(file);
+		// Check total number of files (existing + new)
+		if (attachedFiles.length + newFiles.length > MAX_FILES) {
+			alert(`You can only upload a maximum of ${MAX_FILES} files.`);
+			attachmentInput.value = ""; // Clear input to allow re-selection
+			return;
+		}
 
-	    // Create preview item
-	    const previewItem = document.createElement("div");
-	    previewItem.className = "attachment-preview-item";
+		// Validate and process each new file
+		newFiles.forEach((file) => {
+			// Check if file is already attached
+			if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
+				alert(`File "${file.name}" is already attached.`);
+				return;
+			}
 
-	    if (file.type.startsWith("image/")) {
-	      // Display image preview
-	      const img = document.createElement("img");
-	      img.src = URL.createObjectURL(file);
-	      img.alt = file.name;
-	      img.onload = function () {
-	        URL.revokeObjectURL(img.src); // Free memory
-	      };
-	      previewItem.appendChild(img);
-	    }
+			// Validate file type
+			if (!ALLOWED_TYPES.includes(file.type)) {
+				alert(`File "${file.name}" has an invalid type. Allowed types: jpg, jpeg, png, pdf, doc, docx.`);
+				return;
+			}
 
-	    // Display file name
-	    const fileName = document.createElement("span");
-	    fileName.textContent = file.name;
-	    previewItem.appendChild(fileName);
+			// Validate file size
+			if (file.size > MAX_FILE_SIZE) {
+				alert(`File "${file.name}" exceeds the maximum size of 32MB.`);
+				return;
+			}
 
-	    // Add a remove button for each file
-	    const removeButton = document.createElement("button");
-	    removeButton.textContent = "Remove";
-	    removeButton.className = "remove-file-btn";
-	    removeButton.onclick = function () {
-	      // Remove file from the list of attached files
-	      attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
-	      previewItem.remove();
-	    };
-	    previewItem.appendChild(removeButton);
+			// Add file to the list of attached files
+			attachedFiles.push(file);
 
-	    // Add preview item to the container
-	    attachmentPreview.appendChild(previewItem);
-	  });
+			// Create preview item
+			const previewItem = document.createElement("div");
+			previewItem.className = "attachment-preview-item";
 
-	  // Reset file input to allow re-uploading the same file if removed
-	  attachmentInput.value = "";
+			if (file.type.startsWith("image/")) {
+				// Display image preview
+				const img = document.createElement("img");
+				img.src = URL.createObjectURL(file);
+				img.alt = file.name;
+				img.style.maxWidth = "50px"; // Limit image size in preview
+				img.style.maxHeight = "50px";
+				img.onload = function () {
+					URL.revokeObjectURL(img.src); // Free memory
+				};
+				previewItem.appendChild(img);
+			} else {
+				// Display an icon or placeholder for non-image files
+				const icon = document.createElement("span");
+				icon.textContent = "📄"; // Use an emoji or icon for non-image files
+				icon.style.fontSize = "24px";
+				previewItem.appendChild(icon);
+			}
 
+			// Display file name
+			const fileName = document.createElement("span");
+			fileName.textContent = file.name;
+			fileName.style.display = "block";
+			fileName.style.maxWidth = "100px"; // Limit width to prevent overflow
+			fileName.style.overflow = "hidden";
+			fileName.style.textOverflow = "ellipsis";
+			fileName.style.whiteSpace = "nowrap";
+			previewItem.appendChild(fileName);
+
+			// Display file size
+			const fileSize = document.createElement("span");
+			fileSize.textContent = `(${(file.size / (1024 * 1024)).toFixed(2)}MB)`;
+			fileSize.style.fontSize = "12px";
+			fileSize.style.color = "#666";
+			previewItem.appendChild(fileSize);
+
+			// Add a remove button for each file
+			const removeButton = document.createElement("button");
+			removeButton.textContent = "Remove";
+			removeButton.className = "remove-file-btn";
+			removeButton.onclick = function () {
+				// Remove file from the list of attached files
+				attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
+				previewItem.remove();
+			};
+			previewItem.appendChild(removeButton);
+
+			// Add preview item to the container
+			attachmentPreview.appendChild(previewItem);
+		});
+
+		// Reset file input to allow re-uploading the same file if removed
+		attachmentInput.value = "";
 	});
 
-	const form = document.querySelector("form"); // Ensure you are selecting the right form
-		form.addEventListener("submit", function (event) {
-			// Only proceed if there are attached files
-			if (attachedFiles.length > 0) {
-				const dataTransfer = new DataTransfer(); // Necessary for adding files programmatically
-				attachedFiles.forEach((file) => {
-					dataTransfer.items.add(file);
-				});
-				attachmentInput.files = dataTransfer.files; // Set the file input to include attached files
-			}
-		});
+	// Ensure form submission includes the attached files
+	const form = document.querySelector("#addAnnouncement"); // Use the correct form ID
+	form.addEventListener("submit", function (event) {
+		// Prevent submission if no files are attached (if required)
+		// Uncomment if you want to enforce at least one file
+		// if (attachedFiles.length === 0) {
+		//     alert("Please attach at least one file.");
+		//     event.preventDefault();
+		//     return;
+		// }
+
+		// Re-add the attached files to the input for submission
+		if (attachedFiles.length > 0) {
+			const dataTransfer = new DataTransfer();
+			attachedFiles.forEach((file) => {
+				dataTransfer.items.add(file);
+			});
+			attachmentInput.files = dataTransfer.files; // Set the file input to include attached files
+		}
+	});
 
 	</script>
 	<script src="<?php echo base_url('assets/js/faculty.js?v=' . time()); ?>"></script>
