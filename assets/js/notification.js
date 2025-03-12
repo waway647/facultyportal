@@ -35,12 +35,30 @@ function slideNotificationPanel(notifications) {
         <div class="notification-content">`;
 
     notifications.forEach(notif => {
+
+            var dateTime = new Date(notif.created_at);
+			
+			// Format the date with alphabetical month
+			var date = dateTime.toLocaleDateString('en-US', {
+				year: 'numeric',
+				month: 'long', // 'short' for abbreviated month (e.g., "Feb"), use 'long' for full month (e.g., "February")
+				day: '2-digit'
+			}).replace(/,/, ','); // e.g., "Feb 28 2025"
+
+			// Format the time
+			var time = dateTime.toLocaleTimeString('en-US', {
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true, // Use 12-hour format with AM/PM
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone // User's local time zone
+        	});
+
         html += `
             <div class="notification-item">
                 <div class="notification-item-details">
                     <h4>${notif.title || 'No message'}</h4>
                     <small>${notif.posted_by || 'Posted by Unknown'}</small>
-                    <small>${notif.created_at || 'Unknown date'}</small>
+                    <small>${date || 'Unknown date'} | ${time || 'Unknown date'}</small>
                     <a href="${notif.link || '#'}">
                         <button class="action-btn">View</button>
                     </a>
