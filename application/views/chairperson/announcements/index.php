@@ -137,7 +137,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
       <div class="main-content">
         <div class="main-content-2">
-          <div class="heading-container"><div class="text-wrapper-8">Announcements, Department Chair <?php echo $this->session->userdata('faculty_id'); ?></div></div>
+          <div class="heading-container"><div class="text-wrapper-8">Announcements, Department Chair</div></div>
           <div class="container-management">
 				<div class="item-summary-container">
 					<div class="boxes-container">
@@ -247,7 +247,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 													Attach Files
 												</label>
 												<input type="file" id="announcement_attachment" name="announcement_file_path[]" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" multiple hidden>
-												<div id="announcement_attachment_preview" class="attachment-preview"></div>
+												<div id="announcement_attachment_preview" class="attachment-preview1"></div>
 											</div>
 										</div>
 									</div>
@@ -357,7 +357,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</td>
 			<td>
 				<div class="action-container">
-					<a href="" class="announcementBtn">Details</a>
+					<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/view/${item.id}" class="announcementBtn">Details</a>
 					<a href="" class="">
 						<img src="<?php echo base_url('assets/images/icon/more.png'); ?>" alt="">
 					</a>				

@@ -137,152 +137,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
       </div>
       <div class="main-content">
         <div class="main-content-2">
-          <div class="heading-container"><div class="text-wrapper-8">Announcements, Department Chair <?php echo $this->session->userdata('faculty_id'); ?></div></div>
+          <div class="heading-container"><div class="text-wrapper-8">Announcements, Department Chair</div></div>
           <div class="container-management">
-				<div class="item-summary-container">
-					<div class="boxes-container">
-						<div class="item-box">
-							<div class="left-summary-container">
-								<div class="summary-img-container">
-									<img src="<?php echo base_url('assets/images/icon/announcement.png'); ?>" alt="">
-								</div>
-								<div class="text-heading-container">
-									<h4>Create Announcement</h4>
-									<p>Notify all faculty members</p>
-								</div>
-							</div>
-							<div class="add-button">
-								<!-- Post Announcement button -->
-								<a href="javascript:void(0);" id="postAnnouncementBtn">
-									<div class="post-button">
-										<div class="text-wrapper-2">+ &nbsp&nbsp Add Announcement</div>
-									</div>
-								</a>
-							</div>
+		  		<div class="announcement-details-container">
+					<h2>Announcement Details</h2>
+						<p class="from">From: <?php echo htmlspecialchars($announcement->from); ?></p>
+						<p><strong>Title:</strong> <?php echo htmlspecialchars($announcement->title); ?></p>
+						<p><strong>Date:</strong> <?php echo date('F j, Y, g:i A', strtotime($announcement->created_at)); ?></p>
+						
+						<div class="content">
+							<p><?php echo nl2br(htmlspecialchars($announcement->content)); ?></p>
 						</div>
+
+							<?php if (!empty($attachments)): ?>
+								<div class="attachments-container">
+									<h3>Attachments</h3>
+									<?php foreach ($attachments as $attachment): ?>
+										<div class="attachment-item">
+											<?php
+											$file_ext = pathinfo($attachment->announcement_file_path, PATHINFO_EXTENSION);
+											if (in_array(strtolower($file_ext), ['jpg', 'jpeg', 'png'])): ?>
+												<img src="<?php echo base_url($attachment->announcement_file_path); ?>" alt="Attachment">
+											<?php elseif ($file_ext === 'pdf'): ?>
+												<span>📕</span>
+											<?php elseif (in_array($file_ext, ['doc', 'docx'])): ?>
+												<span>📘</span>
+											<?php else: ?>
+												<span>📄</span>
+											<?php endif; ?>
+											<a href="<?php echo base_url($attachment->announcement_file_path); ?>" target="_blank">
+												<?php echo basename($attachment->announcement_file_path); ?>
+											</a>
+										</div>
+									<?php endforeach; ?>
+								</div>
+							<?php else: ?>
+								<p>No attachments available.</p>
+							<?php endif; ?>
+
+							<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index" class="back-btn">Back to Announcements</a>
+						</div>
+					</div>
 					</div>
 				</div>
 
-				<div class="sub-content-container ann">
-						<div class="left-sub">
-							<h4>Announcement List&nbsp</h4>
-							<h4 class="left-sub-numbers">(3)</h4>
-						</div>
-
-						<!-- //Sort By -->
-						<div class="right-sub-ann">
-							<!-- <div class="searchDisplay">
-								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
-								<h6 id="searchDisplay"></h6>
-							</div> -->
-							<p>Sort By</p>
-							<div class="sub-container">
-								<button class="button">
-									<div class="div-wrapper">
-										<select name="sort" id="sortSelect">
-											<option value="" disabled selected>Choose sort order</option>
-											<option value="desc">Newest First</option>
-											<option value="asc">Oldest First</option>
-											<option value="title_asc">Title (A-Z)</option>
-											<option value="title_desc">Title (Z-A)</option>
-										</select>
-									</div>
-								</button>
-							</div>								
-						</div>
-
-						<!-- //Sort Date -->
-						<div class="right-sub-ann">
-							<!-- <div class="searchDisplay">
-								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
-								<h6 id="searchDisplay"></h6>
-							</div> -->
-							<p>Date</p>
-							<div class="sub-container">
-								<button class="button">
-									<div class="div-wrapper">
-										<input type="date" name="date" id="sortDate">
-									</div>
-								</button>
-							</div>								
-						</div>
-
-						<!-- //Search -->
-						<div class="right-sub-ann">
-							<div class="searchDisplay">
-								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
-								<h6 id="searchDisplay"></h6>
-							</div>
-							<p>Search</p>
-							<div class="sub-container">
-								<button class="button">
-									<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
-									<div class="div-wrapper">
-										<input type="search" name="search" id="searchInput" placeholder="Search">
-									</div>
-								</button>
-							</div>								
-						</div>
-					</div>
-
-					<div class="the-content-container-2">
-						<div id="postAnnouncementModal" class="modal">
-							<div class="modal-content">
-							<form id="addAnnouncement" method="post" action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/createAnnouncement" enctype="multipart/form-data">
-								<div class="postAnnouncement-container">
-									<div class="postmodal-heading">
-										<div class="div">Post New Announcement</div>
-									</div>
-									<div class="postmodal-form-container">
-										<!-- Title Input -->
-										<div class="postmodal-form-input">
-											<input type="text" id="title" name="title" placeholder="Title">
-										</div>
-										<!-- Custom Textarea for Announcement Body -->
-										<div class="postmodal-form-input">
-											<textarea type="textarea" id="announcement_body" class="custom-textarea" contenteditable="true" name="content" placeholder="Write your announcement here..."></textarea>
-											<div class="attachment-container">
-												<label for="announcement_attachment" class="attachment-button">
-													<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
-													Attach Files
-												</label>
-												<input type="file" id="announcement_attachment" name="announcement_file_path[]" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" multiple hidden>
-												<div id="announcement_attachment_preview" class="attachment-preview"></div>
-											</div>
-										</div>
-									</div>
-									<!-- Buttons -->
-									<div class="button-container">
-										<input type="submit" value="Post">
-										<a href="javascript:void(0);" id="closeModalBtn">
-											<div class="cancel-button">
-												<h6>Cancel</h6>
-											</div>
-										</a>
-									</div>
-								</div>
-							</form>
-							</div>
-						</div>
-						<div id="container">    
-							<table class="table table-2" id="announcementList" name="announcementList">
-								<thead>
-								<tr>
-									<th><input type="checkbox" class="checkbox"></th>
-									<th>Date & Time</th>
-									<th>Announcements</th>
-									<th></th>
-								</tr>
-								</thead>
-
-								<tbody>
-									
-								</tbody>
-							</table>
-
-						</div>
-					</div>
-			</div>
         </div>
       </div>
     </div>					

@@ -917,7 +917,7 @@ select{
   height: auto;
 }
 
-.attachment-preview {
+.attachment-preview1 {
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -925,6 +925,14 @@ select{
   overflow: hidden;
   overflow-y: auto; /* Enable vertical scrolling */
 }
+
+.attachment-preview {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 10px;
+}
+
 
 .attachment-preview-item {
   display: flex;
@@ -1685,7 +1693,7 @@ form .back-step {
 
 .date-time-container p:first-child{
   font-weight: 700;
-  font-size: 16px;
+  font-size: 17px;
 }
 
 .announcement-container p:last-child{
@@ -1696,7 +1704,7 @@ form .back-step {
 
 .date-time-container p:last-child{
   font-weight: 500;
-  font-size: 14px;
+  font-size: 15px;
   color: #A4A4A4;
 }
 
@@ -1716,8 +1724,8 @@ input[type="checkbox"] {
   -webkit-appearance: none;
   -moz-appearance: none;   
   appearance: none;         
-  width: 20px;             
-  height: 20px;
+  width: 10px;             
+  height: 10px;
   border: 2px solid #A4A4A4;  
   border-radius: 5px;      
   cursor: pointer;
@@ -1741,36 +1749,63 @@ input[type="checkbox"]:checked::after {
   transform: scale(1.1);
 }
 
-/* 
-.attachment-preview {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 10px;
-}
-
-.attachment-preview-item {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 5px;
-  padding: 5px;
+.announcement-details-container {
+  max-width: 800px;
+  margin: 20px auto;
+  padding: 20px;
   border: 1px solid #ddd;
   border-radius: 5px;
   background-color: #f9f9f9;
-  max-width: 150px;
 }
-
-.remove-file-btn {
-  background-color: #ff4d4d;
-  color: white;
-  border: none;
+.announcement-details-container h2 {
+  margin-top: 0;
+  color: #333;
+}
+.announcement-details-container p {
+  margin: 5px 0;
+}
+.announcement-details-container .from {
+  font-weight: bold;
+  color: #555;
+}
+.announcement-details-container .content {
+  margin: 15px 0;
+  line-height: 1.6;
+}
+.attachments-container {
+  margin-top: 20px;
+}
+.attachments-container h3 {
+  margin-bottom: 10px;
+}
+.attachment-item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.attachment-item img {
+  max-width: 80px;
+  max-height: 80px;
+  border: 1px solid #ddd;
   border-radius: 3px;
-  padding: 5px 10px;
-  cursor: pointer;
-  font-size: 12px;
 }
-
-.remove-file-btn:hover {
-  background-color: #e60000;
-} */
+.attachment-item a {
+  color: #007bff;
+  text-decoration: none;
+}
+.attachment-item a:hover {
+  text-decoration: underline;
+}
+.back-btn {
+  display: inline-block;
+  margin-top: 20px;
+  padding: 10px 20px;
+  background-color: #007bff;
+  color: white;
+  text-decoration: none;
+  border-radius: 5px;
+}
+.back-btn:hover {
+  background-color: #0056b3;
+}

@@ -49,7 +49,6 @@ class Announcements extends CI_Controller {
 		$config['upload_path'] = './assets/announcement_attachments/';
 		$config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx';
 		$config['max_size'] = 32768; // Maximum file size in KB (32MB)
-		$config['encrypt_name'] = TRUE;
 	
 		// Ensure upload directory exists
 		if (!is_dir($config['upload_path'])) {
@@ -191,21 +190,50 @@ class Announcements extends CI_Controller {
 		redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
 	}
 
-	public function viewAnnouncement($announcement_id) {
-		$announcement = $this->Announcement_model->getAnnouncement($announcement_id);
-		if (!$announcement) {
-			$this->session->set_flashdata('error', 'Announcement not found.');
-			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
-			return;
+	public function view($announcement_id) {
+        // Validate the announcement_id
+        if (!is_numeric($announcement_id) || $announcement_id <= 0) {
+            $this->session->set_flashdata('error', 'Invalid announcement ID.');
+            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+            return;
+        }
+
+        // Fetch the announcement details
+        $announcement = $this->Announcement_model->getAnnouncementById($announcement_id);
+
+        if (!$announcement) {
+            $this->session->set_flashdata('error', 'Announcement not found.');
+            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+            return;
+        }
+
+        // Fetch the attachments for this announcement
+        $attachments = $this->Announcement_model->getAttachmentsByAnnouncementId($announcement_id);
+
+        // Mark the notification as read (if applicable)
+        $this->db->where('notifiable_id', $announcement_id);
+        $this->db->where('notifiable_type', 'announcement');
+        $this->db->update('notifications', array('status' => 'read'));
+
+        // Pass data to the view
+        $data = array(
+            'announcement' => $announcement,
+            'attachments' => $attachments
+        );
+
+		$user_id = $this->session->userdata('logged_id');
+		$data['faculty'] = $this->Faculty_model->getFacultyProfile($user_id);
+
+		$logged_user_id = $this->session->userdata('logged_id');
+
+		$faculty_id = $this->Faculty_model->getFacultyID($logged_user_id);
+		$data['full_name'] = $this->Faculty_model->getFaculty($faculty_id);
+		if($faculty_id)
+		{
+			$this->session->set_userdata('faculty_id', $faculty_id);
+
+			$this->load->view('chairperson/announcements/view', $data);
 		}
-	
-		$attachments = $this->Announcement_model->getAttachments($announcement_id);
-	
-		$data = array(
-			'announcement' => $announcement,
-			'attachments' => $attachments,
-		);
-	
-		$this->load->view('chairperson/announcements/view', $data);
-	}
+
+    }
 }
