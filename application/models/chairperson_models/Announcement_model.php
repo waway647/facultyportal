@@ -37,4 +37,18 @@ class Announcement_model extends CI_Model {
 
         return $this->db->insert('notifications', $notification_data);
     }
+
+    public function getAnnouncements($faculty_profile_id) {
+        $this->db->select('announcements.*, faculty_profiles.full_name');
+        $this->db->from('announcements');
+        $this->db->join('faculty_profiles', 'faculty_profiles.faculty_profile_id = announcements.faculty_profile_id');
+        $this->db->where('announcements.faculty_profile_id', $faculty_profile_id);
+        $this->db->order_by('announcements.created_at', 'desc');
+        $query = $this->db->get();
+        return $query->result();
+    }
+
+    /* public function getAttachments(){
+        $this->db->select
+    } */
 }

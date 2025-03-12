@@ -190,4 +190,22 @@ class Announcements extends CI_Controller {
 	
 		redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
 	}
+
+	public function viewAnnouncement($announcement_id) {
+		$announcement = $this->Announcement_model->getAnnouncement($announcement_id);
+		if (!$announcement) {
+			$this->session->set_flashdata('error', 'Announcement not found.');
+			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+			return;
+		}
+	
+		$attachments = $this->Announcement_model->getAttachments($announcement_id);
+	
+		$data = array(
+			'announcement' => $announcement,
+			'attachments' => $attachments,
+		);
+	
+		$this->load->view('chairperson/announcements/view', $data);
+	}
 }

@@ -1677,18 +1677,26 @@ form .back-step {
   letter-spacing: 0.2px;
 }
 
-.announcement-container p:first-child,
-.date-time-container p:first-child
+.announcement-container p:first-child
 {
   font-weight: 700;
   font-size: 18px;
 }
 
-.announcement-container p:last-child,
-.date-time-container p:last-child
-{
+.date-time-container p:first-child{
+  font-weight: 700;
+  font-size: 16px;
+}
+
+.announcement-container p:last-child{
   font-weight: 500;
   font-size: 16px;
+  color: #A4A4A4;
+}
+
+.date-time-container p:last-child{
+  font-weight: 500;
+  font-size: 14px;
   color: #A4A4A4;
 }
 
