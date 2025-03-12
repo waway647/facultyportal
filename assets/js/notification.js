@@ -59,7 +59,7 @@ function slideNotificationPanel(notifications) {
                     <h4>${notif.title || 'No message'}</h4>
                     <small>${notif.posted_by || 'Posted by Unknown'}</small>
                     <small>${date || 'Unknown date'} | ${time || 'Unknown date'}</small>
-                    <a href="${notif.link || '#'}">
+                    <a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/view/${notif.id}">
                         <button class="action-btn">View</button>
                     </a>
                 </div>
