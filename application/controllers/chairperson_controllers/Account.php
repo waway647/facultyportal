@@ -121,12 +121,4 @@ class Account extends CI_Controller {
 		}
 	}
 
-	public function editPrivacy() // http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Account/editPrivacy
-	{
-		$this->load->model('common_models/Faculty_model');
-		$faculty_id = $this->session->userdata('logged_id');
-		$data['faculty'] = $this->Faculty_model->getFacultyProfile($faculty_id);
-
-		$this->load->view('chairperson/account/editPrivacy', $data);
-	}
 }

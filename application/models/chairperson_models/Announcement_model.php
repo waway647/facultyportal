@@ -41,12 +41,24 @@ class Announcement_model extends CI_Model {
     public function getAnnouncementById($announcement_id) {
         $this->db->where('id', $announcement_id);
         $query = $this->db->get('announcements');
-        return $query->row(); // Returns a single row as an object
+        return $query->row(); 
     }
 
     public function getAttachmentsByAnnouncementId($announcement_id) {
         $this->db->where('announcement_id', $announcement_id);
         $query = $this->db->get('announcement_attachments');
-        return $query->result(); // Returns all attachments as an array of objects
+        return $query->result(); 
+    }
+
+    public function getAttachmentById($attachment_id) {
+        $this->db->where('id', $attachment_id);
+        $query = $this->db->get('announcement_attachments');
+        return $query->row();
+    }
+
+    public function updateAnnouncement($announcement_id, $update_data){
+        $this->db->where('id', $announcement_id);
+        $this->db->update('announcements', $update_data);
+        return $this->db->affected_rows() > 0;
     }
 }

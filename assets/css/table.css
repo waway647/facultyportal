@@ -117,6 +117,8 @@ th {
   border: 2px solid #DCDBDB; /* Your table border */
   border-radius: 5px; /* Your desired border radius */
   overflow: hidden; /* Clip content to the rounded border */
+  position: relative; /* Establish a stacking context for the table */
+  z-index: 0; /* Low z-index for the table */
 }
 
 .table-2 thead th {
@@ -127,7 +129,7 @@ th {
   text-align: right;
 }
 
-.table-2 td{
+.table-2 td {
   height: 80px;
   border-top: 2px solid #DCDBDB; 
   vertical-align: middle;
@@ -139,14 +141,17 @@ th {
   width: 100%;
   position: sticky;
   top: 0; 
-  z-index: 1; 
+  z-index: 10; 
+  background-color: #fff; 
 }
 
 #announcementList tbody {
   display: block;
   max-height: 320px; 
   overflow-y: auto; 
-  overflow-x: hidden; 
+  overflow-x: auto; 
+  position: relative;
+  z-index: 0; 
 }
 
 #announcementList tbody tr {
@@ -186,8 +191,4 @@ th {
 #announcementList tbody::-webkit-scrollbar-thumb {
   background: #888;
   border-radius: 4px;
-}
-
-#announcementList tbody::-webkit-scrollbar-thumb:hover {
-  background: #555;
 }

@@ -155,7 +155,7 @@ class Announcements extends CI_Controller {
 			}
 		}
 
-		if (!empty($attachment_paths)) {
+		// Insert notification for the announcement
 			$notification_data = array(
 				'notifiable_id' => $announcement_id,
 				'notifiable_type' => 'announcement',
@@ -170,7 +170,7 @@ class Announcements extends CI_Controller {
 				redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
 				return;
 			}
-		}
+		
 	
 		// Complete the transaction
 		$this->db->trans_complete();
@@ -234,6 +234,233 @@ class Announcements extends CI_Controller {
 
 			$this->load->view('chairperson/announcements/view', $data);
 		}
-
     }
+
+	public function edit($announcement_id){
+
+		if (!is_numeric($announcement_id) || $announcement_id <= 0) {
+            $this->session->set_flashdata('error', 'Invalid announcement ID.');
+            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+            return;
+        }
+
+		$announcement = $this->Announcement_model->getAnnouncementById($announcement_id);
+
+		if (!$announcement) {
+            $this->session->set_flashdata('error', 'Announcement not found.');
+            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+            return;
+        }
+
+		$attachments = $this->Announcement_model->getAttachmentsByAnnouncementId($announcement_id);
+
+		$data = array(
+			'announcement' => $announcement,
+			'attachments' => $attachments
+		);
+
+		$user_id = $this->session->userdata('logged_id');
+		$data['faculty'] = $this->Faculty_model->getFacultyProfile($user_id);
+
+		$logged_user_id = $this->session->userdata('logged_id');
+
+		$faculty_id = $this->Faculty_model->getFacultyID($logged_user_id);
+		$data['full_name'] = $this->Faculty_model->getFaculty($faculty_id);
+		if($faculty_id)
+		{
+			$this->session->set_userdata('faculty_id', $faculty_id);
+
+			$this->load->view('chairperson/announcements/edit', $data);
+		}
+	}
+
+	public function delete($announcement_id) {
+        if (!is_numeric($announcement_id) || $announcement_id <= 0) {
+            $response = array('success' => false, 'message' => 'Invalid announcement ID.');
+            echo json_encode($response);
+            return;
+        }
+
+        $announcement = $this->Announcement_model->getAnnouncementById($announcement_id);
+        if (!$announcement) {
+            $response = array('success' => false, 'message' => 'Announcement not found.');
+            echo json_encode($response);
+            return;
+        }
+
+        // Start a transaction
+        $this->db->trans_start();
+
+        // Delete attachments from server and database
+        $attachments = $this->Announcement_model->getAttachmentsByAnnouncementId($announcement_id);
+        foreach ($attachments as $attachment) {
+            $file_path = FCPATH . $attachment->announcement_file_path;
+            if (file_exists($file_path)) {
+                unlink($file_path); // Delete the file from the server
+            }
+        }
+		
+        // Delete attachments from database
+        $this->db->where('announcement_id', $announcement_id);
+        $this->db->delete('announcement_attachments');
+
+        // Delete notifications
+        $this->db->where('notifiable_id', $announcement_id);
+        $this->db->where('notifiable_type', 'announcement');
+        $this->db->delete('notifications');
+
+        // Delete the announcement
+        $this->db->where('id', $announcement_id);
+        $this->db->delete('announcements');
+
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === FALSE) {
+            $response = array('success' => false, 'message' => 'Failed to delete announcement.');
+            echo json_encode($response);
+            return;
+        }
+
+        $response = array('success' => true, 'message' => 'Announcement deleted successfully.');
+        echo json_encode($response);
+    }
+
+	public function update($announcement_id) {
+        date_default_timezone_set('Asia/Manila');
+
+        // Validate announcement ID
+        if (!is_numeric($announcement_id) || $announcement_id <= 0) {
+            $this->session->set_flashdata('error', 'Invalid announcement ID.');
+            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+            return;
+        }
+
+        // Fetch existing announcement
+        $announcement = $this->Announcement_model->getAnnouncementById($announcement_id);
+        if (!$announcement) {
+            $this->session->set_flashdata('error', 'Announcement not found.');
+            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+            return;
+        }
+
+        // Prepare announcement data from form
+        $title = $this->input->post('title', TRUE);
+        $content = $this->input->post('content', TRUE);
+
+        if (empty($title) || empty($content)) {
+            $this->session->set_flashdata('error', 'Title and content are required.');
+            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/edit/' . $announcement_id);
+            return;
+        }
+
+        // Start a transaction
+        $this->db->trans_start();
+
+        // Update announcement
+        $update_data = array(
+            'title' => $title,
+            'content' => $content,
+            'updated_at' => date('Y-m-d H:i:s')
+        );
+
+		$this->Announcement_model->updateAnnouncement($announcement_id, $update_data);
+
+        // Handle new file uploads
+        if (isset($_FILES['announcement_file_path']) && !empty($_FILES['announcement_file_path']['name'][0])) {
+            $config['upload_path'] = './assets/announcement_attachments/';
+            $config['allowed_types'] = 'jpg|jpeg|png|pdf|doc|docx';
+            $config['max_size'] = 32768; // 32MB in KB
+            $config['encrypt_name'] = FALSE; // Use original filename as requested
+
+            if (!is_dir($config['upload_path'])) {
+                mkdir($config['upload_path'], 0777, true);
+            }
+
+            $this->load->library('upload', $config);
+
+            if (is_array($_FILES['announcement_file_path']['name'])) {
+                $files = $_FILES['announcement_file_path'];
+                $file_count = count($files['name']);
+
+                for ($i = 0; $i < $file_count; $i++) {
+                    if (!empty($files['name'][$i])) {
+                        $_FILES['temp_file']['name'] = $files['name'][$i];
+                        $_FILES['temp_file']['type'] = $files['type'][$i];
+                        $_FILES['temp_file']['tmp_name'] = $files['tmp_name'][$i];
+                        $_FILES['temp_file']['error'] = $files['error'][$i];
+                        $_FILES['temp_file']['size'] = $files['size'][$i];
+
+                        $this->upload->initialize($config);
+
+                        if ($this->upload->do_upload('temp_file')) {
+                            $uploaded_data = $this->upload->data();
+                            $attachment_path = 'assets/announcement_attachments/' . $uploaded_data['file_name'];
+                            $attachment_data = array(
+                                'announcement_id' => $announcement_id,
+                                'announcement_file_path' => $attachment_path
+                            );
+                            $this->Announcement_model->insertAttachment($attachment_data);
+                        } else {
+                            $error = $this->upload->display_errors();
+                            log_message('error', 'File upload failed: ' . $error);
+                            $this->session->set_flashdata('error', 'One or more file uploads failed: ' . $error);
+                            $this->db->trans_rollback();
+                            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/edit/' . $announcement_id);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+
+        // Complete the transaction
+        $this->db->trans_complete();
+
+        if ($this->db->trans_status() === FALSE) {
+            $this->session->set_flashdata('error', 'Failed to update announcement.');
+            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/edit/' . $announcement_id);
+            return;
+        }
+
+        $this->session->set_flashdata('success', 'Announcement updated successfully.');
+        redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+    }
+
+	public function delete_attachment($attachment_id) {
+		// Validate attachment ID
+		if (!is_numeric($attachment_id) || $attachment_id <= 0) {
+			$this->session->set_flashdata('error', 'Invalid attachment ID.');
+			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+			return;
+		}
+	
+		// Fetch attachment
+		$attachment = $this->Announcement_model->getAttachmentById($attachment_id);
+	
+		// Start a transaction
+		$this->db->trans_start();
+	
+		// Delete file from server
+		$file_path = FCPATH . $attachment->announcement_file_path;
+		if (file_exists($file_path) && strpos($file_path, FCPATH . 'assets/announcement_attachments/') === 0) {
+			unlink($file_path);
+		}
+	
+		// Delete attachment from database
+		$this->db->where('id', $attachment_id);
+		$this->db->delete('announcement_attachments');
+	
+		// Complete the transaction
+		$this->db->trans_complete();
+	
+		if ($this->db->trans_status() === FALSE) {
+			$this->session->set_flashdata('error', 'Failed to delete attachment.');
+			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/edit/' . $attachment->announcement_id);
+			return;
+		}
+	
+		$this->session->set_flashdata('success', 'Attachment deleted successfully.');
+		redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/edit/' . $attachment->announcement_id);
+	}
+
 }

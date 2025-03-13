@@ -136,48 +136,43 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
       </div>
       <div class="main-content">
-        	<div class="main-content-2">
-          		<div class="heading-container"><div class="text-wrapper-8">Announcements, Department Chair</div></div>
-          			<div class="container-management">
-						<div class="announcement-details-container">
-							<h2>Announcement Details</h2>
-								<p class="from">From: <?php echo $announcement->from; ?></p>
-								<p><strong>Title:</strong> <?php echo $announcement->title; ?></p>
-								<p><strong>Date:</strong> <?php echo date('F j, Y, g:i A', strtotime($announcement->created_at)); ?></p>
-								
-								<div class="content">
-									<p><?php echo nl2br(($announcement->content)); ?></p>
-								</div>
+            <div class="main-content-2">
+                <div class="heading-container"><div class="text-wrapper-8">Announcements, Department Chair</div></div>
+                    <div class="container-management">
+                        <div class="edit-form-container">
+                            <h2>Edit Announcement</h2>
+                            <?php if ($this->session->flashdata('error')): ?>
+                                <p style="color: red;"><?php echo $this->session->flashdata('error'); ?></p>
+                            <?php endif; ?>
+                            <form action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/update/<?php echo $announcement->id; ?>" method="POST" enctype="multipart/form-data">
+                                <label for="title">Title:</label>
+                                <input type="text" name="title" id="title" value="<?php echo $announcement->title; ?>" required>
 
-							<?php if (!empty($attachments)): ?>
-								<div class="attachments-container">
-									<h3>Attachments</h3>
-									<?php foreach ($attachments as $attachment): ?>
-										<div class="attachment-item">
-											<?php
-											$file_ext = pathinfo($attachment->announcement_file_path, PATHINFO_EXTENSION);
-											if (in_array(strtolower($file_ext), ['jpg', 'jpeg', 'png'])): ?>
-												<img src="<?php echo base_url($attachment->announcement_file_path); ?>" alt="Attachment">
-											<?php elseif ($file_ext === 'pdf'): ?>
-												<span>📕</span>
-											<?php elseif (in_array($file_ext, ['doc', 'docx'])): ?>
-												<span>📘</span>
-											<?php else: ?>
-												<span>📄</span>
-											<?php endif; ?>
-											<a href="<?php echo base_url($attachment->announcement_file_path); ?>" target="_blank">
-												<?php echo basename($attachment->announcement_file_path); ?>
-											</a>
-										</div>
-									<?php endforeach; ?>
-								</div>
-							<?php else: ?>
-								<p>No attachments available.</p>
-							<?php endif; ?>
+                                <label for="content">Content:</label>
+                                <textarea name="content" id="content" rows="5" required><?php echo $announcement->content; ?></textarea>
 
-							<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index" class="back-btn">Back to Announcements</a>
-						</div>
-					</div>
+                                <label for="announcement_file_path">Attachments (optional):</label>
+                                <input type="file" name="announcement_file_path[]" id="announcement_file_path" multiple>
+
+                                <h3>Existing Attachments</h3>
+                                <?php if (!empty($attachments)): ?>
+                                    <?php foreach ($attachments as $attachment): ?>
+                                        <p>
+                                            <a href="<?php echo base_url($attachment->announcement_file_path); ?>" target="_blank">
+                                                <?php echo basename($attachment->announcement_file_path); ?>
+                                            </a>
+                                            <a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/delete_attachment/<?php echo $attachment->id; ?>" style="color: red; margin-left: 10px;" onclick="return confirm('Are you sure you want to delete this attachment?');">Delete</a>
+                                        </p>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <p>No attachments available.</p>
+                                <?php endif; ?>
+
+                                <button type="submit">Update Announcement</button>
+                            </form>
+                            <a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index" style="display: inline-block; margin-top: 10px;">Back to Announcements</a>
+                        </div>
+				    </div>
 			</div>
         </div>
     </div>					
