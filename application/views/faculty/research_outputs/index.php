@@ -231,7 +231,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 											</div>
 											<div class="form-group">
 												<input type="text" id="faculty_id" name="faculty_profile_id" placeholder="Author name" required>
-												<input type="hidden" id="logged_in_user_id" value="<?php echo $this->session->userdata('faculty_id'); ?>">
 											</div>
 											<div class="form-group">
 												<div class="attachment-container">
@@ -269,7 +268,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 												</select>
 											</div>
 											<div class="form-group">
-												<input type="text" id="faculty_assigned" name="faculty_profile_id" class="form-control" required>
+												<input type="text" id="faculty_assigned" name="faculty_profile_id" class="form-control" placeholder="Author name" required>
 											</div>
 											<div class="form-group">
 												<div class="attachment-container">
@@ -351,69 +350,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	});
 
-	function fetchFaculty(modalId, callback, selectedFacultyId = null) {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty',
-			type: 'GET',
-			dataType: 'json',
-			success: function (result) {
-				console.log('AJAX success:', result);
-
-				if (Array.isArray(result)) {
-					let inputField;
-
-					// Identify the correct input field
-					if (modalId === "addResearchModal") {
-						inputField = $('#faculty_id'); // Add Research Modal
-					} else if (modalId === "editResearchModal") {
-						inputField = $('#faculty_assigned'); // Edit Research Modal
-					}
-
-					if (inputField && inputField.length) {
-						// Ensure the input field is not emptied incorrectly
-
-						// Populate the input field if the selected faculty ID matches
-
-						let loggedUserId = $('#logged_in_user_id').val(); // Hidden field storing logged user ID
-
-                   		 result.forEach(function (faculty) {
-                        // Auto-fill if faculty matches the logged-in user or selected ID
-                        if (selectedFacultyId === faculty.id || loggedUserId === faculty.id) {
-                            inputField.val(faculty.full_name);
-                        }
-					});
-
-						// Execute callback if provided
-						if (callback && typeof callback === 'function') {
-							callback();
-						}
-					} else {
-						console.error('Input element not found for modal:', modalId);
-					}
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-
-				/* if (Array.isArray(result)) {
-					let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
-					let facultyFullName = $('#full_name'); // Default text if no match is found
-
-					result.forEach(function(faculty) {
-						if (faculty.id == loggedUserId) {
-							facultyFullName.text(faculty.full_name); // Get the logged-in faculty's full name
-						}
-					});
-
-				} else {
-					console.error('Expected an array but received:', result);
-				} */
-			},
-			error: function (xhr, status, error) {
-				console.error('Error fetching faculty:', error);
-			}
-		});
-	}
-
 	function fetchResearch(query = '') {
 		$.ajax({
 			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/getResearch',  // Update the URL as necessary
@@ -489,7 +425,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	function populateAddResearchModal(research) {
 		// Fetch and populate faculty dropdown
 		fetchFaculty('addResearchModal', function () {
-			console.log(`Faculty dropdown populated. Selected faculty: ${research.faculty_assigned}`);
+			console.log(`Faculty dropdown populated. Selected faculty: ${research.author}`);
 		}, research.faculty_profile_id);
 	}
 	
@@ -518,10 +454,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		// Leave the attachment input field empty for new uploads
 		$('#editResearchModal #research_attachment_edit').val('');
 
-		// Fetch and populate faculty dropdown
+		/* // Fetch and populate faculty dropdown
 		fetchFaculty('editResearchModal', function () {
 			console.log(`Faculty dropdown populated. Selected faculty: ${research.faculty_assigned}`);
-		}, research.faculty_profile_id); 
+		}, research.faculty_profile_id);  */
 
 		// Set form action URL for updating research
 		$('#editResearchForm').attr(

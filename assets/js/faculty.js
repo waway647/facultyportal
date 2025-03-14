@@ -12,7 +12,9 @@ function loadFaculty() {
             if (result) {
                 // Directly assign full_name and email to the respective divs
                 $('#full_name').text(result.full_name);
-                $('.text-wrapper-6').text(result.email); // Assuming the response includes an 'email' field
+                $('.text-wrapper-6').text(result.email); 
+                $('#faculty_assigned').val(result.full_name); 
+                $('#faculty_id').val(result.full_name); 
             } else {
                 console.error('Invalid data received:', result);
             }
