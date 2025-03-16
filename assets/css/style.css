@@ -434,7 +434,7 @@ select{
 
 .active{
   background-color: #e53b43 !important;
-  box-shadow: 4px 6px 10px rgba(134, 18, 18, 0.359);
+  box-shadow: 4px 6px 10px rgba(134, 18, 18, 0.359) !important;
 }
 
 .highlight{

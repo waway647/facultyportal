@@ -29,7 +29,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           </div>
         </div>
         <div class="nav-links-container">
-			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Dashboard/index">
+			<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Dashboard/index">
 				<div class="nav-link">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/dash.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Dashboard</div></div>
@@ -37,41 +37,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</a>
           
 		  	<a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index">
-				<div class="nav-link active">
-					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/announce.svg'); ?>" /></div>
+				<div class="nav-link">
+					<div class="image-wrapper active"><img class="img" src="<?php echo base_url('assets/images/icon/announce.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4 highlight">Announcements</div></div>
 				</div>
 			</a>
           
-		  	<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Profile/index">
+		  	<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Profile/index">
 				<div class="nav-link">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/profile.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Profile</div></div>
 				</div>
 			</a>
-
-			<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/index">
-				<div class="nav-link">
-					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/facultymanage.svg'); ?>" /></div>
-					<div class="frame-2"><div class="text-wrapper-4">Faculty Management</div></div>
-				</div>
-			</a>
           
-		  	<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/index">
+		  	<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Courses/index">
 				<div class="nav-link">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/course.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Courses</div></div>
 				</div>
 			</a>
           
-		  	<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/ResearchOutputs/index">
+		  	<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/index">
 				<div class="nav-link">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/research.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Research Outputs</div></div>
 				</div>
 			</a>
     
-		  	<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Consultations/index">
+		  	<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/index">
 				<div class="nav-link">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/consult.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Consultations</div></div>
@@ -136,155 +129,50 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         </div>
       </div>
       <div class="main-content">
-        <div class="main-content-2">
-          <div class="heading-container"><div class="text-wrapper-8">Announcements, Department Chair</div></div>
-          <div class="container-management">
-				<div class="item-summary-container">
-					<div class="boxes-container">
-						<div class="item-box">
-							<div class="left-summary-container">
-								<div class="summary-img-container">
-									<img src="<?php echo base_url('assets/images/icon/announcement.png'); ?>" alt="">
+        	<div class="main-content-2">
+          		<div class="heading-container"><div class="text-wrapper-8">Announcements, Department Chair</div></div>
+          			<div class="container-management">
+						<div class="announcement-details-container">
+							<h2>Announcement Details</h2>
+								<p class="from">From: <?php echo $announcement->from; ?></p>
+								<p><strong>Title:</strong> <?php echo $announcement->title; ?></p>
+								<p><strong>Date:</strong> <?php echo date('F j, Y, g:i A', strtotime($announcement->created_at)); ?></p>
+								
+								<div class="content">
+									<p><?php echo nl2br(($announcement->content)); ?></p>
 								</div>
-								<div class="text-heading-container">
-									<h4>Create Announcement</h4>
-									<p>Notify all faculty members</p>
-								</div>
-							</div>
-							<div class="add-button">
-								<!-- Post Announcement button -->
-								<a href="javascript:void(0);" id="postAnnouncementBtn">
-									<div class="post-button">
-										<div class="text-wrapper-2">+ &nbsp&nbsp Add Announcement</div>
-									</div>
-								</a>
-							</div>
-						</div>
-					</div>
-				</div>
 
-				<div class="sub-content-container ann">
-						<div class="left-sub">
-							<h4>Announcement List&nbsp</h4>
-							<h4 class="left-sub-numbers">(3)</h4>
-						</div>
-
-						<!-- //Sort By -->
-						<div class="right-sub-ann">
-							<div class="searchDisplay">
-								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
-								<h6 id="searchDisplay"></h6>
-							</div>
-							<p>Sort By</p>
-							<div class="sub-container">
-								<button class="button">
-									<div class="div-wrapper">
-										<select name="sort" id="sortSelect">
-											<option value="" disabled selected>Choose sort order</option>
-											<option value="desc">Newest First</option>
-											<option value="asc">Oldest First</option>
-											<option value="title_asc">Title (A-Z)</option>
-											<option value="title_desc">Title (Z-A)</option>
-										</select>
-									</div>
-								</button>
-							</div>								
-						</div>
-
-						<!-- //Sort Date -->
-						<div class="right-sub-ann">
-							<!-- <div class="searchDisplay">
-								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
-								<h6 id="searchDisplay"></h6>
-							</div> -->
-							<p>Date</p>
-							<div class="sub-container">
-								<button class="button">
-									<div class="div-wrapper">
-										<input type="date" name="date" id="sortDate">
-									</div>
-								</button>
-							</div>								
-						</div>
-
-						<!-- //Search -->
-						<div class="right-sub-ann">
-							<div class="searchDisplay">
-								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
-								<h6 id="searchDisplay"></h6>
-							</div>
-							<p>Search</p>
-							<div class="sub-container">
-								<button class="button">
-									<div class="frame"><img class="img" src="<?php echo base_url('assets/images/icon/search.svg'); ?>" /></div>
-									<div class="div-wrapper">
-										<input type="search" name="search" id="searchInput" placeholder="Search">
-									</div>
-								</button>
-							</div>								
-						</div>
-					</div>
-
-					<div class="the-content-container-2">
-						<div id="postAnnouncementModal" class="modal">
-							<div class="modal-content">
-							<form id="addAnnouncement" method="post" action="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/createAnnouncement" enctype="multipart/form-data">
-								<div class="postAnnouncement-container">
-									<div class="postmodal-heading">
-										<div class="div">Post New Announcement</div>
-									</div>
-									<div class="postmodal-form-container">
-										<!-- Title Input -->
-										<div class="postmodal-form-input">
-											<input type="text" id="title" name="title" placeholder="Title">
+							<?php if (!empty($attachments)): ?>
+								<div class="attachments-container">
+									<h3>Attachments</h3>
+									<?php foreach ($attachments as $attachment): ?>
+										<div class="attachment-item">
+											<?php
+											$file_ext = pathinfo($attachment->announcement_file_path, PATHINFO_EXTENSION);
+											if (in_array(strtolower($file_ext), ['jpg', 'jpeg', 'png'])): ?>
+												<img src="<?php echo base_url($attachment->announcement_file_path); ?>" alt="Attachment">
+											<?php elseif ($file_ext === 'pdf'): ?>
+												<span>📕</span>
+											<?php elseif (in_array($file_ext, ['doc', 'docx'])): ?>
+												<span>📘</span>
+											<?php else: ?>
+												<span>📄</span>
+											<?php endif; ?>
+											<a href="<?php echo base_url($attachment->announcement_file_path); ?>" target="_blank">
+												<?php echo basename($attachment->announcement_file_path); ?>
+											</a>
 										</div>
-										<!-- Custom Textarea for Announcement Body -->
-										<div class="postmodal-form-input">
-											<textarea type="textarea" id="announcement_body" class="custom-textarea" contenteditable="true" name="content" placeholder="Write your announcement here..."></textarea>
-											<div class="attachment-container">
-												<label for="announcement_attachment" class="attachment-button">
-													<img src="https://cdn-icons-png.flaticon.com/512/54/54719.png" alt="">
-													Attach Files
-												</label>
-												<input type="file" id="announcement_attachment" name="announcement_file_path[]" accept=".jpg,.jpeg,.png,.pdf,.doc,.docx" multiple hidden>
-												<div id="announcement_attachment_preview" class="attachment-preview1"></div>
-											</div>
-										</div>
-									</div>
-									<!-- Buttons -->
-									<div class="button-container">
-										<input type="submit" value="Post">
-										<a href="javascript:void(0);" id="closeModalBtn">
-											<div class="cancel-button">
-												<h6>Cancel</h6>
-											</div>
-										</a>
-									</div>
+									<?php endforeach; ?>
 								</div>
-							</form>
-							</div>
-						</div>
-						<div id="container">    
-							<table class="table table-2" id="announcementList" name="announcementList">
-								<thead>
-								<tr>
-									<th><input type="checkbox" class="checkbox"></th>
-									<th>Date & Time</th>
-									<th>Announcements</th>
-									<th></th>
-								</tr>
-								</thead>
+							<?php else: ?>
+								<p>No attachments available.</p>
+							<?php endif; ?>
 
-								<tbody>
-									
-								</tbody>
-							</table>
-
+							<a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index" class="back-btn">Back to Announcements</a>
 						</div>
 					</div>
 			</div>
         </div>
-      </div>
     </div>					
 	<script>
 	$(document).ready(function() {
@@ -329,34 +217,17 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			// Format the date with alphabetical month
 			var date = dateTime.toLocaleDateString('en-US', {
 				year: 'numeric',
-				month: 'long', 
+				month: 'long', // 'short' for abbreviated month (e.g., "Feb"), use 'long' for full month (e.g., "February")
 				day: '2-digit'
-			}).replace(/,/, ','); 
+			}).replace(/,/, ','); // e.g., "Feb 28 2025"
 
 			// Format the time
 			var time = dateTime.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit',
-            hour12: true, 
-            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone 
+            hour12: true, // Use 12-hour format with AM/PM
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone // User's local time zone
         	});
-
-			var editedText = '';
-			if (item.updated_at) {
-				var updatedDateTime = new Date(item.updated_at);
-				var updatedDate = updatedDateTime.toLocaleDateString('en-US', {
-					year: 'numeric',
-					month: 'long',
-					day: '2-digit',
-				}).replace(/,/, ',');
-				var updatedTime = updatedDateTime.toLocaleTimeString('en-US', {
-					hour: '2-digit',
-					minute: '2-digit',
-					hour12: true,
-					timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone 
-				});
-				editedText = `<span class="edited-text">(Edited - ${updatedDate} | ${updatedTime})</span>`;
-			}
 
 			var tr = `<tr>
 			<td>${sno}</td>
@@ -368,92 +239,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</td>
 			<td>
 				<div class="announcement-container">
-					<p>${item.from} ${editedText}</p>
+					<p>${item.from}</p>
 					<p>${item.title}</p>
 				</div>
 			</td>
 			<td>
 				<div class="action-container">
-					<a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/view/${item.id}" class="announcementBtn">Details</a>
-					<div class="dropdown">
-                        <a href="#" class="dropdown-toggle" data-id="${item.id}">
-                            <img src="<?php echo base_url('assets/images/icon/more.png'); ?>" alt="More Options">
-                        </a>
-                        <div class="dropdown-menu" id="dropdown-${item.id}" style="display: none;">
-                            <a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/edit/${item.id}" class="dropdown-item">Edit</a>
-                            <a href="#" class="dropdown-item delete-btn" data-id="${item.id}">Delete</a>
-                        </div>
-                    </div>				
+					<a href="" class="announcementBtn">Details</a>
+					<a href="" class="">
+						<img src="<?php echo base_url('assets/images/icon/more.png'); ?>" alt="">
+					</a>				
 				</div>
 			</td>
 			`;
 
 			$('#announcementList tbody').append(tr);  // Append the new row to the table body
-		});
-
-		// Add event listeners for dropdown toggles
-		document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
-			toggle.addEventListener('click', function(e) {
-				e.preventDefault();
-				const id = this.getAttribute('data-id');
-				const dropdownMenu = document.getElementById(`dropdown-${id}`);
-
-				// Hide all other dropdowns
-				document.querySelectorAll('.dropdown-menu').forEach(menu => {
-					if (menu.id !== `dropdown-${id}`) {
-						menu.style.display = 'none';
-						document.body.appendChild(menu); // Move back to body if needed
-					}
-				});
-
-				// Move the dropdown to the body to break stacking context
-				const toggleRect = this.getBoundingClientRect();
-				document.body.appendChild(dropdownMenu);
-				dropdownMenu.style.position = 'fixed'; // Use fixed positioning relative to viewport
-				dropdownMenu.style.top = `${toggleRect.bottom + 5}px`; // Position below the toggle
-				dropdownMenu.style.left = `${toggleRect.left - dropdownMenu.offsetWidth}px`; // Align to the right of the toggle
-				dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-			});
-		});
-
-		// Add event listener to close dropdown when clicking outside
-		document.addEventListener('click', function(e) {
-			if (!e.target.closest('.dropdown')) {
-				document.querySelectorAll('.dropdown-menu').forEach(menu => {
-					menu.style.display = 'none';
-				});
-			}
-		});
-
-		// Add event listeners for delete buttons
-		document.querySelectorAll('.delete-btn').forEach(btn => {
-			btn.addEventListener('click', function(e) {
-				e.preventDefault();
-				const id = this.getAttribute('data-id');
-				if (confirm('Are you sure you want to delete this announcement?')) {
-					// Perform DELETE request via AJAX
-					fetch(`http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/delete/${id}`, {
-						method: 'POST',
-						headers: {
-							'Content-Type': 'application/json',
-						}
-					})
-					.then(response => response.json())
-					.then(data => {
-						if (data.success) {
-							alert('Announcement deleted successfully.');
-							// Reload the table or remove the row
-							location.reload();
-						} else {
-							alert('Failed to delete announcement: ' + data.message);
-						}
-					})
-					.catch(error => {
-						console.error('Error:', error);
-						alert('An error occurred while deleting the announcement.');
-					});
-				}
-			});
 		});
 	}
 

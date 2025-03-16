@@ -26,6 +26,12 @@ function slideNotificationPanel(notifications) {
     const navLink = notificationBtn.querySelector('.nav-link'); // Target the nav-link inside the button
     const textWrapper = notificationBtn.querySelector('.text-wrapper-4');
 
+    notifications.sort((a, b) => {
+        if (a.status === 'unread' && b.status === 'read') return -1; // unread comes first
+        if (a.status === 'read' && b.status === 'unread') return 1;  // read comes after
+        return 0; // maintain order if both are the same status
+    });
+
     // Build notification HTML using the fetched data
     let html = `
         <div class="notification-header">
@@ -59,7 +65,7 @@ function slideNotificationPanel(notifications) {
                     <h4>${notif.title || 'No message'}</h4>
                     <small>${notif.posted_by || 'Posted by Unknown'}</small>
                     <small>${date || 'Unknown date'} | ${time || 'Unknown Time'}</small>
-                    <a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/view/${notif.notifiable_id}">
+                    <a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/view/${notif.notifiable_id}">
                         <button class="action-btn">View</button>
                     </a>
                 </div>

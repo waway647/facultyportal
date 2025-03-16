@@ -4,6 +4,11 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 
 class Announcement_model extends CI_Model {
 
+    public function getAnnouncements(){
+        $query = $this->db->get('announcements');
+        return $query->result_array();
+    }
+
     public function insertAnnouncement($announcement_data) {
         // Validate data
         if (empty($announcement_data['faculty_profile_id']) || empty($announcement_data['title']) || empty($announcement_data['content'])) {

@@ -74,10 +74,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</a>
           
-		  	<a href="http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Announcements/index">
-				<div class="nav-link">
+		  	<a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index">
+				<div class="nav-link active">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/announce.svg'); ?>" /></div>
-					<div class="frame-2"><div class="text-wrapper-4">Announcements</div></div>
+					<div class="frame-2"><div class="text-wrapper-4 highlight">Announcements</div></div>
 				</div>
 			</a>
           
@@ -275,41 +275,12 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script>
 	$(document).ready(function() {
 		fetchAnnouncements(); // Fetch all Announcements on page load
-		fetchFaculty();
 	});
-
-	function fetchFaculty() {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('AJAX success (Faculty Data):', result);
-
-				if (Array.isArray(result)) {
-					let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
-					let facultyFullName = $('#full_name'); // Default text if no match is found
-
-					result.forEach(function(faculty) {
-						if (faculty.id == loggedUserId) {
-							facultyFullName.text(faculty.full_name); // Get the logged-in faculty's full name
-						}
-					});
-
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching faculty:', error);
-			}
-		});
-	}
 
 	// Function to fetch course data via AJAX
 	function fetchAnnouncements(query = '') {
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Announcements/getAnnouncements',  // Update the URL as necessary
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/getAnnouncements',  // Update the URL as necessary
 			type: 'GET',
 			data: { search: query },
 			dataType: 'json',
@@ -344,17 +315,34 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			// Format the date with alphabetical month
 			var date = dateTime.toLocaleDateString('en-US', {
 				year: 'numeric',
-				month: 'long', // 'short' for abbreviated month (e.g., "Feb"), use 'long' for full month (e.g., "February")
+				month: 'long', 
 				day: '2-digit'
-			}).replace(/,/, ','); // e.g., "Feb 28 2025"
+			}).replace(/,/, ','); 
 
 			// Format the time
 			var time = dateTime.toLocaleTimeString('en-US', {
             hour: '2-digit',
             minute: '2-digit',
-            hour12: true, // Use 12-hour format with AM/PM
-            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone // User's local time zone
+            hour12: true, 
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone 
         	});
+
+			var editedText = '';
+			if (item.updated_at) {
+				var updatedDateTime = new Date(item.updated_at);
+				var updatedDate = updatedDateTime.toLocaleDateString('en-US', {
+					year: 'numeric',
+					month: 'long',
+					day: '2-digit',
+				}).replace(/,/, ',');
+				var updatedTime = updatedDateTime.toLocaleTimeString('en-US', {
+					hour: '2-digit',
+					minute: '2-digit',
+					hour12: true,
+					timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone 
+				});
+				editedText = `<span class="edited-text">(Edited - ${updatedDate} | ${updatedTime})</span>`;
+			}
 
 			var tr = `<tr>
 			<td>${sno}</td>
@@ -366,21 +354,92 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</td>
 			<td>
 				<div class="announcement-container">
-					<p>${item.from}</p>
+					<p>${item.from} ${editedText}</p>
 					<p>${item.title}</p>
 				</div>
 			</td>
 			<td>
 				<div class="action-container">
-					<a href="" class="announcementBtn">Details</a>
-					<a href="" class="">
-						<img src="<?php echo base_url('assets/images/icon/more.png'); ?>" alt="">
-					</a>				
+					<a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/view/${item.id}" class="announcementBtn">Details</a>
+					<div class="dropdown">
+                        <a href="#" class="dropdown-toggle" data-id="${item.id}">
+                            <img src="<?php echo base_url('assets/images/icon/more.png'); ?>" alt="More Options">
+                        </a>
+                        <div class="dropdown-menu" id="dropdown-${item.id}" style="display: none;">
+                            <a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/edit/${item.id}" class="dropdown-item">Edit</a>
+                            <a href="#" class="dropdown-item delete-btn" data-id="${item.id}">Delete</a>
+                        </div>
+                    </div>				
 				</div>
 			</td>
 			`;
 
 			$('#announcementList tbody').append(tr);  // Append the new row to the table body
+		});
+
+		// Add event listeners for dropdown toggles
+		document.querySelectorAll('.dropdown-toggle').forEach(toggle => {
+			toggle.addEventListener('click', function(e) {
+				e.preventDefault();
+				const id = this.getAttribute('data-id');
+				const dropdownMenu = document.getElementById(`dropdown-${id}`);
+
+				// Hide all other dropdowns
+				document.querySelectorAll('.dropdown-menu').forEach(menu => {
+					if (menu.id !== `dropdown-${id}`) {
+						menu.style.display = 'none';
+						document.body.appendChild(menu); // Move back to body if needed
+					}
+				});
+
+				// Move the dropdown to the body to break stacking context
+				const toggleRect = this.getBoundingClientRect();
+				document.body.appendChild(dropdownMenu);
+				dropdownMenu.style.position = 'fixed'; // Use fixed positioning relative to viewport
+				dropdownMenu.style.top = `${toggleRect.bottom + 5}px`; // Position below the toggle
+				dropdownMenu.style.left = `${toggleRect.left - dropdownMenu.offsetWidth}px`; // Align to the right of the toggle
+				dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+			});
+		});
+
+		// Add event listener to close dropdown when clicking outside
+		document.addEventListener('click', function(e) {
+			if (!e.target.closest('.dropdown')) {
+				document.querySelectorAll('.dropdown-menu').forEach(menu => {
+					menu.style.display = 'none';
+				});
+			}
+		});
+
+		// Add event listeners for delete buttons
+		document.querySelectorAll('.delete-btn').forEach(btn => {
+			btn.addEventListener('click', function(e) {
+				e.preventDefault();
+				const id = this.getAttribute('data-id');
+				if (confirm('Are you sure you want to delete this announcement?')) {
+					// Perform DELETE request via AJAX
+					fetch(`http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/delete/${id}`, {
+						method: 'POST',
+						headers: {
+							'Content-Type': 'application/json',
+						}
+					})
+					.then(response => response.json())
+					.then(data => {
+						if (data.success) {
+							alert('Announcement deleted successfully.');
+							// Reload the table or remove the row
+							location.reload();
+						} else {
+							alert('Failed to delete announcement: ' + data.message);
+						}
+					})
+					.catch(error => {
+						console.error('Error:', error);
+						alert('An error occurred while deleting the announcement.');
+					});
+				}
+			});
 		});
 	}
 

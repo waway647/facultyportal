@@ -36,7 +36,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</a>
           
-		  	<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index">
+		  	<a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index">
 				<div class="nav-link active">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/announce.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4 highlight">Announcements</div></div>
@@ -144,7 +144,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                             <?php if ($this->session->flashdata('error')): ?>
                                 <p style="color: red;"><?php echo $this->session->flashdata('error'); ?></p>
                             <?php endif; ?>
-                            <form action="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/update/<?php echo $announcement->id; ?>" method="POST" enctype="multipart/form-data">
+                            <form action="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/update/<?php echo $announcement->id; ?>" method="POST" enctype="multipart/form-data">
                                 <label for="title">Title:</label>
                                 <input type="text" name="title" id="title" value="<?php echo $announcement->title; ?>" required>
 
@@ -161,7 +161,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
                                             <a href="<?php echo base_url($attachment->announcement_file_path); ?>" target="_blank">
                                                 <?php echo basename($attachment->announcement_file_path); ?>
                                             </a>
-                                            <a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/delete_attachment/<?php echo $attachment->id; ?>" style="color: red; margin-left: 10px;" onclick="return confirm('Are you sure you want to delete this attachment?');">Delete</a>
+                                            <a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/delete_attachment/<?php echo $attachment->id; ?>" style="color: red; margin-left: 10px;" onclick="return confirm('Are you sure you want to delete this attachment?');">Delete</a>
                                         </p>
                                     <?php endforeach; ?>
                                 <?php else: ?>
@@ -170,7 +170,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
                                 <button type="submit">Update Announcement</button>
                             </form>
-                            <a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index" style="display: inline-block; margin-top: 10px;">Back to Announcements</a>
+                            <a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index" style="display: inline-block; margin-top: 10px;">Back to Announcements</a>
                         </div>
 				    </div>
 			</div>
@@ -184,7 +184,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Function to fetch course data via AJAX
 	function fetchAnnouncements(query = '') {
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Announcements/getAnnouncements',  // Update the URL as necessary
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/getAnnouncements',  // Update the URL as necessary
 			type: 'GET',
 			data: { search: query },
 			dataType: 'json',
@@ -203,59 +203,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			error: function(xhr, status, error) {
 				console.error('Error fetching Announcements:', error);
 			}
-		});
-	}
-
-	// Function to create the table with course data
-	function createAnnouncementsTable(result) {
-		$('#announcementList tbody').empty();  // Clear existing rows
-		var sno = `<input type="checkbox" class="checkbox">`;  // Initialize serial number
-		result.forEach(function(item) {
-			/* sno += 1; */
-
-			// Split created_at into date and time
-			var dateTime = new Date(item.created_at);
-			
-			// Format the date with alphabetical month
-			var date = dateTime.toLocaleDateString('en-US', {
-				year: 'numeric',
-				month: 'long', // 'short' for abbreviated month (e.g., "Feb"), use 'long' for full month (e.g., "February")
-				day: '2-digit'
-			}).replace(/,/, ','); // e.g., "Feb 28 2025"
-
-			// Format the time
-			var time = dateTime.toLocaleTimeString('en-US', {
-            hour: '2-digit',
-            minute: '2-digit',
-            hour12: true, // Use 12-hour format with AM/PM
-            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone // User's local time zone
-        	});
-
-			var tr = `<tr>
-			<td>${sno}</td>
-			<td>
-				<div class="date-time-container">
-					<p>${date}</p>
-					<p>${time}</p>
-				</div>
-			</td>
-			<td>
-				<div class="announcement-container">
-					<p>${item.from}</p>
-					<p>${item.title}</p>
-				</div>
-			</td>
-			<td>
-				<div class="action-container">
-					<a href="" class="announcementBtn">Details</a>
-					<a href="" class="">
-						<img src="<?php echo base_url('assets/images/icon/more.png'); ?>" alt="">
-					</a>				
-				</div>
-			</td>
-			`;
-
-			$('#announcementList tbody').append(tr);  // Append the new row to the table body
 		});
 	}
 

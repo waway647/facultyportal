@@ -71,7 +71,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 			</a>
           
-		  	<a href="http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index">
+		  	<a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index">
 				<div class="nav-link">
 					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/announce.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4">Announcements</div></div>

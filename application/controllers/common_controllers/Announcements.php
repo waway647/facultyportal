@@ -9,27 +9,40 @@ class Announcements extends CI_Controller {
 		parent::__construct();
 		$this->load->library('session');
 		$this->load->database();
-		$this->load->model('chairperson_models/Announcement_model');
+		$this->load->model('common_models/Announcement_model');
 		$this->load->model('common_models/Faculty_model');
 		$this->load->helper('url');
 	}
 
-	public function index() // http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index
+	public function index() // http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index
 	{
 		$user_id = $this->session->userdata('logged_id');
+        $role_name = $this->session->userdata('logged_role_name');
 		$data['faculty'] = $this->Faculty_model->getFacultyProfile($user_id);
 
-		$logged_user_id = $this->session->userdata('logged_id');
-
-		$faculty_id = $this->Faculty_model->getFacultyID($logged_user_id);
+		$faculty_id = $this->Faculty_model->getFacultyID($user_id);
 		$data['full_name'] = $this->Faculty_model->getFaculty($faculty_id);
-		if($faculty_id)
+
+		if($role_name == 'Department Chair')
 		{
 			$this->session->set_userdata('faculty_id', $faculty_id);
 
 			$this->load->view('chairperson/announcements/index', $data);
-		}
+
+		}else if($role_name == 'Faculty')
+        {
+            $this->session->set_userdata('faculty_id', $faculty_id);
+
+            $this->load->view('faculty/announcements/index', $data);
+        }
 	}
+
+    public function getAnnouncements(){
+		/* $search = $this->input->get('search'); */
+
+			$result = $this->Announcement_model->getAnnouncements();
+			echo json_encode($result);  // Return data as JSON
+		} 
 
 	public function createAnnouncement() {
 
@@ -41,7 +54,7 @@ class Announcements extends CI_Controller {
 	
 		if (empty($title) || empty($content)) {
 			$this->session->set_flashdata('error', 'Title and content are required.');
-			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
 			return;
 		}
 	
@@ -76,7 +89,7 @@ class Announcements extends CI_Controller {
 		if (!$announcement_id) {
 			$this->session->set_flashdata('error', 'Failed to create announcement.');
 			$this->db->trans_rollback();
-			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
 			return;
 		}
 	
@@ -112,7 +125,7 @@ class Announcements extends CI_Controller {
 							log_message('error', 'File upload failed for file ' . $files['name'][$i] . ': ' . $error);
 							$this->session->set_flashdata('error', 'One or more file uploads failed: ' . $error);
 							$this->db->trans_rollback();
-							redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+							redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
 							return;
 						}
 					}
@@ -130,7 +143,7 @@ class Announcements extends CI_Controller {
 					log_message('error', 'File upload failed: ' . $error);
 					$this->session->set_flashdata('error', 'File upload failed: ' . $error);
 					$this->db->trans_rollback();
-					redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+					redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
 					return;
 				}
 			}
@@ -150,7 +163,7 @@ class Announcements extends CI_Controller {
 				log_message('error', 'Failed to save attachment to database: ' . print_r($attachment_data, true));
 				$this->session->set_flashdata('error', 'Failed to save attachment to database.');
 				$this->db->trans_rollback();
-				redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+				redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
 				return;
 			}
 		}
@@ -167,7 +180,7 @@ class Announcements extends CI_Controller {
 				log_message('error', 'Failed to save notification to database: ' . print_r($notification_data, true));
 				$this->session->set_flashdata('error', 'Failed to save notification to database.');
 				$this->db->trans_rollback();
-				redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+				redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
 				return;
 			}
 		
@@ -177,7 +190,7 @@ class Announcements extends CI_Controller {
 	
 		if ($this->db->trans_status() === FALSE) {
 			$this->session->set_flashdata('error', 'Failed to create announcement and attachments.');
-			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
 			return;
 		}
 	
@@ -187,14 +200,14 @@ class Announcements extends CI_Controller {
 			$this->session->set_flashdata('info', 'Announcement created without attachments.');
 		}
 	
-		redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+		redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
 	}
 
 	public function view($announcement_id) {
         // Validate the announcement_id
         if (!is_numeric($announcement_id) || $announcement_id <= 0) {
             $this->session->set_flashdata('error', 'Invalid announcement ID.');
-            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+            redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
             return;
         }
 
@@ -203,7 +216,7 @@ class Announcements extends CI_Controller {
 
         if (!$announcement) {
             $this->session->set_flashdata('error', 'Announcement not found.');
-            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+            redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
             return;
         }
 
@@ -222,25 +235,31 @@ class Announcements extends CI_Controller {
         );
 
 		$user_id = $this->session->userdata('logged_id');
+        $role_name = $this->session->userdata('logged_role_name');
 		$data['faculty'] = $this->Faculty_model->getFacultyProfile($user_id);
 
-		$logged_user_id = $this->session->userdata('logged_id');
-
-		$faculty_id = $this->Faculty_model->getFacultyID($logged_user_id);
+		$faculty_id = $this->Faculty_model->getFacultyID($user_id);
 		$data['full_name'] = $this->Faculty_model->getFaculty($faculty_id);
-		if($faculty_id)
+
+		if($role_name == 'Department Chair')
 		{
 			$this->session->set_userdata('faculty_id', $faculty_id);
 
 			$this->load->view('chairperson/announcements/view', $data);
-		}
+
+		}else if($role_name == 'Faculty')
+        {
+            $this->session->set_userdata('faculty_id', $faculty_id);
+
+            $this->load->view('faculty/announcements/view', $data);
+        }
     }
 
 	public function edit($announcement_id){
 
 		if (!is_numeric($announcement_id) || $announcement_id <= 0) {
             $this->session->set_flashdata('error', 'Invalid announcement ID.');
-            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+            redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
             return;
         }
 
@@ -248,7 +267,7 @@ class Announcements extends CI_Controller {
 
 		if (!$announcement) {
             $this->session->set_flashdata('error', 'Announcement not found.');
-            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+            redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
             return;
         }
 
@@ -262,9 +281,7 @@ class Announcements extends CI_Controller {
 		$user_id = $this->session->userdata('logged_id');
 		$data['faculty'] = $this->Faculty_model->getFacultyProfile($user_id);
 
-		$logged_user_id = $this->session->userdata('logged_id');
-
-		$faculty_id = $this->Faculty_model->getFacultyID($logged_user_id);
+		$faculty_id = $this->Faculty_model->getFacultyID($user_id);
 		$data['full_name'] = $this->Faculty_model->getFaculty($faculty_id);
 		if($faculty_id)
 		{
@@ -331,7 +348,7 @@ class Announcements extends CI_Controller {
         // Validate announcement ID
         if (!is_numeric($announcement_id) || $announcement_id <= 0) {
             $this->session->set_flashdata('error', 'Invalid announcement ID.');
-            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+            redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
             return;
         }
 
@@ -339,7 +356,7 @@ class Announcements extends CI_Controller {
         $announcement = $this->Announcement_model->getAnnouncementById($announcement_id);
         if (!$announcement) {
             $this->session->set_flashdata('error', 'Announcement not found.');
-            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+            redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
             return;
         }
 
@@ -349,7 +366,7 @@ class Announcements extends CI_Controller {
 
         if (empty($title) || empty($content)) {
             $this->session->set_flashdata('error', 'Title and content are required.');
-            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/edit/' . $announcement_id);
+            redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/edit/' . $announcement_id);
             return;
         }
 
@@ -405,7 +422,7 @@ class Announcements extends CI_Controller {
                             log_message('error', 'File upload failed: ' . $error);
                             $this->session->set_flashdata('error', 'One or more file uploads failed: ' . $error);
                             $this->db->trans_rollback();
-                            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/edit/' . $announcement_id);
+                            redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/edit/' . $announcement_id);
                             return;
                         }
                     }
@@ -418,19 +435,19 @@ class Announcements extends CI_Controller {
 
         if ($this->db->trans_status() === FALSE) {
             $this->session->set_flashdata('error', 'Failed to update announcement.');
-            redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/edit/' . $announcement_id);
+            redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/edit/' . $announcement_id);
             return;
         }
 
         $this->session->set_flashdata('success', 'Announcement updated successfully.');
-        redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+        redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
     }
 
 	public function delete_attachment($attachment_id) {
 		// Validate attachment ID
 		if (!is_numeric($attachment_id) || $attachment_id <= 0) {
 			$this->session->set_flashdata('error', 'Invalid attachment ID.');
-			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/index');
+			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index');
 			return;
 		}
 	
@@ -455,12 +472,12 @@ class Announcements extends CI_Controller {
 	
 		if ($this->db->trans_status() === FALSE) {
 			$this->session->set_flashdata('error', 'Failed to delete attachment.');
-			redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/edit/' . $attachment->announcement_id);
+			redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/edit/' . $attachment->announcement_id);
 			return;
 		}
 	
 		$this->session->set_flashdata('success', 'Attachment deleted successfully.');
-		redirect('http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Announcements/edit/' . $attachment->announcement_id);
+		redirect('http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/edit/' . $attachment->announcement_id);
 	}
 
 }
