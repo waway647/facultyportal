@@ -357,7 +357,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script>
 	// Call the function to fetch faculty when the page loads
 	$(document).ready(function() {
-		fetchFaculty(); // Fetch faculty when Add Course modal opens
 		fetchCourses();
 
 		$('#searchInput').on('keypress', function(event) {
@@ -381,47 +380,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 	});
-
-	
-
-	// Fetch faculty_id for the select dropdown
-	function fetchFaculty(modalId, callback) {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getFaculty',
-			type: 'GET',
-			dataType: 'json',
-			success: function (result) {
-				console.log('AJAX success:', result);
-				if (Array.isArray(result)) {
-					let selectElement;
-					if (modalId === "addCourseModal") {
-						selectElement = $('#faculty_id');
-					} else if (modalId === "editCourseModal") {
-						selectElement = $('#faculty_assigned');
-					}
-
-					if (selectElement) {
-						selectElement.empty();
-						selectElement.append('<option value="" disabled selected>Faculty In-Charge</option>');
-						result.forEach(function (faculty) {
-							selectElement.append('<option value="' + faculty.id + '">' + faculty.full_name + '</option>');
-						});
-
-						// Execute the callback if provided
-						if (callback && typeof callback === 'function') {
-							callback();
-						}
-					}
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-			},
-			error: function (xhr, status, error) {
-				console.error('Error fetching faculty:', error);
-			}
-		});
-	}
-
 
 	// Function to fetch course data via AJAX
 	function fetchCourses(query = '') {

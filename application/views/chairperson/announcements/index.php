@@ -289,6 +289,27 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script>
 	$(document).ready(function() {
 		fetchAnnouncements(); // Fetch all Announcements on page load
+
+		$('#searchInput').on('keypress', function(event) {
+			if (event.which == 13) {  // Enter key is pressed
+				var searchTerm = $(this).val().trim();  // Get and trim the search term from the input field
+
+				// Check if there's a search term
+				if (searchTerm === '') {
+					// Hide the search display if there's no search term
+					$('.searchDisplay').removeClass('show'); // Remove 'show' class
+				} else {
+					// Display the search term on the left side of the search bar
+					$('#searchDisplay').text(searchTerm);  // Display the search term in the h6 element
+					
+					// Show the search display by adding 'show' class
+					$('.searchDisplay').addClass('show');  // Add 'show' class to display it as flex
+				}
+
+				// Call the function to fetch consultations with the search term
+				fetchCourses(searchTerm);  
+			}
+		});
 	});
 
 	// Function to fetch course data via AJAX
