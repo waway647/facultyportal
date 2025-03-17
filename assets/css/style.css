@@ -1327,6 +1327,31 @@ select{
   height: 7px;
 }
 
+.sub-content-container .searchDisplay1 {
+  display: none;
+  padding: 10px 20px;
+  background-color: #860c0c;
+  border-radius: 20px;
+  align-items: center;
+}
+
+.sub-content-container .searchDisplay1.show {
+  display: flex;
+  align-items: center;
+  gap: 13px;
+}
+
+.sub-content-container .searchDisplay1.show a {
+  display: inline-flex;  /* Make the anchor tag inline-flex to fit its content */
+  align-items: center;   /* Vertically center the image inside the link */
+  justify-content: center; /* Horizontally center the image inside the link */
+}
+
+.sub-content-container .searchDisplay1.show img {
+  width: 7px;
+  height: 7px;
+}
+
 .sub-content-container .search-container button:hover{
   cursor: pointer;
   border-color: #cecece; 

@@ -171,10 +171,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<!-- //Sort By -->
 						<div class="right-sub-ann">
-							<div class="searchDisplay">
-								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
-								<h6 id="searchDisplay"></h6>
-							</div>
 							<p>Sort By</p>
 							<div class="sub-container">
 								<button class="button">
@@ -193,10 +189,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<!-- //Sort Date -->
 						<div class="right-sub-ann">
-							<!-- <div class="searchDisplay">
-								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
-								<h6 id="searchDisplay"></h6>
-							</div> -->
 							<p>Date</p>
 							<div class="sub-container">
 								<button class="button">
@@ -209,10 +201,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<!-- //Search -->
 						<div class="right-sub-ann">
-							<div class="searchDisplay">
+							<!-- <div class="searchDisplay1">
 								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
-								<h6 id="searchDisplay"></h6>
-							</div>
+								<h6 id="searchDisplay1"></h6>
+							</div> -->
 							<p>Search</p>
 							<div class="sub-container">
 								<button class="button">
@@ -297,18 +289,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				// Check if there's a search term
 				if (searchTerm === '') {
 					// Hide the search display if there's no search term
-					$('.searchDisplay').removeClass('show'); // Remove 'show' class
+					$('.searchDisplay1').removeClass('show'); // Remove 'show' class
 				} else {
 					// Display the search term on the left side of the search bar
-					$('#searchDisplay').text(searchTerm);  // Display the search term in the h6 element
+					$('#searchDisplay1').text(searchTerm);  // Display the search term in the h6 element
 					
 					// Show the search display by adding 'show' class
-					$('.searchDisplay').addClass('show');  // Add 'show' class to display it as flex
+					$('.searchDisplay1').addClass('show');  // Add 'show' class to display it as flex
 				}
 
 				// Call the function to fetch consultations with the search term
-				fetchCourses(searchTerm);  
+				fetchAnnouncements(searchTerm);  
 			}
+		});
+
+		$('#sortSelect').on('change', function() {
+			var sortOrder = $(this).val();  // Get the selected sort order
+
+			// Call the function to fetch consultations with the sort order
+			fetchAnnouncements(sortOrder);
 		});
 	});
 
@@ -342,7 +341,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#announcementList tbody').empty();  // Clear existing rows
 		var sno = `<input type="checkbox" class="checkbox">`;  // Initialize serial number
 		result.forEach(function(item) {
-			/* sno += 1; */
 
 			// Split created_at into date and time
 			var dateTime = new Date(item.created_at);

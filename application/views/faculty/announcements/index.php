@@ -232,10 +232,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<!-- //Search -->
 						<div class="right-sub-ann">
-							<div class="searchDisplay">
+							<!-- <div class="searchDisplay">
 								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
 								<h6 id="searchDisplay"></h6>
-							</div>
+							</div> -->
 							<p>Search</p>
 							<div class="sub-container">
 								<button class="button">
@@ -293,7 +293,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				}
 
 				// Call the function to fetch consultations with the search term
-				fetchCourses(searchTerm);  
+				fetchAnnouncements(searchTerm);  
 			}
 		});
 	});

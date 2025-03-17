@@ -37,8 +37,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			</a>
           
 		  	<a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index">
-				<div class="nav-link">
-					<div class="image-wrapper active"><img class="img" src="<?php echo base_url('assets/images/icon/announce.svg'); ?>" /></div>
+				<div class="nav-link active">
+					<div class="image-wrapper"><img class="img" src="<?php echo base_url('assets/images/icon/announce.svg'); ?>" /></div>
 					<div class="frame-2"><div class="text-wrapper-4 highlight">Announcements</div></div>
 				</div>
 			</a>

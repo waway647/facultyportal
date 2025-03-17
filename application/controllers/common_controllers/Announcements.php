@@ -38,9 +38,10 @@ class Announcements extends CI_Controller {
 	}
 
     public function getAnnouncements(){
-		/* $search = $this->input->get('search'); */
+			$search = $this->input->get('search');
+			$sort = $this->input->get('sort') ?? 'desc'; 
 
-			$result = $this->Announcement_model->getAnnouncements();
+			$result = $this->Announcement_model->getAnnouncements($search, $sort);
 			echo json_encode($result);  // Return data as JSON
 		} 
 
