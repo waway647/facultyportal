@@ -298,6 +298,8 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					$('.searchDisplay1').addClass('show');  // Add 'show' class to display it as flex
 				}
 
+				$('#sortSelect').val('');  // Reset the sort order
+				$('#sortDate').val('');  // Reset the sort date
 				// Call the function to fetch consultations with the search term
 				fetchAnnouncements(searchTerm);  
 			}
@@ -306,13 +308,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		$('#sortSelect').on('change', function() {
 			var sortOrder = $(this).val();  // Get the selected sort order
 
+			$('#searchInput').val('');  // Reset the search input
+			$('#sortDate').val('');  // Reset the sort date	
 			// Call the function to fetch consultations with the sort order
-			fetchAnnouncements(sortOrder);
+			fetchAnnouncementsBySort(sortOrder);
 		});
-	});
+
+		$('#sortDate').on('change', function() {
+			var sortDate = $(this).val();  // Get the selected date
+
+			$('#searchInput').val('');  // Reset the search input
+			$('#sortSelect').val('');  // Reset the sort order
+			// Call the function to fetch consultations with the sort date
+			fetchAnnouncementsByDate(sortDate);
+		});
+	}); 
 
 	// Function to fetch course data via AJAX
-	function fetchAnnouncements(query = '') {
+	function fetchAnnouncements(query = '', ) {
 		$.ajax({
 			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/getAnnouncements',  // Update the URL as necessary
 			type: 'GET',
@@ -332,6 +345,56 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			},
 			error: function(xhr, status, error) {
 				console.error('Error fetching Announcements:', error);
+			}
+		});
+	}
+
+	function fetchAnnouncementsBySort(sortOrder = '') {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/getAnnouncements',
+			type: 'GET',
+			data: { sort: sortOrder }, // Send only the sort parameter
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Announcements):', result);
+				if (Array.isArray(result)) {
+					if (result.length === 0) {
+						$('#announcementList tbody').html('<tr><td colspan="4">No announcements found.</td></tr>');
+					} else {
+						createAnnouncementsTable(result); // Populate the table
+					}
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching Announcements:', error);
+				$('#announcementList tbody').html('<tr><td colspan="4">Error loading announcements.</td></tr>');
+			}
+		});
+	}
+
+	function fetchAnnouncementsByDate(sortDate = ''){
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/getAnnouncements',
+			type: 'GET',
+			data: { date: sortDate }, // Send only the sort parameter
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Announcements):', result);
+				if (Array.isArray(result)) {
+					if (result.length === 0) {
+						$('#announcementList tbody').html('<tr><td colspan="4">No announcements found.</td></tr>');
+					} else {
+						createAnnouncementsTable(result); // Populate the table
+					}
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching Announcements:', error);
+				$('#announcementList tbody').html('<tr><td colspan="4">Error loading announcements.</td></tr>');
 			}
 		});
 	}

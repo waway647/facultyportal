@@ -38,12 +38,22 @@ class Announcements extends CI_Controller {
 	}
 
     public function getAnnouncements(){
-			$search = $this->input->get('search');
-			$sort = $this->input->get('sort') ?? 'desc'; 
+		$this->output->set_content_type('application/json');
 
-			$result = $this->Announcement_model->getAnnouncements($search, $sort);
-			echo json_encode($result);  // Return data as JSON
-		} 
+		$search = $this->input->get('search');
+		$sort = $this->input->get('sort'); 
+		$byDate = $this->input->get('date');
+		if($search){
+			$result = $this->Announcement_model->getAnnouncementsBySearch($search);
+		}else if($sort){
+			$result = $this->Announcement_model->getAnnouncementsBySort($sort);
+		}else if($byDate){
+			$result = $this->Announcement_model->getAnnouncementsByDate($byDate);
+		}else {
+			$result = $this->Announcement_model->getAnnouncements('');
+		}
+		echo json_encode($result);
+	} 
 
 	public function createAnnouncement() {
 

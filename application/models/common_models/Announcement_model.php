@@ -4,20 +4,26 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 
 class Announcement_model extends CI_Model {
 
-    public function getAnnouncements($search = '', $sort = 'desc') {
-        // Explicitly select all columns and specify the table
+    public function getAnnouncements() {
+        $query = $this->db->get('announcements');
+        return $query->result();
+    }
+
+    public function getAnnouncementsBySearch($search) {
+        // Apply search if provided
+        if (!empty($search)) {
+            $this->db->like('title', $search);  
+			$this->db->or_like('content', $search); 
+        }
+       
+        $query = $this->db->get('announcements');
+		return $query->result();
+    }
+
+    public function getAnnouncementsBySort($sort = '') {
         $this->db->select('*');
         $this->db->from('announcements');
     
-        // Apply search if provided
-        if (!empty($search)) {
-            $this->db->group_start(); // Start a group for OR conditions
-            $this->db->like('title', $search);
-            $this->db->or_like('content', $search);
-            $this->db->group_end(); // End the group
-        }
-    
-        // Apply sorting based on the sort parameter
         switch (strtolower($sort)) {
             case 'asc':
                 $this->db->order_by('created_at', 'ASC');
@@ -34,14 +40,30 @@ class Announcement_model extends CI_Model {
                 break;
         }
     
-        // Execute the query
         $query = $this->db->get();
     
-        // Check for query success
         if ($query->num_rows() > 0) {
             return $query->result_array();
         } else {
-            return array(); // Return empty array if no results
+            return array();
+        }
+    }
+
+    public function getAnnouncementsByDate($date = '') {
+        $this->db->select('*');
+        $this->db->from('announcements');
+    
+        // Apply date filter if provided
+        if (!empty($date)) {
+            $this->db->where('DATE(created_at)', $date); // Match date only
+        }
+    
+        $query = $this->db->get();
+    
+        if ($query->num_rows() > 0) {
+            return $query->result_array();
+        } else {
+            return array();
         }
     }
 

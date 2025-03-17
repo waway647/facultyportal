@@ -112,7 +112,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<img class="img-account" src="<?php echo base_url(!empty($faculty->profile_picture) ? $faculty->profile_picture : 'assets/images/profile/default_profile.png'); ?>" alt="Profile Picture">
 					</div>
 					
-					
 					<div class="frame-3">
 						<div class="text-wrapper-5" id="full_name"></div>
 						<div class="text-wrapper-6"></div>
