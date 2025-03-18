@@ -39,6 +39,7 @@ class Announcements extends CI_Controller {
 
     public function getAnnouncements(){
 		$this->output->set_content_type('application/json');
+		$role_name = $this->session->userdata('logged_role_name');
 
 		$search = $this->input->get('search');
 		$sort = $this->input->get('sort'); 
@@ -52,7 +53,13 @@ class Announcements extends CI_Controller {
 		}else {
 			$result = $this->Announcement_model->getAnnouncements('');
 		}
-		echo json_encode($result);
+
+		$data = [
+			'announcements' => $result,
+        	'role_name' => $role_name
+		];
+
+		echo json_encode($data);
 	} 
 
 	public function createAnnouncement() {

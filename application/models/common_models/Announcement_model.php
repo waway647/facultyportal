@@ -5,6 +5,7 @@ error_reporting(E_ALL ^ E_DEPRECATED);
 class Announcement_model extends CI_Model {
 
     public function getAnnouncements() {
+        $this->db->order_by('created_at', 'DESC');
         $query = $this->db->get('announcements');
         return $query->result();
     }

@@ -1,21 +1,5 @@
 $(document).ready(function() {
-
-    function loadCSS(filename) {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = filename; // e.g., 'path/to/your/styles.css'
-        document.head.appendChild(link);
-    }
-
     // Load the CSS file when the script runs
-    loadCSS('assets/css/style.css');
-
-    const img = $('#moreOptionsImg');
-    if (img.length) {
-        img.attr('src', BASE_URL + 'assets/images/icon/more.png'); // Set the src using base URL
-    } else {
-        console.error('Image element with ID "moreOptionsImg" not found');
-    }
 
     fetchAnnouncements(); // Fetch all Announcements on page load
 
@@ -38,7 +22,7 @@ $(document).ready(function() {
             $('#sortSelect').val('');  // Reset the sort order
             $('#sortDate').val('');  // Reset the sort date
             // Call the function to fetch consultations with the search term
-            fetchAnnouncements(searchTerm);  
+            fetchAnnouncementsBySearch(searchTerm);  
         }
     });
 
@@ -59,25 +43,48 @@ $(document).ready(function() {
         // Call the function to fetch consultations with the sort date
         fetchAnnouncementsByDate(sortDate);
     });
-}); 
+});
 
-// Function to fetch course data via AJAX
-function fetchAnnouncements(query = '', ) {
+// Function to fetch announcements via AJAX
+function fetchAnnouncements() {
     $.ajax({
-        url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/getAnnouncements',  // Update the URL as necessary
+        url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/getAnnouncements',
+        type: 'GET',
+        dataType: 'json',
+        success: function(result) {
+            console.log('AJAX success (Announcements):', result);
+            if (result.announcements && Array.isArray(result.announcements)) {
+                if (result.announcements.length === 0) {
+                    $('#announcementList tbody').html('<tr><td colspan="4">No announcements found.</td></tr>');
+                } else {
+                    createAnnouncementsTable(result.announcements, result.role_name); // Pass role_name
+                }
+            } else {
+                console.error('Expected an array of announcements but received:', result);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching Announcements:', error);
+        }
+    });
+}
+
+function fetchAnnouncementsBySearch(query = '') {
+    $.ajax({
+        url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/getAnnouncements',
         type: 'GET',
         data: { search: query },
         dataType: 'json',
         success: function(result) {
             console.log('AJAX success (Announcements):', result);
-            if (Array.isArray(result)) {
-                if (result.length === 0) {
+            if (result.announcements && Array.isArray(result.announcements)) {
+                if (result.announcements.length === 0) {
                     $('#announcementList tbody').html('<tr><td colspan="4">No announcements found.</td></tr>');
                 } else {
-                    createAnnouncementsTable(result); // Populate the table
+                    createAnnouncementsTable(result.announcements, result.role_name);
                 }
             } else {
-                console.error('Expected an array but received:', result);
+                console.error('Expected an array of announcements but received:', result);
             }
         },
         error: function(xhr, status, error) {
@@ -90,18 +97,18 @@ function fetchAnnouncementsBySort(sortOrder = '') {
     $.ajax({
         url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/getAnnouncements',
         type: 'GET',
-        data: { sort: sortOrder }, // Send only the sort parameter
+        data: { sort: sortOrder },
         dataType: 'json',
         success: function(result) {
             console.log('AJAX success (Announcements):', result);
-            if (Array.isArray(result)) {
-                if (result.length === 0) {
+            if (result.announcements && Array.isArray(result.announcements)) {
+                if (result.announcements.length === 0) {
                     $('#announcementList tbody').html('<tr><td colspan="4">No announcements found.</td></tr>');
                 } else {
-                    createAnnouncementsTable(result); // Populate the table
+                    createAnnouncementsTable(result.announcements, result.role_name);
                 }
             } else {
-                console.error('Expected an array but received:', result);
+                console.error('Expected an array of announcements but received:', result);
             }
         },
         error: function(xhr, status, error) {
@@ -111,22 +118,22 @@ function fetchAnnouncementsBySort(sortOrder = '') {
     });
 }
 
-function fetchAnnouncementsByDate(sortDate = ''){
+function fetchAnnouncementsByDate(sortDate = '') {
     $.ajax({
         url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/getAnnouncements',
         type: 'GET',
-        data: { date: sortDate }, // Send only the sort parameter
+        data: { date: sortDate },
         dataType: 'json',
         success: function(result) {
             console.log('AJAX success (Announcements):', result);
-            if (Array.isArray(result)) {
-                if (result.length === 0) {
+            if (result.announcements && Array.isArray(result.announcements)) {
+                if (result.announcements.length === 0) {
                     $('#announcementList tbody').html('<tr><td colspan="4">No announcements found.</td></tr>');
                 } else {
-                    createAnnouncementsTable(result); // Populate the table
+                    createAnnouncementsTable(result.announcements, result.role_name);
                 }
             } else {
-                console.error('Expected an array but received:', result);
+                console.error('Expected an array of announcements but received:', result);
             }
         },
         error: function(xhr, status, error) {
@@ -136,12 +143,30 @@ function fetchAnnouncementsByDate(sortDate = ''){
     });
 }
 
-// Function to create the table with course data
-function createAnnouncementsTable(result) {
+// Function to generate dropdown based on role
+function generateDropdown(item, role_name) {
+    if (role_name === 'Department Chair') {
+        return `
+            <div class="dropdown-menu" id="dropdown-${item.id}" style="display: none;">
+                <a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/edit/${item.id}" class="dropdown-item">Edit</a>
+                <a href="#" class="dropdown-item delete-btn" data-id="${item.id}">Delete</a>
+            </div>
+        `;
+    } else {
+        // For Faculty, show a dropdown with no actionable items (or omit entirely)
+        return `
+            <div class="dropdown-menu" id="dropdown-${item.id}" style="display: none;">
+                <a href="#" class="dropdown-item disabled">View Only</a>
+            </div>
+        `;
+    }
+}
+
+// Function to create the table with announcement data
+function createAnnouncementsTable(result, role_name) {
     $('#announcementList tbody').empty();  // Clear existing rows
     var sno = `<input type="checkbox" class="checkbox">`;  // Initialize serial number
     result.forEach(function(item) {
-
         // Split created_at into date and time
         var dateTime = new Date(item.created_at);
         
@@ -154,10 +179,10 @@ function createAnnouncementsTable(result) {
 
         // Format the time
         var time = dateTime.toLocaleTimeString('en-US', {
-        hour: '2-digit',
-        minute: '2-digit',
-        hour12: true, 
-        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone 
+            hour: '2-digit',
+            minute: '2-digit',
+            hour12: true, 
+            timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone 
         });
 
         var editedText = '';
@@ -177,34 +202,33 @@ function createAnnouncementsTable(result) {
             editedText = `<span class="edited-text">(Edited - ${updatedDate} | ${updatedTime})</span>`;
         }
 
-        var tr = `<tr>
-        <td>${sno}</td>
-        <td>
-            <div class="date-time-container">
-                <p>${date}</p>
-                <p>${time}</p>
-            </div>
-        </td>
-        <td>
-            <div class="announcement-container">
-                <p>${item.from} ${editedText}</p>
-                <p>${item.title}</p>
-            </div>
-        </td>
-        <td>
-            <div class="action-container">
-                <a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/view/${item.id}" class="announcementBtn">Details</a>
-                <div class="dropdown">
-                    <a href="#" class="dropdown-toggle" data-id="${item.id}">
-                        <img src="<?php echo base_url('assets/images/icon/more.png'); ?>" alt="More Options">
-                    </a>
-                    <div class="dropdown-menu" id="dropdown-${item.id}" style="display: none;">
-                        <a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/edit/${item.id}" class="dropdown-item">Edit</a>
-                        <a href="#" class="dropdown-item delete-btn" data-id="${item.id}">Delete</a>
+        var tr = `
+            <tr>
+                <td>${sno}</td>
+                <td>
+                    <div class="date-time-container">
+                        <p>${date}</p>
+                        <p>${time}</p>
                     </div>
-                </div>				
-            </div>
-        </td>
+                </td>
+                <td>
+                    <div class="announcement-container">
+                        <p>${item.from} ${editedText}</p>
+                        <p>${item.title}</p>
+                    </div>
+                </td>
+                <td>
+                    <div class="action-container">
+                        <a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/view/${item.id}" class="announcementBtn">Details</a>
+                        <div class="dropdown">
+                            <a href="#" class="dropdown-toggle" data-id="${item.id}">
+                                <img src="http://localhost/GitHub/facultyportal/assets/images/icon/more.png" alt="More Options">
+                            </a>
+                            ${generateDropdown(item, role_name)} <!-- Use role_name to generate dropdown -->
+                        </div>				
+                    </div>
+                </td>
+            </tr>
         `;
 
         $('#announcementList tbody').append(tr);  // Append the new row to the table body
