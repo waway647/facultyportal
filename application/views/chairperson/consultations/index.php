@@ -393,6 +393,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script>
 	$(document).ready(function() {
 		fetchConsultations();
+		fetchFaculty();
 
 		$('#searchInput').on('keypress', function(event) {
 			if (event.which == 13) {  // Enter key is pressed
@@ -415,6 +416,54 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 	});
+
+	function fetchFaculty(modalId, callback, selectedFacultyId = null) {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/ResearchOutputs/getFaculty',
+			type: 'GET',
+			dataType: 'json',
+			success: function (result) {
+				console.log('AJAX success:', result);
+
+				if (Array.isArray(result)) {
+					let selectElement;
+
+					// Identify the correct select element
+					if (modalId === "addConsultationModal") {
+						selectElement = $('#faculty_id'); // Add Research Modal
+					} else if (modalId === "editConsultationModal") {
+						selectElement = $('#faculty_assigned'); // Edit Research Modal
+					}
+
+					if (selectElement) {
+						// Clear existing options and add a default one
+						selectElement.empty();
+						selectElement.append('<option value="" disabled selected>Select Author</option>');
+
+						// Populate the dropdown with faculty data
+						result.forEach(function (faculty) {
+							const isSelected = selectedFacultyId == faculty.id ? "selected" : "";
+							selectElement.append(
+								`<option value="${faculty.id}" ${isSelected}>${faculty.full_name}</option>`
+							);
+						});
+
+						// Execute callback if provided
+						if (callback && typeof callback === 'function') {
+							callback();
+						}
+					} else {
+						console.error('Select element not found for modal:', modalId);
+					}
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function (xhr, status, error) {
+				console.error('Error fetching faculty:', error);
+			}
+		});
+	}
 
 	// Function to fetch course data via AJAX
 	function fetchConsultations(query = '') {

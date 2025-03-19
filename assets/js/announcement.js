@@ -224,7 +224,7 @@ function createAnnouncementsTable(result, role_name) {
                             <a href="#" class="dropdown-toggle" data-id="${item.id}">
                                 <img src="http://localhost/GitHub/facultyportal/assets/images/icon/more.png" alt="More Options">
                             </a>
-                            ${generateDropdown(item, role_name)} <!-- Use role_name to generate dropdown -->
+                            ${generateDropdown(item, role_name)}
                         </div>				
                     </div>
                 </td>
