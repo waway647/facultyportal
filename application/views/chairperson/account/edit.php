@@ -303,7 +303,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 						<div class="input-container index">
 							<h6>Civil Status</h6>
 							<select id="civil_status" name="civil_status" placeholder="">
-								<option selected>Choose status</option>
+								<option value="N/A"selected>Choose status</option>
 								<option value="Single" <?php echo ($faculty->civil_status === 'Single') ? 'selected' : ''; ?>>Single</option>
 								<option value="Married" <?php echo ($faculty->civil_status === 'Married' ? 'Selected' : '')?>>Married</option>
 								<option value="Divorced" <?php echo ($faculty->civil_status === 'Divorced' ? 'Selected' : '')?>>Divorced</option>

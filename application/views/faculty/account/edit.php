@@ -280,7 +280,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 							<div class="input-container index address-field">
 								<h6>Civil Status</h6>
 								<select id="civil_status" name="civil_status" placeholder="Civil Status">
-									<option selected>Choose status</option>
+									<option value="N/A">Choose status</option>
 									<option value="Single" <?php echo ($faculty->civil_status === 'Single') ? 'selected' : ''; ?>>Single</option>
 									<option value="Married" <?php echo ($faculty->civil_status === 'Married' ? 'Selected' : '')?>>Married</option>
 									<option value="Divorced" <?php echo ($faculty->civil_status === 'Divorced' ? 'Selected' : '')?>>Divorced</option>
@@ -295,7 +295,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 							<div class="input-container index address-field">
 								<h6>Citizenship</h6>
-								<input type="text" id="citizenship" name="citizenship" value="<?php echo ($user_address !== null) ? ($user_address->house_address ?? '') : ''; ?>" placeholder="Citizenship">
+								<input type="text" id="citizenship" name="citizenship" value="<?php echo $faculty->citizenship; ?>" placeholder="Citizenship">
 							</div>
 						</div>
 						
