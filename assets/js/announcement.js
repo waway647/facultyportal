@@ -233,8 +233,8 @@ function createAnnouncementsTable(result, role_name) {
                 </td>
                 <td>
                     <div class="announcement-container">
-                        <p>${item.from} ${editedText}</p>
-                        <p>${item.title}</p>
+                        <p>${item.title} ${editedText}</p>
+                        <p>${item.from}</p>
                     </div>
                 </td>
                 <td>
