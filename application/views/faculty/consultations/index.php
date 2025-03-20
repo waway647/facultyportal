@@ -186,7 +186,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="sub-content-container">
 					<div class="left-sub">
 						<h4>Consultation Timeslot List&nbsp</h4>
-						<h4 class="left-sub-numbers">(3)</h4>
+						<h4 class="left-sub-numbers">(<span id="totalConsultations"></span>)</h4>
 					</div>
 
 					<div class="right-sub">
@@ -348,7 +348,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	<script>
 	$(document).ready(function() {
 		fetchConsultations();
-		fetchFaculty();
+		fetchTotalConsultations();
 
 		$('#searchInput').on('keypress', function(event) {
 			if (event.which == 13) {  // Enter key is pressed
@@ -372,32 +372,21 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	});
 
-	function fetchFaculty() {
+	function fetchTotalConsultations(){
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Consultations/getTotalConsultations',
 			type: 'GET',
 			dataType: 'json',
 			success: function(result) {
-				console.log('AJAX success (Faculty Data):', result);
-
-				if (Array.isArray(result)) {
-					let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
-					let facultyFullName = $('#full_name'); // Default text if no match is found
-
-					result.forEach(function(faculty) {
-						if (faculty.id == loggedUserId) {
-							facultyFullName.text(faculty.full_name); // Get the logged-in faculty's full name
-						}
-					});
-
-					createCourseTable(result, 0);  // Call the function to create the table and pass the result
-
+				console.log('AJAX success (Total Consultations):', result);
+				if (result) {
+					$('#totalConsultations').text(result);
 				} else {
-					console.error('Expected an array but received:', result);
+					console.error('Error fetching total consultations:', result);
 				}
 			},
 			error: function(xhr, status, error) {
-				console.error('Error fetching faculty:', error);
+				console.error('Error fetching total consultations:', error);
 			}
 		});
 	}

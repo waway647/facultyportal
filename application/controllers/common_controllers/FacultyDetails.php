@@ -19,4 +19,9 @@ class FacultyDetails extends CI_Controller {
 		$result = $this->Faculty_model->getFaculty($faculty_id);  // Fetch data from SQL view
 		echo json_encode($result);  // Return data as JSON
 	}
+
+	public function getFacultyNames() {
+		$result = $this->Faculty_model->getFacultyNames();  // Fetch data from SQL view
+		echo json_encode($result);  // Return data as JSON
+	}
 }

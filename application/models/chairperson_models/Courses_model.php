@@ -30,6 +30,11 @@ class Courses_model extends CI_Model {
 		return $query->result();
 	}
 
+	public function getTotalCourses()
+	{
+		return  $this->db->count_all_results('courses_vw');
+	}
+
 	public function getCourseByID($course_id) {
 		return $this->db->get_where("courses", array('id' => $course_id))->row();
 	}

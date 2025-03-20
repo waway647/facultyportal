@@ -214,7 +214,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="sub-content-container">
 					<div class="left-sub">
 						<h4>Consultation Timeslot List&nbsp</h4>
-						<h4 class="left-sub-numbers">(3)</h4>
+						<h4 class="left-sub-numbers">(<span id="totalConsultations"></span>)</h4>
 					</div>
 
 					<div class="right-sub">
@@ -394,6 +394,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	$(document).ready(function() {
 		fetchConsultations();
 		fetchFaculty();
+		fetchTotalConsultations();
 
 		$('#searchInput').on('keypress', function(event) {
 			if (event.which == 13) {  // Enter key is pressed
@@ -419,7 +420,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	function fetchFaculty(modalId, callback, selectedFacultyId = null) {
 		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/ResearchOutputs/getFaculty',
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFacultyNames',
 			type: 'GET',
 			dataType: 'json',
 			success: function (result) {
@@ -461,6 +462,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			},
 			error: function (xhr, status, error) {
 				console.error('Error fetching faculty:', error);
+			}
+		});
+	}
+
+	function fetchTotalConsultations(){
+			$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Consultations/getTotalConsultations',
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Total Announcements):', result);
+				if (result) {
+					$('#totalConsultations').text(result);
+				} else {
+					console.error('Expected a total count but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching Total Announcements:', error);
 			}
 		});
 	}

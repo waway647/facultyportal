@@ -190,7 +190,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 								<h4>Total</h4>
 							</div>
 							
-							<h2 id="totalFaculty"></h2>
+							<h2 id="totalFaculty1"></h2>
 						</div>
 
 						<div class="item-box">
@@ -218,7 +218,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="sub-content-container">
 					<div class="left-sub">
 						<h4>Faculty List&nbsp</h4>
-						<h4 class="left-sub-numbers">(3)</h4>
+						<h4 class="left-sub-numbers">(<span id="totalFaculty2"></span>)</h4>
 					</div>
 
 					<div class="right-sub">
@@ -911,25 +911,24 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 	// Function to fetch user profiles and create the grid
 	function countAllFaculty() {
-				$.ajax({
-					url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/countAllFaculty', // URL to fetch data
-					type: 'GET',
-					dataType: 'json',
-					success: function(result) {
-						console.log(result); // Debugging statement to check the structure of result
-						if (result && !result.error) {
-							// Update the total faculty count in the UI
-							document.getElementById("totalFaculty").textContent = result || "0";
-						} else {
-							console.error("Error: ", result.error || "Unexpected response format");
-							document.getElementById("totalFaculty").textContent = "Error";
-						}
-					},
-					error: function(xhr, status, error) {
-						console.error('Error fetching user profiles:', error);
-					}
-				});
+			$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/FacultyManagement/getTotalFaculty',
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Total Announcements):', result);
+				if (result) {
+					$('#totalFaculty1').text(result);
+					$('#totalFaculty2').text(result);
+				} else {
+					console.error('Expected a total count but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching Total Announcements:', error);
 			}
+		});			
+	}
 
 			
 

@@ -66,6 +66,13 @@ class FacultyManagement extends CI_Controller {
 		echo json_encode($result);  // Return data as JSON
 	}
 
+	public function getTotalFaculty() 
+	{
+		$this->output->set_content_type('application/json');
+		$result = $this->FacultyManagement_model->getTotalFaculty();  // Fetch data from SQL view
+		echo json_encode($result);  // Return data as JSON
+	}
+
 	public function createFaculty1()
 	{
 		$user_data["user_role_id"] = $this->input->post("user_role_id");
@@ -120,16 +127,6 @@ class FacultyManagement extends CI_Controller {
 			} else {
 				echo "User ID not found!";
 			}
-	}
-
-	public function countAllFaculty()
-	{
-		$totalFaculty = $this->FacultyManagement_model->countAllFaculty();
-		if ($totalFaculty) {
-			echo json_encode($totalFaculty);
-		} else {
-			echo json_encode(["error" => "Total number of faculty not found"]);
-		}
 	}
 
 	public function checkEmailExists()

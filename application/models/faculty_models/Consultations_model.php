@@ -31,6 +31,13 @@ class Consultations_model extends CI_Model {
 		return $this->db->get_where("consultation_timeslots", array('id' => $consultation_id))->row();
 	}
 
+	public function getTotalConsultations($faculty_profile_id)
+	{
+		$this->db->where('faculty_profile_id', $faculty_profile_id);
+		$query = $this->db->get('consultation_timeslots');
+		return $query->result_array();
+	}
+
 	public function updateConsultation($consultation_id, $consultation_data)
 	{
 		$this->db->where('id', $consultation_id);

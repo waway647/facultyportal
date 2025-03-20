@@ -51,4 +51,16 @@ class Courses extends CI_Controller {
 			echo json_encode(['error' => 'No valid faculty ID found.']);
 		}
 	}
+
+	public function getTotalCourses()
+	{
+		$faculty_id = $this->session->userdata('faculty_id');
+
+		if ($faculty_id) {
+			$result = $this->Courses_model->getTotalCourses($faculty_id);
+			echo json_encode($result); // Return data as JSON
+		} else {
+			echo json_encode(['error' => 'No valid faculty ID found.']);
+		}
+	}
 }

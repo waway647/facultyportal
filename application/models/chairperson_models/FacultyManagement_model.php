@@ -57,6 +57,12 @@ class FacultyManagement_model extends CI_Model {
         return $query->result_array(); // Fixed to return array
     }
 
+    public function getTotalFaculty(){
+        $this->db->from('faculty_profiles_vw');
+        $this->db->where('role_name', 'Faculty');
+        return $this->db->count_all_results();
+    }
+
     public function saveUserData($user_data)
     {
         $this->db->insert("users", $user_data);
@@ -81,11 +87,6 @@ class FacultyManagement_model extends CI_Model {
     {
         $this->db->insert("faculty_profiles", $facultyProfile_data);
         return true;
-    }
-
-    public function countAllFaculty()
-    {
-        return $this->db->count_all('faculty_profiles_vw');
     }
 
     public function isEmailExists($email)

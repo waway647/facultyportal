@@ -17,6 +17,14 @@ class Faculty_model extends CI_Model {
         return $query->row(); // Use row() to get a single row
 	}
 
+	public function getFacultyNames() 
+	{
+	/* 	$this->db->select('id, full_name, email, role_name'); // Select all relevant columns
+		$this->db->where('role_name', 'Faculty'); // Filter for role_name = 'Faculty' */
+		$query = $this->db->get('faculty_full_name_vw');
+		return $query->result_array();
+	}
+
 	public function getUserAddress($faculty_id) {
     $this->db->where('faculty_profile_id', $faculty_id);
     $query = $this->db->get('address');

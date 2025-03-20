@@ -192,7 +192,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="sub-content-container">
 					<div class="left-sub">
 						<h4>Research List&nbsp</h4>
-						<h4 class="left-sub-numbers">(3)</h4>
+						<h4 class="left-sub-numbers">(<span id="totalResearch"></span>)</h4>
 					</div>
 
 					<div class="right-sub">
@@ -326,7 +326,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Call the function to fetch faculty when the page loads
 	$(document).ready(function() {
 		fetchResearch();
-		fetchFaculty();
+		fetchTotalResearch();
 
 		$('#searchInput').on('keypress', function(event) {
 			if (event.which == 13) {  // Enter key is pressed
@@ -349,6 +349,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			}
 		});
 	});
+
+	function fetchTotalResearch() {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/ResearchOutputs/getTotalResearch',
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Total Research):', result);
+				if (result) {
+					$('#totalResearch').text(result);
+				} else {
+					console.error('Error fetching total research:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching total research:', error);
+			}
+		});
+	}
 
 	function fetchResearch(query = '') {
 		$.ajax({
@@ -422,13 +441,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	}
 
-	function populateAddResearchModal(research) {
-		// Fetch and populate faculty dropdown
-		fetchFaculty('addResearchModal', function () {
-			console.log(`Faculty dropdown populated. Selected faculty: ${research.author}`);
-		}, research.faculty_profile_id);
-	}
-	
 	function populateEditResearchModal(research) {
 		console.log("Populating modal with research:", research);
 
@@ -453,11 +465,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 		// Leave the attachment input field empty for new uploads
 		$('#editResearchModal #research_attachment_edit').val('');
-
-		/* // Fetch and populate faculty dropdown
-		fetchFaculty('editResearchModal', function () {
-			console.log(`Faculty dropdown populated. Selected faculty: ${research.faculty_assigned}`);
-		}, research.faculty_profile_id);  */
 
 		// Set form action URL for updating research
 		$('#editResearchForm').attr(
@@ -505,7 +512,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         openButton.onclick = function () {
             modal.style.display = "block";
             if (modalId === "addResearchModal" || modalId === "editResearchModal") {
-                fetchFaculty(modalId);
 				fetchYearsInYearPublished('addResearchModal');
             }
         };

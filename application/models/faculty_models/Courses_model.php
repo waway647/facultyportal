@@ -20,4 +20,11 @@ class Courses_model extends CI_Model {
         $query = $this->db->get('courses');
         return $query->result_array(); // Use row() to get a single row
 	}
+
+	public function getTotalCourses($faculty_profile_id)
+	{
+		$this->db->where('faculty_profile_id', $faculty_profile_id);
+		$query = $this->db->get('courses');
+		return $query->num_rows();
+	}
 }

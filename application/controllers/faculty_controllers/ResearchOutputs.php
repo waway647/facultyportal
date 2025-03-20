@@ -42,6 +42,17 @@ class ResearchOutputs extends CI_Controller {
 		}
 	}
 
+	public function getTotalResearch()
+	{
+		$faculty_id = $this->session->userdata('faculty_id');
+
+		if($faculty_id)
+		{
+			$result = $this->ResearchOutputs_model->getTotalResearch($faculty_id);
+			echo json_encode($result); // Return data as JSON
+		}
+	}
+
 	public function createResearch()
 	{
 		$config['upload_path'] = './assets/research_attachments/';

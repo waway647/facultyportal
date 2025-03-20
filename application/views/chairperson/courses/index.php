@@ -211,10 +211,10 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				</div>
 
 				<div class="sub-content-container">
-					<div class="left-sub">
-						<h4>Course List&nbsp</h4>
-						<h4 class="left-sub-numbers">(3)</h4>
-					</div>
+						<div class="left-sub">
+							<h4>Courses List&nbsp</h4>
+							<h4 class="left-sub-numbers">(<span id="totalCourses"></span>)</h4>
+						</div>
 
 					<div class="right-sub">
 						<div class="searchDisplay">
@@ -358,6 +358,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Call the function to fetch faculty when the page loads
 	$(document).ready(function() {
 		fetchCourses();
+		fetchTotalCourses();
 
 		$('#searchInput').on('keypress', function(event) {
 			if (event.which == 13) {  // Enter key is pressed
@@ -381,6 +382,55 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	});
 
+		
+	function fetchFaculty(modalId, callback, selectedFacultyId = null) {
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFacultyNames',
+			type: 'GET',
+			dataType: 'json',
+			success: function (result) {
+				console.log('AJAX success:', result);
+
+				if (Array.isArray(result)) {
+					let selectElement;
+
+					// Identify the correct select element
+					if (modalId === "addCourseModal") {
+						selectElement = $('#faculty_id'); // Add Research Modal
+					} else if (modalId === "editCourseModal") {
+						selectElement = $('#faculty_assigned'); // Edit Research Modal
+					}
+
+					if (selectElement) {
+						// Clear existing options and add a default one
+						selectElement.empty();
+						selectElement.append('<option value="" disabled selected>Select Author</option>');
+
+						// Populate the dropdown with faculty data
+						result.forEach(function (faculty) {
+							const isSelected = selectedFacultyId == faculty.id ? "selected" : "";
+							selectElement.append(
+								`<option value="${faculty.id}" ${isSelected}>${faculty.full_name}</option>`
+							);
+						});
+
+						// Execute callback if provided
+						if (callback && typeof callback === 'function') {
+							callback();
+						}
+					} else {
+						console.error('Select element not found for modal:', modalId);
+					}
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function (xhr, status, error) {
+				console.error('Error fetching faculty:', error);
+			}
+		});
+	}
+
 	// Function to fetch course data via AJAX
 	function fetchCourses(query = '') {
 		$.ajax({
@@ -398,6 +448,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			},
 			error: function(xhr, status, error) {
 				console.error('Error fetching courses:', error);
+			}
+		});
+	}
+
+	function fetchTotalCourses(){
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/chairperson_controllers/Courses/getTotalCourses',
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Total Courses):', result);
+				if (result) {
+					$('#totalCourses').text(result);
+				} else {
+					console.error('Error: Total courses not found!');
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching total courses:', error);
 			}
 		});
 	}

@@ -51,7 +51,19 @@ class Consultations extends CI_Controller {
 		} else {
 			echo json_encode(['error' => 'No valid faculty ID found.']);
 		}
-		
+	}
+
+	public function getTotalConsultations()
+	{
+		$faculty_id = $this->session->userdata('faculty_id');
+
+		if($faculty_id)
+		{
+			$result = $this->Consultations_model->getTotalConsultations($faculty_id);
+			echo json_encode(count($result));  // Return data as JSON
+		} else {
+			echo json_encode(['error' => 'No valid faculty ID found.']);
+		}
 	}
 
 	public function createConsultation()

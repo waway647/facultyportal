@@ -33,6 +33,12 @@ class Consultations extends CI_Controller {
 		echo json_encode($result);  // Return data as JSON
 	}
 
+	public function getTotalConsultations(){
+		$this->output->set_content_type('application/json');
+		$result = $this->Consultations_model->getTotalConsultations();
+		echo json_encode($result);
+	}
+
 	public function createConsultation()
 	{
 		$consultation_data = array(

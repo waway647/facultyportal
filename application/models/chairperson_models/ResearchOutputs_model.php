@@ -20,16 +20,15 @@ class ResearchOutputs_model extends CI_Model {
 		return $query->result();
 	}
 
-	public function getFaculty() 
-	{
-		$query = $this->db->get('faculty_full_name_vw');
-		return $query->result_array();
-	}
-
 	public function insertNewResearch($research_data)
 	{
 		$this->db->insert("research_outputs", $research_data);
 		return true;
+	}
+
+	public function getTotalResearch()
+	{
+		return $this->db->count_all_results('research_outputs_vw');
 	}
 
 	public function getResearchByID($id) {

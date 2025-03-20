@@ -132,16 +132,16 @@ defined('BASEPATH') OR exit('No direct script access allowed');
           		<div class="heading-container"><div class="text-wrapper-8">Announcements, Department Chair</div></div>
           			<div class="container-management">
 						<div class="announcement-details-container">
-
+							<h2>Announcement Details</h2>
 							<div class="announcement-details">
-								<h2>Announcement Details</h2>
+								<div class="line-divider"></div>
 								<p class="from">From: <?php echo $announcement->from; ?></p>
 								<p><strong>Title:</strong> <?php echo $announcement->title; ?></p>
 								<p><strong>Date:</strong> <?php echo date('F j, Y, g:i A', strtotime($announcement->created_at)); ?></p>
 							</div>	
 
 							<div class="content">
-								<p><?php echo nl2br(($announcement->content)); ?></p>
+								<p class="content-msg"><?php echo nl2br(($announcement->content)); ?></p>
 							</div>
 							
 							<div class="announcement-attachment-container">
@@ -168,7 +168,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 										<?php endforeach; ?>
 									</div>
 								<?php else: ?>
-									<p>No attachments available.</p>
+									<p class="no-attachment">No attachments available.</p>
 								<?php endif; ?>
 							</div>	
 							<a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index" class="back-btn">Back to Announcements</a>

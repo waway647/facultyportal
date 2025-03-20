@@ -166,7 +166,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="sub-content-container ann">
 						<div class="left-sub">
 							<h4>Announcement List&nbsp</h4>
-							<h4 class="left-sub-numbers">(3)</h4>
+							<h4 class="left-sub-numbers">(<span id="totalAnnouncements"></span>)</h4>
 						</div>
 
 						<!-- //Sort By -->
@@ -201,10 +201,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 
 						<!-- //Search -->
 						<div class="right-sub-ann">
-							<!-- <div class="searchDisplay1">
-								<a href=""><img class='img' src='<?php echo base_url('assets/images/icon/x.svg'); ?>' /></a>
-								<h6 id="searchDisplay1"></h6>
-							</div> -->
 							<p>Search</p>
 							<div class="sub-container">
 								<button class="button">

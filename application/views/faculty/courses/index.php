@@ -187,7 +187,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 				<div class="sub-content-container">
 					<div class="left-sub">
 						<h4>Course List&nbsp</h4>
-						<h4 class="left-sub-numbers">(3)</h4>
+						<h4 class="left-sub-numbers">(<span id="totalCourses"></span>)</h4>
 					</div>
 
 					<div class="right-sub">
@@ -239,7 +239,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 	// Call the function to fetch faculty when the page loads
 	$(document).ready(function() {
 		fetchCourses();
-		fetchFaculty();
+		fetchTotalCourses();
 
 		$('#searchInput').on('keypress', function(event) {
 			if (event.which == 13) {  // Enter key is pressed
@@ -263,34 +263,6 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 		});
 	});
 
-	function fetchFaculty() {
-		$.ajax({
-			url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/FacultyDetails/getFaculty', 
-			type: 'GET',
-			dataType: 'json',
-			success: function(result) {
-				console.log('AJAX success (Faculty Data):', result);
-
-				if (Array.isArray(result)) {
-					let loggedUserId = $('#logged_in_user').val(); // Hidden input storing logged user ID
-					let facultyFullName = $('#full_name'); // Default text if no match is found
-
-					result.forEach(function(faculty) {
-						if (faculty.id == loggedUserId) {
-							facultyFullName.text(faculty.full_name); // Get the logged-in faculty's full name
-						}
-					});
-
-				} else {
-					console.error('Expected an array but received:', result);
-				}
-			},
-			error: function(xhr, status, error) {
-				console.error('Error fetching faculty:', error);
-			}
-		});
-	}
-
 	// Function to fetch course data via AJAX
 	function fetchCourses(query = '') {
 		$.ajax({
@@ -308,6 +280,25 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 			},
 			error: function(xhr, status, error) {
 				console.error('Error fetching courses:', error);
+			}
+		});
+	}
+
+	function fetchTotalCourses(){
+		$.ajax({
+			url: 'http://localhost/GitHub/facultyportal/index.php/faculty_controllers/Courses/getTotalCourses',  // Update the URL as necessary
+			type: 'GET',
+			dataType: 'json',
+			success: function(result) {
+				console.log('AJAX success (Total Courses):', result);
+				if (result) {
+					$('#totalCourses').text(result);
+				} else {
+					console.error('Expected an array but received:', result);
+				}
+			},
+			error: function(xhr, status, error) {
+				console.error('Error fetching total courses:', error);
 			}
 		});
 	}

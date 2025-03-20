@@ -48,6 +48,13 @@ class Courses extends CI_Controller {
 		}
 	}
 
+	public function getTotalCourses()
+	{
+		$this->output->set_content_type('application/json');
+		$result = $this->Courses_model->getTotalCourses();
+		echo json_encode($result);  // Return data as JSON
+	}
+
 	public function getCourses()
 	{
 		$search = $this->input->get('search');

@@ -62,6 +62,12 @@ class Announcements extends CI_Controller {
 		echo json_encode($data);
 	} 
 
+	public function getTotalAnnouncements(){
+		$this->output->set_content_type('application/json');
+		$result = $this->Announcement_model->getTotalAnnouncements();
+		echo json_encode($result);
+	}
+
 	public function createAnnouncement() {
 
 		date_default_timezone_set('Asia/Manila');

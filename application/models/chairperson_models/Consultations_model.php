@@ -22,6 +22,10 @@ class Consultations_model extends CI_Model {
 		return $query->result();
 	}
 
+	public function getTotalConsultations() {
+        return $this->db->count_all_results('consultation_timeslots_vw');
+    }
+
 	public function insertNewConsultation($consultation_data)
 	{
 		$this->db->insert("consultation_timeslots", $consultation_data);

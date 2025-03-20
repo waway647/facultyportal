@@ -30,9 +30,10 @@ class ResearchOutputs extends CI_Controller {
 		echo json_encode($result); // Return data as JSON
 	}
 
-	public function getFaculty() {
-		$result = $this->ResearchOutputs_model->getFaculty();  // Fetch data from SQL view
-		echo json_encode($result);  // Return data as JSON
+	public function getTotalResearch(){
+		$this->output->set_content_type('application/json');
+		$result = $this->ResearchOutputs_model->getTotalResearch();
+		echo json_encode($result);
 	}
 
 	public function createResearch()

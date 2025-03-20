@@ -2,6 +2,7 @@ $(document).ready(function() {
     // Load the CSS file when the script runs
 
     fetchAnnouncements(); // Fetch all Announcements on page load
+    fetchTotalAnnouncements(); // Fetch total number of Announcements
 
     $('#searchInput').on('keypress', function(event) {
         if (event.which == 13) {  // Enter key is pressed
@@ -65,6 +66,25 @@ function fetchAnnouncements() {
         },
         error: function(xhr, status, error) {
             console.error('Error fetching Announcements:', error);
+        }
+    });
+}
+
+function fetchTotalAnnouncements() {
+    $.ajax({
+        url: 'http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/getTotalAnnouncements',
+        type: 'GET',
+        dataType: 'json',
+        success: function(result) {
+            console.log('AJAX success (Total Announcements):', result);
+            if (result) {
+                $('#totalAnnouncements').text(result);
+            } else {
+                console.error('Expected a total count but received:', result);
+            }
+        },
+        error: function(xhr, status, error) {
+            console.error('Error fetching Total Announcements:', error);
         }
     });
 }
@@ -300,132 +320,151 @@ function createAnnouncementsTable(result, role_name) {
     });
 }
 
-// File attachment handling
-const attachmentInput = document.getElementById("announcement_attachment");
-const attachmentPreview = document.getElementById("announcement_attachment_preview");
-let attachedFiles = []; // Store uploaded files dynamically
+// Function to initialize file attachment handling for a given form
+function initializeFileAttachmentHandling(formId) {
+    const form = document.querySelector(`#${formId}`);
+    const attachmentInput = document.getElementById("announcement_attachment");
+    const attachmentPreview = document.getElementById("announcement_attachment_preview");
 
-// Configuration for file validation (matching backend constraints)
-const MAX_FILE_SIZE = 32 * 1024 * 1024; // 32MB in bytes
-const ALLOWED_TYPES = [
-    "image/jpeg",
-    "image/jpg",
-    "image/png",
-    "application/pdf",
-    "application/msword",
-    "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
-];
-const MAX_FILES = 10; // Maximum number of files allowed (adjust as needed)
-
-attachmentInput.addEventListener("change", function () {
-    const newFiles = Array.from(attachmentInput.files);
-
-    // Check total number of files (existing + new)
-    if (attachedFiles.length + newFiles.length > MAX_FILES) {
-        alert(`You can only upload a maximum of ${MAX_FILES} files.`);
-        attachmentInput.value = ""; // Clear input to allow re-selection
+    // Skip initialization if elements are not found
+    if (!form || !attachmentInput || !attachmentPreview) {
+        console.warn(`Form (${formId}), attachment input, or preview container not found.`);
         return;
     }
 
-    // Validate and process each new file
-    newFiles.forEach((file) => {
-        // Check if file is already attached
-        if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
-            alert(`File "${file.name}" is already attached.`);
+    let attachedFiles = []; // Store uploaded files dynamically
+
+    // Get the number of existing attachments (for edit form)
+    const existingAttachments = document.querySelectorAll(".edit-attachment-item")?.length || 0;
+
+    // Configuration for file validation (matching backend constraints)
+    const MAX_FILE_SIZE = 32 * 1024 * 1024; // 32MB in bytes
+    const ALLOWED_TYPES = [
+        "image/jpeg",
+        "image/jpg",
+        "image/png",
+        "application/pdf",
+        "application/msword",
+        "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+    ];
+    const MAX_FILES = 10; // Maximum number of files allowed
+
+    // File attachment handling
+    attachmentInput.addEventListener("change", function () {
+        const newFiles = Array.from(attachmentInput.files);
+
+        // Check total number of files (existing + new)
+        const totalFiles = existingAttachments + attachedFiles.length + newFiles.length;
+        if (totalFiles > MAX_FILES) {
+            alert(`You can only upload a maximum of ${MAX_FILES} files (including ${existingAttachments} existing attachments).`);
+            attachmentInput.value = ""; // Clear input to allow re-selection
             return;
         }
 
-        // Validate file type
-        if (!ALLOWED_TYPES.includes(file.type)) {
-            alert(`File "${file.name}" has an invalid type. Allowed types: jpg, jpeg, png, pdf, doc, docx.`);
-            return;
-        }
+        // Validate and process each new file
+        newFiles.forEach((file) => {
+            // Check if file is already attached
+            if (attachedFiles.some((attachedFile) => attachedFile.name === file.name)) {
+                alert(`File "${file.name}" is already attached.`);
+                return;
+            }
 
-        // Validate file size
-        if (file.size > MAX_FILE_SIZE) {
-            alert(`File "${file.name}" exceeds the maximum size of 32MB.`);
-            return;
-        }
+            // Validate file type
+            if (!ALLOWED_TYPES.includes(file.type)) {
+                alert(`File "${file.name}" has an invalid type. Allowed types: jpg, jpeg, png, pdf, doc, docx.`);
+                return;
+            }
 
-        // Add file to the list of attached files
-        attachedFiles.push(file);
+            // Validate file size
+            if (file.size > MAX_FILE_SIZE) {
+                alert(`File "${file.name}" exceeds the maximum size of 32MB.`);
+                return;
+            }
 
-        // Create preview item
-        const previewItem = document.createElement("div");
-        previewItem.className = "attachment-preview-item";
+            // Add file to the list of attached files
+            attachedFiles.push(file);
 
-        if (file.type.startsWith("image/")) {
-            // Display image preview
-            const img = document.createElement("img");
-            img.src = URL.createObjectURL(file);
-            img.alt = file.name;
-            img.style.maxWidth = "50px"; // Limit image size in preview
-            img.style.maxHeight = "50px";
-            img.onload = function () {
-                URL.revokeObjectURL(img.src); // Free memory
+            // Create preview item
+            const previewItem = document.createElement("div");
+            previewItem.className = "attachment-preview-item";
+
+            if (file.type.startsWith("image/")) {
+                // Display image preview
+                const img = document.createElement("img");
+                img.src = URL.createObjectURL(file);
+                img.alt = file.name;
+                img.style.maxWidth = "50px"; // Limit image size in preview
+                img.style.maxHeight = "50px";
+                img.onload = function () {
+                    URL.revokeObjectURL(img.src); // Free memory
+                };
+                previewItem.appendChild(img);
+            } else {
+                // Display an icon or placeholder for non-image files
+                const icon = document.createElement("span");
+                icon.textContent = "📄"; // Use an emoji or icon for non-image files
+                icon.style.fontSize = "24px";
+                previewItem.appendChild(icon);
+            }
+
+            // Display file name
+            const fileName = document.createElement("span");
+            fileName.textContent = file.name;
+            fileName.style.display = "block";
+            fileName.style.maxWidth = "100px"; // Limit width to prevent overflow
+            fileName.style.height = "1.2em"; // Truncate with ellipsis if too long
+            fileName.style.overflow = "hidden";
+            fileName.style.textOverflow = "ellipsis";
+            fileName.style.whiteSpace = "nowrap";
+            previewItem.appendChild(fileName);
+
+            // Display file size
+            const fileSize = document.createElement("span");
+            fileSize.textContent = `(${(file.size / (1024 * 1024)).toFixed(2)}MB)`;
+            fileSize.style.fontSize = "12px";
+            fileSize.style.color = "#666";
+            previewItem.appendChild(fileSize);
+
+            // Add a remove button for each file
+            const removeButton = document.createElement("button");
+            removeButton.textContent = "Remove";
+            removeButton.className = "remove-file-btn";
+            removeButton.onclick = function () {
+                // Remove file from the list of attached files
+                attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
+                previewItem.remove();
             };
-            previewItem.appendChild(img);
-        } else {
-            // Display an icon or placeholder for non-image files
-            const icon = document.createElement("span");
-            icon.textContent = "📄"; // Use an emoji or icon for non-image files
-            icon.style.fontSize = "24px";
-            previewItem.appendChild(icon);
-        }
+            previewItem.appendChild(removeButton);
 
-        // Display file name
-        const fileName = document.createElement("span");
-        fileName.textContent = file.name;
-        fileName.style.display = "block";
-        fileName.style.maxWidth = "100px"; // Limit width to prevent overflow
-        fileName.style.overflow = "hidden";
-        fileName.style.textOverflow = "ellipsis";
-        fileName.style.whiteSpace = "nowrap";
-        previewItem.appendChild(fileName);
+            // Add preview item to the container
+            attachmentPreview.appendChild(previewItem);
+        });
 
-        // Display file size
-        const fileSize = document.createElement("span");
-        fileSize.textContent = `(${(file.size / (1024 * 1024)).toFixed(2)}MB)`;
-        fileSize.style.fontSize = "12px";
-        fileSize.style.color = "#666";
-        previewItem.appendChild(fileSize);
-
-        // Add a remove button for each file
-        const removeButton = document.createElement("button");
-        removeButton.textContent = "Remove";
-        removeButton.className = "remove-file-btn";
-        removeButton.onclick = function () {
-            // Remove file from the list of attached files
-            attachedFiles = attachedFiles.filter((f) => f.name !== file.name);
-            previewItem.remove();
-        };
-        previewItem.appendChild(removeButton);
-
-        // Add preview item to the container
-        attachmentPreview.appendChild(previewItem);
+        // Reset file input to allow re-uploading the same file if removed
+        attachmentInput.value = "";
     });
 
-    // Reset file input to allow re-uploading the same file if removed
-    attachmentInput.value = "";
-});
+    // Ensure form submission includes the attached files
+    form.addEventListener("submit", function (event) {
+        // Re-add the attached files to the input for submission
+        if (attachedFiles.length > 0) {
+            const dataTransfer = new DataTransfer();
+            attachedFiles.forEach((file) => {
+                dataTransfer.items.add(file);
+            });
+            attachmentInput.files = dataTransfer.files; // Set the file input to include attached files
+        }
+    });
+}
 
-// Ensure form submission includes the attached files
-const form = document.querySelector("#addAnnouncement"); // Use the correct form ID
-form.addEventListener("submit", function (event) {
-    // Prevent submission if no files are attached (if required)
-    // Uncomment if you want to enforce at least one file
-    // if (attachedFiles.length === 0) {
-    //     alert("Please attach at least one file.");
-    //     event.preventDefault();
-    //     return;
-    // }
-
-    // Re-add the attached files to the input for submission
-    if (attachedFiles.length > 0) {
-        const dataTransfer = new DataTransfer();
-        attachedFiles.forEach((file) => {
-            dataTransfer.items.add(file);
-        });
-        attachmentInput.files = dataTransfer.files; // Set the file input to include attached files
+// Initialize for both forms
+document.addEventListener("DOMContentLoaded", function () {
+    // Initialize for Add Announcement form
+    if (document.querySelector("#addAnnouncement")) {
+        initializeFileAttachmentHandling("addAnnouncement");
+    }
+    // Initialize for Edit Announcement form
+    if (document.querySelector("#editAnnouncement")) {
+        initializeFileAttachmentHandling("editAnnouncement");
     }
 });

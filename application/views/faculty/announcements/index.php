@@ -189,7 +189,7 @@ defined('BASEPATH') OR exit('No direct script access allowed');
 					<div class="sub-content-container ann">
 						<div class="left-sub">
 							<h4>Announcement List&nbsp</h4>
-							<h4 class="left-sub-numbers">(3)</h4>
+							<h4 class="left-sub-numbers">(<span id="totalAnnouncements"></span>)</h4>
 						</div>
 
 						<!-- //Sort By -->

@@ -68,6 +68,10 @@ class Announcement_model extends CI_Model {
         }
     }
 
+    public function getTotalAnnouncements() {
+        return $this->db->count_all_results('announcements');
+    }
+
     public function insertAnnouncement($announcement_data) {
         // Validate data
         if (empty($announcement_data['faculty_profile_id']) || empty($announcement_data['title']) || empty($announcement_data['content'])) {
