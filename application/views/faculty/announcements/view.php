@@ -131,46 +131,49 @@ defined('BASEPATH') OR exit('No direct script access allowed');
         	<div class="main-content-2">
           		<div class="heading-container"><div class="text-wrapper-8">Announcements, Department Chair</div></div>
           			<div class="container-management">
-						<div class="announcement-details-container">
+					  <div class="announcement-details-container">
 							<h2>Announcement Details</h2>
 							<div class="announcement-details">
 								<div class="line-divider"></div>
 								<p class="from">From: <?php echo $announcement->from; ?></p>
 								<p><strong>Title:</strong> <?php echo $announcement->title; ?></p>
 								<p><strong>Date:</strong> <?php echo date('F j, Y, g:i A', strtotime($announcement->created_at)); ?></p>
+								<div class="line-divider"></div>
 							</div>	
-
+							
 							<div class="content">
+								<h4>Content</h4>
 								<p class="content-msg"><?php echo nl2br(($announcement->content)); ?></p>
 							</div>
-							
-							<div class="announcement-attachment-container">
-								<h3>Attachments</h3>
-								<?php if (!empty($attachments)): ?>
-									<div class="attachments-container-box">
-										<?php foreach ($attachments as $attachment): ?>
-											<div class="attachment-item">
-												<?php
-												$file_ext = pathinfo($attachment->announcement_file_path, PATHINFO_EXTENSION);
-												if (in_array(strtolower($file_ext), ['jpg', 'jpeg', 'png'])): ?>
-													<img class="attachment-icon" src="<?php echo base_url('assets/images/icon/img.png'); ?>" />
-												<?php elseif ($file_ext === 'pdf'): ?>
-													<img class="attachment-icon" src="<?php echo base_url('assets/images/icon/pdf.png'); ?>" />
-												<?php elseif (in_array($file_ext, ['doc', 'docx'])): ?>
-													<img class="attachment-icon" src="<?php echo base_url('assets/images/icon/doc.png'); ?>" />
-												<?php else: ?>
-													<img class="attachment-icon" src="<?php echo base_url('assets/images/icon/file.png'); ?>" />
-												<?php endif; ?>
-												<a href="<?php echo base_url($attachment->announcement_file_path); ?>" target="_blank">
-													<?php echo basename($attachment->announcement_file_path); ?>
-												</a>
-											</div>
-										<?php endforeach; ?>
-									</div>
-								<?php else: ?>
-									<p class="no-attachment">No attachments available.</p>
-								<?php endif; ?>
-							</div>	
+
+								<div class="announcement-attachment-container">
+									<div class="line-divider"></div>
+									<h4>Attachments</h4>
+									<?php if (!empty($attachments)): ?>
+										<div class="attachments-container-box">
+											<?php foreach ($attachments as $attachment): ?>
+												<div class="attachment-item">
+													<?php
+													$file_ext = pathinfo($attachment->announcement_file_path, PATHINFO_EXTENSION);
+													if (in_array(strtolower($file_ext), ['jpg', 'jpeg', 'png'])): ?>
+														<img class="attachment-icon" src="<?php echo base_url('assets/images/icon/img.png'); ?>" />
+													<?php elseif ($file_ext === 'pdf'): ?>
+														<img class="attachment-icon" src="<?php echo base_url('assets/images/icon/pdf.png'); ?>" />
+													<?php elseif (in_array($file_ext, ['doc', 'docx'])): ?>
+														<img class="attachment-icon" src="<?php echo base_url('assets/images/icon/doc.png'); ?>" />
+													<?php else: ?>
+														<img class="attachment-icon" src="<?php echo base_url('assets/images/icon/file.png'); ?>" />
+													<?php endif; ?>
+													<a href="<?php echo base_url($attachment->announcement_file_path); ?>" target="_blank">
+														<?php echo basename($attachment->announcement_file_path); ?>
+													</a>
+												</div>
+											<?php endforeach; ?>
+										</div>
+									<?php else: ?>
+										<p class="no-attachment">No attachments available.</p>
+									<?php endif; ?>
+								</div>	
 							<a href="http://localhost/GitHub/facultyportal/index.php/common_controllers/Announcements/index" class="back-btn">Back to Announcements</a>
 						</div>
 					</div>
